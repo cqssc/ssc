@@ -39,7 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AllAnalysis_105.cs" />
+    <Compile Include="BigSmallHot_105.cs" />
     <Compile Include="EnumFuture.cs" />
     <Compile Include="HotStatistics_104.cs" />
     <Compile Include="LostAll_102.cs" />
@@ -48,6 +48,7 @@
     <Compile Include="SingleAnalysis_103.cs" />
     <Compile Include="SpecialFuture_108.cs" />
     <Compile Include="AllSplitStatistics_106.cs" />
+    <Compile Include="SwingDetail_107.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

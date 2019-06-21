@@ -1,28 +1,27 @@
-﻿using CI.CIUtility.Utility;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Configuration;
-using DBHelp;
 using System.Net;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Data;
 using System.Data.Common;
 using System.IO.Compression;
+using DBHelp;
 using Modles;
 
-namespace SSCService01
+namespace SSCService02
 {
-    public class Main
+    public class ShiShiCaiData
     {
-        public static readonly Main Instance = new Main();
-
-        CancellationTokenSource _taskCancel = new CancellationTokenSource();
-
+        #region  统计线程
+        private bool IBoolIsThreadShiShiCaiDataWorking;
+        private Thread IThreadShiShiCaiData;
+        #endregion
         #region 静态全局字符串
         private static string sqlConnect = string.Empty;
         private static string LastTimeSychnData = string.Empty;
@@ -35,9 +34,7 @@ namespace SSCService01
         private static int CurrentPeriod;
         #endregion
 
-
-
-        public void Start()
+        public ShiShiCaiData()
         {
             sqlConnect = ConfigurationManager.AppSettings["SqlServerConnect"] != null ? ConfigurationManager.AppSettings["SqlServerConnect"] : "Data Source=127.0.0.1,1433;Initial Catalog=Pocker;User Id=sa;Password=voicecodes";
             Task task = Task.Factory.StartNew(GetNewDataInDB);
@@ -51,13 +48,16 @@ namespace SSCService01
             LinkOfXinlang = ConfigurationManager.AppSettings["UrlXinlang"] != null ? ConfigurationManager.AppSettings["UrlXinlang"].ToString() : "https://kaijiang.aicai.com/cqssc/";
 
             LinkOfBack = ConfigurationManager.AppSettings["UrlBack"] != null ? ConfigurationManager.AppSettings["UrlBack"].ToString() : "https://fx.cp2y.com/cqssckj/";
-
+            
         }
 
-        public void GetNewDataInDB()
+
+
+        private static void AutoShishiCaiDataGet(object o)
         {
-            List<PeriodDetail_101> listPeriodTemp=new List<PeriodDetail_101>();;
-            while(!_taskCancel.IsCancellationRequested)
+            ShiShiCaiData autoDBInfo = o as ShiShiCaiData;
+            List<PeriodDetail_101> listPeriodTemp = new List<PeriodDetail_101>(); ;
+            while (autoDBInfo.IBoolIsThreadShiShiCaiDataWorking)
             {
                 DateTime Nowwwww = DateTime.Now;
                 DateTime NowDate = Nowwwww.Date;
@@ -80,7 +80,7 @@ namespace SSCService01
                             FileLog.WriteInfo("AutoShishiCaiDataGet()@ ", RunCurrentDate.ToString());
                         }
                     }
-                    else 
+                    else
                     {
                         RunCurrentDate = RunCurrentDate.AddDays(1);
                         AppConfigOperation.UpdateAppConfig("LastTimeSynchData", RunCurrentDate.ToString("yyyy-MM-dd 00:00:00"));
@@ -135,13 +135,11 @@ namespace SSCService01
                     //配置里的时间大于机器时间了
                     Thread.Sleep(1000 * 1);
                 }
+            
             }
+            
         }
 
-        public void Stop()
-        {
-            _taskCancel.Cancel();
-        }
 
 
         public static bool GetDataFromUrl(DateTime ADateTime, ref List<PeriodDetail_101> AlistPeriod001, int AType = -1)
@@ -184,7 +182,7 @@ namespace SSCService01
                         }
                     }
                 }
-                else 
+                else
                 {
                     flag = GetHtmlString08(ADateTime, ref AlistPeriod001, AType);
                     if (flag && AlistPeriod001.Count > 0)
@@ -193,7 +191,7 @@ namespace SSCService01
                     }
                 }
                 Thread.Sleep(300);
-                FileLog.WriteInfo(" K=", k.ToString());  
+                FileLog.WriteInfo(" K=", k.ToString());
             }
             return flag;
         }
@@ -221,7 +219,7 @@ namespace SSCService01
         /// AType==-1 做全天数据更新
         /// 其它为单期数据更新
         /// </summary>
-        public static bool UpateDataBase(List<PeriodDetail_101> AListPeriod, int AType = -1,string YY="")
+        public static bool UpateDataBase(List<PeriodDetail_101> AListPeriod, int AType = -1, string YY = "")
         {
             bool flag = true;
             FileLog.WriteInfo("UpateDataBase", "AType=" + AType);
@@ -234,13 +232,13 @@ namespace SSCService01
 
                 if (AType == -1)
                 {
-                    strSql = string.Format("SELECT * from T_101_{1} where C004={0}", AListPeriod.First().DateNumber_004,YY);
+                    strSql = string.Format("SELECT * from T_101_{1} where C004={0}", AListPeriod.First().DateNumber_004, YY);
                     FileLog.WriteInfo("UpateDataBase()", strSql);
 
                 }
                 else
                 {
-                    strSql = string.Format("SELECT * from T_101_{1} where C001={0}", AListPeriod.Last().LongPeriod_001,YY);
+                    strSql = string.Format("SELECT * from T_101_{1} where C001={0}", AListPeriod.Last().LongPeriod_001, YY);
                     FileLog.WriteInfo("UpateDataBase()", strSql);
                 }
 
@@ -459,7 +457,7 @@ namespace SSCService01
         /// </summary>
         /// <param name="ANow"></param>
         /// <returns></returns>
-        public static int CauTimeSpan(DateTime ANow) 
+        public static int CauTimeSpan(DateTime ANow)
         {
             int i = 0;
             DateTime StartTime;
@@ -479,38 +477,6 @@ namespace SSCService01
             return i;
         }
 
-
-        ///// <summary>
-        /////  //根据时间得到期数
-        ///// </summary>
-        ///// <param name="ANow"></param>
-        ///// <param name="i">1为0点到2点，10～22点,22点到24点</param>
-        ///// <returns></returns>
-        //public static int CauTimeSpan(DateTime ANow)
-        //{
-        //    int i = 0;
-        //    DateTime StartTime;
-
-        //    if (ANow < ANow.Date.AddHours(2))
-        //    {
-        //        StartTime = ANow.Date;
-        //        TimeSpan ts1 = ANow.Subtract(StartTime);
-        //        i = (ts1.Hours * 60 + ts1.Minutes) / 5;
-        //    }
-        //    else if (ANow >= ANow.Date.AddHours(10) && ANow <= ANow.Date.AddHours(22))
-        //    {
-        //        StartTime = ANow.Date.AddHours(10);
-        //        TimeSpan ts1 = ANow.Subtract(StartTime);
-        //        i = (ts1.Hours * 60 + ts1.Minutes) / 10 + 24;
-        //    }
-        //    else if (ANow >= ANow.Date.AddHours(22))
-        //    {
-        //        StartTime = ANow.Date.AddHours(22);
-        //        TimeSpan ts1 = ANow.Subtract(StartTime);
-        //        i = (ts1.Hours * 60 + ts1.Minutes) / 5 + 96;
-        //    }
-        //    return i;
-        //}
 
         /// <summary>
         /// 获取源代码
@@ -982,12 +948,12 @@ namespace SSCService01
                             period.Wei3_030 = int.Parse(charTemp[2].ToString());
                             period.Wei2_020 = int.Parse(charTemp[3].ToString());
                             period.Wei1_010 = int.Parse(charTemp[4].ToString());
-                            int total=period.Wei5_050 + period.Wei4_040 + period.Wei3_030 + period.Wei2_020 + period.Wei1_010;
+                            int total = period.Wei5_050 + period.Wei4_040 + period.Wei3_030 + period.Wei2_020 + period.Wei1_010;
                             if (total >= 23)
                             {
                                 period.BigOrSmall_007 = 1;
                             }
-                            else 
+                            else
                             {
                                 period.BigOrSmall_007 = 2;
                             }
@@ -996,7 +962,7 @@ namespace SSCService01
                             {
                                 period.EvenODD_008 = 1;
                             }
-                            else 
+                            else
                             {
                                 period.EvenODD_008 = 2;
                             }
@@ -1268,5 +1234,33 @@ namespace SSCService01
         }
 
         #endregion
+
+
+        public void ShiShiCaiDataStartup()
+        {
+            FileLog.WriteInfo("ShiShiCaiData", "ShiShiCaiDataStartup()");
+            IBoolIsThreadShiShiCaiDataWorking = false;
+            if (IThreadShiShiCaiData != null)
+            {
+                IThreadShiShiCaiData.Abort();
+            }
+            IThreadShiShiCaiData = new Thread(new ParameterizedThreadStart(ShiShiCaiData.AutoShishiCaiDataGet));
+            IBoolIsThreadShiShiCaiDataWorking = true;
+            IThreadShiShiCaiData.Start(this);
+            FileLog.WriteInfo("ShiShiCaiDataStartup()", "IThreadShiShiCaiData Start");
+        }
+
+
+        public void ShiShiCaiDataStop()
+        {
+            FileLog.WriteInfo("ShiShiCaiDataStop() ", "start");
+            IBoolIsThreadShiShiCaiDataWorking = false;
+            if (IThreadShiShiCaiData != null)
+            {
+                IThreadShiShiCaiData.Abort();
+                IThreadShiShiCaiData = null;
+            }
+        }
+
     }
 }

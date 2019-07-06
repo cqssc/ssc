@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlCommon", "SqlCommon\SqlCommon.csproj", "{E7E6CB74-01A3-42F2-896A-C49DD83B408A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modles", "Modles\Modles.csproj", "{06042762-BD1A-4659-B368-DCF540CEE690}"
@@ -10,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSCService03", "SSCService03\SSCService03.csproj", "{74CE4382-D9C6-41F6-A655-CA9F553B7097}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSCService02", "SSCService02\SSCService02.csproj", "{F2A74189-4E7B-4BAD-A98E-03FA80809079}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSCCommon", "SSCCommon\SSCCommon.csproj", "{A8801E98-9365-499A-BDB0-3AD4B331CC53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +41,10 @@ Global
 		{F2A74189-4E7B-4BAD-A98E-03FA80809079}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2A74189-4E7B-4BAD-A98E-03FA80809079}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2A74189-4E7B-4BAD-A98E-03FA80809079}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8801E98-9365-499A-BDB0-3AD4B331CC53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8801E98-9365-499A-BDB0-3AD4B331CC53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8801E98-9365-499A-BDB0-3AD4B331CC53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8801E98-9365-499A-BDB0-3AD4B331CC53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

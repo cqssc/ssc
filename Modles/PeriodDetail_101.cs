@@ -30,6 +30,8 @@ namespace Modles
 
         public int EvenODD_008 { get; set; }
 
+        public int AllSub_009 { get; set; }
+
         public int Wei5_050 { get; set; }
 
         public int Wei4_040 { get; set; }

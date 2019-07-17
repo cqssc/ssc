@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Modles
 {
-    public enum EnumFuture
+    public enum EnumFutureType_110
     {
         F_Xian=1,
         F_FanXian=2,

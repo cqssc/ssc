@@ -14,27 +14,16 @@ namespace Modles
     {
         public LostAll_102()
         {
-
         }
 
         /// <summary>
         /// 期数
         /// </summary>
-        public long LongPeriod_001
-        {
-            get;
-            set;
-        }
-
-
+        public long LongPeriod_001 { get;  set;}
         //日期的前6位
         public Int64 DateNumber_002 { get; set; }
-
-
         //数字期
         public int ShortPeriod_003 { set; get; }
-
-
 
 
         public int Lost_010 { set; get; }
@@ -137,36 +126,6 @@ namespace Modles
 
         public int Lost_059 { set; get; }
 
-        //全位单个数字遗失
-        public int AllLost0_060 { set; get; }
-        public int AllLost1_061 { set; get; }
-        public int AllLost2_062 { set; get; }
-        public int AllLost3_063 { set; get; }
-        public int AllLost4_064 { set; get; }
-        public int AllLost5_065 { set; get; }
-        public int AllLost6_066 { set; get; }
-        public int AllLost7_067 { set; get; }
-        public int AllLost8_068 { set; get; }
-        public int AllLost9_069 { set; get; }
-
-        //重复具体到某位上的遗失
-        public int RepickLost0_070 { set; get; }
-        public int RepickLost1_071 { set; get; }
-        public int RepickLost2_072 { set; get; }
-        public int RepickLost3_073 { set; get; }
-        public int RepickLost4_074 { set; get; }
-        public int RepickLost5_075 { set; get; }
-
-
-        public int SpanOneLost0_080 { set; get; }
-        public int SpanOneLost1_081 { set; get; }
-        public int SpanOneLost2_082 { set; get; }
-        public int SpanOneLost3_083 { set; get; }
-        public int SpanOneLost4_084 { set; get; }
-        public int SpanOneLost5_085 { set; get; }
-
-
-        public int ThreeSameLost_090 { set; get; }
 
         //万....个各位出现时的遗失期
         public int PreLost_101 { set; get; }
@@ -175,36 +134,6 @@ namespace Modles
         public int PreLost_104 { set; get; }
         public int PreLost_105 { set; get; }
 
-
-        //全位单个数字遗失
-        public int PreAllLost0_160 { set; get; }
-        public int PreAllLost1_161 { set; get; }
-        public int PreAllLost2_162 { set; get; }
-        public int PreAllLost3_163 { set; get; }
-        public int PreAllLost4_164 { set; get; }
-        public int PreAllLost5_165 { set; get; }
-        public int PreAllLost6_166 { set; get; }
-        public int PreAllLost7_167 { set; get; }
-        public int PreAllLost8_168 { set; get; }
-        public int PreAllLost9_169 { set; get; }
-
-        //重复具体到某位上的遗失
-        public int PreRepickLost0_170 { set; get; }
-        public int PreRepickLost1_171 { set; get; }
-        public int PreRepickLost2_172 { set; get; }
-        public int PreRepickLost3_173 { set; get; }
-        public int PreRepickLost4_174 { set; get; }
-        public int PreRepickLost5_175 { set; get; }
-
-        //间隔具体到某位上的遗失
-        public int PreSpanOneLost0_180 { set; get; }
-        public int PreSpanOneLost1_181 { set; get; }
-        public int PreSpanOneLost2_182 { set; get; }
-        public int PreSpanOneLost3_183 { set; get; }
-        public int PreSpanOneLost4_184 { set; get; }
-        public int PreSpanOneLost5_185 { set; get; }
-
-        public int PreThreeSameLost_190 { set; get; }
 
 
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Modles
 {
-    public class SingleAnalysis_103
+    public class SingleAnalysis_106
     {
         /// <summary>
         /// 期数
@@ -50,39 +50,42 @@ namespace Modles
         public int RemainEven20Num_019 { set; get; }
 
         public int RemainOdd20Num_020 { set; get; }
-
        
         public int IsAppear20_021 { set; get; }
         public int IsAppear20M_022 { set; get; }
         public int IsThree20InSingle_023 { set; get; }
 
-        public int IsInTwoSame_024 { set; get; }
+        public int IsInPair_024 { set; get; }
         public int IsInThreeSame_025 { set; get; }
         public int IsInFourSame_026 { set; get; }
         public int IsInFiveSame_027 { set; get; }
-        public int IsBigCon_028 { set; get; }
-        public int BigConDetail_029 { set; get; }
-        public int IsSmallCon_030 { set; get; }
-        public int SmallConDetail_031 { set; get; }
-        public int IsEvenCon_032 { set; get; }
-        public int EvenConDetail_033 { set; get; }
-        public int IsOddCon_034 { set; get; }
-        public int OddConDetail_035 { set; get; }
-        public int IsRepick_036 { set; get; }
-        public int RepickDetail_037 { set; get; }
-        public int IsThreeRepick_038 { set; get; }
-        public int IsFourRepick_039 { set; get; }
-        public int IsTurn_040 { set; get; }
-        public int IsSpanOne_041 { set; get; }
-        public int IsTwoConRepick_042 { set; get; }
-        public int IsThreeConRepick_043 { set; get; }
-        public int IsFourPile_044 { set; get; }
-        public int IsFivePile_045 { set; get; }
-        public int IsTread_046 { set; get; }
-        public int TreadDetail_047 { set; get; }
-        public int IsTreadAddOne_048 { set; get; }
-        public int TreadAddOneDetail_049 { set; get; }
-        public int IsTreadAddTwo_050 { set; get; }
+
+        public int IsFourPile_028 { set; get; }
+        public int IsFivePile_029 { set; get; }
+
+        //public int IsBigCon_028 { set; get; }
+        //public int BigConDetail_029 { set; get; }
+        //public int IsSmallCon_030 { set; get; }
+        //public int SmallConDetail_031 { set; get; }
+        //public int IsEvenCon_032 { set; get; }
+        //public int EvenConDetail_033 { set; get; }
+        //public int IsOddCon_034 { set; get; }
+        //public int OddConDetail_035 { set; get; }
+        //public int IsRepick_036 { set; get; }
+        //public int RepickDetail_037 { set; get; }
+        //public int IsThreeRepick_038 { set; get; }
+        //public int IsFourRepick_039 { set; get; }
+        //public int IsTurn_040 { set; get; }
+        //public int IsSpanOne_041 { set; get; }
+        //public int IsTwoConRepick_042 { set; get; }
+        //public int IsThreeConRepick_043 { set; get; }
+        //public int IsFourPile_044 { set; get; }
+        //public int IsFivePile_045 { set; get; }
+        //public int IsTread_046 { set; get; }
+        //public int TreadDetail_047 { set; get; }
+        //public int IsTreadAddOne_048 { set; get; }
+        //public int TreadAddOneDetail_049 { set; get; }
+        //public int IsTreadAddTwo_050 { set; get; }
 
         //public int Is38223_051 { set; get; }
         //public int Is32283_052 { set; get; }

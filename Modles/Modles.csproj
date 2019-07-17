@@ -39,16 +39,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BigSmallHot_105.cs" />
-    <Compile Include="EnumFuture.cs" />
-    <Compile Include="HotStatistics_104.cs" />
+    <Compile Include="AllAnalysisSplit_120.cs" />
+    <Compile Include="HotCross_109.cs" />
+    <Compile Include="HotTrend_108.cs" />
+    <Compile Include="LostCross_104.cs" />
+    <Compile Include="Enums\EnumCrossType_104.cs" />
+    <Compile Include="Enums\EnumFutureType_110.cs" />
+    <Compile Include="Enums\EnumSplitValueType.cs" />
+    <Compile Include="Enums\EnumTrendType_103.cs" />
+    <Compile Include="HotSingleNum_107.cs" />
     <Compile Include="LostAll_102.cs" />
     <Compile Include="PeriodDetail_101.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SingleAnalysis_103.cs" />
-    <Compile Include="SpecialFuture_108.cs" />
+    <Compile Include="SingleAnalysis_106.cs" />
+    <Compile Include="LostSingleNumAll_105.cs" />
+    <Compile Include="SpecialFuture_110.cs" />
     <Compile Include="AllSplitStatistics_106.cs" />
-    <Compile Include="SwingDetail_107.cs" />
+    <Compile Include="LostTrend_103.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -37,7 +37,6 @@ namespace SSCService02
         public ShiShiCaiData()
         {
             sqlConnect = ConfigurationManager.AppSettings["SqlServerConnect"] != null ? ConfigurationManager.AppSettings["SqlServerConnect"] : "Data Source=127.0.0.1,1433;Initial Catalog=Pocker;User Id=sa;Password=voicecodes";
-            Task task = Task.Factory.StartNew(GetNewDataInDB);
 
             LinkOf360 = ConfigurationManager.AppSettings["Url360"] != null ? ConfigurationManager.AppSettings["Url360"].ToString() : "http://chart.cp.360.cn/kaijiang/kaijiang?lotId={0}{1}spanType=2{1}span={2}_{2}";
 
@@ -271,6 +270,7 @@ namespace SSCService02
                         drCurrent["C006"] = pp.DayInWeek_006;
                         drCurrent["C007"] = pp.BigOrSmall_007;
                         drCurrent["C008"] = pp.EvenODD_008;
+                        drCurrent["C009"] = pp.AllSub_009;
                         drCurrent.EndEdit();
                     }
                     else //添加新行
@@ -290,6 +290,7 @@ namespace SSCService02
 
                         drNewRow["C007"] = pp.BigOrSmall_007;
                         drNewRow["C008"] = pp.EvenODD_008;
+                        drNewRow["C009"] = pp.AllSub_009;
                         objDataSet.Tables[0].Rows.Add(drNewRow);
                     }
                 }
@@ -809,6 +810,7 @@ namespace SSCService02
                             pp.Wei2_020 = int.Parse(strTen);
                             pp.Wei1_010 = int.Parse(strEleven);
                             int total = pp.Wei5_050 + pp.Wei4_040 + pp.Wei3_030 + pp.Wei2_020 + pp.Wei1_010;
+                            pp.AllSub_009 = total;
                             if (total >= 23)
                             {
                                 pp.BigOrSmall_007 = 1;
@@ -949,6 +951,7 @@ namespace SSCService02
                             period.Wei2_020 = int.Parse(charTemp[3].ToString());
                             period.Wei1_010 = int.Parse(charTemp[4].ToString());
                             int total = period.Wei5_050 + period.Wei4_040 + period.Wei3_030 + period.Wei2_020 + period.Wei1_010;
+                            period.AllSub_009 = total;
                             if (total >= 23)
                             {
                                 period.BigOrSmall_007 = 1;

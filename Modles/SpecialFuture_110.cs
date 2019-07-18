@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Modles
 {
-    public class SpecialFuture_108
+    public class SpecialFuture_110
     {
         public long LongPeriod_001 { get; set; }
 

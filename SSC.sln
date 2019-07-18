@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlCommon", "SqlCommon\SqlCommon.csproj", "{E7E6CB74-01A3-42F2-896A-C49DD83B408A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modles", "Modles\Modles.csproj", "{06042762-BD1A-4659-B368-DCF540CEE690}"

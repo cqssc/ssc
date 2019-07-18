@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Modles
 {
-    public class SwingDetail_107
+    public class HotTrend_108
     {
         /// <summary>
         /// 期数
@@ -18,11 +18,18 @@ namespace Modles
 
         //数字期
         public int ShortPeriod_003 { set; get; }
+
         public int PositionType_004 { set; get; }
-        public int AddSubType_005 { get; set; }//1递增或递减 2递增减（排重复）3 平行  4振荡
-        public int ContinueValue_006 { get; set; }
-        public int SwingValue_007 { get; set; }
-        public decimal SwingAVG_008 { get; set; }
-        public decimal SwingLiSan_009 { get; set; }
+
+        public int SplitValueType_005 { get; set; }
+
+        public int SplitValueType_006 { get; set; }
+
+        //该段内出现个数       
+        public int AppearCount_007 { get; set; }
+        //除出来的热度值
+        public decimal HotValue_008 { get; set; }
+
+
     }
 }

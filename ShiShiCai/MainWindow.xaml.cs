@@ -32,9 +32,49 @@ namespace ShiShiCai
 
         }
 
+
+        #region Init and load
+
         private void Init()
         {
             WindowState = WindowState.Maximized;
         }
+
+        #endregion
+
+
+        #region basic
+
+        private void ShowException(string msg)
+        {
+            MessageBox.Show(msg, App.AppTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        private void ShowInfomation(string msg)
+        {
+            MessageBox.Show(msg, App.AppTitle, MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        #endregion
+
+
+        #region Log
+
+        private void WriteLog(string category, string msg)
+        {
+            var app = App.Current as App;
+            if (app != null)
+            {
+                app.WriteLog(category, msg);
+            }
+        }
+
+        private void WriteLog(string msg)
+        {
+            WriteLog("SSC", msg);
+        }
+
+        #endregion
+
     }
 }

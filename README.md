@@ -1,2 +1,2 @@
 # ssc
-shishicai 彩票分析
+ssc 时时彩 彩票分析

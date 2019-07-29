@@ -18,7 +18,7 @@ namespace Modles
         public int ShortPeriod_003 { set; get; }
 
          //单个数字0~9
-        public int SingNum_004{ set; get; }
+        public int SingleNum_004{ set; get; }
 
         public int IsAppear_005 { set; get; }
 

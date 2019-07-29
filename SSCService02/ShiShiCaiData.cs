@@ -36,7 +36,7 @@ namespace SSCService02
 
         public ShiShiCaiData()
         {
-            sqlConnect = ConfigurationManager.AppSettings["SqlServerConnect"] != null ? ConfigurationManager.AppSettings["SqlServerConnect"] : "Data Source=127.0.0.1,1433;Initial Catalog=Pocker;User Id=sa;Password=voicecodes";
+            sqlConnect = ConfigurationManager.AppSettings["SqlServerConnect"] != null ? ConfigurationManager.AppSettings["SqlServerConnect"] : "Data Source=127.0.0.1,1433;Initial Catalog=Pocker;User Id=sa;Password=net,123";
 
             LinkOf360 = ConfigurationManager.AppSettings["Url360"] != null ? ConfigurationManager.AppSettings["Url360"].ToString() : "http://chart.cp.360.cn/kaijiang/kaijiang?lotId={0}{1}spanType=2{1}span={2}_{2}";
 
@@ -46,11 +46,8 @@ namespace SSCService02
 
             LinkOfXinlang = ConfigurationManager.AppSettings["UrlXinlang"] != null ? ConfigurationManager.AppSettings["UrlXinlang"].ToString() : "https://kaijiang.aicai.com/cqssc/";
 
-            LinkOfBack = ConfigurationManager.AppSettings["UrlBack"] != null ? ConfigurationManager.AppSettings["UrlBack"].ToString() : "https://fx.cp2y.com/cqssckj/";
-            
+            LinkOfBack = ConfigurationManager.AppSettings["UrlBack"] != null ? ConfigurationManager.AppSettings["UrlBack"].ToString() : "https://fx.cp2y.com/cqssckj/";            
         }
-
-
 
         private static void AutoShishiCaiDataGet(object o)
         {
@@ -86,7 +83,6 @@ namespace SSCService02
                         FileLog.WriteInfo("AutoShishiCaiDataGet()@ ", RunCurrentDate.ToString());
                     }
                     #endregion
-
                 }
                 else if (RunCurrentDate == NowDate)
                 {
@@ -140,7 +136,6 @@ namespace SSCService02
         }
 
 
-
         public static bool GetDataFromUrl(DateTime ADateTime, ref List<PeriodDetail_101> AlistPeriod001, int AType = -1)
         {
             bool flag = true;
@@ -158,6 +153,7 @@ namespace SSCService02
                         else
                         {
                             flag = GetHtmlString_Back(ADateTime, ref AlistPeriod001, AType);
+                            //GetHtmlString_XinLang(ADateTime, ref AlistPeriod001, AType);
                             if (flag && AlistPeriod001.Count > 0)
                             {
                                 return flag;
@@ -188,7 +184,26 @@ namespace SSCService02
                     {
                         return flag;
                     }
+                    else
+                    {
+                        flag = GetHtmlString_Back(ADateTime, ref AlistPeriod001, AType);
+                        //GetHtmlString_XinLang(ADateTime, ref AlistPeriod001, AType);
+                        if (flag && AlistPeriod001.Count > 0)
+                        {
+                            return flag;
+                        }
+                        else
+                        {
+                            flag = GetHtmlString_Back(ADateTime, ref AlistPeriod001, AType);
+                            if (flag && AlistPeriod001.Count > 0)
+                            {
+                                return flag;
+                            }
+                        }
+                    }
                 }
+
+
                 Thread.Sleep(300);
                 FileLog.WriteInfo(" K=", k.ToString());
             }
@@ -871,10 +886,10 @@ namespace SSCService02
             string LinkOf08Parse = string.Empty;
             LinkOf08Parse = string.Format(LinkOf08, ADateTime.ToString("yyyy-MM-dd"), '&', ADateTime.ToString("yyyyMMdd"));
             string strResult = GetHtml(LinkOf08Parse, Encoding.UTF8);
-            //http://vip.08vip.co/result/ssc_noticle.php?sdate={0}{1}sdate1={2}
             try
             {
                 string regex = @"<td>\d{11}</td>[\s\S]*?<td>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}</td>[\s\S]*?<td><span>\d{1}</span><span>\d{1}</span><span>\d{1}</span><span>\d{1}</span><span>\d{1}</span></td>";
+               
                 Regex re = new Regex(regex);
                 MatchCollection matches = re.Matches(strResult);
                 System.Collections.IEnumerator enu = matches.GetEnumerator();

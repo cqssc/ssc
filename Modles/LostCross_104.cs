@@ -26,7 +26,9 @@ namespace Modles
 
         public int LostValue_007 { get; set; }
 
-        public int ContinueValue_008 { get; set; }
+        public int PreLostValue_008 { get; set; }
+
+        public int AppearNumber_009 { get; set; }
 
     }
 }

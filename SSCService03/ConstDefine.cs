@@ -8,7 +8,15 @@ namespace SSCService03
 {
     public static class ConstDefine
     {
+
+        /// <summary>
+        /// 置0
+        /// </summary>
         public static int Const_SetZero = -1;
+        
+        /// <summary>
+        /// 非置0
+        /// </summary>
         public static int Const_SetNormal = 1;
 
 

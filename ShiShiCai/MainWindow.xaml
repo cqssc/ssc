@@ -1,7 +1,8 @@
 ﻿<Window x:Class="ShiShiCai.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="时时彩" Height="500" Width="800" Icon="shishicai.ico">
+        Title="时时彩" Height="500" Width="800" Icon="shishicai.ico"
+        Style="{DynamicResource WindowStyle}">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -83,8 +84,8 @@
                             <Border>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="80"></ColumnDefinition>
-                                        <ColumnDefinition Width="120"></ColumnDefinition>
+                                        <ColumnDefinition Width="60"></ColumnDefinition>
+                                        <ColumnDefinition Width="100"></ColumnDefinition>
                                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0" Text="最新开奖" Style="{DynamicResource TxtLotteryLabelStyle}"></TextBlock>

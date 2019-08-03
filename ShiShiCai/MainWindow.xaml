@@ -25,6 +25,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="80"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0">
                             <Grid.ColumnDefinitions>
@@ -34,17 +35,120 @@
                             <Image Source="shishicai.ico" Grid.Column="0" Style="{DynamicResource ImageLogo}"></Image>
                             <TextBlock Grid.Column="1" Text="时 时 彩" Style="{DynamicResource TxtTitle}"></TextBlock>
                         </Grid>
+                        <Grid Grid.Column="1">
+                            <Border>
+                                <ListBox Name="ListBoxModules" Style="{DynamicResource ListBoxModuleListStyle}"
+                                         ItemContainerStyle="{DynamicResource ListBoxModuleItemStyle}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate DataType="ListBoxItem">
+                                            <Border ToolTip="{Binding Title}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Image Grid.Column="0" Source="{Binding Icon}"></Image>
+                                                    <TextBlock Grid.Column="1" Text="{Binding Name}" Style="{DynamicResource TxtModuleTextStyle}"></TextBlock>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </Border>
+                        </Grid>
+                        <Grid Grid.Column="2">
+                            <Button ToolTip="设置" Style="{DynamicResource BtnSettingStyle}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Grid.Column="0" Source="Themes/Default/Images/00006.png"></Image>
+                                    <TextBlock Grid.Column="1" Text="设置" Style="{DynamicResource TxtModuleTextStyle}"></TextBlock>
+                                </Grid>
+                            </Button>
+                        </Grid>
                     </Grid>
                 </Border>
             </Grid>
             <Grid Grid.Row="1">
-                <Border Style="{DynamicResource BannerStyle}"></Border>
+                <Border Style="{DynamicResource BannerStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Border>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="80"></ColumnDefinition>
+                                        <ColumnDefinition Width="120"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="最新开奖" Style="{DynamicResource TxtLotteryLabelStyle}"></TextBlock>
+                                    <TextBlock Grid.Column="1" Text="2019-08-01 001 期" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                    <TextBlock Grid.Column="2" Text="5 2 3 0 8" Style="{DynamicResource TxtLotteryNumberStyle}"></TextBlock>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                        <Grid Grid.Column="2">
+                            <Border>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="30"></ColumnDefinition>
+                                        <ColumnDefinition Width="85"></ColumnDefinition>
+                                        <ColumnDefinition Width="30"></ColumnDefinition>
+                                        <ColumnDefinition Width="85"></ColumnDefinition>
+                                        <ColumnDefinition Width="50"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="期号" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                    <TextBlock Grid.Column="2" Text="奖号" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                    <TextBox Grid.Column="1" Style="{DynamicResource TxtLotteryTextStyle}"></TextBox>
+                                    <TextBox Grid.Column="3" Style="{DynamicResource TxtLotteryTextStyle}"></TextBox>
+                                    <Button Grid.Column="4" Content="增加" Style="{DynamicResource BtnLotteryAddStyle}"></Button>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                </Border>
             </Grid>
             <Grid Grid.Row="2">
-                <Border Style="{DynamicResource MainStyle}"></Border>
+                <Border Style="{DynamicResource MainStyle}">
+                    <TabControl Name="TabControlModule" 
+                                Style="{DynamicResource TabControlModuleStyle}"
+                                SelectedIndex="{Binding ElementName=ListBoxModules,Path=SelectedIndex}">
+                        <TabItem Name="TabBasic" Header="Basic">
+                            <TextBlock Text="走势"></TextBlock>
+                        </TabItem>
+                        <TabItem Name="TabLost" Header="Lost">
+                            <TextBlock Text="遗失"></TextBlock>
+                        </TabItem>
+                        <TabItem Name="TabHot" Header="Hot">
+                            <TextBlock Text="热度"></TextBlock>
+                        </TabItem>
+                        <TabItem Name="TabTrend" Header="Trend">
+                            <TextBlock Text="趋势"></TextBlock>
+                        </TabItem>
+                        <TabItem Name="TabHistory" Header="History">
+                            <TextBlock Text="历史"></TextBlock>
+                        </TabItem>
+                    </TabControl>
+                </Border>
             </Grid>
             <Grid Grid.Row="3">
-                <Border Style="{DynamicResource BottomStyle}"></Border>
+                <Border Style="{DynamicResource BottomStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="欢迎使用" Style="{DynamicResource TxtStatusMsgStyle}"></TextBlock>
+                        <TextBlock Grid.Column="2" Text="Ver.3.0.1" Style="{DynamicResource TxtStatusVerStyle}"></TextBlock>
+                    </Grid>
+                </Border>
             </Grid>
         </Grid>
     </Grid>

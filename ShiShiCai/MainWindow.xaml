@@ -1,8 +1,51 @@
 ﻿<Window x:Class="ShiShiCai.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="时时彩" Height="350" Width="525" Icon="shishicai.ico">
+        Title="时时彩" Height="500" Width="800" Icon="shishicai.ico">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/Default/Control.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="Themes/Default/MainWindown.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
-        
+        <Border Style="{DynamicResource MainBackground}"></Border>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Border Style="{DynamicResource HeaderStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="shishicai.ico" Grid.Column="0" Style="{DynamicResource ImageLogo}"></Image>
+                            <TextBlock Grid.Column="1" Text="时 时 彩" Style="{DynamicResource TxtTitle}"></TextBlock>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Border Style="{DynamicResource BannerStyle}"></Border>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Border Style="{DynamicResource MainStyle}"></Border>
+            </Grid>
+            <Grid Grid.Row="3">
+                <Border Style="{DynamicResource BottomStyle}"></Border>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>

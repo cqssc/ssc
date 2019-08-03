@@ -41,6 +41,11 @@ namespace SSCService03
 
         private static List<SingleAnalysis_106> IListSingleAnalysis_103;
         private static List<SpecialFuture_110> IListSpecialFuture_108_NotComplete;
+
+
+
+        //存储更新字段的SQL语句，在程序最后一次性执行。
+        private static List<String> IListStringSQL = new List<string>();
         #endregion
 
         public StatisticsData()
@@ -53,13 +58,15 @@ namespace SSCService03
 
             IListSingleAnalysis_103 = new List<SingleAnalysis_106>();
             IListSpecialFuture_108_NotComplete = new List<SpecialFuture_110>();
+
+            IListStringSQL.Clear();
         }        
 
         private static void AutoDataDo(object o)
         {
             StatisticsData statisticsdata = o as StatisticsData;
              while (statisticsdata.IBoolIsThreadStaticsDataWorking)
-             {
+             {                 
                  IStrLastPeriod = ConfigurationManager.AppSettings["LastPeriodforService02"] != null ? long.Parse(ConfigurationManager.AppSettings["LastPeriodforService02"].ToString()) : 0;
                  if (IStrLastPeriod != 0)
                  {
@@ -77,15 +84,18 @@ namespace SSCService03
                          if (IPreLostAll_102 == null)
                          {
                              //置0
-                             listPeriodTemp_101.Clear();
-                             listPeriodTemp_101 = GetListPeriodDetail_101(ConstDefine.Const_GetPreSpan, ICurrentPeriod_101.LongPeriod_001, 3);                         
-                             DoLostAll_102(ConstDefine.Const_SetZero, listPeriodTemp_101, ref  ICurrentLostAll_102);
+                            listPeriodTemp_101.Clear();
+                            listPeriodTemp_101 = GetListPeriodDetail_101(ConstDefine.Const_GetPreSpan, ICurrentPeriod_101.LongPeriod_001, 3);                         
+                            DoLostAll_102(ConstDefine.Const_SetZero, listPeriodTemp_101, ref  ICurrentLostAll_102);
 
-                            // DoLostTrend_103(ConstDefine.Const_SetZero, listPeriodTemp_101);
+                            DoLostTrend_103(ConstDefine.Const_SetZero, listPeriodTemp_101);
 
-                            // DoContinueBigSmall_111(ConstDefine.Const_SetZero, listPeriodTemp_101);
+                            DoContinueBigSmall_111(ConstDefine.Const_SetZero, listPeriodTemp_101);
 
-                            // DoLostCross_104(ConstDefine.Const_SetZero, listPeriodTemp_101);
+                            DoLostCross_104(ConstDefine.Const_SetZero, listPeriodTemp_101);
+
+                            DoLostSingleNumAll_105(ConstDefine.Const_SetZero, listPeriodTemp_101);
+
                          }
                          else
                          {
@@ -94,12 +104,18 @@ namespace SSCService03
                              listPeriodTemp_101 = GetListPeriodDetail_101(ConstDefine.Const_GetPreSpan, ICurrentPeriod_101.LongPeriod_001, 59 * 6);
                              DoLostAll_102(ConstDefine.Const_SetNormal, listPeriodTemp_101, ref  ICurrentLostAll_102);
 
-                             //DoLostTrend_103(ConstDefine.Const_SetNormal, listPeriodTemp_101);
+                             DoLostTrend_103(ConstDefine.Const_SetNormal, listPeriodTemp_101);
 
-                             //DoContinueBigSmall_111(ConstDefine.Const_SetNormal, listPeriodTemp_101);
+                             DoContinueBigSmall_111(ConstDefine.Const_SetNormal, listPeriodTemp_101);
 
-                            // DoLostCross_104(ConstDefine.Const_SetNormal, listPeriodTemp_101);
+                             DoLostCross_104(ConstDefine.Const_SetNormal, listPeriodTemp_101);
+
+                             DoLostSingleNumAll_105(ConstDefine.Const_SetNormal, listPeriodTemp_101);
                          }
+
+                         ExecuteListSQL(IListStringSQL);
+                         IListStringSQL.Clear();
+
 
                          //更新的是已经统计的期号
                          AppConfigOperation.UpdateAppConfig("LastPeriodforService02", ICurrentPeriod_101.LongPeriod_001.ToString());
@@ -1224,15 +1240,7 @@ namespace SSCService03
                                         lostCross1.AppearNumber_009 = allRepickNum;
 
                                         string ss = string.Format("Update T_101_{0} set C100={1}  where  C001={2} ",IStrYY,allRepickNum,ICurrentLostAll_102.LongPeriod_001);
-                                        try
-                                        {
-                                            DbHelperSQL.ExcuteSql(ISqlConnect, ss);
-                                        }
-                                        catch (Exception e)
-                                        {
-
-                                            FileLog.WriteInfo("DoLostCross_104() Fail", e.Message.ToString());
-                                        }
+                                        IListStringSQL.Add(ss);
                                     }
                                     else 
                                     {
@@ -1296,15 +1304,7 @@ namespace SSCService03
                                             lostCross1.LostValue_007 = 0;
                                             lostCross1.AppearNumber_009 = allRepickNum;
                                             string ss = string.Format("Update T_101_{0} set C100={1}  where  C001={2} ", IStrYY, allRepickNum, ICurrentLostAll_102.LongPeriod_001);
-                                            try
-                                            {
-                                                DbHelperSQL.ExcuteSql(ISqlConnect, ss);
-                                            }
-                                            catch (Exception e)
-                                            {
-
-                                                FileLog.WriteInfo("DoLostCross_104() Fail1", e.Message.ToString());
-                                            }
+                                            IListStringSQL.Add(ss);
                                         }
                                         else
                                         {
@@ -1320,15 +1320,7 @@ namespace SSCService03
                                             lostCross2.LostValue_007 = 0;
                                             lostCross2.AppearNumber_009 = allSpanOneNum;
                                             string ss = string.Format("Update T_101_{0} set C101={1}  where  C001={2} ", IStrYY, allSpanOneNum, ICurrentLostAll_102.LongPeriod_001);
-                                            try
-                                            {
-                                                DbHelperSQL.ExcuteSql(ISqlConnect, ss);
-                                            }
-                                            catch (Exception e)
-                                            {
-
-                                                FileLog.WriteInfo("DoLostCross_104() Fail2", e.Message.ToString());
-                                            }
+                                            IListStringSQL.Add(ss);
                                         }
                                         else 
                                         {
@@ -1482,19 +1474,882 @@ namespace SSCService03
 
 
         #region  DoLostSingleNumAll_105 遗失数字全部
-        public static void DoLostSingleNumAll_105() { }
+        public static bool DoLostSingleNumAll_105(int AType, List<PeriodDetail_101> AListPeriod_101) 
+        {
+            bool flag = true;
+            List<LostSingleNumAll_105> listLostSingleNumAll_105Temp = new List<LostSingleNumAll_105>();
+            List<LostSingleNumAll_105> listLostSingleNumAll_105Pre = null;
+            LostSingleNumAll_105 lostSingleNumPre = null;
+            if (AType == ConstDefine.Const_SetNormal)
+            {
+                listLostSingleNumAll_105Pre = GetDataLostSingleNumAll_105(1, ICurrentPeriod_101.LongPeriod_001);
+            }
+            for (int i = 0; i <= 9;i++ )
+            {
+                LostSingleNumAll_105 lostSingleNumAll_105 = new LostSingleNumAll_105();
+                InitLostSingleNumAll_105(i,ref lostSingleNumAll_105);
+                listLostSingleNumAll_105Temp.Add(lostSingleNumAll_105);
+                int count = 0;
+                count = GetMatchCount(AListPeriod_101[0].AwardNumber_002, i.ToString());
+                if (count > 0)
+                {
+                    lostSingleNumAll_105.IsAppear_005 = 1;
+                    lostSingleNumAll_105.AppearCount_007 = count;
+                    if (AType == ConstDefine.Const_SetNormal)
+                    {
+                        if (listLostSingleNumAll_105Pre != null && listLostSingleNumAll_105Pre.Count > 0 && listLostSingleNumAll_105Pre.Where(p => p.SingleNum_004 == i).Count() > 0)
+                        {
+                            lostSingleNumPre = listLostSingleNumAll_105Pre.Where(p => p.SingleNum_004 == i).First();
+                            lostSingleNumAll_105.PreLostValue_008 = lostSingleNumPre.LostValue_006;
+                        }
+                        else
+                        {
+                            lostSingleNumAll_105.PreLostValue_008 = 1;
+                        }
+                    }
+                    else
+                    {
+                        lostSingleNumAll_105.PreLostValue_008 = 1;
+                    }
+                }
+                else 
+                {
+                    lostSingleNumAll_105.IsAppear_005 = 0;
+                    lostSingleNumAll_105.AppearCount_007 = 0;
+                    if (AType == ConstDefine.Const_SetNormal)
+                    {
+                        if (listLostSingleNumAll_105Pre != null && listLostSingleNumAll_105Pre.Count > 0 && listLostSingleNumAll_105Pre.Where(p => p.SingleNum_004 == i).Count() > 0)
+                        {
+                            lostSingleNumPre = listLostSingleNumAll_105Pre.Where(p => p.SingleNum_004 == i).First();
+                            lostSingleNumAll_105.LostValue_006 = lostSingleNumPre.LostValue_006+1;
+                        }
+                    }
 
-        public static void InitLostSingleNumAll_105(){}
+                }
+               
+            }
 
-        public static void UpdateOrAddLostSingleNumAll_105() { }
+            if (UpdateOrAddLostSingleNumAll_105(listLostSingleNumAll_105Temp))
+            {
+                flag = true;
+            }
+            else 
+            {
+                flag = false;
+            }
 
-        public static void GetDataLostSingleNumAll_105() { }
+            return flag;
+        }
+
+        public static void InitLostSingleNumAll_105(int SingleNum_004, ref  LostSingleNumAll_105 lostSingleNumAll_105) 
+        {
+            lostSingleNumAll_105.LongPeriod_001 = ICurrentPeriod_101.LongPeriod_001;
+            lostSingleNumAll_105.DateNumber_002 = ICurrentPeriod_101.DateNumber_004;
+            lostSingleNumAll_105.ShortPeriod_003 = ICurrentPeriod_101.ShortPeriod_005;
+            lostSingleNumAll_105.SingleNum_004 = SingleNum_004;
+            lostSingleNumAll_105.IsAppear_005 = 0;
+            lostSingleNumAll_105.LostValue_006 = 1;
+            lostSingleNumAll_105.AppearCount_007 = 0;
+            lostSingleNumAll_105.PreLostValue_008 = -1;
+        }
+
+        public static bool UpdateOrAddLostSingleNumAll_105(List<LostSingleNumAll_105> listLostSingleNumAll_105)
+        {
+            bool flag = true;
+
+            #region
+            IDbConnection objConn;
+            IDbDataAdapter objAdapter;
+            DbCommandBuilder objCmdBuilder;
+            try
+            {
+                string strSql = string.Empty;
+                strSql = string.Format("Select * from T_105_{1} where C001={0}", ICurrentPeriod_101.LongPeriod_001, IStrYY);
+
+                objConn = DbHelperSQL.GetConnection(ISqlConnect);
+                objAdapter = DbHelperSQL.GetDataAdapter(objConn, strSql);
+                objCmdBuilder = DbHelperSQL.GetCommandBuilder(objAdapter);
+                objCmdBuilder.ConflictOption = ConflictOption.OverwriteChanges;
+                objCmdBuilder.SetAllValues = false;
+
+                DataSet objDataSet = new DataSet();
+                objAdapter.Fill(objDataSet);
+
+                foreach (LostSingleNumAll_105 ss in listLostSingleNumAll_105)
+                {
+                    DataRow drCurrent = objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C004={1}  ", ss.LongPeriod_001, ss.SingleNum_004)).Count() > 0 ? objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C004={1}  AND C005={2} ", ss.LongPeriod_001, ss.SingleNum_004)).First() : null;
+
+                    if (drCurrent != null) //更新
+                    {
+                        drCurrent.BeginEdit();
+                        drCurrent["C001"] = ss.LongPeriod_001.ToString();
+                        drCurrent["C002"] = ss.DateNumber_002.ToString();
+                        drCurrent["C003"] = ss.ShortPeriod_003;
+                        drCurrent["C004"] = ss.SingleNum_004;
+                        drCurrent["C005"] = ss.IsAppear_005;
+                        drCurrent["C006"] = ss.LostValue_006;
+                        drCurrent["C007"] = ss.AppearCount_007;
+                        drCurrent["C008"] = ss.PreLostValue_008;
+                        drCurrent.EndEdit();
+                    }
+                    else //添加新行
+                    {
+                        DataRow drNewRow = objDataSet.Tables[0].NewRow();
+                        drNewRow["C001"] = ss.LongPeriod_001.ToString();
+                        drNewRow["C002"] = ss.DateNumber_002.ToString();
+                        drNewRow["C003"] = ss.ShortPeriod_003;
+                        drNewRow["C004"] = ss.SingleNum_004;
+                        drNewRow["C005"] = ss.IsAppear_005;
+                        drNewRow["C006"] = ss.LostValue_006;
+                        drNewRow["C007"] = ss.AppearCount_007;
+                        drNewRow["C008"] = ss.PreLostValue_008;
+                        objDataSet.Tables[0].Rows.Add(drNewRow);
+                    }
+                }
+                objAdapter.Update(objDataSet);
+                objDataSet.AcceptChanges();
+                FileLog.WriteInfo("UpdateOrAddLostSingleNumAll_105() ", "Success :" + ICurrentPeriod_101.LongPeriod_001);
+
+            }
+            catch (Exception e)
+            {
+                FileLog.WriteError("UpdateOrAddLostSingleNumAll_105()  Err ", e.Message);
+                return flag = false;
+            }
+            #endregion
+            return flag;
+        
+        }
+
+        public static List<LostSingleNumAll_105> GetDataLostSingleNumAll_105(int AType, long LongPeriodNumber)
+        {
+            List<LostSingleNumAll_105> ListLostTrend_103 = null;
+            String StrSQL = string.Empty;
+            switch (AType)
+            {
+                case 0:  //得到当前期
+                    StrSQL = string.Format("select top 10 * from T_111_{0} where C001={1} order by  C001 desc", IStrYY, LongPeriodNumber);
+                    break;
+                case 1://得到前一期
+                    StrSQL = string.Format("select top 10 * from T_111_{0} where C001<{1} order by  C001 desc", IStrYY, LongPeriodNumber);
+                    break;
+                default:
+                    break;
+            }
+            DataSet ds = DBHelp.DbHelperSQL.GetDataSet(ISqlConnect, StrSQL);
+            if (ds != null && ds.Tables[0] != null && ds.Tables[0].Rows.Count > 0)
+            {
+                ListLostTrend_103 = new List<LostSingleNumAll_105>();
+                foreach (DataRow drNewRow in ds.Tables[0].Rows)
+                {
+                    LostSingleNumAll_105 lostTrend_103 = new LostSingleNumAll_105();
+                    lostTrend_103.LongPeriod_001 = long.Parse(drNewRow["C001"].ToString());
+                    lostTrend_103.DateNumber_002 = long.Parse(drNewRow["C002"].ToString());
+                    lostTrend_103.ShortPeriod_003 = int.Parse(drNewRow["C003"].ToString());
+                    lostTrend_103.SingleNum_004 = int.Parse(drNewRow["C004"].ToString());
+                    lostTrend_103.IsAppear_005 = int.Parse(drNewRow["C005"].ToString());
+                    lostTrend_103.LostValue_006 = int.Parse(drNewRow["C006"].ToString());
+                    lostTrend_103.AppearCount_007 = int.Parse(drNewRow["C007"].ToString());
+                    lostTrend_103.PreLostValue_008 = int.Parse(drNewRow["C008"].ToString());
+                    ListLostTrend_103.Add(lostTrend_103);
+                }
+            }
+            return ListLostTrend_103;
+        }
         #endregion
 
+        #region  DoSingleAnalysis_106  单位出现数字分析
+        public static bool DoSingleAnalysis_106(int AType, List<PeriodDetail_101> AListPeriod_101) 
+        {
+            bool flag = true;
+            Type t = typeof(SingleAnalysis_106);
+
+            //保存前一期所有遗失次数
+            List<int> listLostValueAllTemp = new List<int>();
+            //保存本位单双上的遗失次数
+            List<int> listLostValueBenTemp = new List<int>();
+
+            //保存20期大于3个，且本期出现了
+            List<SpecialFuture_110> ListSpecialFuture108Temp = new List<SpecialFuture_110>();
+            List<SingleAnalysis_106> ListSingleAnalysis_106Temp = new List<SingleAnalysis_106>();
+
+            //保存0~9的数量
+            List<int> listAllNumCount = new List<int>();
+            //保存临时的PeriodDetail_101
+            List<PeriodDetail_101> listPeriodDetailTemp = new List<PeriodDetail_101>();
+
+            if (AType != 0)
+            {
+                for (int i = 1; i <= 5; i++)
+                {
+                    for (int j = 0; j <= 9; j++)
+                    {
+                        listLostValueAllTemp.Add(int.Parse(GetObjectPropertyValue(IPreLostAll_102, String.Format("Lost_0{0}{1}", i, j))));
+                    }
+                }
+            }
+
+            #region
+            for (int i = 1; i <= 5; i++) //1位到5位
+            {
+                listLostValueBenTemp = new List<int>();
+                SingleAnalysis_106 singTemp = new SingleAnalysis_106();
+                ListSingleAnalysis_106Temp.Add(singTemp);
+                singTemp.LongPeriod_001 = ICurrentPeriod_101.LongPeriod_001;
+                singTemp.DateNumber_002 = ICurrentPeriod_101.DateNumber_004;
+                singTemp.ShortPeriod_003 = ICurrentPeriod_101.ShortPeriod_005;
+
+                singTemp.PositionType_004 = i;
+                singTemp.PositionVale_005 = int.Parse(GetObjectPropertyValue(ICurrentPeriod_101, String.Format("Wei{0}_0{0}0", i)));
+                if (singTemp.PositionVale_005 >= 5)
+                {
+                    singTemp.BigOrSmall_006 = 1;
+                }
+                else
+                {
+                    singTemp.BigOrSmall_006 = 2;
+                }
+                if (singTemp.PositionVale_005 % 2 == 1)
+                {
+                    singTemp.EvenODD_007 = 1;
+                    if (IPreLostAll_102 != null)
+                    {
+                        listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(IPreLostAll_102, String.Format("Lost_0{0}1", i))));
+                        listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(IPreLostAll_102, String.Format("Lost_0{0}3", i))));
+                        listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(IPreLostAll_102, String.Format("Lost_0{0}5", i))));
+                        listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(IPreLostAll_102, String.Format("Lost_0{0}7", i))));
+                        listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(IPreLostAll_102, String.Format("Lost_0{0}9", i))));
+                    }
+
+                }
+                else
+                {
+                    singTemp.EvenODD_007 = 2;
+                    if (IPreLostAll_102 != null)
+                    {
+                        listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(IPreLostAll_102, String.Format("Lost_0{0}0", i))));
+                        listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(IPreLostAll_102, String.Format("Lost_0{0}2", i))));
+                        listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(IPreLostAll_102, String.Format("Lost_0{0}4", i))));
+                        listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(IPreLostAll_102, String.Format("Lost_0{0}6", i))));
+                        listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(IPreLostAll_102, String.Format("Lost_0{0}8", i))));
+                    }
+                }
+
+                singTemp.LostValue_008 = int.Parse(GetObjectPropertyValue(ICurrentLostAll_102, String.Format("PreLost_10{0}", i)));
+                singTemp.LostEvenODDOrderNum_009 = 0;
+                singTemp.LostAllOrderNum_010 = 0;
+                singTemp.OrderInTen_011 = 0;
+                singTemp.OrderInTwenty_012 = 0;
+                singTemp.OrderInFourty_013 = 0;
+                singTemp.OrderInOneDay_014 = 0;
+                singTemp.OrderInTwoDay_015 = 0;
+                singTemp.OrderInThreeDay_016 = 0;
+                singTemp.OrderInFourDay_017 = 0;
+                singTemp.Remain20Num_018 = 0;
+                singTemp.RemainEven20Num_019 = 0;
+                singTemp.RemainOdd20Num_020 = 0;
+                singTemp.IsAppear20_021 = 0;
+                singTemp.IsAppear20M_022 = 0;
+                singTemp.IsThree20InSingle_023 = 0;
+                //singTemp.IsInTwoSame_024 = 0;
+                singTemp.IsInThreeSame_025 = 0;
+                singTemp.IsInFourSame_026 = 0;
+                //singTemp.IsInFiveSame_027 = 0;
+                //singTemp.IsBigCon_028 = 0;
+                //singTemp.BigConDetail_029 = 0;
+                //singTemp.IsSmallCon_030 = 0;
+                //singTemp.SmallConDetail_031 = 0;
+                //singTemp.IsEvenCon_032 = 0;
+                //singTemp.EvenConDetail_033 = 0;
+                //singTemp.IsOddCon_034 = 0;
+                //singTemp.OddConDetail_035 = 0;
+                //singTemp.IsRepick_036 = 0;
+                //singTemp.RepickDetail_037 = 0;
+                //singTemp.IsThreeRepick_038 = 0;
+                //singTemp.IsFourRepick_039 = 0;
+                //singTemp.IsTurn_040 = 0;
+                //singTemp.IsSpanOne_041 = 0;
+                //singTemp.IsTwoConRepick_042 = 0;
+                //singTemp.IsThreeConRepick_043 = 0;
+                //singTemp.IsFourPile_044 = 0;
+                //singTemp.IsFivePile_045 = 0;
+                //singTemp.IsTread_046 = 0;
+                //singTemp.TreadDetail_047 = 0;
+                //singTemp.IsTreadAddOne_048 = 0;
+                //singTemp.TreadAddOneDetail_049 = 0;
+                //singTemp.IsTreadAddTwo_050 = 0;
+
+                //int count = 0;
+                //count = GetMatchCount(ICurrentPeriod_101.AwardNumber_002, singTemp.PositionVale_005.ToString());
+                //if (count >= 2)
+                //{
+                //    singTemp.IsInTwoSame_024 = 1;
+                //    if (count >= 3)
+                //    {
+                //        singTemp.IsInThreeSame_025 = 1;
+                //        if (count >= 4)
+                //        {
+                //            singTemp.IsInFourSame_026 = 1;
+                //            if (count == 5)
+                //            {
+                //                singTemp.IsInFiveSame_027 = 1;
+                //            }
+                //        }
+                //    }
+                //}
+
+                switch (AType)
+                {
+                    case 0: //置0
+                        {
+                            singTemp.LostEvenODDOrderNum_009 = 1;
+                            singTemp.LostAllOrderNum_010 = 1;
+                        }
+                        break;
+                    case 1: //正常统计
+                        {
+                            singTemp.LostEvenODDOrderNum_009 = GetOrder(listLostValueBenTemp, singTemp.LostValue_008);
+                            if (singTemp.LostValue_008 >= 20)
+                            {
+                                singTemp.IsAppear20_021 = 1;
+
+                                if (singTemp.LostEvenODDOrderNum_009 == 1)
+                                {
+                                    singTemp.IsAppear20M_022 = 1;
+                                }
+                            }
+
+                            singTemp.LostAllOrderNum_010 = GetOrder(listLostValueAllTemp, singTemp.LostValue_008);
+                            if (AListPeriod_101.Count >= 5)
+                            {
+                                #region  //0~9这个位置上个数排序
+                                if (AListPeriod_101 != null && AListPeriod_101.Count >= 10)
+                                {
+
+                                    listPeriodDetailTemp = AListPeriod_101.Take(10).ToList();
+                                    singTemp.OrderInTen_011 = GetSingValueOrder(i, listPeriodDetailTemp, singTemp.PositionVale_005);
+
+                                    if (AListPeriod_101.Count >= 20)
+                                    {
+                                        listPeriodDetailTemp.Clear();
+                                        listPeriodDetailTemp = AListPeriod_101.Take(20).ToList();
+                                        singTemp.OrderInTwenty_012 = GetSingValueOrder(i, listPeriodDetailTemp, singTemp.PositionVale_005);
+
+                                        if (AListPeriod_101.Count >= 40)
+                                        {
+                                            listPeriodDetailTemp.Clear();
+                                            listPeriodDetailTemp = AListPeriod_101.Take(40).ToList();
+                                            singTemp.OrderInFourty_013 = GetSingValueOrder(i, listPeriodDetailTemp, singTemp.PositionVale_005);
+
+                                            if (AListPeriod_101.Count >= 59)
+                                            {
+                                                listPeriodDetailTemp.Clear();
+                                                listPeriodDetailTemp = AListPeriod_101.Take(59).ToList();
+                                                singTemp.OrderInOneDay_014 = GetSingValueOrder(i, listPeriodDetailTemp, singTemp.PositionVale_005);
 
 
-        #region  DoSingleAnalysis_106 
-        public static void DoSingleAnalysis_106() { }
+                                                if (AListPeriod_101.Count >= 59 * 2)
+                                                {
+                                                    listPeriodDetailTemp.Clear();
+                                                    listPeriodDetailTemp = AListPeriod_101.Take(59 * 2).ToList();
+                                                    singTemp.OrderInTwoDay_015 = GetSingValueOrder(i, listPeriodDetailTemp, singTemp.PositionVale_005);
+                                                    if (AListPeriod_101.Count >= 59 * 3)
+                                                    {
+                                                        listPeriodDetailTemp.Clear();
+                                                        listPeriodDetailTemp = AListPeriod_101.Take(59 * 3).ToList();
+                                                        singTemp.OrderInThreeDay_016 = GetSingValueOrder(i, listPeriodDetailTemp, singTemp.PositionVale_005);
+                                                        if (AListPeriod_101.Count >= 59 * 4)
+                                                        {
+                                                            listPeriodDetailTemp.Clear();
+                                                            listPeriodDetailTemp = AListPeriod_101.Take(59 * 4).ToList();
+                                                            singTemp.OrderInFourDay_017 = GetSingValueOrder(i, listPeriodDetailTemp, singTemp.PositionVale_005);
+
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                #endregion
+
+                                #region  //大于20期
+                                listLostValueBenTemp.Clear();
+                                if (singTemp.PositionVale_005 % 2 == 1)  //单
+                                {
+                                    listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(ICurrentLostAll_102, String.Format("Lost_0{0}1", i))));
+                                    listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(ICurrentLostAll_102, String.Format("Lost_0{0}3", i))));
+                                    listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(ICurrentLostAll_102, String.Format("Lost_0{0}5", i))));
+                                    listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(ICurrentLostAll_102, String.Format("Lost_0{0}7", i))));
+                                    listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(ICurrentLostAll_102, String.Format("Lost_0{0}9", i))));
+
+                                    int ctemp = 0;
+                                    ctemp = listLostValueBenTemp.Count(s => s >= 20);
+                                    singTemp.RemainEven20Num_019 = ctemp;
+                                    if (ctemp >= 2 && singTemp.LostValue_008 >= 20)
+                                    {
+                                        SpecialFuture_110 specialFuture_108 = InitDetailSpecialFutrue_108(singTemp, EnumFutureType.F_Three20InSingle);
+                                        singTemp.IsThree20InSingle_023 = 1;
+                                        StringBuilder sb = new StringBuilder();
+                                        for (int k = 0; k < 5; k++)
+                                        {
+                                            if (listLostValueBenTemp[k] >= 20)
+                                            {
+                                                switch (k)
+                                                {
+                                                    case 0:
+                                                        sb.Append("1").Append(",");
+                                                        break;
+                                                    case 1:
+                                                        sb.Append("3").Append(",");
+                                                        break;
+                                                    case 2:
+                                                        sb.Append("5").Append(",");
+                                                        break;
+                                                    case 3:
+                                                        sb.Append("7").Append(",");
+                                                        break;
+                                                    case 4:
+                                                        sb.Append("9").Append(",");
+                                                        break;
+                                                    default:
+                                                        break;
+                                                }
+                                            }
+                                        }
+                                        sb.Append(specialFuture_108.PositionVale_003);
+                                        specialFuture_108.ScoreBack_009 = sb.ToString().TrimEnd(',');
+                                        ListSpecialFuture108Temp.Add(specialFuture_108);
+                                    }
+                                    listLostValueBenTemp.Clear();
+                                    listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(ICurrentLostAll_102, String.Format("Lost_0{0}0", i))));
+                                    listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(ICurrentLostAll_102, String.Format("Lost_0{0}2", i))));
+                                    listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(ICurrentLostAll_102, String.Format("Lost_0{0}4", i))));
+                                    listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(ICurrentLostAll_102, String.Format("Lost_0{0}6", i))));
+                                    listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(ICurrentLostAll_102, String.Format("Lost_0{0}8", i))));
+                                    ctemp = listLostValueBenTemp.Count(s => s >= 20);
+                                    singTemp.RemainOdd20Num_020 = ctemp;
+                                    singTemp.Remain20Num_018 = singTemp.RemainEven20Num_019 + singTemp.RemainOdd20Num_020;
+
+                                }
+                                else  //双
+                                {
+                                    listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(ICurrentLostAll_102, String.Format("Lost_0{0}0", i))));
+                                    listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(ICurrentLostAll_102, String.Format("Lost_0{0}2", i))));
+                                    listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(ICurrentLostAll_102, String.Format("Lost_0{0}4", i))));
+                                    listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(ICurrentLostAll_102, String.Format("Lost_0{0}6", i))));
+                                    listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(ICurrentLostAll_102, String.Format("Lost_0{0}8", i))));
+                                    int ctemp = 0;
+                                    ctemp = listLostValueBenTemp.Count(s => s >= 20);
+                                    singTemp.RemainOdd20Num_020 = ctemp;
+
+                                    if (ctemp >= 3 && singTemp.LostValue_008 >= 20)
+                                    {
+                                        SpecialFuture_110 specialFuture_108 = InitDetailSpecialFutrue_108(singTemp, EnumFutureType.F_Three20InSingle);
+                                        singTemp.IsThree20InSingle_023 = 1;
+                                        StringBuilder sb = new StringBuilder();
+                                        for (int k = 0; k < 5; k++)
+                                        {
+                                            if (listLostValueBenTemp[k] >= 20)
+                                            {
+                                                switch (k)
+                                                {
+                                                    case 0:
+                                                        sb.Append("0").Append(",");
+                                                        break;
+                                                    case 1:
+                                                        sb.Append("2").Append(",");
+                                                        break;
+                                                    case 2:
+                                                        sb.Append("4").Append(",");
+                                                        break;
+                                                    case 3:
+                                                        sb.Append("6").Append(",");
+                                                        break;
+                                                    case 4:
+                                                        sb.Append("8").Append(",");
+                                                        break;
+                                                    default:
+                                                        break;
+                                                }
+                                            }
+                                        }
+                                        sb.Append(specialFuture_108.PositionVale_003);
+                                        specialFuture_108.ScoreBack_009 = sb.ToString().TrimEnd(',');
+                                        ListSpecialFuture108Temp.Add(specialFuture_108);
+                                    }
+                                    listLostValueBenTemp.Clear();
+                                    listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(ICurrentLostAll_102, String.Format("Lost_0{0}1", i))));
+                                    listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(ICurrentLostAll_102, String.Format("Lost_0{0}3", i))));
+                                    listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(ICurrentLostAll_102, String.Format("Lost_0{0}5", i))));
+                                    listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(ICurrentLostAll_102, String.Format("Lost_0{0}7", i))));
+                                    listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(ICurrentLostAll_102, String.Format("Lost_0{0}9", i))));
+                                    ctemp = listLostValueBenTemp.Count(s => s >= 20);
+                                    singTemp.RemainEven20Num_019 = ctemp;
+                                    singTemp.Remain20Num_018 = singTemp.RemainEven20Num_019 + singTemp.RemainOdd20Num_020;
+                                }
+                                #endregion
+
+                                //存入最近25期该位上出现的值
+                                int periodCount = 0;
+                                listAllNumCount.Clear();
+                                foreach (PeriodDetail_101 p in AListPeriod_101)
+                                {
+                                    periodCount++;
+                                    listAllNumCount.Add(int.Parse(GetObjectPropertyValue(p, String.Format("Wei{0}_0{0}0", i))));
+                                    if (periodCount >= 25)
+                                    {
+                                        break;
+                                    }
+                                }
+
+                                //#region  //是否大连 小连 双连 单连
+                                //int continueCount = 0;
+                                //if (singTemp.PositionVale_005 % 2 == 1) //单
+                                //{
+
+                                //    for (int k = 0; k < periodCount; k++)
+                                //    {
+                                //        if (listAllNumCount[k] % 2 == 1)
+                                //        {
+                                //            continueCount++;
+                                //        }
+                                //        else
+                                //        {
+                                //            break;
+                                //        }
+                                //    }
+
+                                //    if (continueCount >= 3)
+                                //    {
+                                //        singTemp.IsEvenCon_032 = 1;
+                                //        singTemp.EvenConDetail_033 = continueCount;
+                                //    }
+                                //}
+                                //else  //双
+                                //{
+                                //    for (int k = 0; k < periodCount; k++)
+                                //    {
+                                //        if (listAllNumCount[k] % 2 == 0)
+                                //        {
+                                //            continueCount++;
+                                //        }
+                                //        else
+                                //        {
+                                //            break;
+                                //        }
+                                //    }
+
+                                //    if (continueCount >= 3)
+                                //    {
+                                //        singTemp.IsOddCon_034 = 1;
+                                //        singTemp.OddConDetail_035 = continueCount;
+                                //    }
+                                //}
+
+                                //continueCount = 0;
+                                //if (singTemp.PositionVale_005 >= 5) //大
+                                //{
+
+                                //    for (int k = 0; k < periodCount; k++)
+                                //    {
+                                //        if (listAllNumCount[k] >= 5)
+                                //        {
+                                //            continueCount++;
+                                //        }
+                                //        else
+                                //        {
+                                //            break;
+                                //        }
+                                //    }
+
+                                //    if (continueCount >= 3)
+                                //    {
+                                //        singTemp.IsBigCon_028 = 1;
+                                //        singTemp.BigConDetail_029 = continueCount;
+                                //    }
+                                //}
+                                //else //小
+                                //{
+                                //    for (int k = 0; k <= AListPeriod_101.Count - 1; k++)
+                                //    {
+                                //        if (listAllNumCount[k] < 5)
+                                //        {
+                                //            continueCount++;
+                                //        }
+                                //        else
+                                //        {
+                                //            break;
+                                //        }
+                                //    }
+
+                                //    if (continueCount >= 3)
+                                //    {
+                                //        singTemp.IsSmallCon_030 = 1;
+                                //        singTemp.SmallConDetail_031 = continueCount;
+                                //    }
+                                //}
+
+                                //#endregion
+
+                                //#region 重复
+                                //{
+                                //    continueCount = 0;
+                                //    for (int k = 0; k < listAllNumCount.Count; k++)
+                                //    {
+                                //        if (
+                                //            ((k + 1) < (listAllNumCount.Count - 1))
+                                //            && listAllNumCount[k] == listAllNumCount[k + 1]
+                                //            )
+                                //        {
+                                //            continueCount++;
+                                //        }
+                                //        else
+                                //        {
+                                //            break;
+                                //        }
+                                //    }
+
+                                //    if (continueCount >= 1)
+                                //    {
+                                //        singTemp.IsRepick_036 = 1;
+                                //        singTemp.RepickDetail_037 = continueCount;
+                                //        if (continueCount >= 2)
+                                //        {
+                                //            singTemp.IsThreeRepick_038 = 1;
+                                //            if (continueCount >= 3)
+                                //            {
+                                //                singTemp.IsFourRepick_039 = 1;
+                                //            }
+                                //        }
+                                //    }
+                                //}
+
+                                //#endregion
+
+                                //#region 转折 间隔 2连对，3连对
+
+                                //if (listAllNumCount.Count >= 3)
+                                //{
+                                //    if ((listAllNumCount[0] - listAllNumCount[1]) > 0 && (listAllNumCount[1] - listAllNumCount[2]) < 0)
+                                //    {
+                                //        singTemp.IsTurn_040 = 1;
+                                //    }
+                                //    else if ((listAllNumCount[0] - listAllNumCount[1]) < 0 && (listAllNumCount[1] - listAllNumCount[2]) > 0)
+                                //    {
+                                //        singTemp.IsTurn_040 = 1;
+                                //    }
+
+                                //    if (listAllNumCount[0] == listAllNumCount[2])
+                                //    {
+                                //        singTemp.IsSpanOne_041 = 1;
+                                //    }
+
+                                //    if (listAllNumCount.Count >= 4)
+                                //    {
+                                //        if (listAllNumCount[0] == listAllNumCount[1] && listAllNumCount[2] == listAllNumCount[3])
+                                //        {
+                                //            singTemp.IsTwoConRepick_042 = 1;
+                                //        }
+
+                                //        if (listAllNumCount.Count >= 6)
+                                //        {
+                                //            if (listAllNumCount[0] == listAllNumCount[1] && listAllNumCount[2] == listAllNumCount[3] && listAllNumCount[4] == listAllNumCount[5])
+                                //            {
+                                //                singTemp.IsThreeConRepick_043 = 1;
+                                //            }
+                                //        }
+
+                                //    }
+
+                                //}
+                                //#endregion
+
+                                //#region //4连堆
+
+                                ////4连堆  要取List103的数据
+                                //List<SpecialFuture_110> listSingleAnalysis_103Temp = IListSingleAnalysis_103.Where(p => p.PositionVale_005 == singTemp.PositionVale_005 && p.PositionType_004 == i).Count() > 0 ? IListSingleAnalysis_103.Where(p => p.PositionVale_005 == singTemp.PositionVale_005 && p.PositionType_004 == i).ToList() : null;
+                                //if (listSingleAnalysis_103Temp != null && listSingleAnalysis_103Temp.Count >= 3)
+                                //{
+                                //    continueCount = 0;
+                                //    foreach (SpecialFuture_110 ss in listSingleAnalysis_103Temp)
+                                //    {
+                                //        if (ss.LostValue_008 < 10)
+                                //        {
+                                //            continueCount++;
+                                //        }
+                                //        else
+                                //        {
+                                //            break;
+                                //        }
+                                //    }
+                                //    if (continueCount >= 3)
+                                //    {
+                                //        singTemp.IsFourPile_044 = 1;
+                                //        if (continueCount >= 4)
+                                //        {
+                                //            singTemp.IsFivePile_045 = 1;
+                                //        }
+                                //    }
+                                //}
+                                //#endregion
+
+                                //#region//趋势
+                                //continueCount = 0;
+                                //if ((listAllNumCount[0] - listAllNumCount[1]) > 0)
+                                //{
+                                //    for (int k = 0; k < listAllNumCount.Count; k++)
+                                //    {
+                                //        if ((k + 1) < listAllNumCount.Count && (listAllNumCount[k] - listAllNumCount[k + 1]) > 0)
+                                //        {
+                                //            continueCount++;
+                                //        }
+                                //        else
+                                //        {
+                                //            break;
+                                //        }
+                                //    }
+                                //}
+                                //else if ((listAllNumCount[0] - listAllNumCount[1]) < 0)
+                                //{
+                                //    for (int k = 0; k < listAllNumCount.Count; k++)
+                                //    {
+                                //        if ((k + 1) < listAllNumCount.Count && (listAllNumCount[k] - listAllNumCount[k + 1]) < 0)
+                                //        {
+                                //            continueCount++;
+                                //        }
+                                //        else
+                                //        {
+                                //            break;
+                                //        }
+                                //    }
+                                //}
+                                //else
+                                //{
+                                //    for (int k = 0; k < listAllNumCount.Count; k++)
+                                //    {
+                                //        if ((k + 1) < listAllNumCount.Count && (listAllNumCount[k] - listAllNumCount[k + 1]) == 0)
+                                //        {
+                                //            continueCount++;
+                                //        }
+                                //        else
+                                //        {
+                                //            break;
+                                //        }
+                                //    }
+                                //}
+
+                                //if (continueCount >= 2)
+                                //{
+                                //    singTemp.IsTread_046 = 1;
+                                //    singTemp.TreadDetail_047 = continueCount;
+                                //}
+
+                                //continueCount = 0;
+                                //if ((listAllNumCount[0] - listAllNumCount[1]) == 1)
+                                //{
+                                //    for (int k = 0; k < listAllNumCount.Count; k++)
+                                //    {
+                                //        if ((k + 1) < listAllNumCount.Count && (listAllNumCount[k] - listAllNumCount[k + 1]) == 1)
+                                //        {
+                                //            continueCount++;
+                                //        }
+                                //        else
+                                //        {
+                                //            break;
+                                //        }
+                                //    }
+                                //}
+                                //if (continueCount >= 2)
+                                //{
+                                //    singTemp.IsTreadAddOne_048 = 1;
+                                //    singTemp.TreadAddOneDetail_049 = continueCount;
+                                //}
+
+                                //#endregion
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+
+            #endregion
+
+
+            return flag;
+        }
+
+        //得到某位上某数在0-9的数量上的排序
+        public static int GetSingValueOrder(int WeiType, List<PeriodDetail_101> AlistPeriodDetail, int APositionValue)
+        {
+            int order = 0;
+            List<int> listAllNumCount = new List<int>();
+            int count = 0;
+            switch (WeiType)
+            {
+                case 1:
+                    {
+                        for (int i = 0; i <= 9; i++)
+                        {
+                            listAllNumCount.Add(AlistPeriodDetail.Where(p => p.Wei1_010 == i).Count());
+
+                        }
+                        count = AlistPeriodDetail.Where(p => p.Wei1_010 == APositionValue).Count();
+                        order = GetOrder(listAllNumCount, count);
+                    }
+                    break;
+                case 2:
+                    {
+                        for (int i = 0; i <= 9; i++)
+                        {
+                            listAllNumCount.Add(AlistPeriodDetail.Where(p => p.Wei2_020 == i).Count());
+
+                        }
+                        count = AlistPeriodDetail.Where(p => p.Wei2_020 == APositionValue).Count();
+                        order = GetOrder(listAllNumCount, count);
+                    }
+                    break;
+                case 3:
+                    {
+                        for (int i = 0; i <= 9; i++)
+                        {
+                            listAllNumCount.Add(AlistPeriodDetail.Where(p => p.Wei3_030 == i).Count());
+
+                        }
+                        count = AlistPeriodDetail.Where(p => p.Wei3_030 == APositionValue).Count();
+                        order = GetOrder(listAllNumCount, count);
+                    }
+                    break;
+                case 4:
+                    {
+                        for (int i = 0; i <= 9; i++)
+                        {
+                            listAllNumCount.Add(AlistPeriodDetail.Where(p => p.Wei4_040 == i).Count());
+
+                        }
+                        count = AlistPeriodDetail.Where(p => p.Wei4_040 == APositionValue).Count();
+                        order = GetOrder(listAllNumCount, count);
+                    }
+                    break;
+                case 5:
+                    {
+                        for (int i = 0; i <= 9; i++)
+                        {
+                            listAllNumCount.Add(AlistPeriodDetail.Where(p => p.Wei5_050 == i).Count());
+
+                        }
+                        count = AlistPeriodDetail.Where(p => p.Wei5_050 == APositionValue).Count();
+                        order = GetOrder(listAllNumCount, count);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return order;
+        }
 
         public static void InitSingleAnalysis_106() { }
 
@@ -1537,7 +2392,68 @@ namespace SSCService03
         #region  DoSpecialFuture_110
         public static void DoSpecialFuture_110() { }
 
-        public static void InitSpecialFuture_110() { }
+        //初始化108
+        public static SpecialFuture_110 InitDetailSpecialFutrue_108(SingleAnalysis_106 ASingleAnalysis_103, EnumFutureType AFutrue)
+        {
+            SpecialFuture_110 specialFuture_108 = new SpecialFuture_110();
+            specialFuture_108.LongPeriod_001 = ASingleAnalysis_103.LongPeriod_001;
+            specialFuture_108.PositionType_002 = ASingleAnalysis_103.PositionType_004;
+            specialFuture_108.PositionVale_003 = ASingleAnalysis_103.PositionVale_005;
+            specialFuture_108.IsComplete_005 = 0;
+            switch (AFutrue)
+            {
+                case EnumFutureType.F_Xian:
+                    {
+                        specialFuture_108.FutureType_004 = (int)EnumFutureType.F_Xian;
+                    }
+                    break;
+                case EnumFutureType.F_FanXian:
+                    {
+                        specialFuture_108.FutureType_004 = (int)EnumFutureType.F_FanXian;
+                    }
+                    break;
+                case EnumFutureType.F_AddOneOriginal:
+                    {
+                        specialFuture_108.FutureType_004 = (int)EnumFutureType.F_AddOneOriginal;
+                    }
+                    break;
+                case EnumFutureType.F_SubOneOriginal:
+                    {
+                        specialFuture_108.FutureType_004 = (int)EnumFutureType.F_SubOneOriginal;
+                    }
+                    break;
+                case EnumFutureType.F_32283:
+                    {
+                        specialFuture_108.FutureType_004 = (int)EnumFutureType.F_32283;
+                    }
+                    break;
+                case EnumFutureType.F_Three20InSingle:
+                    {
+                        specialFuture_108.FutureType_004 = (int)EnumFutureType.F_Three20InSingle;
+                    }
+                    break;
+                case EnumFutureType.F_ThreeConRepick:
+                    {
+                        specialFuture_108.FutureType_004 = (int)EnumFutureType.F_ThreeConRepick;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            specialFuture_108.IsScore_006 = 0;
+            specialFuture_108.ScoreSpan_007 = 0;
+            specialFuture_108.ScoreLongPeriod_008 = 0;
+            specialFuture_108.ScoreBack_009 = "";
+            specialFuture_108.ScoreBack_010 = "";
+            specialFuture_108.ScoreBack_011 = 0;
+            specialFuture_108.ScoreBack_012 = 0;
+            specialFuture_108.ScoreBack_013 = 0;
+            specialFuture_108.ScoreBack_014 = 0;
+            specialFuture_108.ScoreBack_015 = 0;
+
+
+            return specialFuture_108;
+        }
 
         public static void UpdateOrAddSpecialFuture_110() { }
 
@@ -1567,6 +2483,37 @@ namespace SSCService03
 
 
         #region  公用方法
+        static bool ExecuteListSQL(List<String> AListStringSQL) 
+        {
+            bool flag = true;
+            StringBuilder sb = new StringBuilder();
+            if(AListStringSQL!=null && AListStringSQL.Count>0)
+            {
+                foreach(String ss in AListStringSQL)
+                {
+                    if ((sb.Length +ss.Length)< 8000)
+                    {
+                        sb.Append(ss);
+                    }
+                    else 
+                    {
+                        try
+                        {
+                            DbHelperSQL.ExcuteSql(ISqlConnect, sb.ToString());
+                            sb = sb.Clear();
+                            sb.Append(ss);
+                        }
+                        catch (Exception e)
+                        {
+                            FileLog.WriteInfo("ExecuteListSQL():Err",e.Message.ToString()+"---SQL:"+ ss.ToString());
+                            flag = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            return flag;
+        }
 
         /// <summary>
         /// 求某数在AlistInt里面的顺序,最多的为1

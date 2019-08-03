@@ -26,5 +26,7 @@ namespace Modles
 
          //出现个数
         public int AppearCount_007 { set; get; }
+
+        public int PreLostValue_008 { get; set; }
     }
 }

@@ -7,7 +7,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Themes/Default/Control.xaml"></ResourceDictionary>
-                <ResourceDictionary Source="Themes/Default/MainWindown.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="Themes/Default/MainWindow.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>

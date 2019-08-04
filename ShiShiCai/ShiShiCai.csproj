@@ -203,6 +203,10 @@
   <ItemGroup>
     <Resource Include="Themes\Default\Images\00006.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Default\Images\00007.png" />
+    <Resource Include="Themes\Default\Images\00008.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

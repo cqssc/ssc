@@ -129,27 +129,72 @@
                 </Border>
             </Grid>
             <Grid Grid.Row="2">
-                <Border Style="{DynamicResource MainStyle}">
-                    <TabControl Name="TabControlModule" 
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="3"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Border Style="{DynamicResource LeftStyle}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="0" Style="{DynamicResource LeftHeaderStyle}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="期号" Style="{DynamicResource TxtLeftHeaderStyle}"></TextBlock>
+                                        <Button Name="BtnLeftCollaspe" Grid.Column="1" ToolTip="折叠" Style="{DynamicResource BtnExpanderStyle}">
+                                            <Image Source="Themes/Default/Images/00007.png"></Image>
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                                <ListBox Name="ListBoxIssues" Grid.Row="1" Style="{DynamicResource ListBoxIssueStyle}"
+                                         ItemContainerStyle="{DynamicResource ListItemIssueStyle}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate DataType="ListBoxItem">
+                                            <TextBlock Text="{Binding Name}"></TextBlock>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <GridSplitter Grid.Column="1" Style="{DynamicResource LeftSpliterStyle}"></GridSplitter>
+                    <Grid Grid.Column="2">
+                        <Border Style="{DynamicResource MainStyle}">
+                            <TabControl Name="TabControlModule" 
                                 Style="{DynamicResource TabControlModuleStyle}"
                                 SelectedIndex="{Binding ElementName=ListBoxModules,Path=SelectedIndex}">
-                        <TabItem Name="TabBasic" Header="Basic">
-                            <TextBlock Text="走势"></TextBlock>
-                        </TabItem>
-                        <TabItem Name="TabLost" Header="Lost">
-                            <TextBlock Text="遗失"></TextBlock>
-                        </TabItem>
-                        <TabItem Name="TabHot" Header="Hot">
-                            <TextBlock Text="热度"></TextBlock>
-                        </TabItem>
-                        <TabItem Name="TabTrend" Header="Trend">
-                            <TextBlock Text="趋势"></TextBlock>
-                        </TabItem>
-                        <TabItem Name="TabHistory" Header="History">
-                            <TextBlock Text="历史"></TextBlock>
-                        </TabItem>
-                    </TabControl>
-                </Border>
+                                <TabItem Name="TabBasic" Header="Basic">
+                                    <TextBlock Text="走势"></TextBlock>
+                                </TabItem>
+                                <TabItem Name="TabLost" Header="Lost">
+                                    <TextBlock Text="遗失"></TextBlock>
+                                </TabItem>
+                                <TabItem Name="TabHot" Header="Hot">
+                                    <TextBlock Text="热度"></TextBlock>
+                                </TabItem>
+                                <TabItem Name="TabTrend" Header="Trend">
+                                    <TextBlock Text="趋势"></TextBlock>
+                                </TabItem>
+                                <TabItem Name="TabHistory" Header="History">
+                                    <TextBlock Text="历史"></TextBlock>
+                                </TabItem>
+                            </TabControl>
+                        </Border>
+                    </Grid>
+                    <Border Grid.Column="0" Grid.ColumnSpan="3" Style="{DynamicResource LeftExpanderStyle}" Visibility="Collapsed">
+                        <Button Name="BtnLeftExpand" Style="{DynamicResource BtnExpanderStyle}" ToolTip="展开">
+                            <Image Source="Themes/Default/Images/00008.png"></Image>
+                        </Button>
+                    </Border>
+                </Grid>
             </Grid>
             <Grid Grid.Row="3">
                 <Border Style="{DynamicResource BottomStyle}">

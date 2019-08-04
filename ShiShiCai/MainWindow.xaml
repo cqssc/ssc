@@ -26,7 +26,8 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
-                            <ColumnDefinition Width="80"></ColumnDefinition>
+                            <ColumnDefinition Width="65"></ColumnDefinition>
+                            <ColumnDefinition Width="65"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0">
                             <Grid.ColumnDefinitions>
@@ -58,7 +59,19 @@
                             </Border>
                         </Grid>
                         <Grid Grid.Column="2">
-                            <Button ToolTip="设置" Style="{DynamicResource BtnSettingStyle}">
+                            <Button ToolTip="历史" Style="{DynamicResource BtnModuleStyle}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Grid.Column="0" Source="Themes/Default/Images/00005.png"></Image>
+                                    <TextBlock Grid.Column="1" Text="历史" Style="{DynamicResource TxtModuleTextStyle}"></TextBlock>
+                                </Grid>
+                            </Button>
+                        </Grid>
+                        <Grid Grid.Column="3">
+                            <Button ToolTip="设置" Style="{DynamicResource BtnModuleStyle}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"></ColumnDefinition>

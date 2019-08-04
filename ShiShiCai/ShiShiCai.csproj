@@ -194,12 +194,14 @@
     <Resource Include="Themes\Default\bg1.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Themes\Default\Images\00006.png" />
     <Resource Include="Themes\Default\Images\00004.png" />
     <Resource Include="Themes\Default\Images\00001.png" />
     <Resource Include="Themes\Default\Images\00002.png" />
     <Resource Include="Themes\Default\Images\00003.png" />
     <Resource Include="Themes\Default\Images\00005.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Default\Images\00006.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

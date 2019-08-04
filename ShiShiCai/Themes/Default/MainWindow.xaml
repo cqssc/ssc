@@ -106,8 +106,9 @@
         <Setter Property="Height" Value="25"></Setter>
     </Style>
     
-    <Style x:Key="BtnSettingStyle" TargetType="Button">
-        <Setter Property="Margin" Value="5"></Setter>
+    <Style x:Key="BtnModuleStyle" TargetType="Button">
+        <Setter Property="Height" Value="35"></Setter>
+        <Setter Property="Width" Value="60"></Setter>
         <Setter Property="Padding" Value="2"></Setter>
         <Setter Property="Background" Value="Transparent"></Setter>
         <Setter Property="BorderThickness" Value="0"></Setter>
@@ -151,8 +152,6 @@
     </Style>
     
     <Style x:Key="ListBoxModuleListStyle" TargetType="ListBox">
-        <Setter Property="Margin" Value="5"></Setter>
-        <Setter Property="Padding" Value="2"></Setter>
         <Setter Property="Background" Value="Transparent"></Setter>
         <Setter Property="BorderThickness" Value="0"></Setter>
         <Setter Property="Template">
@@ -171,6 +170,8 @@
     </Style>
     
     <Style x:Key="ListBoxModuleItemStyle" TargetType="ListBoxItem">
+        <Setter Property="Height" Value="35"></Setter>
+        <Setter Property="Width" Value="60"></Setter>
         <Setter Property="Margin" Value="5,0"></Setter>
         <Setter Property="Foreground" Value="{DynamicResource SystemBrush7}"></Setter>
         <Setter Property="Template">

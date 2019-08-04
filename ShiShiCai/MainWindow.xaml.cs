@@ -74,12 +74,6 @@ namespace ShiShiCai
             item.Title = SscDefines.MODULE_NAME_TREND;
             item.Icon = "Themes/Default/Images/00004.png";
             mListModuleItems.Add(item);
-            item = new ModuleItem();
-            item.Number = SscDefines.MODULE_HISTORY;
-            item.Name = SscDefines.MODULE_NAME_HISTORY;
-            item.Title = SscDefines.MODULE_NAME_HISTORY;
-            item.Icon = "Themes/Default/Images/00005.png";
-            mListModuleItems.Add(item);
         }
 
         #endregion

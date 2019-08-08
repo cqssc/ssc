@@ -131,12 +131,12 @@
             <Grid Grid.Row="2">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Name="ColumnLeft" Width="100"></ColumnDefinition>
                         <ColumnDefinition Width="3"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Border Style="{DynamicResource LeftStyle}">
+                        <Border Name="PanelLeft" Style="{DynamicResource LeftStyle}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"></RowDefinition>
@@ -165,7 +165,7 @@
                             </Grid>
                         </Border>
                     </Grid>
-                    <GridSplitter Grid.Column="1" Style="{DynamicResource LeftSpliterStyle}"></GridSplitter>
+                    <GridSplitter Name="SpliterLeft" Grid.Column="1" Style="{DynamicResource LeftSpliterStyle}"></GridSplitter>
                     <Grid Grid.Column="2">
                         <Border Style="{DynamicResource MainStyle}">
                             <TabControl Name="TabControlModule" 
@@ -189,7 +189,7 @@
                             </TabControl>
                         </Border>
                     </Grid>
-                    <Border Grid.Column="0" Grid.ColumnSpan="3" Style="{DynamicResource LeftExpanderStyle}" Visibility="Collapsed">
+                    <Border Name="PanelLeftExpander" Grid.Column="0" Grid.ColumnSpan="3" Style="{DynamicResource LeftExpanderStyle}" Visibility="Collapsed">
                         <Button Name="BtnLeftExpand" Style="{DynamicResource BtnExpanderStyle}" ToolTip="展开">
                             <Image Source="Themes/Default/Images/00008.png"></Image>
                         </Button>

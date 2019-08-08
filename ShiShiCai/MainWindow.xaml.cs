@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,6 +21,10 @@ namespace ShiShiCai
 
             Loaded += MainWindow_Loaded;
             Closing += MainWindow_Closing;
+            BtnLeftExpand.Click += BtnLeftExpand_Click;
+            BtnLeftCollaspe.Click += BtnLeftCollaspe_Click;
+
+            PanelLeft.SizeChanged += PanelLeft_SizeChanged;
         }
 
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -81,7 +86,29 @@ namespace ShiShiCai
 
         #region Event Handlers
 
+        void PanelLeft_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (PanelLeft.ActualWidth <= 0)
+            {
+                PanelLeftExpander.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                PanelLeftExpander.Visibility = Visibility.Collapsed;
+            }
+        }
 
+        void BtnLeftCollaspe_Click(object sender, RoutedEventArgs e)
+        {
+            ColumnLeft.Width = new GridLength(0);
+            PanelLeftExpander.Visibility = Visibility.Visible;
+        }
+
+        void BtnLeftExpand_Click(object sender, RoutedEventArgs e)
+        {
+            ColumnLeft.Width = new GridLength(100);
+            PanelLeftExpander.Visibility = Visibility.Collapsed;
+        }
 
         #endregion
 

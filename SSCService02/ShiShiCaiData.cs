@@ -25,14 +25,14 @@ namespace SSCService02
         #region 静态全局字符串
         private static string sqlConnect = string.Empty;
         private static string LastTimeSychnData = string.Empty;
-        private static string LinkOf360 = string.Empty;
-        private static string LinkOf163 = string.Empty;
         private static string LinkOf08 = string.Empty;
-        private static string LinkOfXinlang = string.Empty;
-        private static string LinkOfBack = string.Empty;
+
+        private static string LinkOf08_bak1 = string.Empty;
+        private static string LinkOf08_bak2 = string.Empty; 
         private static DateTime RunCurrentDate;
         private static int CurrentPeriod;
 
+        private static string IsSetUpCook = "0";
         private static string strCookier;
         #endregion
 
@@ -40,15 +40,14 @@ namespace SSCService02
         {
             sqlConnect = ConfigurationManager.AppSettings["SqlServerConnect"] != null ? ConfigurationManager.AppSettings["SqlServerConnect"] : "Data Source=127.0.0.1,1433;Initial Catalog=Pocker;User Id=sa;Password=net,123";
 
-            LinkOf360 = ConfigurationManager.AppSettings["Url360"] != null ? ConfigurationManager.AppSettings["Url360"].ToString() : "http://chart.cp.360.cn/kaijiang/kaijiang?lotId={0}{1}spanType=2{1}span={2}_{2}";
-
-            LinkOf163 = ConfigurationManager.AppSettings["Url163"] != null ? ConfigurationManager.AppSettings["Url163"].ToString() : "http://caipiao.163.com/award/cqssc/{0}.html";
-
             LinkOf08 = ConfigurationManager.AppSettings["Url08"] != null ? ConfigurationManager.AppSettings["Url08"].ToString() : "http://vip.08vip.co/result/ssc_noticle.php?sdate={0}&sdate1={1}";
 
-            LinkOfXinlang = ConfigurationManager.AppSettings["UrlXinlang"] != null ? ConfigurationManager.AppSettings["UrlXinlang"].ToString() : "https://kaijiang.aicai.com/cqssc/";
+            LinkOf08_bak1 = ConfigurationManager.AppSettings["Url08_bak1"] != null ? ConfigurationManager.AppSettings["Url08_bak1"].ToString() : "http://vip.08vip.co/result/ssc_noticle.php?sdate={0}&sdate1={1}";
 
-            LinkOfBack = ConfigurationManager.AppSettings["UrlBack"] != null ? ConfigurationManager.AppSettings["UrlBack"].ToString() : "https://fx.cp2y.com/cqssckj/";            
+            LinkOf08_bak2 = ConfigurationManager.AppSettings["Url08_bak2"] != null ? ConfigurationManager.AppSettings["Url08_bak2"].ToString() : "http://vip.08vip.co/result/ssc_noticle.php?sdate={0}&sdate1={1}";
+
+            IsSetUpCook = ConfigurationManager.AppSettings["IsSetUpCook"] != null ? ConfigurationManager.AppSettings["IsSetUpCook"].ToString() : "0";
+            strCookier = "";
         }
 
         private static void AutoShishiCaiDataGet(object o)
@@ -144,35 +143,51 @@ namespace SSCService02
 
             for (int k = 0; k < 30; k++)
             {
-                if (AType == -1)
+                if (AType == -1) //用于取多期
                 {
-                    if (ADateTime.Date == DateTime.Now.Date && AType != 120)
+
+                    flag = GetHtmlString08(LinkOf08, ADateTime, ref AlistPeriod001, AType);
+                    if (flag && AlistPeriod001.Count > 0)
                     {
-                        flag = GetHtmlString08(ADateTime, ref AlistPeriod001, AType);
-                        if (flag && AlistPeriod001.Count > 0)
-                        {
-                            return flag;
-                        }
+                        return flag;
                     }
-                    else
+
+                    flag = GetHtmlString08(LinkOf08_bak1, ADateTime, ref AlistPeriod001, AType);
+                    if (flag && AlistPeriod001.Count > 0)
                     {
-                        flag = GetHtmlString08(ADateTime, ref AlistPeriod001, AType);
-                        if (flag && AlistPeriod001.Count > 0)
-                        {
-                            return flag;
-                        }
+                        return flag;
                     }
+
+                    flag = GetHtmlString08(LinkOf08_bak2, ADateTime, ref AlistPeriod001, AType);
+                    if (flag && AlistPeriod001.Count > 0)
+                    {
+                        return flag;
+                    }
+
                 }
                 else
                 {
-                    flag = GetHtmlString08(ADateTime, ref AlistPeriod001, AType);
+                    flag = GetHtmlString08(LinkOf08, ADateTime, ref AlistPeriod001, AType);
+                    if (flag && AlistPeriod001.Count > 0)
+                    {
+                        return flag;
+                    }
+
+                    flag = GetHtmlString08(LinkOf08_bak1, ADateTime, ref AlistPeriod001, AType);
+                    if (flag && AlistPeriod001.Count > 0)
+                    {
+                        return flag;
+                    }
+
+                    flag = GetHtmlString08(LinkOf08_bak2, ADateTime, ref AlistPeriod001, AType);
                     if (flag && AlistPeriod001.Count > 0)
                     {
                         return flag;
                     }
                 }
 
-                Thread.Sleep(300);
+
+                Thread.Sleep(500);
                 FileLog.WriteInfo(" K=", k.ToString());
             }
             return flag;
@@ -520,24 +535,33 @@ namespace SSCService02
         /// <param name="listPeriod"></param>
         /// <param name="AType"></param>
         /// <returns></returns>
-        public static bool GetHtmlString08(DateTime ADateTime, ref List<PeriodDetail_101> listPeriod, int AType = -1)
+        public static bool GetHtmlString08(string AUrl,DateTime ADateTime, ref List<PeriodDetail_101> listPeriod, int AType = -1)
         {
             listPeriod.Clear();
             string LinkOf08Parse = string.Empty;
             LinkOf08Parse = string.Format(LinkOf08, ADateTime.ToString("yyyy-MM-dd"), '&', ADateTime.ToString("yyyyMMdd"));
             FileLog.WriteInfo("url", LinkOf08Parse);
             string strResult = string.Empty;
-            if (String.IsNullOrWhiteSpace(strCookier))
+
+            if (IsSetUpCook.Equals("1"))
             {
-                strResult = GetHtml(LinkOf08Parse, Encoding.UTF8, "", -1);
-                Regex rgx = new Regex(@"ddos=([^]]*)\;\s");
-                Match match11 = rgx.Match(strResult);
-                string classification = match11.Groups[1].Value;
-                Console.WriteLine("classification:" + classification);
-                strCookier = "ddos=" + classification;
+                if (String.IsNullOrWhiteSpace(strCookier))
+                {
+                    strResult = GetHtml(LinkOf08Parse, Encoding.UTF8, "", -1);
+                    Regex rgx = new Regex(@"ddos=([^]]*)\;\s");
+                    Match match11 = rgx.Match(strResult);
+                    string classification = match11.Groups[1].Value;
+                    Console.WriteLine("classification:" + classification);
+                    strCookier = "ddos=" + classification;
+                }
+                strResult = GetHtml(LinkOf08Parse, Encoding.UTF8, strCookier, 1);
             }
-            strResult = GetHtml(LinkOf08Parse, Encoding.UTF8, strCookier, 1);
-            //strResult = GetHtml(LinkOf08Parse, Encoding.UTF8);
+            else
+            {
+                strResult = GetHtml(LinkOf08Parse, Encoding.UTF8);
+            }
+
+
             try
             {
                 string regex = @"<td>\d{11}</td>[\s\S]*?<td>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}</td>[\s\S]*?<td><span>\d{1}</span><span>\d{1}</span><span>\d{1}</span><span>\d{1}</span><span>\d{1}</span></td>";
@@ -727,711 +751,8 @@ namespace SSCService02
             return html;
         }
 
-
-        //只取特定期数据
-        public static bool GetHtmlString_XinLang(DateTime ADateTime, ref List<PeriodDetail_101> listPeriod, int AType = -1)
-        {
-            listPeriod.Clear();
-            string pageHtml = String.Empty;
-            string URL_Link_XinLang = LinkOfXinlang;
-            bool flag = true;
-            string strResult = GetHtml(URL_Link_XinLang, Encoding.UTF8);
-            try
-            {
-                string regex = @"<td>(\d{8})-(\d{3})[\u4e00-\u9fa5]</td>[\s\S]*?<td[\s\S]*?>(\d{4}-\d{2}-\d{2} \d{2}:\d{2})</td>[\s\S]*?<td style=""color:red"">(\d{1})\|(\d{1})\|(\d{1})\|(\d{1})\|(\d{1})</td>[\s\S]*?</tr>";
-                Regex re = new Regex(regex);
-                MatchCollection matches = re.Matches(strResult);
-                System.Collections.IEnumerator enu = matches.GetEnumerator();
-
-                int Xingqi = 0;
-
-                switch (ADateTime.DayOfWeek)
-                {
-                    case DayOfWeek.Friday:
-                        Xingqi = 5;
-                        break;
-                    case DayOfWeek.Monday:
-                        Xingqi = 1;
-                        break;
-                    case DayOfWeek.Saturday:
-                        Xingqi = 6;
-                        break;
-                    case DayOfWeek.Sunday:
-                        Xingqi = 7;
-                        break;
-                    case DayOfWeek.Thursday:
-                        Xingqi = 4;
-                        break;
-                    case DayOfWeek.Tuesday:
-                        Xingqi = 2;
-                        break;
-                    case DayOfWeek.Wednesday:
-                        Xingqi = 3;
-                        break;
-                    default:
-                        Xingqi = 0;
-                        break;
-                }
-                while (enu.MoveNext() && enu.Current != null)
-                {
-                    string strOne = string.Empty;
-                    string strTwo = string.Empty;
-                    string strThree = string.Empty;
-                    string strFour = string.Empty;
-                    string strFive = string.Empty;
-                    string strSix = string.Empty;
-                    string strSeven = string.Empty;
-                    string strEight = string.Empty;
-                    string strValue = string.Empty;
-                    Match match = (Match)(enu.Current);
-                    if (match.Groups.Count > 0)
-                    {
-                        strOne = string.Empty;
-                        strTwo = string.Empty;
-                        strThree = string.Empty;
-                        strFour = string.Empty;
-                        strFive = string.Empty;
-                        strSix = string.Empty;
-                        strSeven = string.Empty;
-                        strEight = string.Empty;
-                        for (int i = 0; i < match.Groups.Count; i++)
-                        {
-                            strValue = string.Empty;
-                            for (int j = 0; j < match.Groups[i].Captures.Count; j++)
-                            {
-                                strValue += match.Groups[i].Captures[j];
-                            }
-
-                            switch (i)
-                            {
-                                case 1:
-                                    {
-                                        strOne = strValue;
-                                    }
-                                    break;
-                                case 2:
-                                    {
-                                        strTwo = strValue;
-                                    }
-                                    break;
-                                case 4:
-                                    {
-                                        strFour = strValue;
-                                    }
-                                    break;
-                                case 5:
-                                    {
-                                        strFive = strValue;
-                                    }
-                                    break;
-                                case 6:
-                                    {
-                                        strSix = strValue;
-                                    }
-                                    break;
-                                case 7:
-                                    {
-                                        strSeven = strValue;
-                                    }
-                                    break;
-                                case 8:
-                                    {
-                                        strEight = strValue;
-                                    }
-                                    break;
-                            }
-                        }
-                        if ((!String.IsNullOrEmpty(strOne)) && (!string.IsNullOrEmpty(strTwo)))
-                        {
-                            PeriodDetail_101 pp = new PeriodDetail_101();
-                            StringBuilder sb = new StringBuilder();
-                            pp.LongPeriod_001 = Int64.Parse(sb.Append(strOne).Append(strTwo).ToString());
-                            sb = new StringBuilder();
-                            pp.AwardNumber_002 = sb.Append(strFour).Append(strFive).Append(strSix).Append(strSeven).Append(strEight).ToString();
-                            pp.Wei5_050 = int.Parse(strFour);
-                            pp.Wei4_040 = int.Parse(strFive);
-                            pp.Wei3_030 = int.Parse(strSix);
-                            pp.Wei2_020 = int.Parse(strSeven);
-                            pp.Wei1_010 = int.Parse(strEight);
-                            pp.DateTimeInsert_003 = DateTime.Now;
-                            pp.DateNumber_004 = Int64.Parse(ADateTime.ToString("yyyyMMdd"));
-                            pp.ShortPeriod_005 = int.Parse(strTwo);
-                            pp.DayInWeek_006 = Xingqi;
-                            listPeriod.Add(pp);
-                        }
-
-                    }
-                }
-                listPeriod = listPeriod.OrderBy(p => p.LongPeriod_001).ToList();
-                if (AType != -1)
-                {
-                    if (listPeriod.Where(p => p.ShortPeriod_005 == AType).Count() > 0)
-                    {
-                        PeriodDetail_101 pTemp = listPeriod.Where(p => p.ShortPeriod_005 == AType).First();
-                        FileLog.WriteInfo("GetHtmlString08--Get Period's PeriodLong001", pTemp.LongPeriod_001.ToString());
-                        listPeriod.Clear();
-                        listPeriod.Add(pTemp);
-                    }
-                    else
-                    {
-                        listPeriod.Clear();
-                        return false;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                FileLog.WriteInfo("", e.Message.ToString());
-                return false;
-            }
-            return flag;
-        }
-
-        //只能取特定期数据
-        public static bool GetHtmlString_Back(DateTime ADateTime, ref List<PeriodDetail_101> listPeriod, int AType = -1)
-        {
-            string pageHtml = String.Empty;
-            string URL_Link_Back = LinkOfBack;
-            bool flag = true;
-            string strResult = GetHtml(URL_Link_Back, Encoding.UTF8);
-            try
-            {
-                string regex = @"<tr>([\s|\S]*?)<td><span>(\d{9})([\s|\S])<b class=""fw400 cred"">(\d{2}:(\d{2}))</b></span></td>([\s|\S]*?)<td><i class=""ml6 i-ball i-b20_1"">(\d{1})</i><i class=""ml6 i-ball i-b20_1"">(\d{1})</i><i class=""ml6 i-ball i-b20_1"">(\d{1})</i><i class=""ml6 i-ball i-b20_1"">(\d{1})</i><i class=""ml6 i-ball i-b20_1"">(\d{1})</i></td>";
-                Regex re = new Regex(regex);
-                MatchCollection matches = re.Matches(strResult);
-                System.Collections.IEnumerator enu = matches.GetEnumerator();
-                int Xingqi = 0;
-
-                switch (ADateTime.DayOfWeek)
-                {
-                    case DayOfWeek.Friday:
-                        Xingqi = 5;
-                        break;
-                    case DayOfWeek.Monday:
-                        Xingqi = 1;
-                        break;
-                    case DayOfWeek.Saturday:
-                        Xingqi = 6;
-                        break;
-                    case DayOfWeek.Sunday:
-                        Xingqi = 7;
-                        break;
-                    case DayOfWeek.Thursday:
-                        Xingqi = 4;
-                        break;
-                    case DayOfWeek.Tuesday:
-                        Xingqi = 2;
-                        break;
-                    case DayOfWeek.Wednesday:
-                        Xingqi = 3;
-                        break;
-                    default:
-                        Xingqi = 0;
-                        break;
-                }
-                while (enu.MoveNext() && enu.Current != null)
-                {
-                    string strTwo = string.Empty;
-                    string strSeven = string.Empty;
-                    string strEight = string.Empty;
-                    string strNine = string.Empty;
-                    string strTen = string.Empty;
-                    string strEleven = string.Empty;
-                    string strValue = string.Empty;
-                    Match match = (Match)(enu.Current);
-                    if (match.Groups.Count > 0)
-                    {
-                        strTwo = string.Empty;
-                        strSeven = string.Empty;
-                        strEight = string.Empty;
-                        strNine = string.Empty;
-                        strTen = string.Empty;
-
-
-                        strEleven = string.Empty;
-                        for (int i = 0; i < match.Groups.Count; i++)
-                        {
-
-                            strValue = string.Empty;
-                            for (int j = 0; j < match.Groups[i].Captures.Count; j++)
-                            {
-                                strValue += match.Groups[i].Captures[j];
-                            }
-
-                            switch (i)
-                            {
-                                case 2:
-                                    {
-                                        strTwo = strValue;
-                                    }
-                                    break;
-                                case 7:
-                                    {
-                                        strSeven = strValue;
-                                    }
-                                    break;
-                                case 8:
-                                    {
-                                        strEight = strValue;
-                                    }
-                                    break;
-                                case 9:
-                                    {
-                                        strNine = strValue;
-                                    }
-                                    break;
-                                case 10:
-                                    {
-                                        strTen = strValue;
-                                    }
-                                    break;
-                                case 11:
-                                    {
-                                        strEleven = strValue;
-                                    }
-                                    break;
-                            }
-
-                        }
-
-                        if (!string.IsNullOrEmpty(strTwo))
-                        {
-                            PeriodDetail_101 pp = new PeriodDetail_101();
-                            StringBuilder sb = new StringBuilder();
-                            pp.LongPeriod_001 = Int64.Parse(sb.Append("20").Append(strTwo).ToString());
-                            sb = new StringBuilder();
-                            pp.AwardNumber_002 = sb.Append(strSeven).Append(strEight).Append(strNine).Append(strTen).Append(strEleven).ToString();
-                            pp.Wei5_050 = int.Parse(strSeven);
-                            pp.Wei4_040 = int.Parse(strEight);
-                            pp.Wei3_030 = int.Parse(strNine);
-                            pp.Wei2_020 = int.Parse(strTen);
-                            pp.Wei1_010 = int.Parse(strEleven);
-                            int total = pp.Wei5_050 + pp.Wei4_040 + pp.Wei3_030 + pp.Wei2_020 + pp.Wei1_010;
-                            pp.AllSub_009 = total;
-                            if (total >= 23)
-                            {
-                                pp.BigOrSmall_007 = 1;
-                            }
-                            else
-                            {
-                                pp.BigOrSmall_007 = 2;
-                            }
-
-                            if (total % 2 == 1)
-                            {
-                                pp.EvenODD_008 = 1;
-                            }
-                            else
-                            {
-                                pp.EvenODD_008 = 2;
-                            }
-
-
-                            pp.DateTimeInsert_003 = DateTime.Now;
-                            pp.DateNumber_004 = Int64.Parse(ADateTime.ToString("yyyyMMdd"));
-                            pp.ShortPeriod_005 = int.Parse(strTwo.Substring(6));
-                            pp.DayInWeek_006 = Xingqi;
-                            listPeriod.Add(pp);
-                        }
-                    }
-                }
-
-                listPeriod = listPeriod.OrderBy(p => p.LongPeriod_001).ToList();
-                if (AType != -1)
-                {
-                    if (listPeriod.Where(p => p.ShortPeriod_005 == AType).Count() > 0)
-                    {
-                        PeriodDetail_101 pTemp = listPeriod.Where(p => p.ShortPeriod_005 == AType).First();
-                        FileLog.WriteInfo("GetHtmlString08--Get Period's PeriodLong001", pTemp.LongPeriod_001.ToString());
-                        listPeriod.Clear();
-                        listPeriod.Add(pTemp);
-                    }
-                    else
-                    {
-                        listPeriod.Clear();
-                        return false;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
-            return flag;
-        }
-
-
-        //public static bool GetHtmlString08(DateTime ADateTime, ref List<PeriodDetail_101> listPeriod, int AType = -1)
-        //{
-        //    listPeriod.Clear();
-        //    string pageHtml = string.Empty;
-        //    string LinkOf08Parse = string.Empty;
-        //    LinkOf08Parse = string.Format(LinkOf08, ADateTime.ToString("yyyy-MM-dd"), '&', ADateTime.ToString("yyyyMMdd"));
-        //    string strResult = GetHtml(LinkOf08Parse, Encoding.UTF8);
-        //    try
-        //    {
-        //        string regex = @"<td>\d{11}</td>[\s\S]*?<td>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}</td>[\s\S]*?<td><span>\d{1}</span><span>\d{1}</span><span>\d{1}</span><span>\d{1}</span><span>\d{1}</span></td>";
-               
-        //        Regex re = new Regex(regex);
-        //        MatchCollection matches = re.Matches(strResult);
-        //        System.Collections.IEnumerator enu = matches.GetEnumerator();
-        //        while (enu.MoveNext() && enu.Current != null)
-        //        {
-        //            string strPeriod = string.Empty;
-        //            string strAllValue = string.Empty;
-        //            Match match = (Match)(enu.Current);
-        //            if (match.Groups.Count > 0)
-        //            {
-        //                String strTemp = match.Groups[0].Value;
-        //                regex = @"\d{11}";
-        //                Regex reTemp = new Regex(regex);
-        //                MatchCollection matchesTemp = reTemp.Matches(strTemp);
-        //                System.Collections.IEnumerator enuTemp = matchesTemp.GetEnumerator();
-        //                while (enuTemp.MoveNext() && enuTemp.Current != null)
-        //                {
-        //                    match = (Match)(enuTemp.Current);
-        //                    strPeriod = match.Groups[0].Value;
-        //                }
-
-        //                regex = @"<span>\d{1}</span>";
-        //                reTemp = new Regex(regex);
-        //                matchesTemp = reTemp.Matches(strTemp);
-        //                enuTemp = matchesTemp.GetEnumerator();
-        //                StringBuilder sb = new StringBuilder();
-        //                while (enuTemp.MoveNext() && enuTemp.Current != null)
-        //                {
-        //                    match = (Match)(enuTemp.Current);
-        //                    sb.Append(match.Groups[0].Value.Substring(6, 1));
-        //                }
-        //                strAllValue = sb.ToString();
-        //            }
-
-        //            int Xingqi = 0;
-
-        //            switch (ADateTime.DayOfWeek)
-        //            {
-        //                case DayOfWeek.Friday:
-        //                    Xingqi = 5;
-        //                    break;
-        //                case DayOfWeek.Monday:
-        //                    Xingqi = 1;
-        //                    break;
-        //                case DayOfWeek.Saturday:
-        //                    Xingqi = 6;
-        //                    break;
-        //                case DayOfWeek.Sunday:
-        //                    Xingqi = 7;
-        //                    break;
-        //                case DayOfWeek.Thursday:
-        //                    Xingqi = 4;
-        //                    break;
-        //                case DayOfWeek.Tuesday:
-        //                    Xingqi = 2;
-        //                    break;
-        //                case DayOfWeek.Wednesday:
-        //                    Xingqi = 3;
-        //                    break;
-        //                default:
-        //                    Xingqi = 0;
-        //                    break;
-        //            }
-
-        //            if (!string.IsNullOrWhiteSpace(strPeriod) && !string.IsNullOrWhiteSpace(strAllValue))
-        //            {
-        //                PeriodDetail_101 period = new PeriodDetail_101();
-        //                char[] charTemp = strAllValue.ToCharArray();
-        //                if (charTemp.Length == 5)
-        //                {
-        //                    period.Wei5_050 = int.Parse(charTemp[0].ToString());
-        //                    period.Wei4_040 = int.Parse(charTemp[1].ToString());
-        //                    period.Wei3_030 = int.Parse(charTemp[2].ToString());
-        //                    period.Wei2_020 = int.Parse(charTemp[3].ToString());
-        //                    period.Wei1_010 = int.Parse(charTemp[4].ToString());
-        //                    int total = period.Wei5_050 + period.Wei4_040 + period.Wei3_030 + period.Wei2_020 + period.Wei1_010;
-        //                    period.AllSub_009 = total;
-        //                    if (total >= 23)
-        //                    {
-        //                        period.BigOrSmall_007 = 1;
-        //                    }
-        //                    else
-        //                    {
-        //                        period.BigOrSmall_007 = 2;
-        //                    }
-
-        //                    if (total % 2 == 1)
-        //                    {
-        //                        period.EvenODD_008 = 1;
-        //                    }
-        //                    else
-        //                    {
-        //                        period.EvenODD_008 = 2;
-        //                    }
-        //                    period.DateTimeInsert_003 = DateTime.Now;
-        //                    period.DateNumber_004 = Int64.Parse(ADateTime.ToString("yyyyMMdd"));
-        //                    period.ShortPeriod_005 = int.Parse(strPeriod.Substring(8));
-        //                    period.LongPeriod_001 = Int64.Parse(strPeriod);
-        //                    period.AwardNumber_002 = strAllValue;
-        //                    period.DayInWeek_006 = Xingqi;
-        //                    listPeriod.Add(period);
-        //                }
-        //            }
-        //            else
-        //            {
-        //                break;
-        //            }
-        //        }
-
-        //        listPeriod = listPeriod.OrderBy(p => p.LongPeriod_001).ToList();
-        //        if (AType != -1)
-        //        {
-        //            if (listPeriod.Where(p => p.ShortPeriod_005 == AType).Count() > 0)
-        //            {
-        //                PeriodDetail_101 pTemp = listPeriod.Where(p => p.ShortPeriod_005 == AType).First();
-        //                FileLog.WriteInfo("GetHtmlString08--Get Period's PeriodLong001", pTemp.LongPeriod_001.ToString());
-        //                listPeriod.Clear();
-        //                listPeriod.Add(pTemp);
-        //            }
-        //            else
-        //            {
-        //                listPeriod.Clear();
-        //            }
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        Thread.Sleep(1000 * 1);
-        //        return false;
-        //    }
-        //    return true;
-        //}
-
-        /// <summary>
-        /// /
-        /// </summary>
-        /// <param name="ADateTime"></param>
-        /// <param name="listPeriod"></param>
-        /// <param name="AType">为-1时取某天全部的，为其它数据时取那一期的数据</param>
-        /// <returns></returns>
-        public static bool GetHtmlString360(DateTime ADateTime, ref  List<PeriodDetail_101> listPeriod, int AType)
-        {
-            listPeriod.Clear();
-            string pageHtml = string.Empty;
-            string LinkOf360Parse = string.Empty;
-            LinkOf360Parse = string.Format(LinkOf360, 255401, '&', ADateTime.ToString("yyyy-MM-dd"));
-            string strResult = string.Empty;
-            try
-            {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(LinkOf360Parse);
-                //声明一个HttpWebRequest请求 
-                request.Timeout = 30000;
-                //设置连接超时时间 
-                request.Headers.Set("Pragma", "no-cache");
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                Stream streamReceive = response.GetResponseStream();
-                Encoding encoding = Encoding.GetEncoding("GB2312");
-                StreamReader streamReader = new StreamReader(streamReceive, encoding);
-                strResult = streamReader.ReadToEnd();
-                int Xingqi = 0;
-
-                switch (ADateTime.DayOfWeek)
-                {
-                    case DayOfWeek.Friday:
-                        Xingqi = 5;
-                        break;
-                    case DayOfWeek.Monday:
-                        Xingqi = 1;
-                        break;
-                    case DayOfWeek.Saturday:
-                        Xingqi = 6;
-                        break;
-                    case DayOfWeek.Sunday:
-                        Xingqi = 7;
-                        break;
-                    case DayOfWeek.Thursday:
-                        Xingqi = 4;
-                        break;
-                    case DayOfWeek.Tuesday:
-                        Xingqi = 2;
-                        break;
-                    case DayOfWeek.Wednesday:
-                        Xingqi = 3;
-                        break;
-                    default:
-                        break;
-                }
-
-                string regex = "<td class=\'gray\'>(\\d{3})</td><td class=\'red big\'>(\\d{5})</td>";
-                Regex re = new Regex(regex);
-                MatchCollection matches = re.Matches(strResult);
-
-                System.Collections.IEnumerator enu = matches.GetEnumerator();
-                while (enu.MoveNext() && enu.Current != null)
-                {
-                    Match match = (Match)(enu.Current);
-                    PeriodDetail_101 period = new PeriodDetail_101();
-                    period.ShortPeriod_005 = int.Parse(match.Groups[1].Value);
-                    period.AwardNumber_002 = match.Groups[2].Value;
-                    if (!string.IsNullOrWhiteSpace(period.AwardNumber_002))
-                    {
-                        char[] charTemp = period.AwardNumber_002.ToCharArray();
-                        if (charTemp.Length == 5)
-                        {
-                            period.Wei5_050 = int.Parse(charTemp[0].ToString());
-                            period.Wei4_040 = int.Parse(charTemp[1].ToString());
-                            period.Wei3_030 = int.Parse(charTemp[2].ToString());
-                            period.Wei2_020 = int.Parse(charTemp[3].ToString());
-                            period.Wei1_010 = int.Parse(charTemp[4].ToString());
-                            period.DateTimeInsert_003 = DateTime.Now;
-                            period.DateNumber_004 = Int64.Parse(ADateTime.ToString("yyyyMMdd"));
-                            period.LongPeriod_001 = Int64.Parse(period.DateNumber_004.ToString() + period.ShortPeriod_005.ToString().PadLeft(3, '0'));
-                            period.DayInWeek_006 = Xingqi;
-                            listPeriod.Add(period);
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                listPeriod = listPeriod.OrderBy(p => p.LongPeriod_001).ToList();
-                if (AType != -1)
-                {
-
-                    if (listPeriod.Where(p => p.ShortPeriod_005 == AType).Count() > 0)
-                    {
-                        PeriodDetail_101 pTemp = listPeriod.Where(p => p.ShortPeriod_005 == AType).First();
-
-                        FileLog.WriteInfo("GetHtmlString360--Get Period's LongPeriod_001", pTemp.LongPeriod_001.ToString());
-                        listPeriod.Clear();
-                        listPeriod.Add(pTemp);
-                    }
-                    else
-                    {
-                        listPeriod.Clear();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                FileLog.WriteInfo("GetHtmlString360", ex.Message.ToString());
-                Thread.Sleep(1000 * 1);
-                return false;
-
-            }
-            return true;
-        }
-
-
-        /// <summary>
-        /// ///改连163的链接取数据
-        /// </summary>
-        /// <param name="ADateTime"></param>
-        /// <param name="listPeriod"></param>
-        /// <param name="AType">为-1时取某天全部的，为其它数据时取那一期的数据</param>
-        /// <returns></returns>
-        public static bool GetHtmlString163(DateTime ADateTime, ref  List<PeriodDetail_101> listPeriod, int AType = -1)
-        {
-            listPeriod.Clear();
-            bool flag = true;
-            string LinkOf163Parse = string.Empty;
-            LinkOf163Parse = string.Format(LinkOf163, ADateTime.ToString("yyyyMMdd"));
-            string strResult = GetHtml(LinkOf163Parse, Encoding.UTF8);
-
-            try
-            {
-                string regex = "<td class=\"start\" data-win-number=\'(\\d{1}\\s\\d{1}\\s\\d{1}\\s\\d{1}\\s\\d{1})\' data-period=\"\\d{9}\">(\\d{3})</td>";
-                Regex re = new Regex(regex);
-                MatchCollection matches = re.Matches(strResult);
-                System.Collections.IEnumerator enu = matches.GetEnumerator();
-                while (enu.MoveNext() && enu.Current != null)
-                {
-                    Match match = (Match)(enu.Current);
-                    string strPeriod = match.Groups[2].Value;
-                    string strAllValue = match.Groups[1].Value;
-                    int Xingqi = 0;
-
-                    switch (ADateTime.DayOfWeek)
-                    {
-                        case DayOfWeek.Friday:
-                            Xingqi = 5;
-                            break;
-                        case DayOfWeek.Monday:
-                            Xingqi = 1;
-                            break;
-                        case DayOfWeek.Saturday:
-                            Xingqi = 6;
-                            break;
-                        case DayOfWeek.Sunday:
-                            Xingqi = 7;
-                            break;
-                        case DayOfWeek.Thursday:
-                            Xingqi = 4;
-                            break;
-                        case DayOfWeek.Tuesday:
-                            Xingqi = 2;
-                            break;
-                        case DayOfWeek.Wednesday:
-                            Xingqi = 3;
-                            break;
-                        default:
-                            Xingqi = 0;
-                            break;
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(strPeriod) && !string.IsNullOrWhiteSpace(strAllValue))
-                    {
-                        PeriodDetail_101 period = new PeriodDetail_101();
-                        string[] strArrayTemp = strAllValue.Split(' ');
-                        if (strArrayTemp.Length == 5)
-                        {
-                            period.Wei5_050 = int.Parse(strArrayTemp[0]);
-                            period.Wei4_040 = int.Parse(strArrayTemp[1]);
-                            period.Wei3_030 = int.Parse(strArrayTemp[2]);
-                            period.Wei2_020 = int.Parse(strArrayTemp[3]);
-                            period.Wei1_010 = int.Parse(strArrayTemp[4]);
-                            period.DateTimeInsert_003 = DateTime.Now;
-                            period.DateNumber_004 = Int64.Parse(ADateTime.ToString("yyyyMMdd"));
-                            period.ShortPeriod_005 = int.Parse(strPeriod);
-                            period.LongPeriod_001 = Int64.Parse(period.DateNumber_004.ToString() + period.ShortPeriod_005.ToString().PadLeft(3, '0'));
-                            period.AwardNumber_002 = string.Format("{0}{1}{2}{3}{4}", period.Wei5_050, period.Wei4_040, period.Wei3_030, period.Wei2_020, period.Wei1_010);
-                            period.DayInWeek_006 = Xingqi;
-                            listPeriod.Add(period);
-                        }
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                listPeriod = listPeriod.OrderBy(p => p.LongPeriod_001).ToList();
-                if (AType != -1)
-                {
-
-                    if (listPeriod.Where(p => p.ShortPeriod_005 == AType).Count() > 0)
-                    {
-                        PeriodDetail_101 pTemp = listPeriod.Where(p => p.ShortPeriod_005 == AType).First();
-                        FileLog.WriteInfo("GetHtmlString163--Get Period's LongPeriod_001", pTemp.LongPeriod_001.ToString());
-                        listPeriod.Clear();
-                        listPeriod.Add(pTemp);
-                    }
-                    else
-                    {
-                        listPeriod.Clear();
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                Thread.Sleep(1000 * 1);
-                return false;
-            }
-            return flag;
-        }
+ 
+         
 
         #endregion
 

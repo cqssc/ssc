@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Modles
 {
-    public class AllSplitStatistics_106
+    public class AllSplitStatistics_106_back
     {
         public int SliceType_000 { set; get;}
 

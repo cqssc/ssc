@@ -1,0 +1,106 @@
+﻿<UserControl x:Class="ShiShiCai.UCBasic"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:u="clr-namespace:ShiShiCai"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/Default/MainWindow.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="Themes/Default/UCBasic.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+
+            <u:BooleanToYesNoConverter x:Key="BooleanToYesNoConverter"></u:BooleanToYesNoConverter>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Border Name="PanelTitle" Style="{DynamicResource ModuleTitleStyle}">
+                <TextBlock Text="走势" Style="{DynamicResource TxtModuleTitleStyle}"></TextBlock>
+            </Border>
+        </Grid>
+        <Grid Grid.Row="1">
+            <ListBox Name="ListBoxLotteryGroup" Style="{DynamicResource ListBoxLotteryGroupStyle}"
+                     ItemContainerStyle="{DynamicResource ListItemLotteryGroupStyle}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="ListBoxItem">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="25"></ColumnDefinition>
+                                <ColumnDefinition Width="35"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Style="{DynamicResource BorderDateStyle}">
+                                <TextBlock Text="{Binding Date}" Style="{DynamicResource TxtDateStyle}"
+                                       Width="{Binding RelativeSource={RelativeSource Self},Path=FontSize}"></TextBlock>
+                            </Border>
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="20"></RowDefinition>
+                                    <RowDefinition Height="20"></RowDefinition>
+                                    <RowDefinition Height="20"></RowDefinition>
+                                    <RowDefinition Height="20"></RowDefinition>
+                                    <RowDefinition Height="20"></RowDefinition>
+                                    <RowDefinition Height="20"></RowDefinition>
+                                    <RowDefinition Height="20"></RowDefinition>
+                                    <RowDefinition Height="20"></RowDefinition>
+                                    <RowDefinition Height="20"></RowDefinition>
+                                    <RowDefinition Height="20"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="期号" Style="{DynamicResource TxtIssueStyle}"></TextBlock>
+                                <TextBlock Grid.Row="1" Text="万" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                <TextBlock Grid.Row="2" Text="千" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                <TextBlock Grid.Row="3" Text="百" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                <TextBlock Grid.Row="4" Text="十" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                <TextBlock Grid.Row="5" Text="个" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                <TextBlock Grid.Row="6" Text="大小" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                <TextBlock Grid.Row="7" Text="单双" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                <TextBlock Grid.Row="8" Text="重复" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                <TextBlock Grid.Row="9" Text="间隔" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                            </Grid>
+                            <ListBox Grid.Column="2" ItemsSource="{Binding Children}"
+                                     Style="{DynamicResource ListBoxLotteryStyle}"
+                                     ItemContainerStyle="{DynamicResource ListItemLotteryStyle}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate DataType="ListBoxItem">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="20"></RowDefinition>
+                                                <RowDefinition Height="20"></RowDefinition>
+                                                <RowDefinition Height="20"></RowDefinition>
+                                                <RowDefinition Height="20"></RowDefinition>
+                                                <RowDefinition Height="20"></RowDefinition>
+                                                <RowDefinition Height="20"></RowDefinition>
+                                                <RowDefinition Height="20"></RowDefinition>
+                                                <RowDefinition Height="20"></RowDefinition>
+                                                <RowDefinition Height="20"></RowDefinition>
+                                                <RowDefinition Height="20"></RowDefinition>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Grid.Row="0" Text="{Binding Number}" Style="{DynamicResource TxtIssueStyle}"></TextBlock>
+                                            <TextBlock Grid.Row="1" Text="{Binding D5}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                            <TextBlock Grid.Row="2" Text="{Binding D4}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                            <TextBlock Grid.Row="3" Text="{Binding D3}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                            <TextBlock Grid.Row="4" Text="{Binding D2}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                            <TextBlock Grid.Row="5" Text="{Binding D1}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                            <TextBlock Grid.Row="6" Text="{Binding LargeValue,Converter={StaticResource BooleanToYesNoConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                            <TextBlock Grid.Row="7" Text="{Binding DoubleValue,Converter={StaticResource BooleanToYesNoConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                            <TextBlock Grid.Row="8" Text="{Binding RepeatValue,Converter={StaticResource BooleanToYesNoConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                            <TextBlock Grid.Row="9" Text="{Binding IntervalValue,Converter={StaticResource BooleanToYesNoConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </Grid>
+</UserControl>

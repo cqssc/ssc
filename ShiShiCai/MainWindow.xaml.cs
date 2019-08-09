@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using ShiShiCai.Common;
 
 namespace ShiShiCai
@@ -15,6 +17,8 @@ namespace ShiShiCai
     public partial class MainWindow
     {
         private bool mIsInited;
+
+        private readonly List<IssueItem> mListIssues = new List<IssueItem>();
 
         private readonly ObservableCollection<ModuleItem> mListModuleItems = new ObservableCollection<ModuleItem>();
         private readonly ObservableCollection<IssueItem> mListIssueItems = new ObservableCollection<IssueItem>();
@@ -33,6 +37,8 @@ namespace ShiShiCai
             BtnLeftCollaspe.Click += BtnLeftCollaspe_Click;
 
             PanelLeft.SizeChanged += PanelLeft_SizeChanged;
+
+            DataContext = this;
         }
 
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -63,12 +69,14 @@ namespace ShiShiCai
 
             mListIssueItems.Clear();
             mLoadWorker = new BackgroundWorker();
-            mLoadWorker.DoWork += (s, de) => LoadIssueItems();
+            mLoadWorker.DoWork += (s, de) => LoadIssues();
             mLoadWorker.RunWorkerCompleted += (s, re) =>
             {
                 mLoadWorker.Dispose();
 
+                InitIssueItems();
                 InitLottery();
+                InitModule();
             };
             mLoadWorker.RunWorkerAsync();
         }
@@ -127,10 +135,11 @@ namespace ShiShiCai
             }
         }
 
-        private void LoadIssueItems()
+        private void LoadIssues()
         {
             try
             {
+                mListIssues.Clear();
                 if (mSystemConfig == null) { return; }
                 DatabaseConfig dbConfig = mSystemConfig.Database;
                 if (dbConfig == null) { return; }
@@ -170,12 +179,21 @@ namespace ShiShiCai
                     item.AllOne20 = dr["C103"].ToString() == "2";
                     item.PairsVaue = dr["C104"].ToString() == "2";
                     item.SameValue = dr["C105"].ToString() == "2";
-                    AddIssueItem(item);
+                    mListIssues.Add(item);
                 }
             }
             catch (Exception ex)
             {
                 ShowException(ex.Message);
+            }
+        }
+
+        private void InitIssueItems()
+        {
+            mListIssueItems.Clear();
+            foreach (var item in mListIssues)
+            {
+                mListIssueItems.Add(item);
             }
         }
 
@@ -187,6 +205,23 @@ namespace ShiShiCai
             TxtLastLottery.Text = ParseLottery();
             TxtLastNumber.Text = ParseLotteryNumber();
             ListBoxIssues.SelectedItem = mCurrentIssueItem;
+        }
+
+        private void InitModule()
+        {
+            var view = TabControlModule.SelectedContent as IModuleView;
+            if (view == null) { return; }
+            view.Reload();
+        }
+
+        #endregion
+
+
+        #region Property
+
+        public ObservableCollection<IssueItem> ListIssueItems
+        {
+            get { return mListIssueItems; }
         }
 
         #endregion
@@ -222,11 +257,6 @@ namespace ShiShiCai
 
 
         #region Others
-
-        private void AddIssueItem(IssueItem item)
-        {
-            Dispatcher.Invoke(new Action(() => mListIssueItems.Add(item)));
-        }
 
         private string ParseLottery()
         {

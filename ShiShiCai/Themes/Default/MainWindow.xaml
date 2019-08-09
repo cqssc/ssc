@@ -9,6 +9,10 @@
         <Setter Property="FontSize" Value="10"></Setter>
     </Style>
     
+    <Style x:Key="ModuleViewStyle" TargetType="UserControl">
+        <Setter Property="FontSize" Value="10"></Setter>
+    </Style>
+    
     <Style x:Key="MainBackground" TargetType="Border">
         <!--<Setter Property="Background">
             <Setter.Value>
@@ -358,7 +362,6 @@
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}">
                             <ContentPresenter x:Name="PART_SelectedContentHost"
-                                Margin="5"
                                 ContentSource="SelectedContent" />
                         </Border>
                     </Grid>
@@ -367,6 +370,15 @@
         </Setter>
     </Style>
     
+    <Style x:Key="ModuleTitleStyle" TargetType="Border">
+        <Setter Property="Height" Value="20"></Setter>
+        <Setter Property="Margin" Value="10,0,0,0"></Setter>
+    </Style>
   
+    <Style x:Key="TxtModuleTitleStyle" TargetType="TextBlock">
+        <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        <Setter Property="FontWeight" Value="Bold"></Setter>
+    </Style>
   
 </ResourceDictionary>

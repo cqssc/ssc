@@ -56,10 +56,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters.cs" />
     <Compile Include="DatabaseConfig.cs" />
+    <Compile Include="IModuleView.cs" />
     <Compile Include="IssueItem.cs" />
     <Compile Include="SscDefines.cs" />
     <Compile Include="SystemConfig.cs" />
+    <Compile Include="UCBasic.xaml.cs">
+      <DependentUpon>UCBasic.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -149,6 +154,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Default\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Default\UCBasic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UCBasic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,6 +1,7 @@
 ﻿<Window x:Class="ShiShiCai.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:uc="clr-namespace:ShiShiCai"
         Title="时时彩" Height="500" Width="800" Icon="shishicai.ico"
         Style="{DynamicResource WindowStyle}">
     <Window.Resources>
@@ -172,19 +173,19 @@
                                 Style="{DynamicResource TabControlModuleStyle}"
                                 SelectedIndex="{Binding ElementName=ListBoxModules,Path=SelectedIndex}">
                                 <TabItem Name="TabBasic" Header="Basic">
-                                    <TextBlock Text="走势"></TextBlock>
+                                    <uc:UCBasic x:Name="UCBaic" PageParent="{Binding}"></uc:UCBasic>
                                 </TabItem>
                                 <TabItem Name="TabLost" Header="Lost">
-                                    <TextBlock Text="遗失"></TextBlock>
+
                                 </TabItem>
                                 <TabItem Name="TabHot" Header="Hot">
-                                    <TextBlock Text="热度"></TextBlock>
+
                                 </TabItem>
                                 <TabItem Name="TabTrend" Header="Trend">
-                                    <TextBlock Text="趋势"></TextBlock>
+
                                 </TabItem>
                                 <TabItem Name="TabHistory" Header="History">
-                                    <TextBlock Text="历史"></TextBlock>
+
                                 </TabItem>
                             </TabControl>
                         </Border>

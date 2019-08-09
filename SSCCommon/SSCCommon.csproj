@@ -40,9 +40,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converter.cs" />
+    <Compile Include="DBAccessDefine.cs" />
+    <Compile Include="DBCmdParameter.cs" />
     <Compile Include="Defines.cs" />
     <Compile Include="JsonHelper.cs" />
     <Compile Include="LogOperator.cs" />
+    <Compile Include="MssqlDataType.cs" />
+    <Compile Include="MssqlOperation.cs" />
     <Compile Include="OperationReturn.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XMLHelper.cs" />

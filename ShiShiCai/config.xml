@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Config xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <Database Type="2" Host="47.100.169.100" Port="8433" DBName="Pocker-V3" LoginUser="sa" LoginPassword="netinfo,123" />
+</Config>

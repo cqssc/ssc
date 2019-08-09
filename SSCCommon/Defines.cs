@@ -19,6 +19,7 @@ namespace ShiShiCai.Common
 {
     public class Defines
     {
+
         #region Return Code
 
         //基本操作结果
@@ -95,5 +96,16 @@ namespace ShiShiCai.Common
         public const int EVT_PAGE_CLOSED = 206;     //页面已关闭
 
         #endregion
+
+
+        #region 数据库类型定义
+
+        public const int DB_TYPE_UNKOWN = 0;
+        public const int DB_TYPE_MYSQL = 1;
+        public const int DB_TYPE_MSSQL = 2;
+        public const int DB_TYPE_ORACLE = 3;
+
+        #endregion
+
     }
 }

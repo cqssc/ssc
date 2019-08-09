@@ -102,8 +102,8 @@
                                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0" Text="最新开奖" Style="{DynamicResource TxtLotteryLabelStyle}"></TextBlock>
-                                    <TextBlock Grid.Column="1" Text="2019-08-01 001 期" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                    <TextBlock Grid.Column="2" Text="5 2 3 0 8" Style="{DynamicResource TxtLotteryNumberStyle}"></TextBlock>
+                                    <TextBlock Name="TxtLastLottery" Grid.Column="1" Text="" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                    <TextBlock Name="TxtLastNumber" Grid.Column="2" Text="" Style="{DynamicResource TxtLotteryNumberStyle}"></TextBlock>
                                 </Grid>
                             </Border>
                         </Grid>
@@ -131,7 +131,7 @@
             <Grid Grid.Row="2">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Name="ColumnLeft" Width="100"></ColumnDefinition>
+                        <ColumnDefinition Name="ColumnLeft" Width="110"></ColumnDefinition>
                         <ColumnDefinition Width="3"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
@@ -158,7 +158,7 @@
                                          ItemContainerStyle="{DynamicResource ListItemIssueStyle}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate DataType="ListBoxItem">
-                                            <TextBlock Text="{Binding Name}"></TextBlock>
+                                            <TextBlock Text="{Binding Serial}"></TextBlock>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>

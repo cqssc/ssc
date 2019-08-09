@@ -6,11 +6,11 @@
     </ResourceDictionary.MergedDictionaries>
     
     <Style x:Key="WindowStyle" TargetType="Window">
-        <Setter Property="FontSize" Value="10"></Setter>
+        <Setter Property="FontSize" Value="8"></Setter>
     </Style>
     
     <Style x:Key="ModuleViewStyle" TargetType="UserControl">
-        <Setter Property="FontSize" Value="10"></Setter>
+        <Setter Property="FontSize" Value="8"></Setter>
     </Style>
     
     <Style x:Key="MainBackground" TargetType="Border">
@@ -52,7 +52,7 @@
     </Style>
     
     <Style x:Key="BannerStyle" TargetType="Border">
-        <Setter Property="Height" Value="30"></Setter>
+        <Setter Property="Height" Value="20"></Setter>
     </Style>
     
     <Style x:Key="LeftExpanderStyle" TargetType="Border">
@@ -221,7 +221,7 @@
     
     <Style x:Key="TxtLotteryNumberStyle" TargetType="TextBlock" BasedOn="{StaticResource TxtLotteryStyle}">
         <Setter Property="FontWeight" Value="Bold"></Setter>
-        <Setter Property="FontSize" Value="16"></Setter>
+        <Setter Property="FontSize" Value="12"></Setter>
         <Setter Property="Foreground" Value="{DynamicResource SystemBrush7}"></Setter>
     </Style>
     
@@ -229,7 +229,7 @@
         <Setter Property="HorizontalAlignment" Value="Left"></Setter>
         <Setter Property="VerticalAlignment" Value="Center"></Setter>
         <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
-        <Setter Property="Height" Value="25"></Setter>
+        <Setter Property="Height" Value="18"></Setter>
         <Setter Property="Width" Value="80"></Setter>
     </Style>
     
@@ -237,7 +237,7 @@
         <Setter Property="HorizontalAlignment" Value="Center"></Setter>
         <Setter Property="VerticalAlignment" Value="Center"></Setter>
         <Setter Property="Width" Value="40"></Setter>
-        <Setter Property="Height" Value="25"></Setter>
+        <Setter Property="Height" Value="18"></Setter>
     </Style>
     
     <Style x:Key="BtnModuleStyle" TargetType="Button">

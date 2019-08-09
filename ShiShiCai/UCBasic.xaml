@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:u="clr-namespace:ShiShiCai"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             Style="{DynamicResource ModuleViewStyle}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -13,7 +14,9 @@
                 <ResourceDictionary Source="Themes/Default/UCBasic.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
 
-            <u:BooleanToYesNoConverter x:Key="BooleanToYesNoConverter"></u:BooleanToYesNoConverter>
+            <u:BooleanToLargeConverter x:Key="BooleanToLargeConverter"></u:BooleanToLargeConverter>
+            <u:BooleanToDoubleConverter x:Key="BooleanToDoubleConverter"></u:BooleanToDoubleConverter>
+            <u:BooleanToHasConverter x:Key="BooleanToHasConverter"></u:BooleanToHasConverter>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -43,16 +46,26 @@
                             </Border>
                             <Grid Grid.Column="1">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="20"></RowDefinition>
-                                    <RowDefinition Height="20"></RowDefinition>
-                                    <RowDefinition Height="20"></RowDefinition>
-                                    <RowDefinition Height="20"></RowDefinition>
-                                    <RowDefinition Height="20"></RowDefinition>
-                                    <RowDefinition Height="20"></RowDefinition>
-                                    <RowDefinition Height="20"></RowDefinition>
-                                    <RowDefinition Height="20"></RowDefinition>
-                                    <RowDefinition Height="20"></RowDefinition>
-                                    <RowDefinition Height="20"></RowDefinition>
+                                    <RowDefinition Height="12"></RowDefinition>
+                                    <RowDefinition Height="12"></RowDefinition>
+                                    <RowDefinition Height="12"></RowDefinition>
+                                    <RowDefinition Height="12"></RowDefinition>
+                                    <RowDefinition Height="12"></RowDefinition>
+                                    <RowDefinition Height="12"></RowDefinition>
+                                    <RowDefinition Height="12"></RowDefinition>
+                                    <RowDefinition Height="12"></RowDefinition>
+                                    <RowDefinition Height="12"></RowDefinition>
+                                    <RowDefinition Height="12"></RowDefinition>
+                                    <RowDefinition Height="12"></RowDefinition>
+                                    <RowDefinition Height="12"></RowDefinition>
+                                    <RowDefinition Height="12"></RowDefinition>
+                                    <RowDefinition Height="12"></RowDefinition>
+                                    <RowDefinition Height="12"></RowDefinition>
+                                    <RowDefinition Height="12"></RowDefinition>
+                                    <RowDefinition Height="12"></RowDefinition>
+                                    <RowDefinition Height="12"></RowDefinition>
+                                    <RowDefinition Height="12"></RowDefinition>
+                                    <RowDefinition Height="12"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0" Text="期号" Style="{DynamicResource TxtIssueStyle}"></TextBlock>
                                 <TextBlock Grid.Row="1" Text="万" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
@@ -60,10 +73,24 @@
                                 <TextBlock Grid.Row="3" Text="百" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
                                 <TextBlock Grid.Row="4" Text="十" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
                                 <TextBlock Grid.Row="5" Text="个" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                <TextBlock Grid.Row="6" Text="大小" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                <Border Grid.Row="6" Style="{DynamicResource BorderTopLineStyle}">
+                                    <TextBlock Text="大小" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                </Border>
                                 <TextBlock Grid.Row="7" Text="单双" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
                                 <TextBlock Grid.Row="8" Text="重复" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                <TextBlock Grid.Row="9" Text="间隔" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                <Border Grid.Row="9" Style="{DynamicResource BorderBottomLineStyle}">
+                                    <TextBlock Text="间隔" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                </Border>
+                                <TextBlock Grid.Row="10" Text="0" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                <TextBlock Grid.Row="11" Text="1" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                <TextBlock Grid.Row="12" Text="2" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                <TextBlock Grid.Row="13" Text="3" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                <TextBlock Grid.Row="14" Text="4" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                <TextBlock Grid.Row="15" Text="5" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                <TextBlock Grid.Row="16" Text="6" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                <TextBlock Grid.Row="17" Text="7" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                <TextBlock Grid.Row="18" Text="8" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                <TextBlock Grid.Row="19" Text="9" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
                             </Grid>
                             <ListBox Grid.Column="2" ItemsSource="{Binding Children}"
                                      Style="{DynamicResource ListBoxLotteryStyle}"
@@ -72,16 +99,17 @@
                                     <DataTemplate DataType="ListBoxItem">
                                         <Grid>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="20"></RowDefinition>
-                                                <RowDefinition Height="20"></RowDefinition>
-                                                <RowDefinition Height="20"></RowDefinition>
-                                                <RowDefinition Height="20"></RowDefinition>
-                                                <RowDefinition Height="20"></RowDefinition>
-                                                <RowDefinition Height="20"></RowDefinition>
-                                                <RowDefinition Height="20"></RowDefinition>
-                                                <RowDefinition Height="20"></RowDefinition>
-                                                <RowDefinition Height="20"></RowDefinition>
-                                                <RowDefinition Height="20"></RowDefinition>
+                                                <RowDefinition Height="12"></RowDefinition>
+                                                <RowDefinition Height="12"></RowDefinition>
+                                                <RowDefinition Height="12"></RowDefinition>
+                                                <RowDefinition Height="12"></RowDefinition>
+                                                <RowDefinition Height="12"></RowDefinition>
+                                                <RowDefinition Height="12"></RowDefinition>
+                                                <RowDefinition Height="12"></RowDefinition>
+                                                <RowDefinition Height="12"></RowDefinition>
+                                                <RowDefinition Height="12"></RowDefinition>
+                                                <RowDefinition Height="12"></RowDefinition>
+                                                <RowDefinition Height="120"></RowDefinition>
                                             </Grid.RowDefinitions>
                                             <TextBlock Grid.Row="0" Text="{Binding Number}" Style="{DynamicResource TxtIssueStyle}"></TextBlock>
                                             <TextBlock Grid.Row="1" Text="{Binding D5}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
@@ -89,10 +117,81 @@
                                             <TextBlock Grid.Row="3" Text="{Binding D3}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
                                             <TextBlock Grid.Row="4" Text="{Binding D2}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
                                             <TextBlock Grid.Row="5" Text="{Binding D1}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                            <TextBlock Grid.Row="6" Text="{Binding LargeValue,Converter={StaticResource BooleanToYesNoConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                            <TextBlock Grid.Row="7" Text="{Binding DoubleValue,Converter={StaticResource BooleanToYesNoConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                            <TextBlock Grid.Row="8" Text="{Binding RepeatValue,Converter={StaticResource BooleanToYesNoConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                            <TextBlock Grid.Row="9" Text="{Binding IntervalValue,Converter={StaticResource BooleanToYesNoConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                            <Border Grid.Row="6" Style="{DynamicResource BorderTopLineStyle}">
+                                                <TextBlock Text="{Binding LargeValue,Converter={StaticResource BooleanToLargeConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                            </Border>
+                                            <TextBlock Grid.Row="7" Text="{Binding DoubleValue,Converter={StaticResource BooleanToDoubleConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                            <TextBlock Grid.Row="8" Text="{Binding RepeatValue,Converter={StaticResource BooleanToHasConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                            <Border Grid.Row="9" Style="{DynamicResource BorderBottomLineStyle}">
+                                                <TextBlock Text="{Binding IntervalValue,Converter={StaticResource BooleanToHasConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                            </Border>
+                                            <Grid Grid.Row="10">
+                                                <Border Style="{DynamicResource PanelBallStyle}" Height="{Binding D1Height}">
+                                                    <Grid>
+                                                        <Ellipse Style="{DynamicResource BallStyle}">
+                                                            <Ellipse.Fill>
+                                                                <RadialGradientBrush>
+                                                                    <GradientStop Offset="0" Color="#FFFFFFFF"></GradientStop>
+                                                                    <GradientStop Offset="1" Color="#FFFF0000"></GradientStop>
+                                                                </RadialGradientBrush>
+                                                            </Ellipse.Fill>
+                                                        </Ellipse>
+                                                        <TextBlock Text="{Binding D1}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
+                                                    </Grid>
+                                                </Border>
+                                                <Border Style="{DynamicResource PanelBallStyle}" Height="{Binding D2Height}">
+                                                    <Grid>
+                                                        <Ellipse Style="{DynamicResource BallStyle}">
+                                                            <Ellipse.Fill>
+                                                                <RadialGradientBrush>
+                                                                    <GradientStop Offset="0" Color="#FFFFFFFF"></GradientStop>
+                                                                    <GradientStop Offset="1" Color="#FF00FF00"></GradientStop>
+                                                                </RadialGradientBrush>
+                                                            </Ellipse.Fill>
+                                                        </Ellipse>
+                                                        <TextBlock Text="{Binding D2}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
+                                                    </Grid>
+                                                </Border>
+                                                <Border Style="{DynamicResource PanelBallStyle}" Height="{Binding D3Height}">
+                                                    <Grid>
+                                                        <Ellipse Style="{DynamicResource BallStyle}">
+                                                            <Ellipse.Fill>
+                                                                <RadialGradientBrush>
+                                                                    <GradientStop Offset="0" Color="#FFFFFFFF"></GradientStop>
+                                                                    <GradientStop Offset="1" Color="#FF0000FF"></GradientStop>
+                                                                </RadialGradientBrush>
+                                                            </Ellipse.Fill>
+                                                        </Ellipse>
+                                                        <TextBlock Text="{Binding D3}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
+                                                    </Grid>
+                                                </Border>
+                                                <Border Style="{DynamicResource PanelBallStyle}" Height="{Binding D4Height}">
+                                                    <Grid>
+                                                        <Ellipse Style="{DynamicResource BallStyle}">
+                                                            <Ellipse.Fill>
+                                                                <RadialGradientBrush>
+                                                                    <GradientStop Offset="0" Color="#FFFFFFFF"></GradientStop>
+                                                                    <GradientStop Offset="1" Color="#FF777700"></GradientStop>
+                                                                </RadialGradientBrush>
+                                                            </Ellipse.Fill>
+                                                        </Ellipse>
+                                                        <TextBlock Text="{Binding D4}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
+                                                    </Grid>
+                                                </Border>
+                                                <Border Style="{DynamicResource PanelBallStyle}" Height="{Binding D5Height}">
+                                                    <Grid>
+                                                        <Ellipse Style="{DynamicResource BallStyle}">
+                                                            <Ellipse.Fill>
+                                                                <RadialGradientBrush>
+                                                                    <GradientStop Offset="0" Color="#FFFFFFFF"></GradientStop>
+                                                                    <GradientStop Offset="1" Color="#FF007777"></GradientStop>
+                                                                </RadialGradientBrush>
+                                                            </Ellipse.Fill>
+                                                        </Ellipse>
+                                                        <TextBlock Text="{Binding D5}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
+                                                    </Grid>
+                                                </Border>
+                                            </Grid>
                                         </Grid>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>

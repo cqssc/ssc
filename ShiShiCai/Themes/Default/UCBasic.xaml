@@ -77,7 +77,17 @@
         <Setter Property="BorderThickness" Value="0,0,1,0"></Setter>
         <Setter Property="BorderBrush" Value="{DynamicResource SystemBrush7}"></Setter>
     </Style>
-    
+
+    <Style x:Key="BorderTopLineStyle" TargetType="Border">
+        <Setter Property="BorderThickness" Value="0,1,0,0"></Setter>
+        <Setter Property="BorderBrush" Value="{DynamicResource SystemBrush10}"></Setter>
+    </Style>
+
+    <Style x:Key="BorderBottomLineStyle" TargetType="Border">
+        <Setter Property="BorderThickness" Value="0,0,0,1"></Setter>
+        <Setter Property="BorderBrush" Value="{DynamicResource SystemBrush10}"></Setter>
+    </Style>
+
     <Style x:Key="TxtDateStyle" TargetType="TextBlock">
         <Setter Property="TextWrapping" Value="Wrap"></Setter>
         <Setter Property="FontWeight" Value="Bold"></Setter>
@@ -94,6 +104,24 @@
     <Style x:Key="TxtLotteryStyle" TargetType="TextBlock">
         <Setter Property="HorizontalAlignment" Value="Center"></Setter>
         <Setter Property="VerticalAlignment" Value="Center"></Setter>
+    </Style>
+    
+    <Style x:Key="PanelBallStyle" TargetType="Border">
+        <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+        <Setter Property="VerticalAlignment" Value="Top"></Setter>
+    </Style>
+    
+    <Style x:Key="BallStyle" TargetType="Ellipse">
+        <Setter Property="Width" Value="12"></Setter>
+        <Setter Property="Height" Value="12"></Setter>
+        <Setter Property="VerticalAlignment" Value="Bottom"></Setter>
+        <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+    </Style>
+    
+    <Style x:Key="TxtBallLabelStyle" TargetType="TextBlock">
+        <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+        <Setter Property="VerticalAlignment" Value="Bottom"></Setter>
+        <Setter Property="Foreground" Value="Black"></Setter>
     </Style>
 
 </ResourceDictionary>

@@ -83,6 +83,12 @@ namespace ShiShiCai
                 groupItem.Date = date;
                 for (int i = group.Count() - 1; i >= 0; i--)
                 {
+                    var issueItem = group.ToList()[i];
+                    issueItem.D1Height = 120 * 1.0 / 10.0 * issueItem.D1 + 10;
+                    issueItem.D2Height = 120 * 1.0 / 10.0 * issueItem.D2 + 10;
+                    issueItem.D3Height = 120 * 1.0 / 10.0 * issueItem.D3 + 10;
+                    issueItem.D4Height = 120 * 1.0 / 10.0 * issueItem.D4 + 10;
+                    issueItem.D5Height = 120 * 1.0 / 10.0 * issueItem.D5 + 10;
                     groupItem.Children.Add(group.ToList()[i]);
                 }
                 mListGroupItems.Add(groupItem);

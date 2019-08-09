@@ -44,6 +44,12 @@ namespace ShiShiCai
         private bool mPairsValue;   //一对
         private bool mSameValue;    //豹子
 
+        private double mD1Height;
+        private double mD2Height;
+        private double mD3Height;
+        private double mD4Height;
+        private double mD5Height;
+
 
         public string Serial
         {
@@ -157,6 +163,36 @@ namespace ShiShiCai
         {
             get { return mSameValue; }
             set { mSameValue = value; OnPropertyChanged("SameValue"); }
+        }
+
+        public double D1Height
+        {
+            get { return mD1Height; }
+            set { mD1Height = value; OnPropertyChanged("D1Height"); }
+        }
+
+        public double D2Height
+        {
+            get { return mD2Height; }
+            set { mD2Height = value; OnPropertyChanged("D2Height"); }
+        }
+
+        public double D3Height
+        {
+            get { return mD3Height; }
+            set { mD3Height = value; OnPropertyChanged("D3Height"); }
+        }
+
+        public double D4Height
+        {
+            get { return mD4Height; }
+            set { mD4Height = value; OnPropertyChanged("D4Height"); }
+        }
+
+        public double D5Height
+        {
+            get { return mD5Height; }
+            set { mD5Height = value; OnPropertyChanged("D5Height"); }
         }
 
 

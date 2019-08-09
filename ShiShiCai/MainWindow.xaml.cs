@@ -151,7 +151,7 @@ namespace ShiShiCai
                     IssueItem item = new IssueItem();
                     item.Serial = dr["C001"].ToString();
                     item.Number = Convert.ToInt32(dr["C005"]);
-                    item.Date = Convert.ToDateTime(dr["C003"]);
+                    item.Date = Convert.ToInt32(dr["C004"]);
                     item.WeekDay = Convert.ToInt32(dr["C006"]);
 
                     item.D1 = Convert.ToInt32(dr["C010"]);
@@ -234,7 +234,8 @@ namespace ShiShiCai
             {
                 return "";
             }
-            DateTime date = mCurrentIssueItem.Date;
+            int intDate = mCurrentIssueItem.Date;
+            DateTime date = DateTime.ParseExact(intDate.ToString(), "yyyyMMdd", null);
             int number = mCurrentIssueItem.Number;
             return string.Format("{0:yyyy-MM-dd} {1:000}期", date, number);
         }

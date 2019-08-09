@@ -25,7 +25,7 @@ namespace ShiShiCai
     {
         private string mSerial;
         private int mNumber;
-        private DateTime mDate;
+        private int mDate;
         private int mWeekDay;
 
         private int mD1;
@@ -58,7 +58,7 @@ namespace ShiShiCai
             set { mNumber = value; OnPropertyChanged("Number"); }
         }
 
-        public DateTime Date
+        public int Date
         {
             get { return mDate; }
             set { mDate = value; OnPropertyChanged("Date"); }

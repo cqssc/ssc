@@ -131,7 +131,7 @@
             <Grid Grid.Row="2">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Name="ColumnLeft" Width="110"></ColumnDefinition>
+                        <ColumnDefinition Name="ColumnLeft" Width="0"></ColumnDefinition>
                         <ColumnDefinition Width="3"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
@@ -189,7 +189,7 @@
                             </TabControl>
                         </Border>
                     </Grid>
-                    <Border Name="PanelLeftExpander" Grid.Column="0" Grid.ColumnSpan="3" Style="{DynamicResource LeftExpanderStyle}" Visibility="Collapsed">
+                    <Border Name="PanelLeftExpander" Grid.Column="0" Grid.ColumnSpan="3" Style="{DynamicResource LeftExpanderStyle}" Visibility="Visible">
                         <Button Name="BtnLeftExpand" Style="{DynamicResource BtnExpanderStyle}" ToolTip="展开">
                             <Image Source="Themes/Default/Images/00008.png"></Image>
                         </Button>

@@ -1,7 +1,7 @@
 ﻿<Window x:Class="ShiShiCai.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:uc="clr-namespace:ShiShiCai"
+        xmlns:uc="clr-namespace:ShiShiCai.UserControls"
         Title="时时彩" Height="500" Width="800" Icon="shishicai.ico"
         Style="{DynamicResource WindowStyle}">
     <Window.Resources>

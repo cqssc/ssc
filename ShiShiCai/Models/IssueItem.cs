@@ -2,15 +2,15 @@
 //
 //        Copyright © 2016 - 2020 NetInfo Technologies Ltd.
 //        All rights reserved
-//        guid1:                    c4e153d0-966a-4683-a62a-13cd78b8b338
+//        guid1:                    ea9d3e10-eb94-4b7d-8ff9-18d95156a75f
 //        CLR Version:              4.0.30319.42000
 //        Name:                     IssueItem
 //        Computer:                 DESKTOP-5OJRDKD
 //        Organization:             NetInfo
-//        Namespace:                ShiShiCai
+//        Namespace:                ShiShiCai.Models
 //        File Name:                IssueItem
 //
-//        Created by Charley at 2019/8/8 11:37:50
+//        Created by Charley at 2019/8/11 11:43:06
 //        http://www.netinfo.com 
 //
 //======================================================================
@@ -18,7 +18,7 @@
 using System.ComponentModel;
 
 
-namespace ShiShiCai
+namespace ShiShiCai.Models
 {
     public class IssueItem : INotifyPropertyChanged
     {

@@ -6,8 +6,8 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using ShiShiCai.Common;
+using ShiShiCai.Models;
 
 namespace ShiShiCai
 {

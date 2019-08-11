@@ -2,15 +2,15 @@
 //
 //        Copyright © 2016 - 2020 NetInfo Technologies Ltd.
 //        All rights reserved
-//        guid1:                    a7119008-3db0-4286-8d6d-45106eff0d12
+//        guid1:                    a1c7f07b-d49a-4e15-9e44-a54ec8f132e3
 //        CLR Version:              4.0.30319.42000
 //        Name:                     UCBasic
 //        Computer:                 DESKTOP-5OJRDKD
 //        Organization:             NetInfo
-//        Namespace:                ShiShiCai
+//        Namespace:                ShiShiCai.UserControls
 //        File Name:                UCBasic
 //
-//        Created by Charley at 2019/8/9 10:07:21
+//        Created by Charley at 2019/8/11 11:46:46
 //        http://www.netinfo.com 
 //
 //======================================================================
@@ -20,9 +20,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Shapes;
+using ShiShiCai.Models;
 
-namespace ShiShiCai
+namespace ShiShiCai.UserControls
 {
     /// <summary>
     /// UCBasic.xaml 的交互逻辑

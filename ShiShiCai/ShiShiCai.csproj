@@ -56,13 +56,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Converters.cs" />
+    <Compile Include="Converters\Converters.cs" />
     <Compile Include="DatabaseConfig.cs" />
-    <Compile Include="IModuleView.cs" />
-    <Compile Include="IssueItem.cs" />
+    <Compile Include="Models\IModuleView.cs" />
+    <Compile Include="Models\IssueItem.cs" />
+    <Compile Include="Models\ModuleItem.cs" />
     <Compile Include="SscDefines.cs" />
     <Compile Include="SystemConfig.cs" />
-    <Compile Include="UCBasic.xaml.cs">
+    <Compile Include="UserControls\UCBasic.xaml.cs">
       <DependentUpon>UCBasic.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
@@ -161,13 +162,12 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UCBasic.xaml">
+    <Page Include="UserControls\UCBasic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModuleItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -223,6 +223,7 @@
     <Resource Include="Themes\Default\Images\00007.png" />
     <Resource Include="Themes\Default\Images\00008.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

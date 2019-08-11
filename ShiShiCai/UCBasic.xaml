@@ -92,6 +92,30 @@
                                 <TextBlock Grid.Row="18" Text="8" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
                                 <TextBlock Grid.Row="19" Text="9" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
                             </Grid>
+                            <Grid Grid.Column="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                    <RowDefinition Height="120"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <ListBox Grid.Row="1" ItemsSource="{Binding NumberGroups}" Style="{DynamicResource ListBoxNumberGroupStyle}"
+                                         ItemContainerStyle="{DynamicResource ListItemNumberGroupStyle}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate DataType="ListBoxItem">
+                                            <!--<ListBox ItemsSource="{Binding Values}" Style="{DynamicResource ListBoxNumberStyle}"
+                                                     ItemContainerStyle="{DynamicResource ListItemNumberStyle}">
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate DataType="ListBoxItem">
+                                                        <TextBlock Text="{Binding Value}" HorizontalAlignment="Center"></TextBlock>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>-->
+                                            <Grid>
+                                                <Path Data="{Binding Path1}" Stroke="#FFFF0000" StrokeThickness="2"></Path>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </Grid>
                             <ListBox Grid.Column="2" ItemsSource="{Binding Children}"
                                      Style="{DynamicResource ListBoxLotteryStyle}"
                                      ItemContainerStyle="{DynamicResource ListItemLotteryStyle}">

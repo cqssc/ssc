@@ -43,7 +43,9 @@
                              ItemContainerStyle="{DynamicResource ListItemPositionStyle}">
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="ListBoxItem">
-                                <CheckBox IsChecked="{Binding IsShow}" Content="{Binding Name}"
+                                <CheckBox IsChecked="{Binding IsShow}"
+                                          Content="{Binding Name}"
+                                          Foreground="{Binding Brush}"
                                           Style="{DynamicResource CheckBoxPositionStyle}"
                                           Command="uc:UCBasic.PositionClickCommand"></CheckBox>
                             </DataTemplate>
@@ -53,8 +55,8 @@
             </Grid>
         </Grid>
         <Grid Grid.Row="1">
-            <ListBox Name="ListBoxLotteryGroup" Style="{DynamicResource ListBoxLotteryGroupStyle}"
-                     ItemContainerStyle="{DynamicResource ListItemLotteryGroupStyle}">
+            <ListBox Name="ListBoxIssueDate" Style="{DynamicResource ListBoxIssueDateStyle}"
+                     ItemContainerStyle="{DynamicResource ListItemIssueDateStyle}">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="ListBoxItem">
                         <Grid>
@@ -120,24 +122,34 @@
                                     <RowDefinition Height="*"></RowDefinition>
                                     <RowDefinition Height="120"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <ListBox Grid.Row="1" ItemsSource="{Binding NumberGroups}" Style="{DynamicResource ListBoxNumberGroupStyle}"
-                                         ItemContainerStyle="{DynamicResource ListItemNumberGroupStyle}">
+                                <ListBox Grid.Row="1" ItemsSource="{Binding Groups}" Style="{DynamicResource ListBoxIssueGroupStyle}"
+                                         ItemContainerStyle="{DynamicResource ListItemIssueGroupStyle}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate DataType="ListBoxItem">
                                             <Grid>
-                                                <Path Data="{Binding Path1}" Stroke="#FFFF0000" StrokeThickness="2" Visibility="{Binding Path1Visible,Converter={StaticResource BooleanToVisibilityConverter},RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Path>
-                                                <Path Data="{Binding Path2}" Stroke="#FF00FF00" StrokeThickness="2" Visibility="{Binding Path2Visible,Converter={StaticResource BooleanToVisibilityConverter},RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Path>
-                                                <Path Data="{Binding Path3}" Stroke="#FF0000FF" StrokeThickness="2" Visibility="{Binding Path3Visible,Converter={StaticResource BooleanToVisibilityConverter},RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Path>
-                                                <Path Data="{Binding Path4}" Stroke="#FF777700" StrokeThickness="2" Visibility="{Binding Path4Visible,Converter={StaticResource BooleanToVisibilityConverter},RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Path>
-                                                <Path Data="{Binding Path5}" Stroke="#FF007777" StrokeThickness="2" Visibility="{Binding Path5Visible,Converter={StaticResource BooleanToVisibilityConverter},RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Path>
+                                                <Path Data="{Binding Path1}" StrokeThickness="2" 
+                                                      Stroke="{Binding Path1Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"
+                                                      Visibility="{Binding Path1Visible,Converter={StaticResource BooleanToVisibilityConverter},RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Path>
+                                                <Path Data="{Binding Path2}" StrokeThickness="2" 
+                                                      Stroke="{Binding Path2Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"
+                                                      Visibility="{Binding Path2Visible,Converter={StaticResource BooleanToVisibilityConverter},RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Path>
+                                                <Path Data="{Binding Path3}" StrokeThickness="2" 
+                                                      Stroke="{Binding Path3Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"
+                                                      Visibility="{Binding Path3Visible,Converter={StaticResource BooleanToVisibilityConverter},RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Path>
+                                                <Path Data="{Binding Path4}" StrokeThickness="2" 
+                                                      Stroke="{Binding Path4Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"
+                                                      Visibility="{Binding Path4Visible,Converter={StaticResource BooleanToVisibilityConverter},RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Path>
+                                                <Path Data="{Binding Path5}" StrokeThickness="2" 
+                                                      Stroke="{Binding Path5Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"
+                                                      Visibility="{Binding Path5Visible,Converter={StaticResource BooleanToVisibilityConverter},RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Path>
                                             </Grid>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>
                             </Grid>
-                            <ListBox Grid.Column="2" ItemsSource="{Binding Children}"
-                                     Style="{DynamicResource ListBoxLotteryStyle}"
-                                     ItemContainerStyle="{DynamicResource ListItemLotteryStyle}">
+                            <ListBox Grid.Column="2" ItemsSource="{Binding Issues}"
+                                     Style="{DynamicResource ListBoxIssueNumberStyle}"
+                                     ItemContainerStyle="{DynamicResource ListItemIssueNumberStyle}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate DataType="ListBoxItem">
                                         <Grid>
@@ -172,70 +184,35 @@
                                                 <Border Style="{DynamicResource PanelBallStyle}" Height="{Binding D1Height}"
                                                          Visibility="{Binding Path1Visible,Converter={StaticResource BooleanToVisibilityConverter},RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}">
                                                     <Grid>
-                                                        <Ellipse Style="{DynamicResource BallStyle}">
-                                                            <Ellipse.Fill>
-                                                                <RadialGradientBrush>
-                                                                    <GradientStop Offset="0" Color="#FFFFFFFF"></GradientStop>
-                                                                    <GradientStop Offset="1" Color="#FFFF0000"></GradientStop>
-                                                                </RadialGradientBrush>
-                                                            </Ellipse.Fill>
-                                                        </Ellipse>
+                                                        <Ellipse Style="{DynamicResource BallStyle}" Fill="{Binding Path1Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Ellipse>
                                                         <TextBlock Text="{Binding D1}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
                                                     </Grid>
                                                 </Border>
                                                 <Border Style="{DynamicResource PanelBallStyle}" Height="{Binding D2Height}"
                                                          Visibility="{Binding Path2Visible,Converter={StaticResource BooleanToVisibilityConverter},RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}">
                                                     <Grid>
-                                                        <Ellipse Style="{DynamicResource BallStyle}">
-                                                            <Ellipse.Fill>
-                                                                <RadialGradientBrush>
-                                                                    <GradientStop Offset="0" Color="#FFFFFFFF"></GradientStop>
-                                                                    <GradientStop Offset="1" Color="#FF00FF00"></GradientStop>
-                                                                </RadialGradientBrush>
-                                                            </Ellipse.Fill>
-                                                        </Ellipse>
+                                                        <Ellipse Style="{DynamicResource BallStyle}" Fill="{Binding Path2Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Ellipse>
                                                         <TextBlock Text="{Binding D2}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
                                                     </Grid>
                                                 </Border>
                                                 <Border Style="{DynamicResource PanelBallStyle}" Height="{Binding D3Height}"
                                                          Visibility="{Binding Path3Visible,Converter={StaticResource BooleanToVisibilityConverter},RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}">
                                                     <Grid>
-                                                        <Ellipse Style="{DynamicResource BallStyle}">
-                                                            <Ellipse.Fill>
-                                                                <RadialGradientBrush>
-                                                                    <GradientStop Offset="0" Color="#FFFFFFFF"></GradientStop>
-                                                                    <GradientStop Offset="1" Color="#FF0000FF"></GradientStop>
-                                                                </RadialGradientBrush>
-                                                            </Ellipse.Fill>
-                                                        </Ellipse>
+                                                        <Ellipse Style="{DynamicResource BallStyle}" Fill="{Binding Path3Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Ellipse>
                                                         <TextBlock Text="{Binding D3}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
                                                     </Grid>
                                                 </Border>
                                                 <Border Style="{DynamicResource PanelBallStyle}" Height="{Binding D4Height}"
                                                          Visibility="{Binding Path4Visible,Converter={StaticResource BooleanToVisibilityConverter},RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}">
                                                     <Grid>
-                                                        <Ellipse Style="{DynamicResource BallStyle}">
-                                                            <Ellipse.Fill>
-                                                                <RadialGradientBrush>
-                                                                    <GradientStop Offset="0" Color="#FFFFFFFF"></GradientStop>
-                                                                    <GradientStop Offset="1" Color="#FF777700"></GradientStop>
-                                                                </RadialGradientBrush>
-                                                            </Ellipse.Fill>
-                                                        </Ellipse>
+                                                        <Ellipse Style="{DynamicResource BallStyle}" Fill="{Binding Path4Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Ellipse>
                                                         <TextBlock Text="{Binding D4}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
                                                     </Grid>
                                                 </Border>
                                                 <Border Style="{DynamicResource PanelBallStyle}" Height="{Binding D5Height}"
                                                          Visibility="{Binding Path5Visible,Converter={StaticResource BooleanToVisibilityConverter},RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}">
                                                     <Grid>
-                                                        <Ellipse Style="{DynamicResource BallStyle}">
-                                                            <Ellipse.Fill>
-                                                                <RadialGradientBrush>
-                                                                    <GradientStop Offset="0" Color="#FFFFFFFF"></GradientStop>
-                                                                    <GradientStop Offset="1" Color="#FF007777"></GradientStop>
-                                                                </RadialGradientBrush>
-                                                            </Ellipse.Fill>
-                                                        </Ellipse>
+                                                        <Ellipse Style="{DynamicResource BallStyle}" Fill="{Binding Path5Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Ellipse>
                                                         <TextBlock Text="{Binding D5}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
                                                     </Grid>
                                                 </Border>

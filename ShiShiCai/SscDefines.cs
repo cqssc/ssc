@@ -29,7 +29,7 @@ namespace ShiShiCai
         public const int MODULE_HISTORY = 5;
 
         public const string MODULE_NAME_BASIC = "走势";
-        public const string MODULE_NAME_LOST = "遗失";
+        public const string MODULE_NAME_LOST = "遗漏";
         public const string MODULE_NAME_HOT = "热度";
         public const string MODULE_NAME_TREND = "趋势";
         public const string MODULE_NAME_HISTORY = "历史";

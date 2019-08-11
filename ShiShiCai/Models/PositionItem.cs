@@ -16,6 +16,7 @@
 //======================================================================
 
 using System.ComponentModel;
+using System.Windows.Media;
 
 
 namespace ShiShiCai.Models
@@ -24,6 +25,7 @@ namespace ShiShiCai.Models
     {
         private int mNumber;
         private string mName;
+        private Brush mBrush;
         private bool mIsShow;
 
         public int Number
@@ -36,6 +38,12 @@ namespace ShiShiCai.Models
         {
             get { return mName; }
             set { mName = value; OnPropertyChanged("Name"); }
+        }
+
+        public Brush Brush
+        {
+            get { return mBrush; }
+            set { mBrush = value; OnPropertyChanged("Brush"); }
         }
 
         public bool IsShow

@@ -25,7 +25,8 @@ namespace ShiShiCai.Models
     {
         private int mDate;
 
-        private ObservableCollection<IssueGroupItem> mIssues = new ObservableCollection<IssueGroupItem>();
+        private ObservableCollection<IssueItem> mIssues = new ObservableCollection<IssueItem>();
+        private ObservableCollection<IssueGroupItem> mGroups = new ObservableCollection<IssueGroupItem>(); 
 
         public int Date
         {
@@ -33,10 +34,15 @@ namespace ShiShiCai.Models
             set { mDate = value; OnPropertyChanged("Date"); }
         }
 
-        public ObservableCollection<IssueGroupItem> Issues
+        public ObservableCollection<IssueItem> Issues
         {
             get { return mIssues; }
         }
+
+        public ObservableCollection<IssueGroupItem> Groups
+        {
+            get { return mGroups; }
+        } 
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -5,72 +5,10 @@
         <ResourceDictionary Source="Common.xaml"></ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
 
-    <Style x:Key="ListBoxLotteryGroupStyle" TargetType="ListBox">
-        <Setter Property="Background" Value="Transparent"></Setter>
-        <Setter Property="BorderBrush" Value="{DynamicResource SystemBrush7}"></Setter>
-        <Setter Property="BorderThickness" Value="1"></Setter>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ListBox}">
-                    <Border Name="Border"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            Background="{TemplateBinding Background}">
-                        <ScrollViewer Focusable="false" CanContentScroll="False">
-                            <StackPanel IsItemsHost="True" />
-                        </ScrollViewer>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="ListItemLotteryGroupStyle" TargetType="ListBoxItem">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                    <Border x:Name="Border"
-                            BorderThickness="0,0,0,1"
-                            BorderBrush="{DynamicResource SystemBrush7}"
-                              SnapsToDevicePixels="true"
-                            Background="Transparent">
-                        <ContentPresenter />
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="ListBoxLotteryStyle" TargetType="ListBox">
-        <Setter Property="Background" Value="Transparent"></Setter>
-        <Setter Property="BorderBrush" Value="Transparent"></Setter>
-        <Setter Property="BorderThickness" Value="0"></Setter>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ListBox}">
-                    <Border Name="Border"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            Background="{TemplateBinding Background}">
-                        <StackPanel IsItemsHost="True" Orientation="Horizontal" />
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="ListItemLotteryStyle" TargetType="ListBoxItem">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                    <Border x:Name="Border"
-                              SnapsToDevicePixels="true"
-                            Background="Transparent">
-                        <ContentPresenter Width="20" />
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+    <Style x:Key="CheckBoxPositionStyle" TargetType="CheckBox">
+        <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
     </Style>
 
     <Style x:Key="BorderDateStyle" TargetType="Border">
@@ -121,73 +59,9 @@
     <Style x:Key="TxtBallLabelStyle" TargetType="TextBlock">
         <Setter Property="HorizontalAlignment" Value="Center"></Setter>
         <Setter Property="VerticalAlignment" Value="Bottom"></Setter>
-        <Setter Property="Foreground" Value="Black"></Setter>
+        <Setter Property="Foreground" Value="{DynamicResource SystemBrush1}"></Setter>
     </Style>
 
-    <Style x:Key="ListBoxNumberGroupStyle" TargetType="ListBox">
-        <Setter Property="Background" Value="Transparent"></Setter>
-        <Setter Property="BorderBrush" Value="Transparent"></Setter>
-        <Setter Property="BorderThickness" Value="0"></Setter>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ListBox}">
-                    <Border Name="Border"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            Background="{TemplateBinding Background}">
-                        <Canvas IsItemsHost="True" />
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="ListItemNumberGroupStyle" TargetType="ListBoxItem">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                    <Border x:Name="Border"
-                              SnapsToDevicePixels="true"
-                            Background="Transparent">
-                        <ContentPresenter />
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="ListBoxNumberStyle" TargetType="ListBox">
-        <Setter Property="Background" Value="Transparent"></Setter>
-        <Setter Property="BorderBrush" Value="Transparent"></Setter>
-        <Setter Property="BorderThickness" Value="0"></Setter>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ListBox}">
-                    <Border Name="Border"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            Background="{TemplateBinding Background}">
-                        <StackPanel IsItemsHost="True" Orientation="Horizontal"/>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="ListItemNumberStyle" TargetType="ListBoxItem">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                    <Border x:Name="Border"
-                              SnapsToDevicePixels="true"
-                            Background="Transparent">
-                        <ContentPresenter Width="20" />
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    
     <Style x:Key="ListBoxPositionStyle" TargetType="ListBox">
         <Setter Property="Background" Value="Transparent"></Setter>
         <Setter Property="BorderBrush" Value="Transparent"></Setter>
@@ -205,6 +79,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style x:Key="ListItemPositionStyle" TargetType="ListBoxItem">
         <Setter Property="Template">
             <Setter.Value>
@@ -218,11 +93,105 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <Style x:Key="CheckBoxPositionStyle" TargetType="CheckBox">
-        <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-        <Setter Property="VerticalAlignment" Value="Center"></Setter>
-        <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+
+    <Style x:Key="ListBoxIssueDateStyle" TargetType="ListBox">
+        <Setter Property="Background" Value="Transparent"></Setter>
+        <Setter Property="BorderBrush" Value="{DynamicResource SystemBrush7}"></Setter>
+        <Setter Property="BorderThickness" Value="1"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBox}">
+                    <Border Name="Border"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="{TemplateBinding Background}">
+                        <ScrollViewer Focusable="false" CanContentScroll="False">
+                            <StackPanel IsItemsHost="True" />
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
+    <Style x:Key="ListItemIssueDateStyle" TargetType="ListBoxItem">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Border x:Name="Border"
+                            BorderThickness="0,0,0,1"
+                            BorderBrush="{DynamicResource SystemBrush7}"
+                              SnapsToDevicePixels="true"
+                            Background="Transparent">
+                        <ContentPresenter />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ListBoxIssueNumberStyle" TargetType="ListBox">
+        <Setter Property="Background" Value="Transparent"></Setter>
+        <Setter Property="BorderBrush" Value="Transparent"></Setter>
+        <Setter Property="BorderThickness" Value="0"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBox}">
+                    <Border Name="Border"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="{TemplateBinding Background}">
+                        <StackPanel IsItemsHost="True" Orientation="Horizontal" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ListItemIssueNumberStyle" TargetType="ListBoxItem">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Border x:Name="Border"
+                              SnapsToDevicePixels="true"
+                            Background="Transparent">
+                        <ContentPresenter Width="20" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ListBoxIssueGroupStyle" TargetType="ListBox">
+        <Setter Property="Background" Value="Transparent"></Setter>
+        <Setter Property="BorderBrush" Value="Transparent"></Setter>
+        <Setter Property="BorderThickness" Value="0"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBox}">
+                    <Border Name="Border"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="{TemplateBinding Background}">
+                        <Canvas IsItemsHost="True" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ListItemIssueGroupStyle" TargetType="ListBoxItem">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Border x:Name="Border"
+                              SnapsToDevicePixels="true"
+                            Background="Transparent">
+                        <ContentPresenter />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
 </ResourceDictionary>

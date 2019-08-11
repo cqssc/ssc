@@ -16,7 +16,6 @@
 //======================================================================
 
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -30,8 +29,11 @@ namespace ShiShiCai.UserControls
     /// </summary>
     public partial class UCBasic : IModuleView
     {
+
+        #region PageParent
+
         public static readonly DependencyProperty PageParentProperty =
-            DependencyProperty.Register("PageParent", typeof(MainWindow), typeof(UCBasic), new PropertyMetadata(default(MainWindow)));
+          DependencyProperty.Register("PageParent", typeof(MainWindow), typeof(UCBasic), new PropertyMetadata(default(MainWindow)));
 
         public MainWindow PageParent
         {
@@ -39,8 +41,10 @@ namespace ShiShiCai.UserControls
             set { SetValue(PageParentProperty, value); }
         }
 
+        #endregion
 
-        #region Color and Visibility
+
+        #region 位置颜色和可见性
 
         public static readonly DependencyProperty Path1VisibleProperty =
            DependencyProperty.Register("Path1Visible", typeof(bool), typeof(UCBasic), new PropertyMetadata(default(bool)));
@@ -135,14 +139,7 @@ namespace ShiShiCai.UserControls
         #endregion
 
 
-        private bool mIsInited;
-
-        private readonly ObservableCollection<IssueDateItem> mListGroupItems =
-            new ObservableCollection<IssueDateItem>();
-
-        private readonly ObservableCollection<PositionItem> mListPositionItems =
-            new ObservableCollection<PositionItem>();
-
+        #region 位置勾选命令
 
         private static readonly RoutedUICommand mPositionClickCommand = new RoutedUICommand();
 
@@ -150,6 +147,17 @@ namespace ShiShiCai.UserControls
         {
             get { return mPositionClickCommand; }
         }
+
+        #endregion
+
+
+        private bool mIsInited;
+
+        private readonly ObservableCollection<IssueDateItem> mListGroupItems =
+            new ObservableCollection<IssueDateItem>();
+
+        private readonly ObservableCollection<PositionItem> mListPositionItems =
+            new ObservableCollection<PositionItem>();
 
 
         public UCBasic()
@@ -170,6 +178,9 @@ namespace ShiShiCai.UserControls
                 mIsInited = true;
             }
         }
+
+
+        #region Init and load
 
         public void Reload()
         {
@@ -216,7 +227,7 @@ namespace ShiShiCai.UserControls
             item = new PositionItem();
             item.Number = 5;
             item.Name = "万位";
-            item.Brush =Brushes.Fuchsia;
+            item.Brush = Brushes.Fuchsia;
             item.IsShow = Path5Visible;
             mListPositionItems.Add(item);
         }
@@ -355,6 +366,11 @@ namespace ShiShiCai.UserControls
             }
         }
 
+        #endregion
+
+
+        #region Others
+
         private PathGeometry OptPathGemotry(IssueGroupItem numberGroup)
         {
             var itemWidth = 20;
@@ -379,6 +395,11 @@ namespace ShiShiCai.UserControls
             }
             return null;
         }
+
+        #endregion
+
+
+        #region 事件处理
 
         private void PositionClick_Executed(object sender, ExecutedRoutedEventArgs e)
         {
@@ -413,6 +434,8 @@ namespace ShiShiCai.UserControls
                 Path5Color = pItem.Brush;
             }
         }
+
+        #endregion
 
 
         #region basic

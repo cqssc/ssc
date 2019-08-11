@@ -87,7 +87,7 @@
                     <Border x:Name="Border"
                               SnapsToDevicePixels="true"
                             Background="Transparent">
-                        <ContentPresenter />
+                        <ContentPresenter Margin="5,0"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

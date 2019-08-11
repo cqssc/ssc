@@ -19,6 +19,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using ShiShiCai.Models;
 
@@ -38,16 +39,76 @@ namespace ShiShiCai.UserControls
             set { SetValue(PageParentProperty, value); }
         }
 
+        public static readonly DependencyProperty Path1VisibleProperty =
+            DependencyProperty.Register("Path1Visible", typeof(bool), typeof(UCBasic), new PropertyMetadata(default(bool)));
+
+        public bool Path1Visible
+        {
+            get { return (bool)GetValue(Path1VisibleProperty); }
+            set { SetValue(Path1VisibleProperty, value); }
+        }
+
+        public static readonly DependencyProperty Path2VisibleProperty =
+            DependencyProperty.Register("Path2Visible", typeof(bool), typeof(UCBasic), new PropertyMetadata(default(bool)));
+
+        public bool Path2Visible
+        {
+            get { return (bool)GetValue(Path2VisibleProperty); }
+            set { SetValue(Path2VisibleProperty, value); }
+        }
+
+        public static readonly DependencyProperty Path3VisibleProperty =
+            DependencyProperty.Register("Path3Visible", typeof(bool), typeof(UCBasic), new PropertyMetadata(default(bool)));
+
+        public bool Path3Visible
+        {
+            get { return (bool)GetValue(Path3VisibleProperty); }
+            set { SetValue(Path3VisibleProperty, value); }
+        }
+
+        public static readonly DependencyProperty Path4VisibleProperty =
+            DependencyProperty.Register("Path4Visible", typeof(bool), typeof(UCBasic), new PropertyMetadata(default(bool)));
+
+        public bool Path4Visible
+        {
+            get { return (bool)GetValue(Path4VisibleProperty); }
+            set { SetValue(Path4VisibleProperty, value); }
+        }
+
+        public static readonly DependencyProperty Path5VisibleProperty =
+            DependencyProperty.Register("Path5Visible", typeof(bool), typeof(UCBasic), new PropertyMetadata(true));
+
+        public bool Path5Visible
+        {
+            get { return (bool)GetValue(Path5VisibleProperty); }
+            set { SetValue(Path5VisibleProperty, value); }
+        }
+
         private bool mIsInited;
 
         private readonly ObservableCollection<LotteryGroupItem> mListGroupItems =
             new ObservableCollection<LotteryGroupItem>();
+
+        private readonly ObservableCollection<PositionItem> mListPositionItems =
+            new ObservableCollection<PositionItem>();
+
+
+        private static readonly RoutedUICommand mPositionClickCommand = new RoutedUICommand();
+
+        public static RoutedUICommand PositionClickCommand
+        {
+            get { return mPositionClickCommand; }
+        }
+
 
         public UCBasic()
         {
             InitializeComponent();
 
             Loaded += UCBasic_Loaded;
+
+            CommandBindings.Add(new CommandBinding(PositionClickCommand,
+                PositionClick_Executed, (s, ce) => ce.CanExecute = true));
         }
 
         void UCBasic_Loaded(object sender, RoutedEventArgs e)
@@ -66,10 +127,42 @@ namespace ShiShiCai.UserControls
 
         private void Init()
         {
+            ListBoxPosition.ItemsSource = mListPositionItems;
             ListBoxLotteryGroup.ItemsSource = mListGroupItems;
 
+            InitPositionItems();
             InitLotteryItems();
             InitLotteryPath();
+        }
+
+        private void InitPositionItems()
+        {
+            mListPositionItems.Clear();
+            PositionItem item = new PositionItem();
+            item.Number = 1;
+            item.Name = "个位";
+            item.IsShow = Path1Visible;
+            mListPositionItems.Add(item);
+            item = new PositionItem();
+            item.Number = 2;
+            item.Name = "十位";
+            item.IsShow = Path2Visible;
+            mListPositionItems.Add(item);
+            item = new PositionItem();
+            item.Number = 3;
+            item.Name = "百位";
+            item.IsShow = Path3Visible;
+            mListPositionItems.Add(item);
+            item = new PositionItem();
+            item.Number = 4;
+            item.Name = "千位";
+            item.IsShow = Path4Visible;
+            mListPositionItems.Add(item);
+            item = new PositionItem();
+            item.Number = 5;
+            item.Name = "万位";
+            item.IsShow = Path5Visible;
+            mListPositionItems.Add(item);
         }
 
         private void InitLotteryItems()
@@ -175,6 +268,34 @@ namespace ShiShiCai.UserControls
                     PathGeometry path = OptPathGemotry(numberGroup);
                     numberGroup.Path1 = path;
                 }
+                number = 2;
+                numberGroup = groupItem.NumberGroups.FirstOrDefault(n => n.Number == number);
+                if (numberGroup != null)
+                {
+                    PathGeometry path = OptPathGemotry(numberGroup);
+                    numberGroup.Path2 = path;
+                }
+                number = 3;
+                numberGroup = groupItem.NumberGroups.FirstOrDefault(n => n.Number == number);
+                if (numberGroup != null)
+                {
+                    PathGeometry path = OptPathGemotry(numberGroup);
+                    numberGroup.Path3 = path;
+                }
+                number = 4;
+                numberGroup = groupItem.NumberGroups.FirstOrDefault(n => n.Number == number);
+                if (numberGroup != null)
+                {
+                    PathGeometry path = OptPathGemotry(numberGroup);
+                    numberGroup.Path4 = path;
+                }
+                number = 5;
+                numberGroup = groupItem.NumberGroups.FirstOrDefault(n => n.Number == number);
+                if (numberGroup != null)
+                {
+                    PathGeometry path = OptPathGemotry(numberGroup);
+                    numberGroup.Path5 = path;
+                }
             }
         }
 
@@ -201,6 +322,35 @@ namespace ShiShiCai.UserControls
                 return path;
             }
             return null;
+        }
+
+        private void PositionClick_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            var pItem = mListPositionItems.FirstOrDefault(p => p.Number == 1);
+            if (pItem != null)
+            {
+                Path1Visible = pItem.IsShow;
+            }
+            pItem = mListPositionItems.FirstOrDefault(p => p.Number == 2);
+            if (pItem != null)
+            {
+                Path2Visible = pItem.IsShow;
+            }
+            pItem = mListPositionItems.FirstOrDefault(p => p.Number == 3);
+            if (pItem != null)
+            {
+                Path3Visible = pItem.IsShow;
+            }
+            pItem = mListPositionItems.FirstOrDefault(p => p.Number == 4);
+            if (pItem != null)
+            {
+                Path4Visible = pItem.IsShow;
+            }
+            pItem = mListPositionItems.FirstOrDefault(p => p.Number == 5);
+            if (pItem != null)
+            {
+                Path5Visible = pItem.IsShow;
+            }
         }
 
 

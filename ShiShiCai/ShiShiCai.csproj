@@ -59,12 +59,19 @@
     <Compile Include="Converters\Converters.cs" />
     <Compile Include="DatabaseConfig.cs" />
     <Compile Include="Models\IModuleView.cs" />
+    <Compile Include="Models\IssueDateItem.cs" />
+    <Compile Include="Models\IssueGroupItem.cs" />
     <Compile Include="Models\IssueItem.cs" />
+    <Compile Include="Models\IssueNumberItem.cs" />
     <Compile Include="Models\ModuleItem.cs" />
+    <Compile Include="Models\PositionItem.cs" />
     <Compile Include="SscDefines.cs" />
     <Compile Include="SystemConfig.cs" />
     <Compile Include="UserControls\UCBasic.xaml.cs">
       <DependentUpon>UCBasic.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCPerformance.xaml.cs">
+      <DependentUpon>UCPerformance.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -162,7 +169,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Themes\Default\UCPerformance.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\UCBasic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCPerformance.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -20,7 +20,7 @@ namespace ShiShiCai
     public class SscDefines
     {
 
-        #region
+        #region 模块定义
 
         public const int MODULE_BASIC = 1;
         public const int MODULE_LOST = 2;

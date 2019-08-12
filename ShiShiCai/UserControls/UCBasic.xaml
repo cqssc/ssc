@@ -15,8 +15,6 @@
                 <ResourceDictionary Source="/Themes/Default/UCBasic.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
 
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></BooleanToVisibilityConverter>
-
             <conv:BooleanToLargeConverter x:Key="BooleanToLargeConverter"></conv:BooleanToLargeConverter>
             <conv:BooleanToDoubleConverter x:Key="BooleanToDoubleConverter"></conv:BooleanToDoubleConverter>
             <conv:BooleanToHasConverter x:Key="BooleanToHasConverter"></conv:BooleanToHasConverter>
@@ -84,16 +82,6 @@
                                             <RowDefinition Height="12"></RowDefinition>
                                             <RowDefinition Height="12"></RowDefinition>
                                             <RowDefinition Height="12"></RowDefinition>
-                                            <RowDefinition Height="12"></RowDefinition>
-                                            <RowDefinition Height="12"></RowDefinition>
-                                            <RowDefinition Height="12"></RowDefinition>
-                                            <RowDefinition Height="12"></RowDefinition>
-                                            <RowDefinition Height="12"></RowDefinition>
-                                            <RowDefinition Height="12"></RowDefinition>
-                                            <RowDefinition Height="12"></RowDefinition>
-                                            <RowDefinition Height="12"></RowDefinition>
-                                            <RowDefinition Height="12"></RowDefinition>
-                                            <RowDefinition Height="12"></RowDefinition>
                                         </Grid.RowDefinitions>
                                         <TextBlock Grid.Row="0" Text="期号" Style="{DynamicResource TxtIssueStyle}"></TextBlock>
                                         <TextBlock Grid.Row="1" Text="万" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
@@ -109,46 +97,6 @@
                                         <Border Grid.Row="9" Style="{DynamicResource BorderBottomLineStyle}">
                                             <TextBlock Text="间隔" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
                                         </Border>
-                                        <TextBlock Grid.Row="10" Text="0" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                        <TextBlock Grid.Row="11" Text="1" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                        <TextBlock Grid.Row="12" Text="2" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                        <TextBlock Grid.Row="13" Text="3" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                        <TextBlock Grid.Row="14" Text="4" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                        <TextBlock Grid.Row="15" Text="5" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                        <TextBlock Grid.Row="16" Text="6" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                        <TextBlock Grid.Row="17" Text="7" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                        <TextBlock Grid.Row="18" Text="8" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                        <TextBlock Grid.Row="19" Text="9" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                    </Grid>
-                                    <Grid Grid.Column="2">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"></RowDefinition>
-                                            <RowDefinition Height="120"></RowDefinition>
-                                        </Grid.RowDefinitions>
-                                        <ListBox Grid.Row="1" ItemsSource="{Binding Groups}" Style="{DynamicResource ListBoxIssueGroupStyle}"
-                                         ItemContainerStyle="{DynamicResource ListItemIssueGroupStyle}">
-                                            <ListBox.ItemTemplate>
-                                                <DataTemplate DataType="ListBoxItem">
-                                                    <Grid>
-                                                        <Path Data="{Binding Path1}" StrokeThickness="2" 
-                                                      Stroke="{Binding Path1Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"
-                                                      Visibility="{Binding Path1Visible,Converter={StaticResource BooleanToVisibilityConverter},RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Path>
-                                                        <Path Data="{Binding Path2}" StrokeThickness="2" 
-                                                      Stroke="{Binding Path2Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"
-                                                      Visibility="{Binding Path2Visible,Converter={StaticResource BooleanToVisibilityConverter},RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Path>
-                                                        <Path Data="{Binding Path3}" StrokeThickness="2" 
-                                                      Stroke="{Binding Path3Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"
-                                                      Visibility="{Binding Path3Visible,Converter={StaticResource BooleanToVisibilityConverter},RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Path>
-                                                        <Path Data="{Binding Path4}" StrokeThickness="2" 
-                                                      Stroke="{Binding Path4Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"
-                                                      Visibility="{Binding Path4Visible,Converter={StaticResource BooleanToVisibilityConverter},RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Path>
-                                                        <Path Data="{Binding Path5}" StrokeThickness="2" 
-                                                      Stroke="{Binding Path5Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"
-                                                      Visibility="{Binding Path5Visible,Converter={StaticResource BooleanToVisibilityConverter},RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Path>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ListBox.ItemTemplate>
-                                        </ListBox>
                                     </Grid>
                                     <ListBox Grid.Column="2" ItemsSource="{Binding Issues}"
                                      Style="{DynamicResource ListBoxIssueNumberStyle}"
@@ -167,7 +115,6 @@
                                                         <RowDefinition Height="12"></RowDefinition>
                                                         <RowDefinition Height="12"></RowDefinition>
                                                         <RowDefinition Height="12"></RowDefinition>
-                                                        <RowDefinition Height="120"></RowDefinition>
                                                     </Grid.RowDefinitions>
                                                     <TextBlock Grid.Row="0" Text="{Binding Number}" Style="{DynamicResource TxtIssueStyle}"></TextBlock>
                                                     <TextBlock Grid.Row="1" Text="{Binding D5}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
@@ -183,53 +130,6 @@
                                                     <Border Grid.Row="9" Style="{DynamicResource BorderBottomLineStyle}">
                                                         <TextBlock Text="{Binding IntervalValue,Converter={StaticResource BooleanToHasConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
                                                     </Border>
-                                                    <Grid Grid.Row="10">
-                                                        <Border Style="{DynamicResource PanelBallStyle}" Height="{Binding D1Height}"
-                                                         Visibility="{Binding Path1Visible,Converter={StaticResource BooleanToVisibilityConverter},RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}">
-                                                            <Border Height="12" VerticalAlignment="Bottom">
-                                                                <Grid>
-                                                                    <Ellipse Style="{DynamicResource BallStyle}" Fill="{Binding Path1Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Ellipse>
-                                                                    <TextBlock Text="{Binding D1}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
-                                                                </Grid>
-                                                            </Border>
-                                                        </Border>
-                                                        <Border Style="{DynamicResource PanelBallStyle}" Height="{Binding D2Height}"
-                                                         Visibility="{Binding Path2Visible,Converter={StaticResource BooleanToVisibilityConverter},RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}">
-                                                            <Border Height="12" VerticalAlignment="Bottom">
-                                                                <Grid>
-                                                                    <Ellipse Style="{DynamicResource BallStyle}" Fill="{Binding Path2Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Ellipse>
-                                                                    <TextBlock Text="{Binding D2}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
-                                                                </Grid>
-                                                            </Border>
-                                                        </Border>
-                                                        <Border Style="{DynamicResource PanelBallStyle}" Height="{Binding D3Height}"
-                                                         Visibility="{Binding Path3Visible,Converter={StaticResource BooleanToVisibilityConverter},RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}">
-                                                            <Border Height="12" VerticalAlignment="Bottom">
-                                                                <Grid>
-                                                                    <Ellipse Style="{DynamicResource BallStyle}" Fill="{Binding Path3Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Ellipse>
-                                                                    <TextBlock Text="{Binding D3}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
-                                                                </Grid>
-                                                            </Border>
-                                                        </Border>
-                                                        <Border Style="{DynamicResource PanelBallStyle}" Height="{Binding D4Height}"
-                                                         Visibility="{Binding Path4Visible,Converter={StaticResource BooleanToVisibilityConverter},RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}">
-                                                            <Border Height="12" VerticalAlignment="Bottom">
-                                                                <Grid>
-                                                                    <Ellipse Style="{DynamicResource BallStyle}" Fill="{Binding Path4Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Ellipse>
-                                                                    <TextBlock Text="{Binding D4}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
-                                                                </Grid>
-                                                            </Border>
-                                                        </Border>
-                                                        <Border Style="{DynamicResource PanelBallStyle}" Height="{Binding D5Height}"
-                                                         Visibility="{Binding Path5Visible,Converter={StaticResource BooleanToVisibilityConverter},RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}">
-                                                            <Border Height="12" VerticalAlignment="Bottom">
-                                                                <Grid>
-                                                                    <Ellipse Style="{DynamicResource BallStyle}" Fill="{Binding Path5Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Ellipse>
-                                                                    <TextBlock Text="{Binding D5}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
-                                                                </Grid>
-                                                            </Border>
-                                                        </Border>
-                                                    </Grid>
                                                 </Grid>
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>

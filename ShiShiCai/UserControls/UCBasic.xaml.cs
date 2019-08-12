@@ -243,7 +243,6 @@ namespace ShiShiCai.UserControls
 
         private void Init()
         {
-            ListBoxPosition.ItemsSource = mListPositionItems;
             ListBoxIssueDate.ItemsSource = mListGroupItems;
             ListBoxIssueItem.ItemsSource = mListIssueItems;
 
@@ -573,7 +572,7 @@ namespace ShiShiCai.UserControls
 
         void TabControlView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ListBoxPosition.Visibility = TabControlView.SelectedIndex == 0 ? Visibility.Visible : Visibility.Collapsed;
+           
         }
 
         private void PositionClick_Executed(object sender, ExecutedRoutedEventArgs e)

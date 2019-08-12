@@ -37,18 +37,7 @@
                     </Border>
                 </Grid>
                 <Grid Grid.Column="1">
-                    <ListBox Name="ListBoxPosition" Style="{DynamicResource ListBoxPositionStyle}"
-                             ItemContainerStyle="{DynamicResource ListItemPositionStyle}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate DataType="ListBoxItem">
-                                <CheckBox IsChecked="{Binding IsShow}"
-                                          Content="{Binding Name}"
-                                          Foreground="{Binding Brush}"
-                                          Style="{DynamicResource CheckBoxPositionStyle}"
-                                          Command="uc:UCBasic.PositionClickCommand"></CheckBox>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                    
                 </Grid>
             </Grid>
         </Grid>

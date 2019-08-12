@@ -36,5 +36,8 @@ namespace ShiShiCai
 
         #endregion
 
+        public const int CALC_MODE_LAST_LOTTERY = 1;
+        public const int CALC_MODE_DATE = 2;
+
     }
 }

@@ -28,6 +28,9 @@ namespace ShiShiCai
         private BackgroundWorker mLoadWorker;
         private IssueItem mCurrentIssueItem;
         private bool mLeftExpanded;
+        private int mCalculateMode;
+        private int mCalculateSize;
+        private string mCalculateDate;
 
         public MainWindow()
         {
@@ -72,6 +75,8 @@ namespace ShiShiCai
             LoadConfig();
 
             ShowTipMessage("正在加载，请稍候...");
+            mCalculateMode = SscDefines.CALC_MODE_LAST_LOTTERY;
+            mCalculateSize = 300;
             mListIssueItems.Clear();
             mLoadWorker = new BackgroundWorker();
             mLoadWorker.DoWork += (s, de) => LoadIssues();
@@ -83,6 +88,7 @@ namespace ShiShiCai
                 InitIssueItems();
                 InitLottery();
                 InitModule();
+                InitCalculateRange();
             };
             mLoadWorker.RunWorkerAsync();
         }
@@ -151,7 +157,7 @@ namespace ShiShiCai
                 if (dbConfig == null) { return; }
                 string strConn = dbConfig.GetConnectionString();
                 if (string.IsNullOrEmpty(strConn)) { return; }
-                string strSql = string.Format("SELECT TOP 300 * FROM T_101_19 ORDER BY C001 DESC");
+                string strSql = string.Format("SELECT TOP {0} * FROM T_101_19 ORDER BY C001 DESC", mCalculateSize);
                 OperationReturn optReturn = MssqlOperation.GetDataSet(strConn, strSql);
                 if (!optReturn.Result)
                 {
@@ -273,6 +279,18 @@ namespace ShiShiCai
             view.Reload();
         }
 
+        private void InitCalculateRange()
+        {
+            if (mCalculateMode == SscDefines.CALC_MODE_LAST_LOTTERY)
+            {
+                TxtCalculateRange.Text = string.Format("显示最近 {0} 期", mCalculateSize);
+            }
+            if (mCalculateMode == SscDefines.CALC_MODE_DATE)
+            {
+                TxtCalculateRange.Text = string.Format("显示 {0} 期", ParseStandardDate(mCalculateDate));
+            }
+        }
+
         #endregion
 
 
@@ -329,6 +347,8 @@ namespace ShiShiCai
             if (result == true)
             {
                 string issueDate = uc.IssueDate;
+                mCalculateMode = SscDefines.CALC_MODE_DATE;
+                mCalculateDate = issueDate;
                 ShowTipMessage("正在加载，请稍候...");
                 mLoadWorker = new BackgroundWorker();
                 mLoadWorker.DoWork += (s, de) => LoadIssuesByDate(issueDate);
@@ -340,6 +360,7 @@ namespace ShiShiCai
                     InitIssueItems();
                     InitLottery();
                     InitModule();
+                    InitCalculateRange();
 
                     if (!mLeftExpanded)
                     {
@@ -381,6 +402,12 @@ namespace ShiShiCai
             int d4 = mCurrentIssueItem.D4;
             int d5 = mCurrentIssueItem.D5;
             return string.Format("{0} {1} {2} {3} {4}", d5, d4, d3, d2, d1);
+        }
+
+        private string ParseStandardDate(string date)
+        {
+            DateTime dt = DateTime.ParseExact(date, "yyyyMMdd", null);
+            return dt.ToString("yyyy-MM-dd");
         }
 
         #endregion

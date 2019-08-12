@@ -379,5 +379,23 @@
         <Setter Property="VerticalAlignment" Value="Center"></Setter>
         <Setter Property="FontWeight" Value="Bold"></Setter>
     </Style>
+    
+    <Style x:Key="PopupSpliterStyle" TargetType="Border">
+        <Setter Property="Height" Value="3"></Setter>
+        <Setter Property="Margin" Value="25,0"></Setter>
+        <Setter Property="Background" Value="{DynamicResource SystemBrush7}"></Setter>
+    </Style>
+    
+    <Style x:Key="BtnPopupStyle" TargetType="Button">
+        <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        <Setter Property="Width" Value="50"></Setter>
+        <Setter Property="Height" Value="20"></Setter>
+    </Style>
+    
+    <Style x:Key="TxtPopupLabelStyle" TargetType="TextBlock">
+        <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+    </Style>
   
 </ResourceDictionary>

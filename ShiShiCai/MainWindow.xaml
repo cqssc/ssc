@@ -7,8 +7,8 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Themes/Default/Control.xaml"></ResourceDictionary>
-                <ResourceDictionary Source="Themes/Default/MainWindow.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/Themes/Default/Control.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/Themes/Default/MainWindow.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -60,7 +60,7 @@
                             </Border>
                         </Grid>
                         <Grid Grid.Column="2">
-                            <Button ToolTip="历史" Style="{DynamicResource BtnModuleStyle}">
+                            <Button Name="BtnHistory" ToolTip="历史" Style="{DynamicResource BtnModuleStyle}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -72,7 +72,7 @@
                             </Button>
                         </Grid>
                         <Grid Grid.Column="3">
-                            <Button ToolTip="设置" Style="{DynamicResource BtnModuleStyle}">
+                            <Button Name="BtnSetting" ToolTip="设置" Style="{DynamicResource BtnModuleStyle}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -205,7 +205,7 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="欢迎使用" Style="{DynamicResource TxtStatusMsgStyle}"></TextBlock>
+                        <TextBlock Name="TxtMsg" Grid.Column="0" Text="欢迎使用" Style="{DynamicResource TxtStatusMsgStyle}"></TextBlock>
                         <TextBlock Grid.Column="2" Text="Ver.3.0.1" Style="{DynamicResource TxtStatusVerStyle}"></TextBlock>
                     </Grid>
                 </Border>

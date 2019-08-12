@@ -8,6 +8,7 @@ using System.Linq;
 using System.Windows;
 using ShiShiCai.Common;
 using ShiShiCai.Models;
+using ShiShiCai.UserControls;
 
 namespace ShiShiCai
 {
@@ -26,6 +27,7 @@ namespace ShiShiCai
         private SystemConfig mSystemConfig;
         private BackgroundWorker mLoadWorker;
         private IssueItem mCurrentIssueItem;
+        private bool mLeftExpanded;
 
         public MainWindow()
         {
@@ -35,6 +37,8 @@ namespace ShiShiCai
             Closing += MainWindow_Closing;
             BtnLeftExpand.Click += BtnLeftExpand_Click;
             BtnLeftCollaspe.Click += BtnLeftCollaspe_Click;
+            BtnHistory.Click += BtnHistory_Click;
+            BtnSetting.Click += BtnSetting_Click;
 
             PanelLeft.SizeChanged += PanelLeft_SizeChanged;
 
@@ -67,12 +71,14 @@ namespace ShiShiCai
             InitModuleItems();
             LoadConfig();
 
+            ShowTipMessage("正在加载，请稍候...");
             mListIssueItems.Clear();
             mLoadWorker = new BackgroundWorker();
             mLoadWorker.DoWork += (s, de) => LoadIssues();
             mLoadWorker.RunWorkerCompleted += (s, re) =>
             {
                 mLoadWorker.Dispose();
+                ShowTipMessage("就绪");
 
                 InitIssueItems();
                 InitLottery();
@@ -188,6 +194,59 @@ namespace ShiShiCai
             }
         }
 
+        private void LoadIssuesByDate(string date)
+        {
+            try
+            {
+                mListIssues.Clear();
+                if (mSystemConfig == null) { return; }
+                DatabaseConfig dbConfig = mSystemConfig.Database;
+                if (dbConfig == null) { return; }
+                string strConn = dbConfig.GetConnectionString();
+                if (string.IsNullOrEmpty(strConn)) { return; }
+                string strSql = string.Format("SELECT * FROM T_101_19 WHERE C004 = {0} ORDER BY C001 DESC", date);
+                OperationReturn optReturn = MssqlOperation.GetDataSet(strConn, strSql);
+                if (!optReturn.Result)
+                {
+                    ShowException(string.Format("Fail. [{0}]{1}", optReturn.Code, optReturn.Message));
+                    return;
+                }
+                DataSet objDataSet = optReturn.Data as DataSet;
+                if (objDataSet == null) { return; }
+                for (int i = 0; i < objDataSet.Tables[0].Rows.Count; i++)
+                {
+                    DataRow dr = objDataSet.Tables[0].Rows[i];
+                    IssueItem item = new IssueItem();
+                    item.Serial = dr["C001"].ToString();
+                    item.Number = Convert.ToInt32(dr["C005"]);
+                    item.Date = Convert.ToInt32(dr["C004"]);
+                    item.WeekDay = Convert.ToInt32(dr["C006"]);
+
+                    item.D1 = Convert.ToInt32(dr["C010"]);
+                    item.D2 = Convert.ToInt32(dr["C020"]);
+                    item.D3 = Convert.ToInt32(dr["C030"]);
+                    item.D4 = Convert.ToInt32(dr["C040"]);
+                    item.D5 = Convert.ToInt32(dr["C050"]);
+
+                    item.FullValue = dr["C002"].ToString();
+                    item.LargeValue = dr["C007"].ToString() == "2";
+                    item.DoubleValue = dr["C008"].ToString() == "2";
+                    item.SumValue = Convert.ToInt32(dr["C009"]);
+                    item.RepeatValue = dr["C100"].ToString() == "2";
+                    item.IntervalValue = dr["C101"].ToString() == "2";
+                    item.Larger20 = dr["C102"].ToString() == "2";
+                    item.AllOne20 = dr["C103"].ToString() == "2";
+                    item.PairsVaue = dr["C104"].ToString() == "2";
+                    item.SameValue = dr["C105"].ToString() == "2";
+                    mListIssues.Add(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowException(ex.Message);
+            }
+        }
+
         private void InitIssueItems()
         {
             mListIssueItems.Clear();
@@ -245,12 +304,52 @@ namespace ShiShiCai
         {
             ColumnLeft.Width = new GridLength(0);
             PanelLeftExpander.Visibility = Visibility.Visible;
+            mLeftExpanded = false;
         }
 
         void BtnLeftExpand_Click(object sender, RoutedEventArgs e)
         {
             ColumnLeft.Width = new GridLength(110);
             PanelLeftExpander.Visibility = Visibility.Collapsed;
+            mLeftExpanded = true;
+        }
+
+        void BtnSetting_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        void BtnHistory_Click(object sender, RoutedEventArgs e)
+        {
+            UCHistoryQuery uc = new UCHistoryQuery();
+            PopupWindow popup = new PopupWindow();
+            popup.Title = "历史查询";
+            popup.Content = uc;
+            var result = popup.ShowDialog();
+            if (result == true)
+            {
+                string issueDate = uc.IssueDate;
+                ShowTipMessage("正在加载，请稍候...");
+                mLoadWorker = new BackgroundWorker();
+                mLoadWorker.DoWork += (s, de) => LoadIssuesByDate(issueDate);
+                mLoadWorker.RunWorkerCompleted += (s, re) =>
+                {
+                    mLoadWorker.Dispose();
+                    ShowTipMessage("就绪");
+
+                    InitIssueItems();
+                    InitLottery();
+                    InitModule();
+
+                    if (!mLeftExpanded)
+                    {
+                        ColumnLeft.Width = new GridLength(110);
+                        PanelLeftExpander.Visibility = Visibility.Collapsed;
+                        mLeftExpanded = true;
+                    }
+                };
+                mLoadWorker.RunWorkerAsync();
+            }
         }
 
         #endregion
@@ -297,6 +396,11 @@ namespace ShiShiCai
         private void ShowInfomation(string msg)
         {
             MessageBox.Show(msg, App.AppTitle, MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void ShowTipMessage(string msg)
+        {
+            TxtMsg.Text = msg;
         }
 
         #endregion

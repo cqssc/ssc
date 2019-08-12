@@ -74,4 +74,32 @@ namespace ShiShiCai.Converters
             throw new NotImplementedException();
         }
     }
+
+    public class IntegerToDateConverter : IValueConverter
+    {
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            DateTime date = DateTime.ParseExact(value.ToString(), "yyyyMMdd", null);
+            DateTime now = DateTime.Now;
+            if (date.Date == now.Date)
+            {
+                return "今天";
+            }
+            if (date.Date.AddDays(1) == now.Date)
+            {
+                return "昨天";
+            }
+            if (date.Date.AddDays(2) == now.Date)
+            {
+                return "前天";
+            }
+            return date.ToString("yyyy/MM/dd");
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

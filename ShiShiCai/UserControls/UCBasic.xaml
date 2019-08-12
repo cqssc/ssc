@@ -11,13 +11,14 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Themes/Default/MainWindow.xaml"></ResourceDictionary>
-                <ResourceDictionary Source="/Themes/Default/UCBasic.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="../Themes/Default/MainWindow.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="../Themes/Default/UCBasic.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
 
             <conv:BooleanToLargeConverter x:Key="BooleanToLargeConverter"></conv:BooleanToLargeConverter>
             <conv:BooleanToDoubleConverter x:Key="BooleanToDoubleConverter"></conv:BooleanToDoubleConverter>
             <conv:BooleanToHasConverter x:Key="BooleanToHasConverter"></conv:BooleanToHasConverter>
+            <conv:IntegerToDateConverter x:Key="IntegerToDateConverter"></conv:IntegerToDateConverter>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -56,7 +57,7 @@
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
                                     <Border Grid.Column="0" Style="{DynamicResource BorderDateStyle}">
-                                        <TextBlock Text="{Binding Date}" Style="{DynamicResource TxtDateStyle}"
+                                        <TextBlock Text="{Binding Date,Converter={StaticResource IntegerToDateConverter}}" Style="{DynamicResource TxtDateStyle}"
                                        Width="{Binding RelativeSource={RelativeSource Self},Path=FontSize}"></TextBlock>
                                     </Border>
                                     <Grid Grid.Column="1">

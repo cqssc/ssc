@@ -371,7 +371,6 @@
     </Style>
     
     <Style x:Key="ModuleTitleStyle" TargetType="Border">
-        <Setter Property="Height" Value="20"></Setter>
         <Setter Property="Margin" Value="15,0,0,0"></Setter>
     </Style>
   

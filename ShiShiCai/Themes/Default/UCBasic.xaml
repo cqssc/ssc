@@ -4,6 +4,11 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Common.xaml"></ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
+    
+    <Style x:Key="BorderMainStyle" TargetType="Border">
+        <Setter Property="BorderThickness" Value="1"></Setter>
+        <Setter Property="BorderBrush" Value="{DynamicResource SystemBrush7}"></Setter>
+    </Style>
 
     <Style x:Key="CheckBoxPositionStyle" TargetType="CheckBox">
         <Setter Property="HorizontalAlignment" Value="Center"></Setter>
@@ -25,7 +30,22 @@
         <Setter Property="BorderThickness" Value="0,0,0,1"></Setter>
         <Setter Property="BorderBrush" Value="{DynamicResource SystemBrush10}"></Setter>
     </Style>
+    
+    <Style x:Key="BorderLeftLineStyle" TargetType="Border">
+        <Setter Property="BorderThickness" Value="1,0,0,0"></Setter>
+        <Setter Property="BorderBrush" Value="{DynamicResource SystemBrush10}"></Setter>
+    </Style>
+    
+    <Style x:Key="BorderRightLineStyle" TargetType="Border">
+        <Setter Property="BorderThickness" Value="0,0,1,0"></Setter>
+        <Setter Property="BorderBrush" Value="{DynamicResource SystemBrush10}"></Setter>
+    </Style>
 
+    <Style x:Key="BorderBottomRightLineStyle" TargetType="Border">
+        <Setter Property="BorderThickness" Value="0,0,1,1"></Setter>
+        <Setter Property="BorderBrush" Value="{DynamicResource SystemBrush10}"></Setter>
+    </Style>
+    
     <Style x:Key="TxtDateStyle" TargetType="TextBlock">
         <Setter Property="TextWrapping" Value="Wrap"></Setter>
         <Setter Property="FontWeight" Value="Bold"></Setter>
@@ -52,14 +72,102 @@
     <Style x:Key="BallStyle" TargetType="Ellipse">
         <Setter Property="Width" Value="12"></Setter>
         <Setter Property="Height" Value="12"></Setter>
-        <Setter Property="VerticalAlignment" Value="Bottom"></Setter>
+        <Setter Property="VerticalAlignment" Value="Center"></Setter>
         <Setter Property="HorizontalAlignment" Value="Center"></Setter>
     </Style>
 
     <Style x:Key="TxtBallLabelStyle" TargetType="TextBlock">
         <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-        <Setter Property="VerticalAlignment" Value="Bottom"></Setter>
+        <Setter Property="VerticalAlignment" Value="Center"></Setter>
         <Setter Property="Foreground" Value="{DynamicResource SystemBrush1}"></Setter>
+    </Style>
+
+    <Style x:Key="TabControlViewStyle" TargetType="TabControl">
+        <Setter Property="Background" Value="Transparent"></Setter>
+        <Setter Property="BorderBrush" Value="Transparent"></Setter>
+        <Setter Property="BorderThickness" Value="0"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TabControl}">
+                    <Grid KeyboardNavigation.TabNavigation="Local">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TabPanel x:Name="HeaderPanel"
+                                  Grid.Row="0"
+                                  Grid.Column="1"
+                                  Panel.ZIndex="1"
+                                  IsItemsHost="True"
+                                  KeyboardNavigation.TabIndex="1"
+                                  Background="Transparent" />
+                        <Border x:Name="Border"
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="3"
+                                KeyboardNavigation.TabNavigation="Local"
+                                KeyboardNavigation.DirectionalNavigation="Contained"
+                                KeyboardNavigation.TabIndex="2"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter x:Name="PART_SelectedContentHost"
+                                ContentSource="SelectedContent" />
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="TabItemViewStyle" TargetType="TabItem">
+        <Setter Property="Background" Value="Transparent"></Setter>
+        <Setter Property="BorderBrush" Value="Transparent"></Setter>
+        <Setter Property="BorderThickness" Value="0"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TabItem}">
+                    <Grid x:Name="Root">
+                        <Border x:Name="Border"
+                                Padding="15,5"
+                                Margin="3,0"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="0">
+                            <ContentPresenter x:Name="ContentSite"
+                                ContentSource="Header"
+                                RecognizesAccessKey="True" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Panel.ZIndex" Value="100" />
+                            <Setter TargetName="Border" Property="Background"
+                                    Value="{DynamicResource SystemBrush7}"></Setter>
+                            <Setter TargetName="Border" Property="Control.Foreground"
+                                    Value="{DynamicResource SystemBrush1}"></Setter>
+                        </Trigger>
+                        <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background"
+                                    Value="{DynamicResource SystemBrush7}"></Setter>
+                            <Setter TargetName="Border" Property="Control.Foreground"
+                                    Value="{DynamicResource SystemBrush1}"></Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Border" Property="Background"
+                                    Value="{DynamicResource SystemBrush2}"></Setter>
+                            <Setter TargetName="Border" Property="Control.Foreground"
+                                    Value="{DynamicResource SystemBrush3}"></Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style x:Key="ListBoxPositionStyle" TargetType="ListBox">
@@ -193,5 +301,45 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="ListBoxLotteryStyle" TargetType="ListBox">
+        <Setter Property="Background" Value="Transparent"></Setter>
+        <Setter Property="BorderBrush" Value="Transparent"></Setter>
+        <Setter Property="BorderThickness" Value="0"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBox}">
+                    <Border Name="Border"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="{TemplateBinding Background}">
+                        <StackPanel IsItemsHost="True"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     
+    <Style x:Key="ListItemLotteryStyle" TargetType="ListBoxItem">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Grid>
+                        <Border x:Name="Bg" Opacity="0.2" Style="{DynamicResource BorderBottomLineStyle}"></Border>
+                        <Border x:Name="Border"
+                              SnapsToDevicePixels="true"
+                            Background="Transparent">
+                            <ContentPresenter />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bg" Property="Background" Value="{DynamicResource SystemBrush7}"></Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

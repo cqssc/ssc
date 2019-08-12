@@ -50,6 +50,12 @@ namespace ShiShiCai.Models
         private double mD4Height;
         private double mD5Height;
 
+        private double mD1Width;
+        private double mD2Width;
+        private double mD3Width;
+        private double mD4Width;
+        private double mD5Width;
+
 
         public string Serial
         {
@@ -193,6 +199,36 @@ namespace ShiShiCai.Models
         {
             get { return mD5Height; }
             set { mD5Height = value; OnPropertyChanged("D5Height"); }
+        }
+
+        public double D1Width
+        {
+            get { return mD1Width; }
+            set { mD1Width = value; OnPropertyChanged("D1Width"); }
+        }
+
+        public double D2Width
+        {
+            get { return mD2Width; }
+            set { mD2Width = value; OnPropertyChanged("D2Width"); }
+        }
+
+        public double D3Width
+        {
+            get { return mD3Width; }
+            set { mD3Width = value; OnPropertyChanged("D3Width"); }
+        }
+
+        public double D4Width
+        {
+            get { return mD4Width; }
+            set { mD4Width = value; OnPropertyChanged("D4Width"); }
+        }
+
+        public double D5Width
+        {
+            get { return mD5Width; }
+            set { mD5Width = value; OnPropertyChanged("D5Width"); }
         }
 
 

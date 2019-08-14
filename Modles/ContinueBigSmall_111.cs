@@ -19,13 +19,17 @@ namespace Modles
 
         public int PositionType_004 { get; set; }
 
-        public int BigSmallOrEvenOddType_005 { get; set; }  // 1(大 小) 2(单 双)
+        public int Big_005 { get; set; } 
 
-        public int BigOrEven_006 { get; set; } //当C005为1 时C006为大   为2时 C006为单
+        public int Small_006 { get; set; } 
 
-        public int SmallOrOdd_007 { get; set; }  //当C005为 时C006为小   为2时 C006为 双
+        public int Even_007 { get; set; } 
 
-        public int ContinueValue_008 { get; set; }
+        public int Odd_008 { get; set; }
+
+        public int BigSmallContinue_009 { get; set; }
+
+        public int EvenOddContinue_010 { get; set; }
 
     }
 }

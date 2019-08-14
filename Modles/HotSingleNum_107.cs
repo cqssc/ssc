@@ -31,7 +31,7 @@ namespace Modles
         //除出来的热度值
         public decimal HotValue_008 { get; set; }
 
-        //该段内总的个数
+        //该热度率的分母
         public int NumberAllCount_009 { get; set; }
     }
 }

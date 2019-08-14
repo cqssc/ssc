@@ -31,5 +31,10 @@ namespace Modles
 
         public int EvenOddContinue_010 { get; set; }
 
+        public int ComposeBig_011 { get; set; }
+        public int ComposeSmall_012 { get; set; }
+        public int ComposeEven_013 { get; set; }
+        public int ComposeOdd_014 { get; set; }
+
     }
 }

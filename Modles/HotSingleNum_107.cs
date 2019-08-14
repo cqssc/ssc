@@ -11,7 +11,7 @@ namespace Modles
         /// <summary>
         /// 期数
         /// </summary>
-        public long LongPeriod_001  {   get;  set;}
+        public long LongPeriod_001  {get;  set;}
 
         //日期的前6位
         public Int64 DateNumber_002 { get; set; }
@@ -21,17 +21,20 @@ namespace Modles
 
         public int PositionType_004 { set; get; }
 
-        public int PositionVale_005 { get; set; }
+        public int SliptType_005 { get; set; }
 
-        public int SplitValueType_006 { get; set; }
+        public int AppearCount_010 { get; set; }
+        public int AppearCount_011 { get; set; }
+        public int AppearCount_012 { get; set; }
+        public int AppearCount_013 { get; set; }
+        public int AppearCount_014 { get; set; }
+        public int AppearCount_015 { get; set; }
+        public int AppearCount_016 { get; set; }
+        public int AppearCount_017 { get; set; }
+        public int AppearCount_018 { get; set; }
+        public int AppearCount_019 { get; set; }
 
 
-        //该段内出现个数       
-        public int AppearCount_007 { get; set; }
-        //除出来的热度值
-        public decimal HotValue_008 { get; set; }
-
-        //该热度率的分母
-        public int NumberAllCount_009 { get; set; }
+        
     }
 }

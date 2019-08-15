@@ -669,7 +669,6 @@ namespace SSCService03
             bool flag = true;
             List<ContinueTrend_103> listLostTrend_103Temp = new List<ContinueTrend_103>();
             List<ContinueTrend_103> listLostTrend_103Pre =null;
-            ContinueTrend_103 lostTrend_103Pre = null;
             if (Atype == ConstDefine.Const_SetNormal) 
             {
                 listLostTrend_103Pre = GetDataLostTrend_103(1, AListPeriod_101[0].LongPeriod_001);
@@ -692,133 +691,150 @@ namespace SSCService03
                             break;
                         }
                     }
+
                     ContinueTrend_103 lostTrend_103 = new ContinueTrend_103();
+                    #region 初始化
                     lostTrend_103.LongPeriod_001 = AListPeriod_101[0].LongPeriod_001;
                     lostTrend_103.DateNumber_002 = AListPeriod_101[0].DateNumber_004;
                     lostTrend_103.ShortPeriod_003 = AListPeriod_101[0].ShortPeriod_005;
                     lostTrend_103.PositionType_004 = i;
+                    lostTrend_103.Repick_005 = 0;
+                    lostTrend_103.Swing_006 = 0;
+                    lostTrend_103.AddOrSub_007 = 0;
+                    lostTrend_103.Other_008 = 0;
+                    lostTrend_103.ContinueValue_009 = 1;
+                    lostTrend_103.SwingValue_010 = 0;
+                    #endregion
 
                     if (Atype == ConstDefine.Const_SetZero)
-                    {                       
-                        lostTrend_103.Repick_005 = 1;
-                        lostTrend_103.Swing_006 = 1;
-                        lostTrend_103.AddOrSub_007 = 1;
-                        lostTrend_103.Other_008 = 0;
+                    {
+                        lostTrend_103.Other_008 = 1;
                         lostTrend_103.ContinueValue_009 = 1;
-                        lostTrend_103.SwingValue_010 = 0;
                     }
                     else if (Atype == ConstDefine.Const_SetNormal)
                     {
-                        if (listLostTrend_103Pre != null && listLostTrend_103Pre.Count > 0 && listLostTrend_103Pre.Where(p => p.PositionType_004 == i).Count()>0)
+
+                        switch (AListPeriod_101.Count)
                         {
-                            //当前位前一期的数据
-                            lostTrend_103Pre = listLostTrend_103Pre.Where(p => p.PositionType_004 == i).First();
-                            lostTrend_103.Repick_005 = lostTrend_103Pre.Repick_005+1;
-                            lostTrend_103.Swing_006 = lostTrend_103Pre.Swing_006+1;
-                            lostTrend_103.AddOrSub_007 = lostTrend_103Pre.AddOrSub_007+1;
-                            lostTrend_103.Other_008 = lostTrend_103Pre.Other_008+1;
-                            lostTrend_103.ContinueValue_009 = 0;
-                            lostTrend_103.SwingValue_010 = 0;
-                            if (listSingleNumValue.Count <= 2)
-                            {
-                                if (listSingleNumValue[0] == listSingleNumValue[1])//重复
+                            case 1: 
                                 {
                                     lostTrend_103.Repick_005 = 0;
+                                    lostTrend_103.Swing_006 = 0;
+                                    lostTrend_103.AddOrSub_007 = 0;
+                                    lostTrend_103.Other_008 = 1;
                                     lostTrend_103.ContinueValue_009 = 1;
-                                }
-                                else //其它
-                                {
-                                    lostTrend_103.Other_008 = 0;
-                                    lostTrend_103.ContinueValue_009 = 1;
-                                    lostTrend_103.SwingValue_010 = Math.Abs(listSingleNumValue[0] - listSingleNumValue[1]);
-                                }
-                            }
-                            else 
-                            {
-                                int aIntTemp = listSingleNumValue[0] - listSingleNumValue[1];
-                                int bIntTemp=(listSingleNumValue[0] - listSingleNumValue[1]) * (listSingleNumValue[1]-listSingleNumValue[2]);
-                                int continueCount = 0;
-
-                                if (aIntTemp==0) //重复
-                                {
-
-                                    lostTrend_103.Repick_005 = 0;
-                                    continueCount = 0;
-                                    for (int k = 0; k < listSingleNumValue.Count; k++) 
-                                    {
-                                        if ((k + 1) < listSingleNumValue.Count && (listSingleNumValue[k] == listSingleNumValue[k + 1]))
-                                        {
-                                            continueCount++;
-                                        }
-                                        else 
-                                        {
-                                            break;
-                                        }
-                                    }
-                                    lostTrend_103.ContinueValue_009 = continueCount;
                                     lostTrend_103.SwingValue_010 = 0;
                                 }
-                                else
+                                break;
+                            case 2:
                                 {
-                                    if (bIntTemp < 0)  //振荡
+                                    if (listSingleNumValue[0] == listSingleNumValue[1])//重复
                                     {
-                                        lostTrend_103.Swing_006 = 0;
-                                        continueCount = 0;
-                                        for (int k = 0; k < listSingleNumValue.Count; k++)
-                                        {
-                                            if ((k + 2) < listSingleNumValue.Count && (listSingleNumValue[k] - listSingleNumValue[k + 1]) * (listSingleNumValue[k+1] - listSingleNumValue[k + 2]) < 0)
-                                            {
-                                                continueCount++;
-                                            }
-                                            else
-                                            {
-                                                break;
-                                            }
-                                        }
-
-                                        lostTrend_103.ContinueValue_009 = continueCount;
-                                        lostTrend_103.SwingValue_010 = Math.Abs(aIntTemp);
-                                    }
-                                    else if (bIntTemp > 0) //递增减
-                                    {
-                                        lostTrend_103.AddOrSub_007 = 0;
-
-                                        continueCount = 0;
-                                        for (int k = 0; k < listSingleNumValue.Count; k++)
-                                        {
-                                            if ((k + 2) < listSingleNumValue.Count && (listSingleNumValue[k] - listSingleNumValue[k + 1]) * (listSingleNumValue[k + 1] - listSingleNumValue[k + 2]) > 0)
-                                            {
-                                                continueCount++;
-                                            }
-                                            else
-                                            {
-                                                break;
-                                            }
-                                        }
-
-                                        lostTrend_103.ContinueValue_009 = continueCount;
-                                        lostTrend_103.SwingValue_010 = Math.Abs(aIntTemp);
+                                        lostTrend_103.Repick_005 = 1;
+                                        lostTrend_103.ContinueValue_009 = 1;
+                                        lostTrend_103.SwingValue_010 = 0;
                                     }
                                     else //其它
                                     {
-                                        lostTrend_103.Other_008 = 0;
+                                        lostTrend_103.Other_008 = 1;
                                         lostTrend_103.ContinueValue_009 = 1;
-                                        lostTrend_103.SwingValue_010 = Math.Abs(aIntTemp);
+                                        lostTrend_103.SwingValue_010 = Math.Abs(listSingleNumValue[0] - listSingleNumValue[1]);
                                     }
-
-
                                 }
-                            }
-                        }
-                        else //如果找不到全置0
-                        {
-                            lostTrend_103.Repick_005 = 1;
-                            lostTrend_103.Swing_006 = 1;
-                            lostTrend_103.AddOrSub_007 = 1;
-                            lostTrend_103.Other_008 = 0;
-                            lostTrend_103.ContinueValue_009 = 1;
-                            lostTrend_103.SwingValue_010 = 0;
-                        }    
+                                break;
+                            default:
+                                {
+                                    int aIntTemp = listSingleNumValue[0] - listSingleNumValue[1];
+                                    int bIntTemp = (listSingleNumValue[0] - listSingleNumValue[1]) * (listSingleNumValue[1] - listSingleNumValue[2]);
+                                    int continueCount = 0;
+                                    if (listLostTrend_103Pre != null && listLostTrend_103Pre.Count > 0 && listLostTrend_103Pre.Where(p => p.PositionType_004 == i).Count() > 0)
+                                    {
+                                        #region
+                                        if (aIntTemp == 0)  //重复
+                                        {
+                                            lostTrend_103.Repick_005 = 1;
+                                            continueCount = 0;
+                                            for (int k = 0; k < listSingleNumValue.Count; k++)
+                                            {
+                                                if ((k + 1) < listSingleNumValue.Count && (listSingleNumValue[k] == listSingleNumValue[k + 1]))
+                                                {
+                                                    continueCount++;
+                                                }
+                                                else
+                                                {
+                                                    break;
+                                                }
+                                            }
+                                            lostTrend_103.ContinueValue_009 = continueCount;
+                                            lostTrend_103.SwingValue_010 = 0;
+                                        }
+                                        else
+                                        {
+                                            #region
+                                            if (bIntTemp < 0)  //振荡
+                                            {
+                                                lostTrend_103.Swing_006 = 1;
+                                                continueCount = 0;
+                                                for (int k = 0; k < listSingleNumValue.Count; k++)
+                                                {
+                                                    if ((k + 2) < listSingleNumValue.Count && (listSingleNumValue[k] - listSingleNumValue[k + 1]) * (listSingleNumValue[k + 1] - listSingleNumValue[k + 2]) < 0)
+                                                    {
+                                                        continueCount++;
+                                                    }
+                                                    else
+                                                    {
+                                                        break;
+                                                    }
+                                                }
+
+                                                lostTrend_103.ContinueValue_009 = continueCount;
+                                                lostTrend_103.SwingValue_010 = Math.Abs(aIntTemp);
+                                            }
+                                            else if (bIntTemp > 0) //递增减
+                                            {
+                                                lostTrend_103.AddOrSub_007 = 1;
+
+                                                continueCount = 0;
+                                                for (int k = 0; k < listSingleNumValue.Count; k++)
+                                                {
+                                                    if ((k + 2) < listSingleNumValue.Count && (listSingleNumValue[k] - listSingleNumValue[k + 1]) * (listSingleNumValue[k + 1] - listSingleNumValue[k + 2]) > 0)
+                                                    {
+                                                        continueCount++;
+                                                    }
+                                                    else
+                                                    {
+                                                        break;
+                                                    }
+                                                }
+
+                                                lostTrend_103.ContinueValue_009 = continueCount;
+                                                lostTrend_103.SwingValue_010 = Math.Abs(aIntTemp);
+                                            }
+                                            else //其它
+                                            {
+                                                lostTrend_103.Other_008 = 1;
+                                                lostTrend_103.ContinueValue_009 = 1;
+                                                lostTrend_103.SwingValue_010 = Math.Abs(aIntTemp);
+                                            }
+
+                                            #endregion
+                                        }
+
+                                        #endregion
+                                    }
+                                    else 
+                                    {
+                                        lostTrend_103.Repick_005 = 0;
+                                        lostTrend_103.Swing_006 = 0;
+                                        lostTrend_103.AddOrSub_007 = 0;
+                                        lostTrend_103.Other_008 = 1;
+                                        lostTrend_103.ContinueValue_009 = 1;
+                                        lostTrend_103.SwingValue_010 = 0;
+                                    }
+                                
+                                }
+                                break;
+                        }  
                     }
                     listLostTrend_103Temp.Add(lostTrend_103);
                     #endregion
@@ -1641,7 +1657,6 @@ namespace SSCService03
         }
 
         #endregion
-
 
         #region  DoLostSingleNumAll_105 遗失数字全部
         public static bool DoLostSingleNumAll_105(int AType, List<PeriodDetail_101> AListPeriod_101) 

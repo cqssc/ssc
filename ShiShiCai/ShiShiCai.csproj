@@ -239,7 +239,7 @@
     <Resource Include="Themes\Default\bg.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Themes\Default\Images\00011.png" />
+    <Resource Include="Themes\Default\Images\shishicai.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Themes\Default\bg1.jpg" />

@@ -67,6 +67,7 @@ namespace ShiShiCai.UserControls
             InitializeComponent();
 
             Loaded += UCLargeSmall_Loaded;
+            ListBoxSumView.SizeChanged += ListBoxSumView_SizeChanged;
         }
 
         void UCLargeSmall_Loaded(object sender, RoutedEventArgs e)

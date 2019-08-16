@@ -186,7 +186,7 @@
 
                                 </TabItem>
                                 <TabItem Name="TabTrend" Header="Trend">
-
+                                    <uc:UCTrend x:Name="UCTrend" PageParent="{Binding}"></uc:UCTrend>
                                 </TabItem>
                                 <TabItem Name="TabHistory" Header="History">
 

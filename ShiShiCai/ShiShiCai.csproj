@@ -65,6 +65,8 @@
     <Compile Include="Models\IssueNumberItem.cs" />
     <Compile Include="Models\ModuleItem.cs" />
     <Compile Include="Models\PositionItem.cs" />
+    <Compile Include="Models\SumValueItem.cs" />
+    <Compile Include="Models\TrendItem.cs" />
     <Compile Include="PopupWindow.xaml.cs">
       <DependentUpon>PopupWindow.xaml</DependentUpon>
     </Compile>

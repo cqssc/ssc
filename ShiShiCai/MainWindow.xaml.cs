@@ -74,6 +74,8 @@ namespace ShiShiCai
             InitModuleItems();
             LoadConfig();
 
+            ListBoxModules.SelectedIndex = 3;//默认显示模块
+
             ShowTipMessage("正在加载，请稍候...");
             mCalculateMode = SscDefines.CALC_MODE_LAST_LOTTERY;
             mCalculateSize = 300;
@@ -287,7 +289,8 @@ namespace ShiShiCai
             }
             if (mCalculateMode == SscDefines.CALC_MODE_DATE)
             {
-                TxtCalculateRange.Text = string.Format("显示 {0} 期", ParseStandardDate(mCalculateDate));
+                TxtCalculateRange.Text = string.Format("显示 {0} 共 {1} 期", ParseStandardDate(mCalculateDate),
+                    mListIssues.Count);
             }
         }
 
@@ -295,6 +298,11 @@ namespace ShiShiCai
 
 
         #region Property
+
+        public SystemConfig SystemConfig
+        {
+            get { return mSystemConfig; }
+        }
 
         public ObservableCollection<IssueItem> ListIssueItems
         {

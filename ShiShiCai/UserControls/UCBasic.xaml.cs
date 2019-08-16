@@ -202,8 +202,6 @@ namespace ShiShiCai.UserControls
         #endregion
 
 
-        private bool mIsInited;
-
         private readonly ObservableCollection<IssueDateItem> mListGroupItems =
             new ObservableCollection<IssueDateItem>();
 
@@ -211,6 +209,8 @@ namespace ShiShiCai.UserControls
             new ObservableCollection<PositionItem>();
 
         private readonly ObservableCollection<IssueItem> mListIssueItems = new ObservableCollection<IssueItem>();
+
+        private bool mIsInited;
 
 
         public UCBasic()
@@ -222,6 +222,9 @@ namespace ShiShiCai.UserControls
 
             CommandBindings.Add(new CommandBinding(PositionClickCommand,
                 PositionClick_Executed, (s, ce) => ce.CanExecute = true));
+
+            ListBoxIssueDate.ItemsSource = mListGroupItems;
+            ListBoxIssueItem.ItemsSource = mListIssueItems;
         }
 
         void UCBasic_Loaded(object sender, RoutedEventArgs e)
@@ -243,9 +246,6 @@ namespace ShiShiCai.UserControls
 
         private void Init()
         {
-            ListBoxIssueDate.ItemsSource = mListGroupItems;
-            ListBoxIssueItem.ItemsSource = mListIssueItems;
-
             InitPositionItems();
             InitIssueItems();
             InitIssueDateItems();
@@ -572,7 +572,7 @@ namespace ShiShiCai.UserControls
 
         void TabControlView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-           
+
         }
 
         private void PositionClick_Executed(object sender, ExecutedRoutedEventArgs e)

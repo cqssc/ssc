@@ -6,6 +6,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using ShiShiCai.Common;
 using ShiShiCai.Models;
 using ShiShiCai.UserControls;
@@ -25,8 +26,7 @@ namespace ShiShiCai
         private readonly ObservableCollection<IssueItem> mListIssueItems = new ObservableCollection<IssueItem>();
 
         private SystemConfig mSystemConfig;
-        private BackgroundWorker mLoadWorker;
-        private IssueItem mCurrentIssueItem;
+        private IssueItem mNewestIssueItem;
         private bool mLeftExpanded;
         private int mCalculateMode;
         private int mCalculateSize;
@@ -42,7 +42,7 @@ namespace ShiShiCai
             BtnLeftCollaspe.Click += BtnLeftCollaspe_Click;
             BtnHistory.Click += BtnHistory_Click;
             BtnSetting.Click += BtnSetting_Click;
-
+            ListBoxModules.SelectionChanged += ListBoxModules_SelectionChanged;
             PanelLeft.SizeChanged += PanelLeft_SizeChanged;
 
             DataContext = this;
@@ -74,25 +74,17 @@ namespace ShiShiCai
             InitModuleItems();
             LoadConfig();
 
-            ListBoxModules.SelectedIndex = 3;//默认显示模块
+            ListBoxModules.SelectedIndex = 0;//默认显示模块
 
-            ShowTipMessage("正在加载，请稍候...");
             mCalculateMode = SscDefines.CALC_MODE_LAST_LOTTERY;
             mCalculateSize = 300;
-            mListIssueItems.Clear();
-            mLoadWorker = new BackgroundWorker();
-            mLoadWorker.DoWork += (s, de) => LoadIssues();
-            mLoadWorker.RunWorkerCompleted += (s, re) =>
-            {
-                mLoadWorker.Dispose();
-                ShowTipMessage("就绪");
 
-                InitIssueItems();
-                InitLottery();
-                InitModule();
-                InitCalculateRange();
-            };
-            mLoadWorker.RunWorkerAsync();
+            LoadIssues();
+
+            InitIssueItems();
+            InitLottery();
+            InitModule();
+            InitCalculateRange();
         }
 
         private void InitModuleItems()
@@ -266,12 +258,11 @@ namespace ShiShiCai
 
         private void InitLottery()
         {
-            var lotteryItem = mListIssueItems.FirstOrDefault();
-            if (lotteryItem == null) { return; }
-            mCurrentIssueItem = lotteryItem;
+            var newestIssue = mListIssues.FirstOrDefault();
+            if (newestIssue == null) { return; }
+            mNewestIssueItem = newestIssue;
             TxtLastLottery.Text = ParseLottery();
             TxtLastNumber.Text = ParseLotteryNumber();
-            ListBoxIssues.SelectedItem = mCurrentIssueItem;
         }
 
         private void InitModule()
@@ -357,28 +348,45 @@ namespace ShiShiCai
                 string issueDate = uc.IssueDate;
                 mCalculateMode = SscDefines.CALC_MODE_DATE;
                 mCalculateDate = issueDate;
-                ShowTipMessage("正在加载，请稍候...");
-                mLoadWorker = new BackgroundWorker();
-                mLoadWorker.DoWork += (s, de) => LoadIssuesByDate(issueDate);
-                mLoadWorker.RunWorkerCompleted += (s, re) =>
+                //ShowTipMessage("正在加载，请稍候...");
+                //mLoadWorker = new BackgroundWorker();
+                //mLoadWorker.DoWork += (s, de) => LoadIssuesByDate(issueDate);
+                //mLoadWorker.RunWorkerCompleted += (s, re) =>
+                //{
+                //    mLoadWorker.Dispose();
+                //    ShowTipMessage("就绪");
+
+                //    InitIssueItems();
+                //    InitModule();
+                //    InitCalculateRange();
+
+                //    if (!mLeftExpanded)
+                //    {
+                //        ColumnLeft.Width = new GridLength(110);
+                //        PanelLeftExpander.Visibility = Visibility.Collapsed;
+                //        mLeftExpanded = true;
+                //    }
+                //};
+                //mLoadWorker.RunWorkerAsync();
+
+                LoadIssuesByDate(issueDate);
+
+                InitIssueItems();
+                InitModule();
+                InitCalculateRange();
+
+                if (!mLeftExpanded)
                 {
-                    mLoadWorker.Dispose();
-                    ShowTipMessage("就绪");
-
-                    InitIssueItems();
-                    InitLottery();
-                    InitModule();
-                    InitCalculateRange();
-
-                    if (!mLeftExpanded)
-                    {
-                        ColumnLeft.Width = new GridLength(110);
-                        PanelLeftExpander.Visibility = Visibility.Collapsed;
-                        mLeftExpanded = true;
-                    }
-                };
-                mLoadWorker.RunWorkerAsync();
+                    ColumnLeft.Width = new GridLength(110);
+                    PanelLeftExpander.Visibility = Visibility.Collapsed;
+                    mLeftExpanded = true;
+                }
             }
+        }
+
+        void ListBoxModules_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            InitModule();
         }
 
         #endregion
@@ -388,27 +396,27 @@ namespace ShiShiCai
 
         private string ParseLottery()
         {
-            if (mCurrentIssueItem == null)
+            if (mNewestIssueItem == null)
             {
                 return "";
             }
-            int intDate = mCurrentIssueItem.Date;
+            int intDate = mNewestIssueItem.Date;
             DateTime date = DateTime.ParseExact(intDate.ToString(), "yyyyMMdd", null);
-            int number = mCurrentIssueItem.Number;
+            int number = mNewestIssueItem.Number;
             return string.Format("{0:yyyy-MM-dd} {1:000}期", date, number);
         }
 
         private string ParseLotteryNumber()
         {
-            if (mCurrentIssueItem == null)
+            if (mNewestIssueItem == null)
             {
                 return "";
             }
-            int d1 = mCurrentIssueItem.D1;
-            int d2 = mCurrentIssueItem.D2;
-            int d3 = mCurrentIssueItem.D3;
-            int d4 = mCurrentIssueItem.D4;
-            int d5 = mCurrentIssueItem.D5;
+            int d1 = mNewestIssueItem.D1;
+            int d2 = mNewestIssueItem.D2;
+            int d3 = mNewestIssueItem.D3;
+            int d4 = mNewestIssueItem.D4;
+            int d5 = mNewestIssueItem.D5;
             return string.Format("{0} {1} {2} {3} {4}", d5, d4, d3, d2, d1);
         }
 

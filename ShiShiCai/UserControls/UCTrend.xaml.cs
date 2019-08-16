@@ -15,14 +15,10 @@
 //
 //======================================================================
 
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-using ShiShiCai.Common;
 using ShiShiCai.Models;
 
 namespace ShiShiCai.UserControls
@@ -61,11 +57,9 @@ namespace ShiShiCai.UserControls
         #endregion
 
 
-        private bool mIsInited;
+        private readonly ObservableCollection<SumValueItem> mListSumValueItems = new ObservableCollection<SumValueItem>();
 
-        private List<TrendItem> mListTrendData = new List<TrendItem>();
-        private ObservableCollection<SumValueItem> mListSumValueItems = new ObservableCollection<SumValueItem>();
-        private ObservableCollection<TrendItem> mListTrendItems = new ObservableCollection<TrendItem>();
+        private bool mIsInited;
 
         public UCTrend()
         {
@@ -74,8 +68,6 @@ namespace ShiShiCai.UserControls
             Loaded += UCTrend_Loaded;
             ListBoxSumView.SizeChanged += ListBoxSumView_SizeChanged;
         }
-
-
 
         void UCTrend_Loaded(object sender, RoutedEventArgs e)
         {
@@ -93,66 +85,8 @@ namespace ShiShiCai.UserControls
 
         private void Init()
         {
-            LoadTrendData();
-            InitTrendItems();
             InitSumValueItems();
             InitSumViewSize();
-        }
-
-        private void LoadTrendData()
-        {
-            mListTrendData.Clear();
-            var pageParent = PageParent;
-            if (pageParent == null) { return; }
-            var issueItems = pageParent.ListIssueItems;
-            if (issueItems == null) { return; }
-            var first = issueItems.FirstOrDefault();
-            if (first == null) { return; }
-            long min = long.Parse(first.Serial);
-            long max = long.Parse(first.Serial);
-            for (int i = 0; i < issueItems.Count; i++)
-            {
-                var issueItem = issueItems[i];
-                long serial = long.Parse(issueItem.Serial);
-                min = Math.Min(min, serial);
-                max = Math.Max(max, serial);
-            }
-            var systemConfig = pageParent.SystemConfig;
-            if (systemConfig == null) { return; }
-            var db = systemConfig.Database;
-            if (db == null) { return; }
-            string strConn = db.GetConnectionString();
-            string strSql = string.Format(
-                "SELECT * FROM T_111_19 WHERE C001 >= {0} AND C001 <= {1} ORDER BY C001 DESC", min, max);
-            OperationReturn optReturn = MssqlOperation.GetDataSet(strConn, strSql);
-            if (!optReturn.Result)
-            {
-                ShowException(string.Format("load data fail. [{0}]{1}", optReturn.Code, optReturn.Message));
-                return;
-            }
-            DataSet objDataSet = optReturn.Data as DataSet;
-            if (objDataSet == null) { return; }
-            for (int i = 0; i < objDataSet.Tables[0].Rows.Count; i++)
-            {
-                DataRow dr = objDataSet.Tables[0].Rows[i];
-                TrendItem item = new TrendItem();
-                item.Serial = dr["C001"].ToString();
-                item.Number = Convert.ToInt32(dr["C003"]);
-                item.Date = Convert.ToInt32(dr["C002"]);
-                item.Pos = Convert.ToInt32(dr["C004"]);
-                item.Large = Convert.ToInt32(dr["C005"]);
-                item.Small = Convert.ToInt32(dr["C006"]);
-                item.Single = Convert.ToInt32(dr["C007"]);
-                item.Double = Convert.ToInt32(dr["C008"]);
-                item.LargeSmallNum = Convert.ToInt32(dr["C009"]);
-                item.SingleDoubleNum = Convert.ToInt32(dr["C010"]);
-                mListTrendData.Add(item);
-            }
-        }
-
-        private void InitTrendItems()
-        {
-
         }
 
         private void InitSumValueItems()

@@ -94,13 +94,13 @@ namespace ShiShiCai
             item.Number = SscDefines.MODULE_BASIC;
             item.Name = SscDefines.MODULE_NAME_BASIC;
             item.Title = SscDefines.MODULE_NAME_BASIC;
-            item.Icon = "Themes/Default/Images/00001.png";
+            item.Icon = "Themes/Default/Images/00009.png";
             mListModuleItems.Add(item);
             item = new ModuleItem();
-            item.Number = SscDefines.MODULE_LOST;
-            item.Name = SscDefines.MODULE_NAME_LOST;
-            item.Title = SscDefines.MODULE_NAME_LOST;
-            item.Icon = "Themes/Default/Images/00002.png";
+            item.Number = SscDefines.MODULE_LARGE_SMALL;
+            item.Name = SscDefines.MODULE_NAME_LARGE_SMALL;
+            item.Title = SscDefines.MODULE_NAME_LARGE_SMALL;
+            item.Icon = "Themes/Default/Images/00010.png";
             mListModuleItems.Add(item);
             item = new ModuleItem();
             item.Number = SscDefines.MODULE_HOT;

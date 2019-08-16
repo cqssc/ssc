@@ -78,8 +78,8 @@
     <Compile Include="UserControls\UCHistoryQuery.xaml.cs">
       <DependentUpon>UCHistoryQuery.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\UCTrend.xaml.cs">
-      <DependentUpon>UCTrend.xaml</DependentUpon>
+    <Compile Include="UserControls\UCLargeSmall.xaml.cs">
+      <DependentUpon>UCLargeSmall.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -185,7 +185,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\Default\UCTrend.xaml">
+    <Page Include="Themes\Default\UCLargeSmall.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -197,7 +197,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\UCTrend.xaml">
+    <Page Include="UserControls\UCLargeSmall.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -239,7 +239,7 @@
     <Resource Include="Themes\Default\bg.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Themes\Default\Images\shishicai.png" />
+    <Resource Include="Themes\Default\Images\00011.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Themes\Default\bg1.jpg" />
@@ -258,7 +258,10 @@
     <Resource Include="Themes\Default\Images\00007.png" />
     <Resource Include="Themes\Default\Images\00008.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Themes\Default\Images\00009.png" />
+    <Resource Include="Themes\Default\Images\00010.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

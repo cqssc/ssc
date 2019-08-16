@@ -27,8 +27,8 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
-                            <ColumnDefinition Width="65"></ColumnDefinition>
-                            <ColumnDefinition Width="65"></ColumnDefinition>
+                            <ColumnDefinition Width="85"></ColumnDefinition>
+                            <ColumnDefinition Width="85"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0">
                             <Grid.ColumnDefinitions>
@@ -60,26 +60,26 @@
                             </Border>
                         </Grid>
                         <Grid Grid.Column="2">
-                            <Button Name="BtnHistory" ToolTip="历史" Style="{DynamicResource BtnModuleStyle}">
+                            <Button Name="BtnHistory" ToolTip="历史查询" Style="{DynamicResource BtnModuleStyle}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
                                     <Image Grid.Column="0" Source="Themes/Default/Images/00005.png"></Image>
-                                    <TextBlock Grid.Column="1" Text="历史" Style="{DynamicResource TxtModuleTextStyle}"></TextBlock>
+                                    <TextBlock Grid.Column="1" Text="历史查询" Style="{DynamicResource TxtModuleTextStyle}"></TextBlock>
                                 </Grid>
                             </Button>
                         </Grid>
                         <Grid Grid.Column="3">
-                            <Button Name="BtnSetting" ToolTip="设置" Style="{DynamicResource BtnModuleStyle}">
+                            <Button Name="BtnSetting" ToolTip="系统设置" Style="{DynamicResource BtnModuleStyle}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
                                     <Image Grid.Column="0" Source="Themes/Default/Images/00006.png"></Image>
-                                    <TextBlock Grid.Column="1" Text="设置" Style="{DynamicResource TxtModuleTextStyle}"></TextBlock>
+                                    <TextBlock Grid.Column="1" Text="系统设置" Style="{DynamicResource TxtModuleTextStyle}"></TextBlock>
                                 </Grid>
                             </Button>
                         </Grid>
@@ -176,17 +176,17 @@
                             <TabControl Name="TabControlModule" 
                                 Style="{DynamicResource TabControlModuleStyle}"
                                 SelectedIndex="{Binding ElementName=ListBoxModules,Path=SelectedIndex}">
-                                <TabItem Name="TabBasic" Header="Basic">
+                                <TabItem Name="TabBasic" Header="开奖号码">
                                     <uc:UCBasic x:Name="UCBaic" PageParent="{Binding}"></uc:UCBasic>
                                 </TabItem>
-                                <TabItem Name="TabLost" Header="Lost">
+                                <TabItem Name="TabLargeSmall" Header="大小单双">
+                                    <uc:UCLargeSmall x:Name="UCLargeSmall" PageParent="{Binding}"></uc:UCLargeSmall>
+                                </TabItem>
+                                <TabItem Name="TabHot" Header="热度展示">
 
                                 </TabItem>
-                                <TabItem Name="TabHot" Header="Hot">
+                                <TabItem Name="TabTrend" Header="趋势展示">
 
-                                </TabItem>
-                                <TabItem Name="TabTrend" Header="Trend">
-                                    <uc:UCTrend x:Name="UCTrend" PageParent="{Binding}"></uc:UCTrend>
                                 </TabItem>
                                 <TabItem Name="TabHistory" Header="History">
 

@@ -2,15 +2,15 @@
 //
 //        Copyright © 2016 - 2020 NetInfo Technologies Ltd.
 //        All rights reserved
-//        guid1:                    62dff62a-4db8-4f10-8259-647f82beaac5
+//        guid1:                    b1382833-a0b4-483c-a446-14bbae30fadd
 //        CLR Version:              4.0.30319.42000
-//        Name:                     UCTrend
+//        Name:                     UCLargeSmall
 //        Computer:                 DESKTOP-5OJRDKD
 //        Organization:             NetInfo
 //        Namespace:                ShiShiCai.UserControls
-//        File Name:                UCTrend
+//        File Name:                UCLargeSmall
 //
-//        Created by Charley at 2019/8/12 16:27:54
+//        Created by Charley at 2019/8/16 11:35:41
 //        http://www.netinfo.com 
 //
 //======================================================================
@@ -24,15 +24,15 @@ using ShiShiCai.Models;
 namespace ShiShiCai.UserControls
 {
     /// <summary>
-    /// UCTrend.xaml 的交互逻辑
+    /// UCLargeSmall.xaml 的交互逻辑
     /// </summary>
-    public partial class UCTrend : IModuleView
+    public partial class UCLargeSmall : IModuleView
     {
 
         #region Property
 
         public static readonly DependencyProperty PageParentProperty =
-            DependencyProperty.Register("PageParent", typeof(MainWindow), typeof(UCTrend), new PropertyMetadata(default(MainWindow)));
+            DependencyProperty.Register("PageParent", typeof(MainWindow), typeof(UCLargeSmall), new PropertyMetadata(default(MainWindow)));
 
         public MainWindow PageParent
         {
@@ -41,7 +41,7 @@ namespace ShiShiCai.UserControls
         }
 
         public static readonly DependencyProperty SumValuePathProperty =
-            DependencyProperty.Register("SumValuePath", typeof(PathGeometry), typeof(UCTrend), new PropertyMetadata(default(PathGeometry)));
+            DependencyProperty.Register("SumValuePath", typeof(PathGeometry), typeof(UCLargeSmall), new PropertyMetadata(default(PathGeometry)));
 
         public PathGeometry SumValuePath
         {
@@ -61,15 +61,15 @@ namespace ShiShiCai.UserControls
 
         private bool mIsInited;
 
-        public UCTrend()
+
+        public UCLargeSmall()
         {
             InitializeComponent();
 
-            Loaded += UCTrend_Loaded;
-            ListBoxSumView.SizeChanged += ListBoxSumView_SizeChanged;
+            Loaded += UCLargeSmall_Loaded;
         }
 
-        void UCTrend_Loaded(object sender, RoutedEventArgs e)
+        void UCLargeSmall_Loaded(object sender, RoutedEventArgs e)
         {
             if (!mIsInited)
             {
@@ -77,6 +77,9 @@ namespace ShiShiCai.UserControls
                 mIsInited = true;
             }
         }
+
+
+        #region Init and Load
 
         public void Reload()
         {
@@ -154,12 +157,18 @@ namespace ShiShiCai.UserControls
             SumValuePath = path;
         }
 
+        #endregion
+       
+
+        #region 事件处理
 
         void ListBoxSumView_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             InitSumViewSize();
         }
 
+        #endregion
+      
 
         #region Basic
 

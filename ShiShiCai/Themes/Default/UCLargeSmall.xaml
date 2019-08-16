@@ -4,14 +4,14 @@
     <Style x:Key="PanelView" TargetType="Border">
         <Setter Property="Margin" Value="15,5,5,5"></Setter>
     </Style>
-    
+
     <Style x:Key="PointStyle" TargetType="Ellipse">
         <Setter Property="Width" Value="8"></Setter>
         <Setter Property="Height" Value="8"></Setter>
         <Setter Property="VerticalAlignment" Value="Center"></Setter>
         <Setter Property="HorizontalAlignment" Value="Center"></Setter>
     </Style>
-    
+
     <Style x:Key="XAxisLabelStyle" TargetType="TextBlock">
         <Setter Property="HorizontalAlignment" Value="Center"></Setter>
         <Setter Property="VerticalAlignment" Value="Center"></Setter>
@@ -50,5 +50,6 @@
             </Setter.Value>
         </Setter>
     </Style>
+
 
 </ResourceDictionary>

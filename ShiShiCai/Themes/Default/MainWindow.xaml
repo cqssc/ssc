@@ -214,6 +214,16 @@
         <Setter Property="Margin" Value="0,0,10,0"></Setter>
         <Setter Property="HorizontalAlignment" Value="Right"></Setter>
     </Style>
+    
+    <Style x:Key="SliderScaleStyle" TargetType="Slider">
+        <Setter Property="Width" Value="120"></Setter>
+        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        <Setter Property="Foreground" Value="{DynamicResource SystemBrush1}"></Setter>
+        <Setter Property="TickFrequency" Value="5"></Setter>
+        <Setter Property="IsSnapToTickEnabled" Value="True"></Setter>
+        <Setter Property="Minimum" Value="10"></Setter>
+        <Setter Property="Maximum" Value="90"></Setter>
+    </Style>
 
     <Style x:Key="TxtLotteryStyle" TargetType="TextBlock">
         <Setter Property="VerticalAlignment" Value="Center"></Setter>

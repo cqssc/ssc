@@ -7,6 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Media;
 using ShiShiCai.Common;
 using ShiShiCai.Models;
 using ShiShiCai.UserControls;
@@ -44,6 +46,7 @@ namespace ShiShiCai
             BtnSetting.Click += BtnSetting_Click;
             ListBoxModules.SelectionChanged += ListBoxModules_SelectionChanged;
             PanelLeft.SizeChanged += PanelLeft_SizeChanged;
+            SliderScale.ValueChanged += SliderScale_ValueChanged;
 
             DataContext = this;
         }
@@ -387,6 +390,86 @@ namespace ShiShiCai
         void ListBoxModules_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             InitModule();
+        }
+
+        void SliderScale_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            try
+            {
+                double viewScale = 1.0;
+                int value;
+                if (int.TryParse(SliderScale.Value.ToString(), out value))
+                {
+                    switch (value)
+                    {
+                        case 10:
+                            viewScale = 0.2;
+                            break;
+                        case 15:
+                            viewScale = 0.3;
+                            break;
+                        case 20:
+                            viewScale = 0.4;
+                            break;
+                        case 25:
+                            viewScale = 0.5;
+                            break;
+                        case 30:
+                            viewScale = 0.6;
+                            break;
+                        case 35:
+                            viewScale = 0.7;
+                            break;
+                        case 40:
+                            viewScale = 0.8;
+                            break;
+                        case 45:
+                            viewScale = 0.9;
+                            break;
+                        case 50:
+                            viewScale = 1.0;
+                            break;
+                        case 55:
+                            viewScale = 1.5;
+                            break;
+                        case 60:
+                            viewScale = 2.0;
+                            break;
+                        case 65:
+                            viewScale = 2.5;
+                            break;
+                        case 70:
+                            viewScale = 3.0;
+                            break;
+                        case 75:
+                            viewScale = 3.5;
+                            break;
+                        case 80:
+                            viewScale = 4.0;
+                            break;
+                        case 85:
+                            viewScale = 4.5;
+                            break;
+                        case 90:
+                            viewScale = 5.0;
+                            break;
+                    }
+                }
+                ScaleTransform tran = new ScaleTransform();
+                tran.ScaleX = viewScale;
+                tran.ScaleY = viewScale;
+                BorderViewer.LayoutTransform = tran;
+                SliderScale.Tag = viewScale;
+                BindingExpression be = SliderScale.GetBindingExpression(ToolTipProperty);
+                if (be != null)
+                {
+                    be.UpdateTarget();
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowException(ex.Message);
+            }
         }
 
         #endregion

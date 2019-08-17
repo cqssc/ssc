@@ -27,6 +27,7 @@ namespace ShiShiCai.Models
         private int mDate;
 
         private bool mLargeValue;
+        private int mTimes;
 
         public string Serial
         {
@@ -50,6 +51,12 @@ namespace ShiShiCai.Models
         {
             get { return mLargeValue; }
             set { mLargeValue = value; OnPropertyChanged("LargeValue"); }
+        }
+
+        public int Times
+        {
+            get { return mTimes; }
+            set { mTimes = value; OnPropertyChanged("Times"); }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

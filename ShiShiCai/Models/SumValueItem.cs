@@ -27,8 +27,8 @@ namespace ShiShiCai.Models
         private int mDate;
         private int mSumValue;
 
-        private bool mLargeValue;   //大小
-        private bool mDoubleValue;  //单双
+        private bool mLargeValue;
+        private bool mDoubleValue;
 
         private double mItemWidth;
         private double mItemHeight;

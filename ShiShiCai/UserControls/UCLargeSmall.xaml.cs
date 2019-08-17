@@ -63,17 +63,12 @@ namespace ShiShiCai.UserControls
 
 
         private readonly ObservableCollection<SectionItem> mListSectionItems = new ObservableCollection<SectionItem>();
-
-        private readonly ObservableCollection<SumValueDateItem> mListSumValueDateItems =
-            new ObservableCollection<SumValueDateItem>();
+        private readonly ObservableCollection<SectionDataItem> mListSectionDataItems = new ObservableCollection<SectionDataItem>();
         private readonly ObservableCollection<SumValueItem> mListSumValueItems = new ObservableCollection<SumValueItem>();
+        private readonly ObservableCollection<SumValueDateItem> mListSumValueDateItems = new ObservableCollection<SumValueDateItem>();
         private readonly List<LargeSmallItem> mListLargeSmallData = new List<LargeSmallItem>();
 
-        private readonly ObservableCollection<SectionDataItem> mListSectionDataItems =
-            new ObservableCollection<SectionDataItem>();
-
         private bool mIsInited;
-
 
         public UCLargeSmall()
         {
@@ -108,6 +103,7 @@ namespace ShiShiCai.UserControls
 
         private void Init()
         {
+            LoadLargeSmallData();
             InitSectionItems();
             InitSumValueDateItems();
             ComboDate.SelectedItem = mListSumValueDateItems.FirstOrDefault();
@@ -339,6 +335,11 @@ namespace ShiShiCai.UserControls
                 largeSmall.Number = sumValueItem.Number;
                 largeSmall.Date = sumValueItem.Date;
                 largeSmall.LargeValue = sumValueItem.LargeValue;
+                var data = mListLargeSmallData.FirstOrDefault(l => l.Serial == largeSmall.Serial && l.Pos == 6);
+                if (data != null)
+                {
+                    largeSmall.Times = data.LargeSmallNum;
+                }
                 sectionData.Items.Add(largeSmall);
                 k++;
             }
@@ -355,38 +356,18 @@ namespace ShiShiCai.UserControls
                 int smallNum = 0;
                 int largeMaxNum = 0;
                 int smallMaxNum = 0;
-                int times = 0;
-                bool tag = false;
                 for (int j = 0; j < item.Items.Count; j++)
                 {
                     SectionLargeSmallItem largeSmall = item.Items[j];
                     if (largeSmall.LargeValue)
                     {
                         largeNum++;
-                        if (tag)
-                        {
-                            times++;
-                        }
-                        else
-                        {
-                            tag = true;
-                            times = 1;
-                        }
-                        largeMaxNum = Math.Max(times, largeMaxNum);
+                        largeMaxNum = Math.Max(largeSmall.Times, largeMaxNum);
                     }
                     else
                     {
                         smallNum++;
-                        if (!tag)
-                        {
-                            times++;
-                        }
-                        else
-                        {
-                            tag = false;
-                            times = 1;
-                        }
-                        smallMaxNum = Math.Max(times, smallMaxNum);
+                        smallMaxNum = Math.Max(largeSmall.Times, smallMaxNum);
                     }
                 }
                 item.LargeNum = largeNum;

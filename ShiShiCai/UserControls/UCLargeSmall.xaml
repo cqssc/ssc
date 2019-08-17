@@ -191,13 +191,13 @@
                                         <RowDefinition Height="30"></RowDefinition>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="50"></ColumnDefinition>
-                                        <ColumnDefinition Width="30"></ColumnDefinition>
+                                        <ColumnDefinition Width="40"></ColumnDefinition>
+                                        <ColumnDefinition Width="20"></ColumnDefinition>
                                         <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                        <ColumnDefinition Width="50"></ColumnDefinition>
-                                        <ColumnDefinition Width="45"></ColumnDefinition>
-                                        <ColumnDefinition Width="80"></ColumnDefinition>
-                                        <ColumnDefinition Width="45"></ColumnDefinition>
+                                        <ColumnDefinition Width="40"></ColumnDefinition>
+                                        <ColumnDefinition Width="30"></ColumnDefinition>
+                                        <ColumnDefinition Width="70"></ColumnDefinition>
+                                        <ColumnDefinition Width="30"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
                                     <Border Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
                                     <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
@@ -211,8 +211,8 @@
                                     <TextBlock Grid.Column="1" Grid.Row="1" Text="小" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
                                     <TextBlock Grid.Column="3" Grid.Row="0" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
                                     <TextBlock Grid.Column="3" Grid.Row="1" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                    <TextBlock Grid.Column="5" Grid.Row="0" Text="最大连续数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                    <TextBlock Grid.Column="5" Grid.Row="1" Text="最大连续数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                    <TextBlock Grid.Column="5" Grid.Row="0" Text="最大连续次数" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                    <TextBlock Grid.Column="5" Grid.Row="1" Text="最大连续次数" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
                                     <TextBlock Grid.Column="4" Grid.Row="0" Text="{Binding LargeNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
                                     <TextBlock Grid.Column="4" Grid.Row="1" Text="{Binding SmallNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
                                     <TextBlock Grid.Column="6" Grid.Row="0" Text="{Binding LargeMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
@@ -226,7 +226,7 @@
                                                         <Border VerticalAlignment="Bottom">
                                                             <Grid>
                                                                 <Ellipse Fill="{Binding LargeValue,Converter={StaticResource LargeSmallToFillConverter}}" Style="{DynamicResource BallStyle}"></Ellipse>
-                                                                <TextBlock Text="{Binding Number}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
+                                                                <TextBlock Text="{Binding Times}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
                                                             </Grid>
                                                         </Border>
                                                     </Border>

@@ -62,11 +62,12 @@ namespace ShiShiCai.UserControls
         #endregion
 
 
+        private readonly List<LargeSmallItem> mListLargeSmallData = new List<LargeSmallItem>();
         private readonly ObservableCollection<SectionItem> mListSectionItems = new ObservableCollection<SectionItem>();
         private readonly ObservableCollection<SectionDataItem> mListSectionDataItems = new ObservableCollection<SectionDataItem>();
         private readonly ObservableCollection<SumValueItem> mListSumValueItems = new ObservableCollection<SumValueItem>();
         private readonly ObservableCollection<SumValueDateItem> mListSumValueDateItems = new ObservableCollection<SumValueDateItem>();
-        private readonly List<LargeSmallItem> mListLargeSmallData = new List<LargeSmallItem>();
+        private readonly ObservableCollection<LargeSmallItem> mListDistributeItems = new ObservableCollection<LargeSmallItem>();
 
         private bool mIsInited;
 
@@ -82,6 +83,7 @@ namespace ShiShiCai.UserControls
             ListBoxSection.ItemsSource = mListSectionItems;
             ComboDate.ItemsSource = mListSumValueDateItems;
             ListBoxSectionData.ItemsSource = mListSectionDataItems;
+            ListBoxDistribute.ItemsSource = mListDistributeItems;
         }
 
         void UCLargeSmall_Loaded(object sender, RoutedEventArgs e)
@@ -133,6 +135,60 @@ namespace ShiShiCai.UserControls
             item.Number = SscDefines.SECTION_DAY;
             item.Name = SscDefines.SECTION_NAME_DAY;
             mListSectionItems.Add(item);
+        }
+
+        private void LoadLargeSmallData()
+        {
+            mListLargeSmallData.Clear();
+            if (PageParent == null) { return; }
+            var issueItems = PageParent.ListIssueItems;
+            if (issueItems == null) { return;}
+            var systemConfig = PageParent.SystemConfig;
+            if (systemConfig == null) { return; }
+            var db = systemConfig.Database;
+            if (db == null) { return; }
+            string strConn = db.GetConnectionString();
+            var first = issueItems.FirstOrDefault();
+            if (first == null) { return; }
+            long begin = long.Parse(first.Serial);
+            long end = long.Parse(first.Serial);
+            for (int i = 0; i < issueItems.Count; i++)
+            {
+                var item = issueItems[i];
+                long serial = long.Parse(item.Serial);
+                begin = Math.Min(serial, begin);
+                end = Math.Max(serial, end);
+            }
+            string strSql = string.Format(
+                "SELECT * FROM t_111_19 WHERE C001 >= {0} AND C001 <= {1} ORDER BY C001 DESC", begin, end);
+            OperationReturn optReturn = MssqlOperation.GetDataSet(strConn, strSql);
+            if (!optReturn.Result)
+            {
+                ShowException(string.Format("load large small data fail. [{0}]{1}", optReturn.Code, optReturn.Message));
+                return;
+            }
+            DataSet objDataSet = optReturn.Data as DataSet;
+            if (objDataSet == null) { return; }
+            for (int i = 0; i < objDataSet.Tables[0].Rows.Count; i++)
+            {
+                DataRow dr = objDataSet.Tables[0].Rows[i];
+                LargeSmallItem item = new LargeSmallItem();
+                item.Serial = dr["C001"].ToString();
+                item.Date = Convert.ToInt32(dr["C002"]);
+                item.Number = Convert.ToInt32(dr["C003"]);
+                item.Pos = Convert.ToInt32(dr["C004"]);
+                item.Large = Convert.ToInt32(dr["C005"]);
+                item.Small = Convert.ToInt32(dr["C006"]);
+                item.Single = Convert.ToInt32(dr["C007"]);
+                item.Double = Convert.ToInt32(dr["C008"]);
+                item.LargeSmallNum = Convert.ToInt32(dr["C009"]);
+                item.SingleDoubleNum = Convert.ToInt32(dr["C010"]);
+                item.LargeNum = Convert.ToInt32(dr["C011"]);
+                item.SmallNum = Convert.ToInt32(dr["C012"]);
+                item.SingleNum = Convert.ToInt32(dr["C013"]);
+                item.DoubleNum = Convert.ToInt32(dr["C014"]);
+                mListLargeSmallData.Add(item);
+            }
         }
 
         private void InitSumValueDateItems()
@@ -227,58 +283,6 @@ namespace ShiShiCai.UserControls
             }
             PathGeometry path = new PathGeometry { Figures = new PathFigureCollection { new PathFigure { StartPoint = first, Segments = segments } } };
             SumValuePath = path;
-        }
-
-        private void LoadLargeSmallData()
-        {
-            mListLargeSmallData.Clear();
-            if (PageParent == null) { return; }
-            var systemConfig = PageParent.SystemConfig;
-            if (systemConfig == null) { return; }
-            var db = systemConfig.Database;
-            if (db == null) { return; }
-            string strConn = db.GetConnectionString();
-            var first = mListSumValueItems.FirstOrDefault();
-            if (first == null) { return; }
-            long begin = long.Parse(first.Serial);
-            long end = long.Parse(first.Serial);
-            for (int i = 0; i < mListSumValueItems.Count; i++)
-            {
-                var item = mListSumValueItems[i];
-                long serial = long.Parse(item.Serial);
-                begin = Math.Min(serial, begin);
-                end = Math.Max(serial, end);
-            }
-            string strSql = string.Format(
-                "SELECT * FROM t_111_19 WHERE C001 >= {0} AND C001 <= {1} ORDER BY C001 DESC", begin, end);
-            OperationReturn optReturn = MssqlOperation.GetDataSet(strConn, strSql);
-            if (!optReturn.Result)
-            {
-                ShowException(string.Format("load large small data fail. [{0}]{1}", optReturn.Code, optReturn.Message));
-                return;
-            }
-            DataSet objDataSet = optReturn.Data as DataSet;
-            if (objDataSet == null) { return; }
-            for (int i = 0; i < objDataSet.Tables[0].Rows.Count; i++)
-            {
-                DataRow dr = objDataSet.Tables[0].Rows[i];
-                LargeSmallItem item = new LargeSmallItem();
-                item.Serial = dr["C001"].ToString();
-                item.Date = Convert.ToInt32(dr["C002"]);
-                item.Number = Convert.ToInt32(dr["C003"]);
-                item.Pos = Convert.ToInt32(dr["C004"]);
-                item.Large = Convert.ToInt32(dr["C005"]);
-                item.Small = Convert.ToInt32(dr["C006"]);
-                item.Single = Convert.ToInt32(dr["C007"]);
-                item.Double = Convert.ToInt32(dr["C008"]);
-                item.LargeSmallNum = Convert.ToInt32(dr["C009"]);
-                item.SingleDoubleNum = Convert.ToInt32(dr["C010"]);
-                item.LargeNum = Convert.ToInt32(dr["C011"]);
-                item.SmallNum = Convert.ToInt32(dr["C012"]);
-                item.SingleNum = Convert.ToInt32(dr["C013"]);
-                item.DoubleNum = Convert.ToInt32(dr["C014"]);
-                mListLargeSmallData.Add(item);
-            }
         }
 
         private void InitSectionDataItems()
@@ -388,6 +392,35 @@ namespace ShiShiCai.UserControls
 
         }
 
+        private void InitDistributeItems()
+        {
+            mListDistributeItems.Clear();
+            var dateItem = ComboDate.SelectedItem as SumValueDateItem;
+            if (dateItem != null)
+            {
+                for (int i = 0; i < dateItem.Items.Count; i++)
+                {
+                    var sumValueItem = dateItem.Items[i];
+                    string serial = sumValueItem.Serial;
+                    LargeSmallItem item = new LargeSmallItem();
+                    item.Serial = serial;
+                    item.Number = sumValueItem.Number;
+                    item.Date = sumValueItem.Date;
+                    int pos = 6;
+                    item.Pos = pos;
+                    var data = mListLargeSmallData.FirstOrDefault(l => l.Serial == serial && l.Pos == pos);
+                    if (data != null)
+                    {
+                        item.LargeNum = data.LargeNum;
+                        item.SmallNum = data.SmallNum;
+                        item.SingleNum = data.SingleNum;
+                        item.DoubleNum = data.DoubleNum;
+                    }
+                    mListDistributeItems.Add(item);
+                }
+            }
+        }
+
         #endregion
 
 
@@ -399,6 +432,7 @@ namespace ShiShiCai.UserControls
             InitSumValueTitle();
             InitSumViewSize();
             InitSectionDataItems();
+            InitDistributeItems();
         }
 
         void ListBoxSumView_SizeChanged(object sender, SizeChangedEventArgs e)

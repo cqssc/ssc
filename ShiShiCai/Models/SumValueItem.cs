@@ -33,6 +33,8 @@ namespace ShiShiCai.Models
         private double mItemWidth;
         private double mItemHeight;
 
+        private bool mIsOver;
+
         public string Serial
         {
             get { return mSerial; }
@@ -79,6 +81,12 @@ namespace ShiShiCai.Models
         {
             get { return mItemHeight; }
             set { mItemHeight = value; OnPropertyChanged("ItemHeight"); }
+        }
+
+        public bool IsOver
+        {
+            get { return mIsOver; }
+            set { mIsOver = value; OnPropertyChanged("IsOver"); }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

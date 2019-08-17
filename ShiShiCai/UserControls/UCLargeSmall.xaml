@@ -6,7 +6,7 @@
              xmlns:uc="clr-namespace:ShiShiCai.UserControls"
              xmlns:conv="clr-namespace:ShiShiCai.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="800"
+             d:DesignHeight="680" d:DesignWidth="800"
              Style="{DynamicResource ModuleViewStyle}">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -131,7 +131,7 @@
                                     <ListBox.ItemTemplate>
                                         <DataTemplate DataType="ListBoxItem">
                                             <Border VerticalAlignment="Bottom" Width="{Binding ItemWidth}" Height="{Binding ItemHeight}">
-                                                <Border VerticalAlignment="Top" ToolTip="{Binding SumValue}">
+                                                <Border VerticalAlignment="Top">
                                                     <Ellipse Fill="{Binding LargeValue,Converter={StaticResource LargeSmallToFillConverter}}" 
                                                              Style="{DynamicResource PointStyle}"></Ellipse>
                                                 </Border>
@@ -154,8 +154,8 @@
                         <RowDefinition Height="Auto"></RowDefinition>
                     </Grid.RowDefinitions>
                     <Border Grid.Row="0" Style="{DynamicResource TitleStyle}">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <TextBlock Text="统计分段选择" Style="{DynamicResource TxtTitleStyle}"></TextBlock>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <TextBlock Text="分段统计" Style="{DynamicResource TxtTitleStyle}"></TextBlock>
                             <ListBox Name="ListBoxSection" Style="{DynamicResource ListBoxSectionStyle}"
                                  ItemContainerStyle="{DynamicResource ListItemSectionStyle}">
                                 <ListBox.ItemTemplate>
@@ -240,7 +240,62 @@
                     </ListBox>
                 </Grid>
                 <Grid Grid.Row="2">
-
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Style="{DynamicResource TitleStyle}">
+                        <TextBlock Text="5位上大小单双分布" Style="{DynamicResource TxtTitleStyle}"></TextBlock>
+                    </Border>
+                    <Grid Grid.Row="1">
+                        <Border BorderThickness="1" BorderBrush="{DynamicResource SystemBrush7}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30"></RowDefinition>
+                                    <RowDefinition Height="30"></RowDefinition>
+                                    <RowDefinition Height="30"></RowDefinition>
+                                    <RowDefinition Height="30"></RowDefinition>
+                                    <RowDefinition Height="30"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.5"></Border>
+                                <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
+                                <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
+                                <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
+                                <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="5" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.5"></Border>
+                                <TextBlock Grid.Column="0" Grid.Row="0" Text="期号" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                <TextBlock Grid.Column="0" Grid.Row="1" Text="大" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                <TextBlock Grid.Column="0" Grid.Row="2" Text="小" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                <TextBlock Grid.Column="0" Grid.Row="3" Text="单" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                <TextBlock Grid.Column="0" Grid.Row="4" Text="双" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                <ListBox Name="ListBoxDistribute" Grid.Column="1" Grid.Row="0" Grid.RowSpan="5"
+                                         Style="{DynamicResource ListBoxDistributeStyle}"
+                                         ItemContainerStyle="{DynamicResource ListItemDistributeStyle}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate DataType="ListBoxItem">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="30"></RowDefinition>
+                                                    <RowDefinition Height="30"></RowDefinition>
+                                                    <RowDefinition Height="30"></RowDefinition>
+                                                    <RowDefinition Height="30"></RowDefinition>
+                                                    <RowDefinition Height="30"></RowDefinition>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Grid.Row="0" Text="{Binding Number}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                <TextBlock Grid.Row="1" Text="{Binding LargeNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                <TextBlock Grid.Row="2" Text="{Binding SmallNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                <TextBlock Grid.Row="3" Text="{Binding SingleNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                <TextBlock Grid.Row="4" Text="{Binding DoubleNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </Grid>
+                        </Border>
+                    </Grid>
                 </Grid>
             </Grid>
         </ScrollViewer>

@@ -40,7 +40,7 @@
     </Style>
     
     <Style x:Key="TxtTitleStyle" TargetType="TextBlock">
-        <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+        <Setter Property="HorizontalAlignment" Value="Left"></Setter>
         <Setter Property="VerticalAlignment" Value="Center"></Setter>
         <Setter Property="FontWeight" Value="Bold"></Setter>
     </Style>
@@ -93,16 +93,24 @@
     </Style>
 
     <Style x:Key="ListItemSumViewStyle" TargetType="ListBoxItem">
+        <Setter Property="ToolTip" Value="{Binding SumValue}"></Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
                     <Grid>
+                        <Border x:Name="Bg" Background="{DynamicResource SystemBrush7}" Opacity="0.2" Visibility="Collapsed"></Border>
                         <Border x:Name="Border"
                               SnapsToDevicePixels="true"
                             Background="Transparent">
                             <ContentPresenter />
                         </Border>
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bg" Property="Visibility" Value="Visible"></Setter>
+                            <Setter Property="FontWeight" Value="Bold"></Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -212,6 +220,49 @@
                             <ContentPresenter />
                         </Border>
                     </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="ListBoxDistributeStyle" TargetType="ListBox">
+        <Setter Property="Background" Value="Transparent"></Setter>
+        <Setter Property="BorderBrush" Value="Transparent"></Setter>
+        <Setter Property="BorderThickness" Value="0"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBox}">
+                    <Border Name="Border"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="{TemplateBinding Background}">
+                        <StackPanel IsItemsHost="True" Orientation="Horizontal"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="ListItemDistributeStyle" TargetType="ListBoxItem">
+        <Setter Property="Margin" Value="2,0"></Setter>
+        <Setter Property="Width" Value="18"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Grid>
+                        <Border x:Name="Bg" Background="{DynamicResource SystemBrush7}" Opacity="0.2" Visibility="Collapsed"></Border>
+                        <Border x:Name="Border"
+                              SnapsToDevicePixels="true"
+                            Background="Transparent">
+                            <ContentPresenter />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bg" Property="Visibility" Value="Visible"></Setter>
+                            <Setter Property="FontWeight" Value="Bold"></Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

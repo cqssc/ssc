@@ -42,7 +42,7 @@
                     </Border>
                 </Grid>
                 <Grid Grid.Row="0">
-                    <Border Height="120">
+                    <Border Height="200">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -57,13 +57,25 @@
                                 <Border BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}">
                                     <Grid>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="34*"></RowDefinition>
-                                            <RowDefinition Height="33*"></RowDefinition>
-                                            <RowDefinition Height="33*"></RowDefinition>
+                                            <RowDefinition Height="10*"></RowDefinition>
+                                            <RowDefinition Height="10*"></RowDefinition>
+                                            <RowDefinition Height="10*"></RowDefinition>
+                                            <RowDefinition Height="10*"></RowDefinition>
+                                            <RowDefinition Height="10*"></RowDefinition>
+                                            <RowDefinition Height="10*"></RowDefinition>
+                                            <RowDefinition Height="10*"></RowDefinition>
+                                            <RowDefinition Height="10*"></RowDefinition>
+                                            <RowDefinition Height="10*"></RowDefinition>
                                         </Grid.RowDefinitions>
                                         <TextBlock Grid.Row="0" Text="45" VerticalAlignment="Top"></TextBlock>
-                                        <TextBlock Grid.Row="1" Text="30" VerticalAlignment="Top"></TextBlock>
-                                        <TextBlock Grid.Row="2" Text="15" VerticalAlignment="Top"></TextBlock>
+                                        <TextBlock Grid.Row="1" Text="40" VerticalAlignment="Top"></TextBlock>
+                                        <TextBlock Grid.Row="2" Text="35" VerticalAlignment="Top"></TextBlock>
+                                        <TextBlock Grid.Row="3" Text="30" VerticalAlignment="Top"></TextBlock>
+                                        <TextBlock Grid.Row="4" Text="25" VerticalAlignment="Top"></TextBlock>
+                                        <TextBlock Grid.Row="5" Text="20" VerticalAlignment="Top"></TextBlock>
+                                        <TextBlock Grid.Row="6" Text="15" VerticalAlignment="Top"></TextBlock>
+                                        <TextBlock Grid.Row="7" Text="10" VerticalAlignment="Top"></TextBlock>
+                                        <TextBlock Grid.Row="8" Text="5" VerticalAlignment="Top"></TextBlock>
                                     </Grid>
                                 </Border>
                             </Grid>
@@ -85,27 +97,43 @@
                             <Grid Grid.Column="1" Grid.Row="1">
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="34*"></RowDefinition>
-                                        <RowDefinition Height="33*"></RowDefinition>
-                                        <RowDefinition Height="33*"></RowDefinition>
+                                        <RowDefinition Height="10*"></RowDefinition>
+                                        <RowDefinition Height="10*"></RowDefinition>
+                                        <RowDefinition Height="10*"></RowDefinition>
+                                        <RowDefinition Height="10*"></RowDefinition>
+                                        <RowDefinition Height="10*"></RowDefinition>
+                                        <RowDefinition Height="10*"></RowDefinition>
+                                        <RowDefinition Height="10*"></RowDefinition>
+                                        <RowDefinition Height="10*"></RowDefinition>
+                                        <RowDefinition Height="10*"></RowDefinition>
                                     </Grid.RowDefinitions>
                                     <Border Grid.Row="0" Height="1" Background="LightGray" VerticalAlignment="Top"></Border>
                                     <Border Grid.Row="1" Height="1" Background="LightGray" VerticalAlignment="Top"></Border>
                                     <Border Grid.Row="2" Height="1" Background="LightGray" VerticalAlignment="Top"></Border>
+                                    <Border Grid.Row="3" Height="1" Background="LightGray" VerticalAlignment="Top"></Border>
+                                    <Border Grid.Row="4" Height="1" Background="LightGray" VerticalAlignment="Top"></Border>
+                                    <Border Grid.Row="5" Height="1" Background="LightGray" VerticalAlignment="Top"></Border>
+                                    <Border Grid.Row="6" Height="1" Background="LightGray" VerticalAlignment="Top"></Border>
+                                    <Border Grid.Row="7" Height="1" Background="LightGray" VerticalAlignment="Top"></Border>
+                                    <Border Grid.Row="8" Height="1" Background="LightGray" VerticalAlignment="Top"></Border>
                                 </Grid>
+                                <Grid.RenderTransform>
+                                    <TranslateTransform Y="5"></TranslateTransform>
+                                </Grid.RenderTransform>
                             </Grid>
                             <Grid Grid.Column="1" Grid.Row="1">
                                 <Path Data="{Binding SumValuePath,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"
-                               StrokeThickness="2" Stroke="Teal"></Path>
+                                       StrokeThickness="2" Stroke="Tan"></Path>
                                 <ListBox Name="ListBoxSumView"
-                                 Style="{DynamicResource ListBoxSumViewStyle}"
-                                 ItemContainerStyle="{DynamicResource ListItemSumViewStyle}"
-                                 ItemsSource="{Binding SumValueItems,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}">
+                                     Style="{DynamicResource ListBoxSumViewStyle}"
+                                     ItemContainerStyle="{DynamicResource ListItemSumViewStyle}"
+                                     ItemsSource="{Binding SumValueItems,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate DataType="ListBoxItem">
                                             <Border VerticalAlignment="Bottom" Width="{Binding ItemWidth}" Height="{Binding ItemHeight}">
                                                 <Border VerticalAlignment="Top" ToolTip="{Binding SumValue}">
-                                                    <Ellipse Fill="Teal" Style="{DynamicResource PointStyle}"></Ellipse>
+                                                    <Ellipse Fill="{Binding LargeValue,Converter={StaticResource LargeSmallToFillConverter}}" 
+                                                             Style="{DynamicResource PointStyle}"></Ellipse>
                                                 </Border>
                                             </Border>
                                         </DataTemplate>

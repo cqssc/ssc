@@ -59,6 +59,15 @@ namespace ShiShiCai.UserControls
             get { return mListSumValueItems; }
         }
 
+        public static readonly DependencyProperty IsDrillProperty =
+            DependencyProperty.Register("IsDrill", typeof(bool), typeof(UCLargeSmall), new PropertyMetadata(default(bool)));
+
+        public bool IsDrill
+        {
+            get { return (bool)GetValue(IsDrillProperty); }
+            set { SetValue(IsDrillProperty, value); }
+        }
+
         #endregion
 
 
@@ -68,6 +77,11 @@ namespace ShiShiCai.UserControls
         private readonly ObservableCollection<SumValueItem> mListSumValueItems = new ObservableCollection<SumValueItem>();
         private readonly ObservableCollection<SumValueDateItem> mListSumValueDateItems = new ObservableCollection<SumValueDateItem>();
         private readonly ObservableCollection<LargeSmallItem> mListDistributeItems = new ObservableCollection<LargeSmallItem>();
+        private readonly ObservableCollection<SectionDataItem> mListSectionData1Items = new ObservableCollection<SectionDataItem>();
+        private readonly ObservableCollection<SectionDataItem> mListSectionData2Items = new ObservableCollection<SectionDataItem>();
+        private readonly ObservableCollection<SectionDataItem> mListSectionData3Items = new ObservableCollection<SectionDataItem>();
+        private readonly ObservableCollection<SectionDataItem> mListSectionData4Items = new ObservableCollection<SectionDataItem>();
+        private readonly ObservableCollection<SectionDataItem> mListSectionData5Items = new ObservableCollection<SectionDataItem>();
 
         private bool mIsInited;
 
@@ -79,11 +93,17 @@ namespace ShiShiCai.UserControls
             ListBoxSumView.SizeChanged += ListBoxSumView_SizeChanged;
             ListBoxSection.SelectionChanged += ListBoxSection_SelectionChanged;
             ComboDate.SelectionChanged += ComboDate_SelectionChanged;
+            BtnDrill.Click += BtnDrill_Click;
 
             ListBoxSection.ItemsSource = mListSectionItems;
             ComboDate.ItemsSource = mListSumValueDateItems;
             ListBoxSectionData.ItemsSource = mListSectionDataItems;
             ListBoxDistribute.ItemsSource = mListDistributeItems;
+            ListBoxSectionData1.ItemsSource = mListSectionData1Items;
+            ListBoxSectionData2.ItemsSource = mListSectionData2Items;
+            ListBoxSectionData3.ItemsSource = mListSectionData3Items;
+            ListBoxSectionData4.ItemsSource = mListSectionData4Items;
+            ListBoxSectionData5.ItemsSource = mListSectionData5Items;
         }
 
         void UCLargeSmall_Loaded(object sender, RoutedEventArgs e)
@@ -343,11 +363,11 @@ namespace ShiShiCai.UserControls
                 largeSmall.Serial = sumValueItem.Serial;
                 largeSmall.Number = sumValueItem.Number;
                 largeSmall.Date = sumValueItem.Date;
-                largeSmall.LargeValue = sumValueItem.LargeValue;
-                largeSmall.SingleValue = sumValueItem.SingleValue;
                 var data = mListLargeSmallData.FirstOrDefault(l => l.Serial == largeSmall.Serial && l.Pos == 6);
                 if (data != null)
                 {
+                    largeSmall.LargeValue = data.Large == 1;
+                    largeSmall.SingleValue = data.Single == 1;
                     largeSmall.LargeSmallTimes = data.LargeSmallNum;
                     largeSmall.SingleDoubleTimes = data.SingleDoubleNum;
                 }
@@ -363,6 +383,132 @@ namespace ShiShiCai.UserControls
             for (int i = 0; i < mListSectionDataItems.Count; i++)
             {
                 var item = mListSectionDataItems[i];
+                int largeNum = 0;
+                int smallNum = 0;
+                int singleNum = 0;
+                int doubleNum = 0;
+                int largeMaxNum = 0;
+                int smallMaxNum = 0;
+                int singleMaxNum = 0;
+                int doubleMaxNum = 0;
+                for (int j = 0; j < item.Items.Count; j++)
+                {
+                    SectionLargeSmallItem largeSmall = item.Items[j];
+                    if (largeSmall.LargeValue)
+                    {
+                        largeNum++;
+                        largeMaxNum = Math.Max(largeSmall.LargeSmallTimes, largeMaxNum);
+                    }
+                    else
+                    {
+                        smallNum++;
+                        smallMaxNum = Math.Max(largeSmall.LargeSmallTimes, smallMaxNum);
+                    }
+                    if (largeSmall.SingleValue)
+                    {
+                        singleNum++;
+                        singleMaxNum = Math.Max(largeSmall.SingleDoubleTimes, singleMaxNum);
+                    }
+                    else
+                    {
+                        doubleNum++;
+                        doubleMaxNum = Math.Max(largeSmall.SingleDoubleTimes, doubleMaxNum);
+                    }
+                }
+                item.LargeNum = largeNum;
+                item.SmallNum = smallNum;
+                item.SingleNum = singleNum;
+                item.DoubleNum = doubleNum;
+                item.LargeMaxNum = largeMaxNum;
+                item.SmallMaxNum = smallMaxNum;
+                item.SingleMaxNum = singleMaxNum;
+                item.DoubleMaxNum = doubleMaxNum;
+                var first = item.Items.FirstOrDefault();
+                var last = item.Items.LastOrDefault();
+                if (first != null && last != null)
+                {
+                    var begin = first.Number;
+                    var end = last.Number;
+                    item.Name = string.Format("{0}~{1}", begin, end);
+                }
+            }
+
+            #endregion
+
+        }
+
+        private void InitSectionDataPosItems(int pos, IList<SectionDataItem> listItems)
+        {
+
+            #region 分段及每段数量
+
+            var section = ListBoxSection.SelectedItem as SectionItem;
+            if (section == null) { return; }
+            int sectionNumber = section.Number;
+            int sectionSize = mListSumValueItems.Count;
+            if (sectionNumber == SscDefines.SECTION_10)
+            {
+                sectionSize = 10;
+            }
+            if (sectionNumber == SscDefines.SECTION_15)
+            {
+                sectionSize = 15;
+            }
+            if (sectionNumber == SscDefines.SECTION_20)
+            {
+                sectionSize = 20;
+            }
+            if (sectionNumber == SscDefines.SECTION_30)
+            {
+                sectionSize = 30;
+            }
+
+            #endregion
+
+
+            #region 分段处理
+
+            int k = 0, g = 0;
+            SectionDataItem sectionData = new SectionDataItem();
+            sectionData.Number = g;
+            sectionData.Section = sectionNumber;
+            listItems.Add(sectionData);
+            for (int i = 0; i < mListSumValueItems.Count; i++)
+            {
+                var sumValueItem = mListSumValueItems[i];
+                if (k == sectionSize)
+                {
+                    k = 0;
+                    g++;
+                    sectionData = new SectionDataItem();
+                    sectionData.Number = g;
+                    sectionData.Section = sectionNumber;
+                    listItems.Add(sectionData);
+                }
+                SectionLargeSmallItem largeSmall = new SectionLargeSmallItem();
+                largeSmall.Serial = sumValueItem.Serial;
+                largeSmall.Number = sumValueItem.Number;
+                largeSmall.Date = sumValueItem.Date;
+                var data = mListLargeSmallData.FirstOrDefault(l => l.Serial == largeSmall.Serial && l.Pos == pos);
+                if (data != null)
+                {
+                    largeSmall.LargeValue = data.Large == 1;
+                    largeSmall.SingleValue = data.Single == 1;
+                    largeSmall.LargeSmallTimes = data.LargeSmallNum;
+                    largeSmall.SingleDoubleTimes = data.SingleDoubleNum;
+                }
+                sectionData.Items.Add(largeSmall);
+                k++;
+            }
+
+            #endregion
+
+
+            #region 每段处理
+
+            for (int i = 0; i < listItems.Count; i++)
+            {
+                var item = listItems[i];
                 int largeNum = 0;
                 int smallNum = 0;
                 int singleNum = 0;
@@ -455,9 +601,19 @@ namespace ShiShiCai.UserControls
         {
             InitSumValueItems();
             InitSumValueTitle();
-            InitSectionDataItems();
             InitDistributeItems();
             InitSumViewSize();
+            InitSectionDataItems();
+            mListSectionData1Items.Clear();
+            mListSectionData2Items.Clear();
+            mListSectionData3Items.Clear();
+            mListSectionData4Items.Clear();
+            mListSectionData5Items.Clear();
+            InitSectionDataPosItems(1, mListSectionData1Items);
+            InitSectionDataPosItems(2, mListSectionData2Items);
+            InitSectionDataPosItems(3, mListSectionData3Items);
+            InitSectionDataPosItems(4, mListSectionData4Items);
+            InitSectionDataPosItems(5, mListSectionData5Items);
         }
 
         void ListBoxSumView_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -468,6 +624,21 @@ namespace ShiShiCai.UserControls
         void ListBoxSection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             InitSectionDataItems();
+            mListSectionData1Items.Clear();
+            mListSectionData2Items.Clear();
+            mListSectionData3Items.Clear();
+            mListSectionData4Items.Clear();
+            mListSectionData5Items.Clear();
+            InitSectionDataPosItems(1, mListSectionData1Items);
+            InitSectionDataPosItems(2, mListSectionData2Items);
+            InitSectionDataPosItems(3, mListSectionData3Items);
+            InitSectionDataPosItems(4, mListSectionData4Items);
+            InitSectionDataPosItems(5, mListSectionData5Items);
+        }
+
+        void BtnDrill_Click(object sender, RoutedEventArgs e)
+        {
+            IsDrill = !IsDrill;
         }
 
         #endregion

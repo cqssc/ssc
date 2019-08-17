@@ -2,15 +2,15 @@
 //
 //        Copyright © 2016 - 2020 NetInfo Technologies Ltd.
 //        All rights reserved
-//        guid1:                    e269296a-b3be-4077-a5ea-ee9bc878df06
+//        guid1:                    15fc0c75-6206-4669-b816-6dc63cd72151
 //        CLR Version:              4.0.30319.42000
-//        Name:                     SumValueItem
+//        Name:                     SectionLargeSmallItem
 //        Computer:                 DESKTOP-5OJRDKD
 //        Organization:             NetInfo
 //        Namespace:                ShiShiCai.Models
-//        File Name:                SumValueItem
+//        File Name:                SectionLargeSmallItem
 //
-//        Created by Charley at 2019/8/15 14:38:34
+//        Created by Charley at 2019/8/17 8:25:41
 //        http://www.netinfo.com 
 //
 //======================================================================
@@ -20,18 +20,13 @@ using System.ComponentModel;
 
 namespace ShiShiCai.Models
 {
-    public class SumValueItem : INotifyPropertyChanged
+    public class SectionLargeSmallItem:INotifyPropertyChanged
     {
         private string mSerial;
         private int mNumber;
         private int mDate;
-        private int mSumValue;
 
-        private bool mLargeValue;   //大小
-        private bool mDoubleValue;  //单双
-
-        private double mItemWidth;
-        private double mItemHeight;
+        private bool mLargeValue;
 
         public string Serial
         {
@@ -51,34 +46,10 @@ namespace ShiShiCai.Models
             set { mDate = value; OnPropertyChanged("Date"); }
         }
 
-        public int SumValue
-        {
-            get { return mSumValue; }
-            set { mSumValue = value; OnPropertyChanged("SumValue"); }
-        }
-
         public bool LargeValue
         {
             get { return mLargeValue; }
             set { mLargeValue = value; OnPropertyChanged("LargeValue"); }
-        }
-
-        public bool DoubleValue
-        {
-            get { return mDoubleValue; }
-            set { mDoubleValue = value; OnPropertyChanged("DoubleValue"); }
-        }
-
-        public double ItemWidth
-        {
-            get { return mItemWidth; }
-            set { mItemWidth = value; OnPropertyChanged("ItemWidth"); }
-        }
-
-        public double ItemHeight
-        {
-            get { return mItemHeight; }
-            set { mItemHeight = value; OnPropertyChanged("ItemHeight"); }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

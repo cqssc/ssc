@@ -17,6 +17,7 @@
 
 using System;
 using System.Windows.Data;
+using System.Windows.Media;
 
 
 namespace ShiShiCai.Converters
@@ -95,6 +96,36 @@ namespace ShiShiCai.Converters
                 return "前天";
             }
             return date.ToString("yyyy/MM/dd");
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class LargeSmallToHeightConverter : IValueConverter
+    {
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            bool largeValue = (bool)value;
+            return largeValue ? 20 : 50;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class LargeSmallToFillConverter : IValueConverter
+    {
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            bool largeValue = (bool)value;
+            return largeValue ? Brushes.Teal:Brushes.Coral;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

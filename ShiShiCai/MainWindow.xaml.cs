@@ -176,15 +176,15 @@ namespace ShiShiCai
                     item.D5 = Convert.ToInt32(dr["C050"]);
 
                     item.FullValue = dr["C002"].ToString();
-                    item.LargeValue = dr["C007"].ToString() == "2";
-                    item.DoubleValue = dr["C008"].ToString() == "2";
+                    item.LargeValue = dr["C007"].ToString() == "1";
+                    item.DoubleValue = dr["C008"].ToString() == "1";
                     item.SumValue = Convert.ToInt32(dr["C009"]);
-                    item.RepeatValue = dr["C100"].ToString() == "2";
-                    item.IntervalValue = dr["C101"].ToString() == "2";
-                    item.Larger20 = dr["C102"].ToString() == "2";
-                    item.AllOne20 = dr["C103"].ToString() == "2";
-                    item.PairsVaue = dr["C104"].ToString() == "2";
-                    item.SameValue = dr["C105"].ToString() == "2";
+                    item.RepeatValue = dr["C100"].ToString() == "1";
+                    item.IntervalValue = dr["C101"].ToString() == "1";
+                    item.Larger20 = dr["C102"].ToString() == "1";
+                    item.AllOne20 = dr["C103"].ToString() == "1";
+                    item.PairsVaue = dr["C104"].ToString() == "1";
+                    item.SameValue = dr["C105"].ToString() == "1";
                     mListIssues.Add(item);
                 }
             }

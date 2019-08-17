@@ -22,27 +22,45 @@ namespace ShiShiCai.Models
 {
     public class IssueItem : INotifyPropertyChanged
     {
+
+        #region 基本
+
         private string mSerial;
         private int mNumber;
         private int mDate;
         private int mWeekDay;
+
+        #endregion
+
+
+        #region 奖号
 
         private int mD1;
         private int mD2;
         private int mD3;
         private int mD4;
         private int mD5;
-
         private string mFullValue;  //奖号
+        private int mSumValue;      //和
+
+        #endregion
+
+
+        #region 特征
+
         private bool mLargeValue;   //大小
         private bool mDoubleValue;  //单双
-        private int mSumValue;      //和
         private bool mRepeatValue;  //重复
         private bool mIntervalValue;//间隔
         private bool mLarger20;     //>20期
         private bool mAllOne20;     //20期老1
         private bool mPairsValue;   //一对
         private bool mSameValue;    //豹子
+
+        #endregion
+
+
+        #region 高度宽度
 
         private double mD1Height;
         private double mD2Height;
@@ -55,6 +73,11 @@ namespace ShiShiCai.Models
         private double mD3Width;
         private double mD4Width;
         private double mD5Width;
+
+        #endregion
+
+
+        #region 遗漏
 
         private int mD1Lost0;
         private int mD1Lost1;
@@ -111,6 +134,10 @@ namespace ShiShiCai.Models
         private int mD5Lost8;
         private int mD5Lost9;
 
+        #endregion
+
+
+        #region 基本
 
         public string Serial
         {
@@ -135,6 +162,11 @@ namespace ShiShiCai.Models
             get { return mWeekDay; }
             set { mWeekDay = value; OnPropertyChanged("WeekDay"); }
         }
+
+        #endregion
+
+
+        #region 奖号
 
         public int D1
         {
@@ -172,6 +204,17 @@ namespace ShiShiCai.Models
             set { mFullValue = value; OnPropertyChanged("FullValue"); }
         }
 
+        public int SumValue
+        {
+            get { return mSumValue; }
+            set { mSumValue = value; OnPropertyChanged("SumValue"); }
+        }
+
+        #endregion
+
+
+        #region 特征
+
         public bool LargeValue
         {
             get { return mLargeValue; }
@@ -182,12 +225,6 @@ namespace ShiShiCai.Models
         {
             get { return mDoubleValue; }
             set { mDoubleValue = value; OnPropertyChanged("DoubleValue"); }
-        }
-
-        public int SumValue
-        {
-            get { return mSumValue; }
-            set { mSumValue = value; OnPropertyChanged("SumValue"); }
         }
 
         public bool RepeatValue
@@ -225,6 +262,11 @@ namespace ShiShiCai.Models
             get { return mSameValue; }
             set { mSameValue = value; OnPropertyChanged("SameValue"); }
         }
+
+        #endregion
+
+
+        #region 高度宽度
 
         public double D1Height
         {
@@ -286,8 +328,10 @@ namespace ShiShiCai.Models
             set { mD5Width = value; OnPropertyChanged("D5Width"); }
         }
 
-        #region Lost
+        #endregion
 
+
+        #region 遗漏
 
         #region D1
 
@@ -602,10 +646,11 @@ namespace ShiShiCai.Models
         }
 
         #endregion
-       
 
         #endregion
 
+
+        #region 通知
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -616,5 +661,8 @@ namespace ShiShiCai.Models
                 PropertyChanged(this, new PropertyChangedEventArgs(property));
             }
         }
+
+        #endregion
+        
     }
 }

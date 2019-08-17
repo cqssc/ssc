@@ -34,8 +34,30 @@ namespace ShiShiCai
 
         #endregion
 
+        #region 统计
+
         public const int CALC_MODE_LAST_LOTTERY = 1;
         public const int CALC_MODE_DATE = 2;
+
+        #endregion
+
+
+        #region 分段
+
+        public const int SECTION_10 = 1;
+        public const int SECTION_15 = 2;
+        public const int SECTION_20 = 3;
+        public const int SECTION_30 = 4;
+        public const int SECTION_DAY = 5;
+
+        public const string SECTION_NAME_10 = "10期";
+        public const string SECTION_NAME_15 = "15期";
+        public const string SECTION_NAME_20 = "20期";
+        public const string SECTION_NAME_30 = "30期";
+        public const string SECTION_NAME_DAY = "全天";
+
+        #endregion
+
 
     }
 }

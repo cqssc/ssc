@@ -96,7 +96,7 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="20" />
+                            <RowDefinition Height="30" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <TabPanel x:Name="HeaderPanel"
@@ -136,10 +136,11 @@
                         <Border x:Name="Border"
                                 Padding="15,5"
                                 Margin="3,0"
+                                Height="30"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="0">
-                            <ContentPresenter x:Name="ContentSite"
+                            <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center"
                                 ContentSource="Header"
                                 RecognizesAccessKey="True" />
                         </Border>
@@ -213,7 +214,9 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             Background="{TemplateBinding Background}">
-                        <ScrollViewer Focusable="false" CanContentScroll="False">
+                        <ScrollViewer Focusable="false" CanContentScroll="False" 
+                                      HorizontalScrollBarVisibility="Hidden" 
+                                      VerticalScrollBarVisibility="Hidden">
                             <StackPanel IsItemsHost="True" />
                         </ScrollViewer>
                     </Border>

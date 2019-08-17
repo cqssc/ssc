@@ -23,7 +23,7 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
@@ -62,18 +62,20 @@
                                     </Border>
                                     <Grid Grid.Column="1">
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="12"></RowDefinition>
-                                            <RowDefinition Height="12"></RowDefinition>
-                                            <RowDefinition Height="12"></RowDefinition>
-                                            <RowDefinition Height="12"></RowDefinition>
-                                            <RowDefinition Height="12"></RowDefinition>
-                                            <RowDefinition Height="12"></RowDefinition>
-                                            <RowDefinition Height="12"></RowDefinition>
-                                            <RowDefinition Height="12"></RowDefinition>
-                                            <RowDefinition Height="12"></RowDefinition>
-                                            <RowDefinition Height="12"></RowDefinition>
+                                            <RowDefinition Height="15"></RowDefinition>
+                                            <RowDefinition Height="15"></RowDefinition>
+                                            <RowDefinition Height="15"></RowDefinition>
+                                            <RowDefinition Height="15"></RowDefinition>
+                                            <RowDefinition Height="15"></RowDefinition>
+                                            <RowDefinition Height="15"></RowDefinition>
+                                            <RowDefinition Height="15"></RowDefinition>
+                                            <RowDefinition Height="15"></RowDefinition>
+                                            <RowDefinition Height="15"></RowDefinition>
+                                            <RowDefinition Height="15"></RowDefinition>
                                         </Grid.RowDefinitions>
-                                        <TextBlock Grid.Row="0" Text="期号" Style="{DynamicResource TxtIssueStyle}"></TextBlock>
+                                        <Border Grid.Row="0" Style="{DynamicResource BorderBottomLineStyle}">
+                                            <TextBlock Text="期号" Style="{DynamicResource TxtIssueStyle}"></TextBlock>
+                                        </Border>
                                         <TextBlock Grid.Row="1" Text="万" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
                                         <TextBlock Grid.Row="2" Text="千" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
                                         <TextBlock Grid.Row="3" Text="百" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
@@ -95,18 +97,20 @@
                                             <DataTemplate DataType="ListBoxItem">
                                                 <Grid>
                                                     <Grid.RowDefinitions>
-                                                        <RowDefinition Height="12"></RowDefinition>
-                                                        <RowDefinition Height="12"></RowDefinition>
-                                                        <RowDefinition Height="12"></RowDefinition>
-                                                        <RowDefinition Height="12"></RowDefinition>
-                                                        <RowDefinition Height="12"></RowDefinition>
-                                                        <RowDefinition Height="12"></RowDefinition>
-                                                        <RowDefinition Height="12"></RowDefinition>
-                                                        <RowDefinition Height="12"></RowDefinition>
-                                                        <RowDefinition Height="12"></RowDefinition>
-                                                        <RowDefinition Height="12"></RowDefinition>
+                                                        <RowDefinition Height="15"></RowDefinition>
+                                                        <RowDefinition Height="15"></RowDefinition>
+                                                        <RowDefinition Height="15"></RowDefinition>
+                                                        <RowDefinition Height="15"></RowDefinition>
+                                                        <RowDefinition Height="15"></RowDefinition>
+                                                        <RowDefinition Height="15"></RowDefinition>
+                                                        <RowDefinition Height="15"></RowDefinition>
+                                                        <RowDefinition Height="15"></RowDefinition>
+                                                        <RowDefinition Height="15"></RowDefinition>
+                                                        <RowDefinition Height="15"></RowDefinition>
                                                     </Grid.RowDefinitions>
-                                                    <TextBlock Grid.Row="0" Text="{Binding Number}" Style="{DynamicResource TxtIssueStyle}"></TextBlock>
+                                                    <Border Grid.Row="0" Style="{DynamicResource BorderBottomLineStyle}">
+                                                        <TextBlock Text="{Binding Number}" Style="{DynamicResource TxtIssueStyle}"></TextBlock>
+                                                    </Border>
                                                     <TextBlock Grid.Row="1" Text="{Binding D5}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
                                                     <TextBlock Grid.Row="2" Text="{Binding D4}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
                                                     <TextBlock Grid.Row="3" Text="{Binding D3}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
@@ -134,8 +138,8 @@
                         <Grid>
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="12"></RowDefinition>
-                                    <RowDefinition Height="12"></RowDefinition>
+                                    <RowDefinition Height="15"></RowDefinition>
+                                    <RowDefinition Height="15"></RowDefinition>
                                     <RowDefinition Height="*"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
@@ -174,8 +178,8 @@
                                     <TextBlock Grid.Column="1" Text="开奖号码" Style="{DynamicResource TxtIssueStyle}"></TextBlock>
                                     <Grid Grid.Column="2">
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="12"></RowDefinition>
-                                            <RowDefinition Height="12"></RowDefinition>
+                                            <RowDefinition Height="15"></RowDefinition>
+                                            <RowDefinition Height="15"></RowDefinition>
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="20"></ColumnDefinition>
@@ -199,8 +203,8 @@
                                         </Grid.ColumnDefinitions>
                                         <Grid Grid.Column="0">
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="12"></RowDefinition>
-                                                <RowDefinition Height="12"></RowDefinition>
+                                                <RowDefinition Height="15"></RowDefinition>
+                                                <RowDefinition Height="15"></RowDefinition>
                                             </Grid.RowDefinitions>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="20"></ColumnDefinition>
@@ -228,8 +232,8 @@
                                         </Grid>
                                         <Grid Grid.Column="1">
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="12"></RowDefinition>
-                                                <RowDefinition Height="12"></RowDefinition>
+                                                <RowDefinition Height="15"></RowDefinition>
+                                                <RowDefinition Height="15"></RowDefinition>
                                             </Grid.RowDefinitions>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="20"></ColumnDefinition>
@@ -257,8 +261,8 @@
                                         </Grid>
                                         <Grid Grid.Column="2">
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="12"></RowDefinition>
-                                                <RowDefinition Height="12"></RowDefinition>
+                                                <RowDefinition Height="15"></RowDefinition>
+                                                <RowDefinition Height="15"></RowDefinition>
                                             </Grid.RowDefinitions>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="20"></ColumnDefinition>
@@ -286,8 +290,8 @@
                                         </Grid>
                                         <Grid Grid.Column="3">
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="12"></RowDefinition>
-                                                <RowDefinition Height="12"></RowDefinition>
+                                                <RowDefinition Height="15"></RowDefinition>
+                                                <RowDefinition Height="15"></RowDefinition>
                                             </Grid.RowDefinitions>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="20"></ColumnDefinition>
@@ -315,8 +319,8 @@
                                         </Grid>
                                         <Grid Grid.Column="4">
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="12"></RowDefinition>
-                                                <RowDefinition Height="12"></RowDefinition>
+                                                <RowDefinition Height="15"></RowDefinition>
+                                                <RowDefinition Height="15"></RowDefinition>
                                             </Grid.RowDefinitions>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="20"></ColumnDefinition>
@@ -401,7 +405,7 @@
                                                                 <ColumnDefinition Width="200"></ColumnDefinition>
                                                             </Grid.ColumnDefinitions>
                                                             <Grid.RowDefinitions>
-                                                                <RowDefinition Height="12"></RowDefinition>
+                                                                <RowDefinition Height="15"></RowDefinition>
                                                             </Grid.RowDefinitions>
                                                             <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding Serial}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
                                                             <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding FullValue}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>

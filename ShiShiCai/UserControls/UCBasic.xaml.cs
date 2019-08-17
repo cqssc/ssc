@@ -442,7 +442,7 @@ namespace ShiShiCai.UserControls
         private void InitPath()
         {
             double itemWidth = 20;
-            double itemHeight = 12;
+            double itemHeight = 15;
             var firstItem = mListIssueItems.FirstOrDefault();
             if (firstItem != null)
             {
@@ -543,7 +543,7 @@ namespace ShiShiCai.UserControls
         private PathGeometry OptPathGemotry(IssueGroupItem numberGroup)
         {
             double itemWidth = 20;
-            double itemHeight = 12;
+            double itemHeight = 15;
             var firstItem = numberGroup.Values.FirstOrDefault();
             if (firstItem != null)
             {

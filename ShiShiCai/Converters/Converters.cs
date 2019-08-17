@@ -49,11 +49,11 @@ namespace ShiShiCai.Converters
         }
     }
 
-    public class BooleanToDoubleConverter : IValueConverter
+    public class BooleanToSingleConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return ((bool)value) ? "双" : "";
+            return ((bool)value) ? "单" : "";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -119,13 +119,43 @@ namespace ShiShiCai.Converters
         }
     }
 
+    public class SingleDoubleToHeightConverter : IValueConverter
+    {
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            bool singleValue = (bool)value;
+            return singleValue ? 80 : 110;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class LargeSmallToFillConverter : IValueConverter
     {
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             bool largeValue = (bool)value;
-            return largeValue ? Brushes.Teal:Brushes.Coral;
+            return largeValue ? Brushes.Teal : Brushes.Coral;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class SingleDoubleToFillConverter : IValueConverter
+    {
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            bool singleValue = (bool) value;
+            return singleValue ? Brushes.DarkViolet : Brushes.Goldenrod;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

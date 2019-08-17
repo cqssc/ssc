@@ -28,7 +28,7 @@ namespace ShiShiCai.Models
         private int mSumValue;
 
         private bool mLargeValue;
-        private bool mDoubleValue;
+        private bool mSingleValue;
 
         private double mItemWidth;
         private double mItemHeight;
@@ -65,10 +65,10 @@ namespace ShiShiCai.Models
             set { mLargeValue = value; OnPropertyChanged("LargeValue"); }
         }
 
-        public bool DoubleValue
+        public bool SingleValue
         {
-            get { return mDoubleValue; }
-            set { mDoubleValue = value; OnPropertyChanged("DoubleValue"); }
+            get { return mSingleValue; }
+            set { mSingleValue = value; OnPropertyChanged("SingleValue"); }
         }
 
         public double ItemWidth

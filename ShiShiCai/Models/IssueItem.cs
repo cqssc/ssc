@@ -49,7 +49,7 @@ namespace ShiShiCai.Models
         #region 特征
 
         private bool mLargeValue;   //大小
-        private bool mDoubleValue;  //单双
+        private bool mSingleValue;  //单双
         private bool mRepeatValue;  //重复
         private bool mIntervalValue;//间隔
         private bool mLarger20;     //>20期
@@ -221,10 +221,10 @@ namespace ShiShiCai.Models
             set { mLargeValue = value; OnPropertyChanged("LargeValue"); }
         }
 
-        public bool DoubleValue
+        public bool SingleValue
         {
-            get { return mDoubleValue; }
-            set { mDoubleValue = value; OnPropertyChanged("DoubleValue"); }
+            get { return mSingleValue; }
+            set { mSingleValue = value; OnPropertyChanged("SingleValue"); }
         }
 
         public bool RepeatValue
@@ -663,6 +663,6 @@ namespace ShiShiCai.Models
         }
 
         #endregion
-        
+
     }
 }

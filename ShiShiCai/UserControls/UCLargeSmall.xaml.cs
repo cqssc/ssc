@@ -142,7 +142,7 @@ namespace ShiShiCai.UserControls
             mListLargeSmallData.Clear();
             if (PageParent == null) { return; }
             var issueItems = PageParent.ListIssueItems;
-            if (issueItems == null) { return;}
+            if (issueItems == null) { return; }
             var systemConfig = PageParent.SystemConfig;
             if (systemConfig == null) { return; }
             var db = systemConfig.Database;
@@ -213,7 +213,7 @@ namespace ShiShiCai.UserControls
                     item.Date = issueItem.Date;
                     item.SumValue = issueItem.SumValue;
                     item.LargeValue = issueItem.LargeValue;
-                    item.DoubleValue = issueItem.DoubleValue;
+                    item.SingleValue = issueItem.SingleValue;
                     dateItem.Items.Add(item);
                 }
                 mListSumValueDateItems.Add(dateItem);
@@ -256,6 +256,11 @@ namespace ShiShiCai.UserControls
                 var item = mListSumValueItems[i];
                 item.ItemWidth = itemWidth;
                 item.ItemHeight = item.SumValue * (height / (45 * 1.0));
+            }
+            for (int i = 0; i < mListDistributeItems.Count; i++)
+            {
+                var item = mListDistributeItems[i];
+                item.ItemWidth = itemWidth;
             }
             InitSumViewPath();
         }
@@ -339,10 +344,12 @@ namespace ShiShiCai.UserControls
                 largeSmall.Number = sumValueItem.Number;
                 largeSmall.Date = sumValueItem.Date;
                 largeSmall.LargeValue = sumValueItem.LargeValue;
+                largeSmall.SingleValue = sumValueItem.SingleValue;
                 var data = mListLargeSmallData.FirstOrDefault(l => l.Serial == largeSmall.Serial && l.Pos == 6);
                 if (data != null)
                 {
-                    largeSmall.Times = data.LargeSmallNum;
+                    largeSmall.LargeSmallTimes = data.LargeSmallNum;
+                    largeSmall.SingleDoubleTimes = data.SingleDoubleNum;
                 }
                 sectionData.Items.Add(largeSmall);
                 k++;
@@ -358,26 +365,44 @@ namespace ShiShiCai.UserControls
                 var item = mListSectionDataItems[i];
                 int largeNum = 0;
                 int smallNum = 0;
+                int singleNum = 0;
+                int doubleNum = 0;
                 int largeMaxNum = 0;
                 int smallMaxNum = 0;
+                int singleMaxNum = 0;
+                int doubleMaxNum = 0;
                 for (int j = 0; j < item.Items.Count; j++)
                 {
                     SectionLargeSmallItem largeSmall = item.Items[j];
                     if (largeSmall.LargeValue)
                     {
                         largeNum++;
-                        largeMaxNum = Math.Max(largeSmall.Times, largeMaxNum);
+                        largeMaxNum = Math.Max(largeSmall.LargeSmallTimes, largeMaxNum);
                     }
                     else
                     {
                         smallNum++;
-                        smallMaxNum = Math.Max(largeSmall.Times, smallMaxNum);
+                        smallMaxNum = Math.Max(largeSmall.LargeSmallTimes, smallMaxNum);
+                    }
+                    if (largeSmall.SingleValue)
+                    {
+                        singleNum++;
+                        singleMaxNum = Math.Max(largeSmall.SingleDoubleTimes, singleMaxNum);
+                    }
+                    else
+                    {
+                        doubleNum++;
+                        doubleMaxNum = Math.Max(largeSmall.SingleDoubleTimes, doubleMaxNum);
                     }
                 }
                 item.LargeNum = largeNum;
                 item.SmallNum = smallNum;
+                item.SingleNum = singleNum;
+                item.DoubleNum = doubleNum;
                 item.LargeMaxNum = largeMaxNum;
                 item.SmallMaxNum = smallMaxNum;
+                item.SingleMaxNum = singleMaxNum;
+                item.DoubleMaxNum = doubleMaxNum;
                 var first = item.Items.FirstOrDefault();
                 var last = item.Items.LastOrDefault();
                 if (first != null && last != null)
@@ -430,9 +455,9 @@ namespace ShiShiCai.UserControls
         {
             InitSumValueItems();
             InitSumValueTitle();
-            InitSumViewSize();
             InitSectionDataItems();
             InitDistributeItems();
+            InitSumViewSize();
         }
 
         void ListBoxSumView_SizeChanged(object sender, SizeChangedEventArgs e)

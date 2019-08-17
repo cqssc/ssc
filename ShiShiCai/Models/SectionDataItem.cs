@@ -31,8 +31,12 @@ namespace ShiShiCai.Models
         private int mLargeMaxNum;
         private int mSmallNum;
         private int mSmallMaxNum;
+        private int mSingleNum;
+        private int mSingleMaxNum;
+        private int mDoubleNum;
+        private int mDoubleMaxNum;
 
-        private ObservableCollection<SectionLargeSmallItem> mItems = new ObservableCollection<SectionLargeSmallItem>();
+        private readonly ObservableCollection<SectionLargeSmallItem> mItems = new ObservableCollection<SectionLargeSmallItem>();
 
         public int Number
         {
@@ -74,6 +78,30 @@ namespace ShiShiCai.Models
         {
             get { return mSmallMaxNum; }
             set { mSmallMaxNum = value; OnPropertyChanged("SmallMaxNum"); }
+        }
+
+        public int SingleNum
+        {
+            get { return mSingleNum; }
+            set { mSingleNum = value; OnPropertyChanged("SingleNum"); }
+        }
+
+        public int SingleMaxNum
+        {
+            get { return mSingleMaxNum; }
+            set { mSingleMaxNum = value; OnPropertyChanged("SingleMaxNum"); }
+        }
+
+        public int DoubleNum
+        {
+            get { return mDoubleNum; }
+            set { mDoubleNum = value; OnPropertyChanged("DoubleNum"); }
+        }
+
+        public int DoubleMaxNum
+        {
+            get { return mDoubleMaxNum; }
+            set { mDoubleMaxNum = value; OnPropertyChanged("DoubleMaxNum"); }
         }
 
         public ObservableCollection<SectionLargeSmallItem> Items

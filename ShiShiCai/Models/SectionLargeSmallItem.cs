@@ -20,14 +20,16 @@ using System.ComponentModel;
 
 namespace ShiShiCai.Models
 {
-    public class SectionLargeSmallItem:INotifyPropertyChanged
+    public class SectionLargeSmallItem : INotifyPropertyChanged
     {
         private string mSerial;
         private int mNumber;
         private int mDate;
 
         private bool mLargeValue;
-        private int mTimes;
+        private bool mSingleValue;
+        private int mLargeSmallTimes;
+        private int mSingleDoubleTimes;
 
         public string Serial
         {
@@ -53,10 +55,22 @@ namespace ShiShiCai.Models
             set { mLargeValue = value; OnPropertyChanged("LargeValue"); }
         }
 
-        public int Times
+        public bool SingleValue
         {
-            get { return mTimes; }
-            set { mTimes = value; OnPropertyChanged("Times"); }
+            get { return mSingleValue; }
+            set { mSingleValue = value; OnPropertyChanged("SingleValue"); }
+        }
+
+        public int LargeSmallTimes
+        {
+            get { return mLargeSmallTimes; }
+            set { mLargeSmallTimes = value; OnPropertyChanged("LargeSmallTimes"); }
+        }
+
+        public int SingleDoubleTimes
+        {
+            get { return mSingleDoubleTimes; }
+            set { mSingleDoubleTimes = value; OnPropertyChanged("SingleDoubleTimes"); }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

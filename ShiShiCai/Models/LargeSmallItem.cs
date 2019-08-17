@@ -38,6 +38,9 @@ namespace ShiShiCai.Models
         private int mSingleNum;
         private int mDoubleNum;
 
+        private double mItemWidth;
+        private double mItemHeight;
+
         public string Serial
         {
             get { return mSerial; }
@@ -120,6 +123,18 @@ namespace ShiShiCai.Models
         {
             get { return mDoubleNum; }
             set { mDoubleNum = value; OnPropertyChanged("DoubleNum"); }
+        }
+
+        public double ItemWidth
+        {
+            get { return mItemWidth; }
+            set { mItemWidth = value; OnPropertyChanged("ItemWidth"); }
+        }
+
+        public double ItemHeight
+        {
+            get { return mItemHeight; }
+            set { mItemHeight = value; OnPropertyChanged("ItemHeight"); }
         }
 
 

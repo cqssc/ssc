@@ -43,7 +43,7 @@
                     </Border>
                 </Grid>
                 <Grid Grid.Row="0">
-                    <Border Height="200">
+                    <Border Height="280">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="50"></ColumnDefinition>
@@ -121,7 +121,17 @@
                                     <Border Grid.Row="8" Height="1" Background="LightGray" VerticalAlignment="Top"></Border>
                                 </Grid>
                                 <Grid.RenderTransform>
-                                    <TranslateTransform Y="5"></TranslateTransform>
+                                    <TranslateTransform Y="4"></TranslateTransform>
+                                </Grid.RenderTransform>
+                            </Grid>
+                            <Grid Grid.Column="1" Grid.Row="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50*"></RowDefinition>
+                                    <RowDefinition Height="50*"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="0" BorderThickness="0,0,0,2" BorderBrush="Red"></Border>
+                                <Grid.RenderTransform>
+                                    <TranslateTransform Y="6"></TranslateTransform>
                                 </Grid.RenderTransform>
                             </Grid>
                             <Grid Grid.Column="1" Grid.Row="1">
@@ -183,18 +193,18 @@
                                             <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.5"></Border>
                                             <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.5"></Border>
                                             <Border Grid.Column="2" Grid.Row="0" Grid.RowSpan="3" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                            <TextBlock Grid.Column="0" Grid.Row="0" Text="期号" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                            <TextBlock Grid.Column="0" Grid.Row="1" Text="大" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                            <TextBlock Grid.Column="0" Grid.Row="2" Text="小" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                            <TextBlock Grid.Column="2" Grid.Row="0" Text="汇总" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                            <TextBlock Grid.Column="3" Grid.Row="0" Text="最大值" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                            <TextBlock Grid.Column="2" Grid.Row="1" Style="{DynamicResource TxtSectionCellStyle}"
+                                            <TextBlock Grid.Column="0" Grid.Row="0" Text="期号" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                            <TextBlock Grid.Column="0" Grid.Row="1" Text="大" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                            <TextBlock Grid.Column="0" Grid.Row="2" Text="小" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                            <TextBlock Grid.Column="2" Grid.Row="0" Text="汇总" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                            <TextBlock Grid.Column="3" Grid.Row="0" Text="最大值" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                            <TextBlock Grid.Column="2" Grid.Row="1" Style="{DynamicResource TxtCellStyle}"
                                                         Text="{Binding LargeNum,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"></TextBlock>
-                                            <TextBlock Grid.Column="2" Grid.Row="2" Style="{DynamicResource TxtSectionCellStyle}"
+                                            <TextBlock Grid.Column="2" Grid.Row="2" Style="{DynamicResource TxtCellStyle}"
                                                         Text="{Binding SmallNum,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"></TextBlock>
-                                            <TextBlock Grid.Column="3" Grid.Row="1" Style="{DynamicResource TxtSectionCellStyle}"
+                                            <TextBlock Grid.Column="3" Grid.Row="1" Style="{DynamicResource TxtCellStyle}"
                                                         Text="{Binding LargeMaxNum,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"></TextBlock>
-                                            <TextBlock Grid.Column="3" Grid.Row="2" Style="{DynamicResource TxtSectionCellStyle}"
+                                            <TextBlock Grid.Column="3" Grid.Row="2" Style="{DynamicResource TxtCellStyle}"
                                                         Text="{Binding SmallMaxNum,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"></TextBlock>
                                             <ListBox Name="ListBoxDistribute" Grid.Column="1" Grid.Row="0" Grid.RowSpan="3"
                                                  Style="{DynamicResource ListBoxDistributeStyle}"
@@ -208,9 +218,9 @@
                                                                     <RowDefinition Height="30"></RowDefinition>
                                                                     <RowDefinition Height="30"></RowDefinition>
                                                                 </Grid.RowDefinitions>
-                                                                <TextBlock Grid.Row="0" Text="{Binding Number}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                                <TextBlock Grid.Row="1" Text="{Binding LargeNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                                <TextBlock Grid.Row="2" Text="{Binding SmallNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Row="0" Text="{Binding Number}" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Row="1" Text="{Binding LargeNum}" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Row="2" Text="{Binding SmallNum}" Style="{DynamicResource TxtCellStyle}"></TextBlock>
                                                             </Grid>
                                                         </Border>
                                                     </DataTemplate>
@@ -251,15 +261,15 @@
                                                                 <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.5"></Border>
                                                                 <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.5"></Border>
                                                                 <Border Grid.Column="2" Grid.Row="0" Grid.RowSpan="3" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                                <TextBlock Grid.Column="0" Grid.Row="0" Text="期号" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                                <TextBlock Grid.Column="0" Grid.Row="1" Text="大" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                                <TextBlock Grid.Column="0" Grid.Row="2" Text="小" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                                <TextBlock Grid.Column="2" Grid.Row="0" Text="汇总" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                                <TextBlock Grid.Column="3" Grid.Row="0" Text="最大值" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                                <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding LargeNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                                <TextBlock Grid.Column="2" Grid.Row="2" Text="{Binding SmallNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                                <TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding LargeMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                                <TextBlock Grid.Column="3" Grid.Row="2" Text="{Binding SmallMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="0" Grid.Row="0" Text="期号" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="0" Grid.Row="1" Text="大" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="0" Grid.Row="2" Text="小" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="2" Grid.Row="0" Text="汇总" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="3" Grid.Row="0" Text="最大值" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding LargeNum}" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="2" Grid.Row="2" Text="{Binding SmallNum}" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding LargeMaxNum}" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="3" Grid.Row="2" Text="{Binding SmallMaxNum}" Style="{DynamicResource TxtCellStyle}"></TextBlock>
                                                                 <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="3">
                                                                     <ListBox ItemsSource="{Binding Items}" Style="{DynamicResource ListBoxSectionNumberStyle}"
                                                                              ItemContainerStyle="{DynamicResource ListItemSectionNumberStyle}">
@@ -271,7 +281,7 @@
                                                                                             <RowDefinition Height="30"></RowDefinition>
                                                                                             <RowDefinition Height="60"></RowDefinition>
                                                                                         </Grid.RowDefinitions>
-                                                                                        <TextBlock Grid.Row="0" Text="{Binding Number}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                                        <TextBlock Grid.Row="0" Text="{Binding Number}" Style="{DynamicResource TxtCellStyle}"></TextBlock>
                                                                                         <Border Grid.Row="1" VerticalAlignment="Top" Height="{Binding Large,Converter={StaticResource LargeSmallToHeightConverter}}">
                                                                                             <Border VerticalAlignment="Bottom">
                                                                                                 <Grid>
@@ -325,18 +335,18 @@
                                             <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.5"></Border>
                                             <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.5"></Border>
                                             <Border Grid.Column="2" Grid.Row="0" Grid.RowSpan="3" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                            <TextBlock Grid.Column="0" Grid.Row="0" Text="期号" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                            <TextBlock Grid.Column="0" Grid.Row="1" Text="单" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                            <TextBlock Grid.Column="0" Grid.Row="2" Text="双" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                            <TextBlock Grid.Column="2" Grid.Row="0" Text="汇总" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                            <TextBlock Grid.Column="3" Grid.Row="0" Text="最大值" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                            <TextBlock Grid.Column="2" Grid.Row="1" Style="{DynamicResource TxtSectionCellStyle}"
+                                            <TextBlock Grid.Column="0" Grid.Row="0" Text="期号" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                            <TextBlock Grid.Column="0" Grid.Row="1" Text="单" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                            <TextBlock Grid.Column="0" Grid.Row="2" Text="双" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                            <TextBlock Grid.Column="2" Grid.Row="0" Text="汇总" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                            <TextBlock Grid.Column="3" Grid.Row="0" Text="最大值" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                            <TextBlock Grid.Column="2" Grid.Row="1" Style="{DynamicResource TxtCellStyle}"
                                                         Text="{Binding SingleNum,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"></TextBlock>
-                                            <TextBlock Grid.Column="2" Grid.Row="2" Style="{DynamicResource TxtSectionCellStyle}"
+                                            <TextBlock Grid.Column="2" Grid.Row="2" Style="{DynamicResource TxtCellStyle}"
                                                         Text="{Binding DoubleNum,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"></TextBlock>
-                                            <TextBlock Grid.Column="3" Grid.Row="1" Style="{DynamicResource TxtSectionCellStyle}"
+                                            <TextBlock Grid.Column="3" Grid.Row="1" Style="{DynamicResource TxtCellStyle}"
                                                         Text="{Binding SingleMaxNum,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"></TextBlock>
-                                            <TextBlock Grid.Column="3" Grid.Row="2" Style="{DynamicResource TxtSectionCellStyle}"
+                                            <TextBlock Grid.Column="3" Grid.Row="2" Style="{DynamicResource TxtCellStyle}"
                                                         Text="{Binding DoubleMaxNum,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"></TextBlock>
                                             <ListBox Name="ListBoxDistributeSingleDouble" Grid.Column="1" Grid.Row="0" Grid.RowSpan="3"
                                                  Style="{DynamicResource ListBoxDistributeStyle}"
@@ -350,9 +360,9 @@
                                                                     <RowDefinition Height="30"></RowDefinition>
                                                                     <RowDefinition Height="30"></RowDefinition>
                                                                 </Grid.RowDefinitions>
-                                                                <TextBlock Grid.Row="0" Text="{Binding Number}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                                <TextBlock Grid.Row="1" Text="{Binding SingleNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                                <TextBlock Grid.Row="2" Text="{Binding DoubleNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Row="0" Text="{Binding Number}" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Row="1" Text="{Binding SingleNum}" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Row="2" Text="{Binding DoubleNum}" Style="{DynamicResource TxtCellStyle}"></TextBlock>
                                                             </Grid>
                                                         </Border>
                                                     </DataTemplate>
@@ -393,18 +403,18 @@
                                                                 <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.5"></Border>
                                                                 <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.5"></Border>
                                                                 <Border Grid.Column="2" Grid.Row="0" Grid.RowSpan="3" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                                <TextBlock Grid.Column="0" Grid.Row="0" Text="期号" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                                <TextBlock Grid.Column="0" Grid.Row="1" Text="单" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                                <TextBlock Grid.Column="0" Grid.Row="2" Text="双" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                                <TextBlock Grid.Column="2" Grid.Row="0" Text="汇总" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                                <TextBlock Grid.Column="3" Grid.Row="0" Text="最大值" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                                <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding SingleNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                                <TextBlock Grid.Column="2" Grid.Row="2" Text="{Binding DoubleNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                                <TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding SingleMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                                <TextBlock Grid.Column="3" Grid.Row="2" Text="{Binding DoubleMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="0" Grid.Row="0" Text="期号" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="0" Grid.Row="1" Text="单" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="0" Grid.Row="2" Text="双" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="2" Grid.Row="0" Text="汇总" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="3" Grid.Row="0" Text="最大值" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding SingleNum}" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="2" Grid.Row="2" Text="{Binding DoubleNum}" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding SingleMaxNum}" Style="{DynamicResource TxtCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="3" Grid.Row="2" Text="{Binding DoubleMaxNum}" Style="{DynamicResource TxtCellStyle}"></TextBlock>
                                                                 <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="3">
-                                                                    <ListBox ItemsSource="{Binding Items}" Style="{DynamicResource ListBoxSectionNumberStyle}"
-                                                                             ItemContainerStyle="{DynamicResource ListItemSectionNumberStyle}">
+                                                                    <ListBox ItemsSource="{Binding Items}" Style="{DynamicResource ListBoxPositionNumberStyle}"
+                                                                             ItemContainerStyle="{DynamicResource ListItemPositionNumberStyle}">
                                                                         <ListBox.ItemTemplate>
                                                                             <DataTemplate DataType="ListBoxItem">
                                                                                 <Border Width="{Binding ItemWidth,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}">
@@ -413,7 +423,7 @@
                                                                                             <RowDefinition Height="30"></RowDefinition>
                                                                                             <RowDefinition Height="60"></RowDefinition>
                                                                                         </Grid.RowDefinitions>
-                                                                                        <TextBlock Grid.Row="0" Text="{Binding Number}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                                        <TextBlock Grid.Row="0" Text="{Binding Number}" Style="{DynamicResource TxtCellStyle}"></TextBlock>
                                                                                         <Border Grid.Row="1" VerticalAlignment="Top" Height="{Binding Single,Converter={StaticResource SingleDoubleToHeightConverter}}">
                                                                                             <Border VerticalAlignment="Bottom">
                                                                                                 <Grid>

@@ -63,9 +63,11 @@
     <Compile Include="Models\IssueGroupItem.cs" />
     <Compile Include="Models\IssueItem.cs" />
     <Compile Include="Models\IssueNumberItem.cs" />
+    <Compile Include="Models\LargeSmallDateItem.cs" />
     <Compile Include="Models\LargeSmallItem.cs" />
     <Compile Include="Models\ModuleItem.cs" />
     <Compile Include="Models\PositionItem.cs" />
+    <Compile Include="Models\PositionLargeSmallItem.cs" />
     <Compile Include="Models\SectionDataItem.cs" />
     <Compile Include="Models\SectionItem.cs" />
     <Compile Include="Models\SectionLargeSmallItem.cs" />

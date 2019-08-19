@@ -54,36 +54,116 @@ namespace ShiShiCai.UserControls
             set { SetValue(SumValuePathProperty, value); }
         }
 
-        public ObservableCollection<SumValueItem> SumValueItems
+        public ObservableCollection<LargeSmallItem> SumValueItems
         {
             get { return mListSumValueItems; }
         }
 
-        public static readonly DependencyProperty IsDrillProperty =
-            DependencyProperty.Register("IsDrill", typeof(bool), typeof(UCLargeSmall), new PropertyMetadata(default(bool)));
+        public static readonly DependencyProperty ItemWidthProperty =
+            DependencyProperty.Register("ItemWidth", typeof(double), typeof(UCLargeSmall), new PropertyMetadata(default(double)));
 
-        public bool IsDrill
+        public double ItemWidth
         {
-            get { return (bool)GetValue(IsDrillProperty); }
-            set { SetValue(IsDrillProperty, value); }
+            get { return (double)GetValue(ItemWidthProperty); }
+            set { SetValue(ItemWidthProperty, value); }
+        }
+
+        public static readonly DependencyProperty ItemHeightProperty =
+            DependencyProperty.Register("ItemHeight", typeof(double), typeof(UCLargeSmall), new PropertyMetadata(default(double)));
+
+        public double ItemHeight
+        {
+            get { return (double)GetValue(ItemHeightProperty); }
+            set { SetValue(ItemHeightProperty, value); }
+        }
+
+        public static readonly DependencyProperty LargeNumProperty =
+            DependencyProperty.Register("LargeNum", typeof(int), typeof(UCLargeSmall), new PropertyMetadata(default(int)));
+
+        public int LargeNum
+        {
+            get { return (int)GetValue(LargeNumProperty); }
+            set { SetValue(LargeNumProperty, value); }
+        }
+
+        public static readonly DependencyProperty SmallNumProperty =
+            DependencyProperty.Register("SmallNum", typeof(int), typeof(UCLargeSmall), new PropertyMetadata(default(int)));
+
+        public int SmallNum
+        {
+            get { return (int)GetValue(SmallNumProperty); }
+            set { SetValue(SmallNumProperty, value); }
+        }
+
+        public static readonly DependencyProperty SingleNumProperty =
+            DependencyProperty.Register("SingleNum", typeof(int), typeof(UCLargeSmall), new PropertyMetadata(default(int)));
+
+        public int SingleNum
+        {
+            get { return (int)GetValue(SingleNumProperty); }
+            set { SetValue(SingleNumProperty, value); }
+        }
+
+        public static readonly DependencyProperty DoubleNumProperty =
+            DependencyProperty.Register("DoubleNum", typeof(int), typeof(UCLargeSmall), new PropertyMetadata(default(int)));
+
+        public int DoubleNum
+        {
+            get { return (int)GetValue(DoubleNumProperty); }
+            set { SetValue(DoubleNumProperty, value); }
+        }
+
+        public static readonly DependencyProperty LargeMaxNumProperty =
+            DependencyProperty.Register("LargeMaxNum", typeof(int), typeof(UCLargeSmall), new PropertyMetadata(default(int)));
+
+        public int LargeMaxNum
+        {
+            get { return (int)GetValue(LargeMaxNumProperty); }
+            set { SetValue(LargeMaxNumProperty, value); }
+        }
+
+        public static readonly DependencyProperty SmallMaxNumProperty =
+            DependencyProperty.Register("SmallMaxNum", typeof(int), typeof(UCLargeSmall), new PropertyMetadata(default(int)));
+
+        public int SmallMaxNum
+        {
+            get { return (int)GetValue(SmallMaxNumProperty); }
+            set { SetValue(SmallMaxNumProperty, value); }
+        }
+
+        public static readonly DependencyProperty SingleMaxNumProperty =
+            DependencyProperty.Register("SingleMaxNum", typeof(int), typeof(UCLargeSmall), new PropertyMetadata(default(int)));
+
+        public int SingleMaxNum
+        {
+            get { return (int)GetValue(SingleMaxNumProperty); }
+            set { SetValue(SingleMaxNumProperty, value); }
+        }
+
+        public static readonly DependencyProperty DoubleMaxNumProperty =
+            DependencyProperty.Register("DoubleMaxNum", typeof(int), typeof(UCLargeSmall), new PropertyMetadata(default(int)));
+
+        public int DoubleMaxNum
+        {
+            get { return (int)GetValue(DoubleMaxNumProperty); }
+            set { SetValue(DoubleMaxNumProperty, value); }
         }
 
         #endregion
 
 
+        #region Members
+
         private readonly List<LargeSmallItem> mListLargeSmallData = new List<LargeSmallItem>();
-        private readonly ObservableCollection<SectionItem> mListSectionItems = new ObservableCollection<SectionItem>();
-        private readonly ObservableCollection<SectionDataItem> mListSectionDataItems = new ObservableCollection<SectionDataItem>();
-        private readonly ObservableCollection<SumValueItem> mListSumValueItems = new ObservableCollection<SumValueItem>();
-        private readonly ObservableCollection<SumValueDateItem> mListSumValueDateItems = new ObservableCollection<SumValueDateItem>();
+        private readonly ObservableCollection<LargeSmallDateItem> mListSumValueDateItems = new ObservableCollection<LargeSmallDateItem>();
+        private readonly ObservableCollection<LargeSmallItem> mListSumValueItems = new ObservableCollection<LargeSmallItem>();
         private readonly ObservableCollection<LargeSmallItem> mListDistributeItems = new ObservableCollection<LargeSmallItem>();
-        private readonly ObservableCollection<SectionDataItem> mListSectionData1Items = new ObservableCollection<SectionDataItem>();
-        private readonly ObservableCollection<SectionDataItem> mListSectionData2Items = new ObservableCollection<SectionDataItem>();
-        private readonly ObservableCollection<SectionDataItem> mListSectionData3Items = new ObservableCollection<SectionDataItem>();
-        private readonly ObservableCollection<SectionDataItem> mListSectionData4Items = new ObservableCollection<SectionDataItem>();
-        private readonly ObservableCollection<SectionDataItem> mListSectionData5Items = new ObservableCollection<SectionDataItem>();
+        private readonly ObservableCollection<PositionLargeSmallItem> mListPositionItems = new ObservableCollection<PositionLargeSmallItem>();
 
         private bool mIsInited;
+
+        #endregion
+
 
         public UCLargeSmall()
         {
@@ -91,19 +171,14 @@ namespace ShiShiCai.UserControls
 
             Loaded += UCLargeSmall_Loaded;
             ListBoxSumView.SizeChanged += ListBoxSumView_SizeChanged;
-            ListBoxSection.SelectionChanged += ListBoxSection_SelectionChanged;
             ComboDate.SelectionChanged += ComboDate_SelectionChanged;
-            BtnDrill.Click += BtnDrill_Click;
 
-            ListBoxSection.ItemsSource = mListSectionItems;
             ComboDate.ItemsSource = mListSumValueDateItems;
-            ListBoxSectionData.ItemsSource = mListSectionDataItems;
+            ListBoxSumView.ItemsSource = mListSumValueItems;
             ListBoxDistribute.ItemsSource = mListDistributeItems;
-            ListBoxSectionData1.ItemsSource = mListSectionData1Items;
-            ListBoxSectionData2.ItemsSource = mListSectionData2Items;
-            ListBoxSectionData3.ItemsSource = mListSectionData3Items;
-            ListBoxSectionData4.ItemsSource = mListSectionData4Items;
-            ListBoxSectionData5.ItemsSource = mListSectionData5Items;
+            ListBoxPositionView.ItemsSource = mListPositionItems;
+            ListBoxDistributeSingleDouble.ItemsSource = mListDistributeItems;
+            ListBoxPositionViewSingleDouble.ItemsSource = mListPositionItems;
         }
 
         void UCLargeSmall_Loaded(object sender, RoutedEventArgs e)
@@ -126,35 +201,8 @@ namespace ShiShiCai.UserControls
         private void Init()
         {
             LoadLargeSmallData();
-            InitSectionItems();
             InitSumValueDateItems();
             ComboDate.SelectedItem = mListSumValueDateItems.FirstOrDefault();
-        }
-
-        private void InitSectionItems()
-        {
-            mListSectionItems.Clear();
-            SectionItem item = new SectionItem();
-            item.Number = SscDefines.SECTION_10;
-            item.Name = SscDefines.SECTION_NAME_10;
-            item.IsChecked = true;
-            mListSectionItems.Add(item);
-            item = new SectionItem();
-            item.Number = SscDefines.SECTION_15;
-            item.Name = SscDefines.SECTION_NAME_15;
-            mListSectionItems.Add(item);
-            item = new SectionItem();
-            item.Number = SscDefines.SECTION_20;
-            item.Name = SscDefines.SECTION_NAME_20;
-            mListSectionItems.Add(item);
-            item = new SectionItem();
-            item.Number = SscDefines.SECTION_30;
-            item.Name = SscDefines.SECTION_NAME_30;
-            mListSectionItems.Add(item);
-            item = new SectionItem();
-            item.Number = SscDefines.SECTION_DAY;
-            item.Name = SscDefines.SECTION_NAME_DAY;
-            mListSectionItems.Add(item);
         }
 
         private void LoadLargeSmallData()
@@ -197,10 +245,10 @@ namespace ShiShiCai.UserControls
                 item.Date = Convert.ToInt32(dr["C002"]);
                 item.Number = Convert.ToInt32(dr["C003"]);
                 item.Pos = Convert.ToInt32(dr["C004"]);
-                item.Large = Convert.ToInt32(dr["C005"]);
-                item.Small = Convert.ToInt32(dr["C006"]);
-                item.Single = Convert.ToInt32(dr["C007"]);
-                item.Double = Convert.ToInt32(dr["C008"]);
+                item.Large = Convert.ToInt32(dr["C005"]) == 1;
+                item.Small = Convert.ToInt32(dr["C006"]) == 1;
+                item.Single = Convert.ToInt32(dr["C007"]) == 1;
+                item.Double = Convert.ToInt32(dr["C008"]) == 1;
                 item.LargeSmallNum = Convert.ToInt32(dr["C009"]);
                 item.SingleDoubleNum = Convert.ToInt32(dr["C010"]);
                 item.LargeNum = Convert.ToInt32(dr["C011"]);
@@ -222,18 +270,23 @@ namespace ShiShiCai.UserControls
             foreach (var dateGroup in dateGroups)
             {
                 int date = dateGroup.Key;
-                SumValueDateItem dateItem = new SumValueDateItem();
+                LargeSmallDateItem dateItem = new LargeSmallDateItem();
                 dateItem.Date = date;
                 for (int i = dateGroup.Count() - 1; i >= 0; i--)
                 {
                     var issueItem = dateGroup.ToList()[i];
-                    SumValueItem item = new SumValueItem();
+                    LargeSmallItem item = new LargeSmallItem();
                     item.Serial = issueItem.Serial;
                     item.Number = issueItem.Number;
                     item.Date = issueItem.Date;
                     item.SumValue = issueItem.SumValue;
-                    item.LargeValue = issueItem.LargeValue;
-                    item.SingleValue = issueItem.SingleValue;
+                    item.Pos = 6;
+                    var data = mListLargeSmallData.FirstOrDefault(l => l.Serial == item.Serial && l.Pos == item.Pos);
+                    if (data != null)
+                    {
+                        item.Large = data.Large;
+                        item.Small = data.Small;
+                    }
                     dateItem.Items.Add(item);
                 }
                 mListSumValueDateItems.Add(dateItem);
@@ -243,7 +296,7 @@ namespace ShiShiCai.UserControls
         private void InitSumValueItems()
         {
             mListSumValueItems.Clear();
-            var dateItem = ComboDate.SelectedItem as SumValueDateItem;
+            var dateItem = ComboDate.SelectedItem as LargeSmallDateItem;
             if (dateItem != null)
             {
                 for (int i = 0; i < dateItem.Items.Count; i++)
@@ -271,6 +324,7 @@ namespace ShiShiCai.UserControls
             double width = ListBoxSumView.ActualWidth;
             double height = ListBoxSumView.ActualHeight;
             double itemWidth = width / (count * 1.0);
+            ItemWidth = itemWidth;
             for (int i = 0; i < mListSumValueItems.Count; i++)
             {
                 var item = mListSumValueItems[i];
@@ -310,263 +364,18 @@ namespace ShiShiCai.UserControls
             SumValuePath = path;
         }
 
-        private void InitSectionDataItems()
-        {
-            mListSectionDataItems.Clear();
-
-            #region 分段及每段数量
-
-            var section = ListBoxSection.SelectedItem as SectionItem;
-            if (section == null) { return; }
-            int sectionNumber = section.Number;
-            int sectionSize = mListSumValueItems.Count;
-            if (sectionNumber == SscDefines.SECTION_10)
-            {
-                sectionSize = 10;
-            }
-            if (sectionNumber == SscDefines.SECTION_15)
-            {
-                sectionSize = 15;
-            }
-            if (sectionNumber == SscDefines.SECTION_20)
-            {
-                sectionSize = 20;
-            }
-            if (sectionNumber == SscDefines.SECTION_30)
-            {
-                sectionSize = 30;
-            }
-
-            #endregion
-
-
-            #region 分段处理
-
-            int k = 0, g = 0;
-            SectionDataItem sectionData = new SectionDataItem();
-            sectionData.Number = g;
-            sectionData.Section = sectionNumber;
-            mListSectionDataItems.Add(sectionData);
-            for (int i = 0; i < mListSumValueItems.Count; i++)
-            {
-                var sumValueItem = mListSumValueItems[i];
-                if (k == sectionSize)
-                {
-                    k = 0;
-                    g++;
-                    sectionData = new SectionDataItem();
-                    sectionData.Number = g;
-                    sectionData.Section = sectionNumber;
-                    mListSectionDataItems.Add(sectionData);
-                }
-                SectionLargeSmallItem largeSmall = new SectionLargeSmallItem();
-                largeSmall.Serial = sumValueItem.Serial;
-                largeSmall.Number = sumValueItem.Number;
-                largeSmall.Date = sumValueItem.Date;
-                var data = mListLargeSmallData.FirstOrDefault(l => l.Serial == largeSmall.Serial && l.Pos == 6);
-                if (data != null)
-                {
-                    largeSmall.LargeValue = data.Large == 1;
-                    largeSmall.SingleValue = data.Single == 1;
-                    largeSmall.LargeSmallTimes = data.LargeSmallNum;
-                    largeSmall.SingleDoubleTimes = data.SingleDoubleNum;
-                }
-                sectionData.Items.Add(largeSmall);
-                k++;
-            }
-
-            #endregion
-
-
-            #region 每段处理
-
-            for (int i = 0; i < mListSectionDataItems.Count; i++)
-            {
-                var item = mListSectionDataItems[i];
-                int largeNum = 0;
-                int smallNum = 0;
-                int singleNum = 0;
-                int doubleNum = 0;
-                int largeMaxNum = 0;
-                int smallMaxNum = 0;
-                int singleMaxNum = 0;
-                int doubleMaxNum = 0;
-                for (int j = 0; j < item.Items.Count; j++)
-                {
-                    SectionLargeSmallItem largeSmall = item.Items[j];
-                    if (largeSmall.LargeValue)
-                    {
-                        largeNum++;
-                        largeMaxNum = Math.Max(largeSmall.LargeSmallTimes, largeMaxNum);
-                    }
-                    else
-                    {
-                        smallNum++;
-                        smallMaxNum = Math.Max(largeSmall.LargeSmallTimes, smallMaxNum);
-                    }
-                    if (largeSmall.SingleValue)
-                    {
-                        singleNum++;
-                        singleMaxNum = Math.Max(largeSmall.SingleDoubleTimes, singleMaxNum);
-                    }
-                    else
-                    {
-                        doubleNum++;
-                        doubleMaxNum = Math.Max(largeSmall.SingleDoubleTimes, doubleMaxNum);
-                    }
-                }
-                item.LargeNum = largeNum;
-                item.SmallNum = smallNum;
-                item.SingleNum = singleNum;
-                item.DoubleNum = doubleNum;
-                item.LargeMaxNum = largeMaxNum;
-                item.SmallMaxNum = smallMaxNum;
-                item.SingleMaxNum = singleMaxNum;
-                item.DoubleMaxNum = doubleMaxNum;
-                var first = item.Items.FirstOrDefault();
-                var last = item.Items.LastOrDefault();
-                if (first != null && last != null)
-                {
-                    var begin = first.Number;
-                    var end = last.Number;
-                    item.Name = string.Format("{0}~{1}", begin, end);
-                }
-            }
-
-            #endregion
-
-        }
-
-        private void InitSectionDataPosItems(int pos, IList<SectionDataItem> listItems)
-        {
-
-            #region 分段及每段数量
-
-            var section = ListBoxSection.SelectedItem as SectionItem;
-            if (section == null) { return; }
-            int sectionNumber = section.Number;
-            int sectionSize = mListSumValueItems.Count;
-            if (sectionNumber == SscDefines.SECTION_10)
-            {
-                sectionSize = 10;
-            }
-            if (sectionNumber == SscDefines.SECTION_15)
-            {
-                sectionSize = 15;
-            }
-            if (sectionNumber == SscDefines.SECTION_20)
-            {
-                sectionSize = 20;
-            }
-            if (sectionNumber == SscDefines.SECTION_30)
-            {
-                sectionSize = 30;
-            }
-
-            #endregion
-
-
-            #region 分段处理
-
-            int k = 0, g = 0;
-            SectionDataItem sectionData = new SectionDataItem();
-            sectionData.Number = g;
-            sectionData.Section = sectionNumber;
-            listItems.Add(sectionData);
-            for (int i = 0; i < mListSumValueItems.Count; i++)
-            {
-                var sumValueItem = mListSumValueItems[i];
-                if (k == sectionSize)
-                {
-                    k = 0;
-                    g++;
-                    sectionData = new SectionDataItem();
-                    sectionData.Number = g;
-                    sectionData.Section = sectionNumber;
-                    listItems.Add(sectionData);
-                }
-                SectionLargeSmallItem largeSmall = new SectionLargeSmallItem();
-                largeSmall.Serial = sumValueItem.Serial;
-                largeSmall.Number = sumValueItem.Number;
-                largeSmall.Date = sumValueItem.Date;
-                var data = mListLargeSmallData.FirstOrDefault(l => l.Serial == largeSmall.Serial && l.Pos == pos);
-                if (data != null)
-                {
-                    largeSmall.LargeValue = data.Large == 1;
-                    largeSmall.SingleValue = data.Single == 1;
-                    largeSmall.LargeSmallTimes = data.LargeSmallNum;
-                    largeSmall.SingleDoubleTimes = data.SingleDoubleNum;
-                }
-                sectionData.Items.Add(largeSmall);
-                k++;
-            }
-
-            #endregion
-
-
-            #region 每段处理
-
-            for (int i = 0; i < listItems.Count; i++)
-            {
-                var item = listItems[i];
-                int largeNum = 0;
-                int smallNum = 0;
-                int singleNum = 0;
-                int doubleNum = 0;
-                int largeMaxNum = 0;
-                int smallMaxNum = 0;
-                int singleMaxNum = 0;
-                int doubleMaxNum = 0;
-                for (int j = 0; j < item.Items.Count; j++)
-                {
-                    SectionLargeSmallItem largeSmall = item.Items[j];
-                    if (largeSmall.LargeValue)
-                    {
-                        largeNum++;
-                        largeMaxNum = Math.Max(largeSmall.LargeSmallTimes, largeMaxNum);
-                    }
-                    else
-                    {
-                        smallNum++;
-                        smallMaxNum = Math.Max(largeSmall.LargeSmallTimes, smallMaxNum);
-                    }
-                    if (largeSmall.SingleValue)
-                    {
-                        singleNum++;
-                        singleMaxNum = Math.Max(largeSmall.SingleDoubleTimes, singleMaxNum);
-                    }
-                    else
-                    {
-                        doubleNum++;
-                        doubleMaxNum = Math.Max(largeSmall.SingleDoubleTimes, doubleMaxNum);
-                    }
-                }
-                item.LargeNum = largeNum;
-                item.SmallNum = smallNum;
-                item.SingleNum = singleNum;
-                item.DoubleNum = doubleNum;
-                item.LargeMaxNum = largeMaxNum;
-                item.SmallMaxNum = smallMaxNum;
-                item.SingleMaxNum = singleMaxNum;
-                item.DoubleMaxNum = doubleMaxNum;
-                var first = item.Items.FirstOrDefault();
-                var last = item.Items.LastOrDefault();
-                if (first != null && last != null)
-                {
-                    var begin = first.Number;
-                    var end = last.Number;
-                    item.Name = string.Format("{0}~{1}", begin, end);
-                }
-            }
-
-            #endregion
-
-        }
-
         private void InitDistributeItems()
         {
             mListDistributeItems.Clear();
-            var dateItem = ComboDate.SelectedItem as SumValueDateItem;
+            int largeNum = 0;
+            int smallNum = 0;
+            int singleNum = 0;
+            int doubleNum = 0;
+            int largeMaxNum = 0;
+            int smallMaxNum = 0;
+            int singleMaxNum = 0;
+            int doubleMaxNum = 0;
+            var dateItem = ComboDate.SelectedItem as LargeSmallDateItem;
             if (dateItem != null)
             {
                 for (int i = 0; i < dateItem.Items.Count; i++)
@@ -582,14 +391,143 @@ namespace ShiShiCai.UserControls
                     var data = mListLargeSmallData.FirstOrDefault(l => l.Serial == serial && l.Pos == pos);
                     if (data != null)
                     {
+                        item.Large = data.Large;
+                        item.Small = data.Small;
+                        item.Single = data.Single;
+                        item.Double = data.Double;
+                        item.LargeSmallNum = data.LargeSmallNum;
+                        item.SingleDoubleNum = data.SingleDoubleNum;
                         item.LargeNum = data.LargeNum;
                         item.SmallNum = data.SmallNum;
                         item.SingleNum = data.SingleNum;
                         item.DoubleNum = data.DoubleNum;
+
+                        largeNum += item.LargeNum;
+                        smallNum += item.SmallNum;
+                        singleNum += item.SingleNum;
+                        doubleNum += item.DoubleNum;
+                        largeMaxNum = Math.Max(item.LargeNum, largeMaxNum);
+                        smallMaxNum = Math.Max(item.SmallNum, smallMaxNum);
+                        singleMaxNum = Math.Max(item.SingleNum, singleMaxNum);
+                        doubleMaxNum = Math.Max(item.DoubleNum, doubleMaxNum);
                     }
                     mListDistributeItems.Add(item);
                 }
             }
+            LargeNum = largeNum;
+            SmallNum = smallNum;
+            SingleNum = singleNum;
+            DoubleNum = doubleNum;
+            LargeMaxNum = largeMaxNum;
+            SmallMaxNum = smallMaxNum;
+            SingleMaxNum = singleMaxNum;
+            DoubleMaxNum = doubleMaxNum;
+        }
+
+        private void InitPositionItems()
+        {
+            mListPositionItems.Clear();
+            PositionLargeSmallItem item = new PositionLargeSmallItem();
+            item.Pos = 6;
+            item.Name = "全位";
+            InitPositionItems(item);
+            mListPositionItems.Add(item);
+            item = new PositionLargeSmallItem();
+            item.Pos = 5;
+            item.Name = "万位";
+            InitPositionItems(item);
+            mListPositionItems.Add(item);
+            item = new PositionLargeSmallItem();
+            item.Pos = 4;
+            item.Name = "千位";
+            InitPositionItems(item);
+            mListPositionItems.Add(item);
+            item = new PositionLargeSmallItem();
+            item.Pos = 3;
+            item.Name = "百位";
+            InitPositionItems(item);
+            mListPositionItems.Add(item);
+            item = new PositionLargeSmallItem();
+            item.Pos = 2;
+            item.Name = "十位";
+            InitPositionItems(item);
+            mListPositionItems.Add(item);
+            item = new PositionLargeSmallItem();
+            item.Pos = 1;
+            item.Name = "个位";
+            InitPositionItems(item);
+            mListPositionItems.Add(item);
+        }
+
+        private void InitPositionItems(PositionLargeSmallItem posItem)
+        {
+            int pos = posItem.Pos;
+            int largeNum = 0;
+            int smallNum = 0;
+            int singleNum = 0;
+            int doubleNum = 0;
+            int largeMaxNum = 0;
+            int smallMaxNum = 0;
+            int singleMaxNum = 0;
+            int doubleMaxNum = 0;
+            var dateItem = ComboDate.SelectedItem as LargeSmallDateItem;
+            if (dateItem != null)
+            {
+                for (int i = 0; i < dateItem.Items.Count; i++)
+                {
+                    var sumValueItem = dateItem.Items[i];
+                    string serial = sumValueItem.Serial;
+                    LargeSmallItem item = new LargeSmallItem();
+                    item.Serial = serial;
+                    item.Number = sumValueItem.Number;
+                    item.Date = sumValueItem.Date;
+                    item.Pos = pos;
+                    var data = mListLargeSmallData.FirstOrDefault(l => l.Serial == serial && l.Pos == pos);
+                    if (data != null)
+                    {
+                        item.Large = data.Large;
+                        item.Small = data.Small;
+                        item.Single = data.Single;
+                        item.Double = data.Double;
+                        item.LargeSmallNum = data.LargeSmallNum;
+                        item.SingleDoubleNum = data.SingleDoubleNum;
+                        item.LargeNum = data.LargeNum;
+                        item.SmallNum = data.SmallNum;
+                        item.SingleNum = data.SingleNum;
+                        item.DoubleNum = data.DoubleNum;
+
+                        if (item.Large)
+                        {
+                            largeNum++;
+                            largeMaxNum = Math.Max(item.LargeSmallNum, largeMaxNum);
+                        }
+                        else
+                        {
+                            smallNum++;
+                            smallMaxNum = Math.Max(item.LargeSmallNum, smallMaxNum);
+                        }
+                        if (item.Single)
+                        {
+                            singleNum++;
+                            singleMaxNum = Math.Max(item.SingleDoubleNum, singleMaxNum);
+                        }
+                        else
+                        {
+                            doubleNum++;
+                            doubleMaxNum = Math.Max(item.SingleDoubleNum, doubleMaxNum);
+                        }
+                    }
+                    posItem.Items.Add(item);
+                }
+            }
+            posItem.LargeNum = largeNum;
+            posItem.SmallNum = smallNum;
+            posItem.SingleNum = singleNum;
+            posItem.DoubleNum = doubleNum;
+            posItem.LargeMaxNum = largeMaxNum;
+            posItem.SmallMaxNum = smallMaxNum;
+            posItem.SingleMaxNum = singleMaxNum;
+            posItem.DoubleMaxNum = doubleMaxNum;
         }
 
         #endregion
@@ -602,43 +540,13 @@ namespace ShiShiCai.UserControls
             InitSumValueItems();
             InitSumValueTitle();
             InitDistributeItems();
+            InitPositionItems();
             InitSumViewSize();
-            InitSectionDataItems();
-            mListSectionData1Items.Clear();
-            mListSectionData2Items.Clear();
-            mListSectionData3Items.Clear();
-            mListSectionData4Items.Clear();
-            mListSectionData5Items.Clear();
-            InitSectionDataPosItems(1, mListSectionData1Items);
-            InitSectionDataPosItems(2, mListSectionData2Items);
-            InitSectionDataPosItems(3, mListSectionData3Items);
-            InitSectionDataPosItems(4, mListSectionData4Items);
-            InitSectionDataPosItems(5, mListSectionData5Items);
         }
 
         void ListBoxSumView_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             InitSumViewSize();
-        }
-
-        void ListBoxSection_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            InitSectionDataItems();
-            mListSectionData1Items.Clear();
-            mListSectionData2Items.Clear();
-            mListSectionData3Items.Clear();
-            mListSectionData4Items.Clear();
-            mListSectionData5Items.Clear();
-            InitSectionDataPosItems(1, mListSectionData1Items);
-            InitSectionDataPosItems(2, mListSectionData2Items);
-            InitSectionDataPosItems(3, mListSectionData3Items);
-            InitSectionDataPosItems(4, mListSectionData4Items);
-            InitSectionDataPosItems(5, mListSectionData5Items);
-        }
-
-        void BtnDrill_Click(object sender, RoutedEventArgs e)
-        {
-            IsDrill = !IsDrill;
         }
 
         #endregion

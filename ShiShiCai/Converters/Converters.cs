@@ -125,7 +125,7 @@ namespace ShiShiCai.Converters
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             bool singleValue = (bool)value;
-            return singleValue ? 80 : 110;
+            return singleValue ? 20 : 50;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

@@ -26,10 +26,19 @@ namespace ShiShiCai.Models
         private int mNumber;
         private int mDate;
         private int mPos;
-        private int mLarge;
-        private int mSmall;
-        private int mSingle;
-        private int mDouble;
+
+        private int mD1;
+        private int mD2;
+        private int mD3;
+        private int mD4;
+        private int mD5;
+
+        private int mSumValue;
+
+        private bool mLarge;
+        private bool mSmall;
+        private bool mSingle;
+        private bool mDouble;
         private int mLargeSmallNum;
         private int mSingleDoubleNum;
 
@@ -40,6 +49,8 @@ namespace ShiShiCai.Models
 
         private double mItemWidth;
         private double mItemHeight;
+
+        private bool mIsSelected;
 
         public string Serial
         {
@@ -65,25 +76,61 @@ namespace ShiShiCai.Models
             set { mPos = value; OnPropertyChanged("Pos"); }
         }
 
-        public int Large
+        public int D1
+        {
+            get { return mD1; }
+            set { mD1 = value; OnPropertyChanged("D1"); }
+        }
+
+        public int D2
+        {
+            get { return mD2; }
+            set { mD2 = value; OnPropertyChanged("D2"); }
+        }
+
+        public int D3
+        {
+            get { return mD3; }
+            set { mD3 = value; OnPropertyChanged("D3"); }
+        }
+
+        public int D4
+        {
+            get { return mD4; }
+            set { mD4 = value; OnPropertyChanged("D4"); }
+        }
+
+        public int D5
+        {
+            get { return mD5; }
+            set { mD5 = value; OnPropertyChanged("D5"); }
+        }
+
+        public int SumValue
+        {
+            get { return mSumValue; }
+            set { mSumValue = value; OnPropertyChanged("SumValue"); }
+        }
+
+        public bool Large
         {
             get { return mLarge; }
             set { mLarge = value; OnPropertyChanged("Large"); }
         }
 
-        public int Small
+        public bool Small
         {
             get { return mSmall; }
             set { mSmall = value; OnPropertyChanged("Small"); }
         }
 
-        public int Single
+        public bool Single
         {
             get { return mSingle; }
             set { mSingle = value; OnPropertyChanged("Single"); }
         }
 
-        public int Double
+        public bool Double
         {
             get { return mDouble; }
             set { mDouble = value; OnPropertyChanged("Double"); }
@@ -137,6 +184,11 @@ namespace ShiShiCai.Models
             set { mItemHeight = value; OnPropertyChanged("ItemHeight"); }
         }
 
+        public bool IsSelected
+        {
+            get { return mIsSelected; }
+            set { mIsSelected = value; OnPropertyChanged("IsSelected"); }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -15,7 +15,6 @@
                 <ResourceDictionary Source="../Themes/Default/UCLargeSmall.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
 
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></BooleanToVisibilityConverter>
             <conv:IntegerToDateConverter x:Key="IntegerToDateConverter"></conv:IntegerToDateConverter>
             <conv:LargeSmallToHeightConverter x:Key="LargeSmallToHeightConverter"></conv:LargeSmallToHeightConverter>
             <conv:LargeSmallToFillConverter x:Key="LargeSmallToFillConverter"></conv:LargeSmallToFillConverter>
@@ -28,8 +27,6 @@
                       VerticalScrollBarVisibility="Hidden">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
@@ -49,8 +46,10 @@
                     <Border Height="200">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"></RowDefinition>
@@ -71,23 +70,23 @@
                                             <RowDefinition Height="10*"></RowDefinition>
                                             <RowDefinition Height="10*"></RowDefinition>
                                         </Grid.RowDefinitions>
-                                        <TextBlock Grid.Row="0" Text="45" VerticalAlignment="Top"></TextBlock>
-                                        <TextBlock Grid.Row="1" Text="40" VerticalAlignment="Top"></TextBlock>
-                                        <TextBlock Grid.Row="2" Text="35" VerticalAlignment="Top"></TextBlock>
-                                        <TextBlock Grid.Row="3" Text="30" VerticalAlignment="Top"></TextBlock>
-                                        <TextBlock Grid.Row="4" Text="25" VerticalAlignment="Top"></TextBlock>
-                                        <TextBlock Grid.Row="5" Text="20" VerticalAlignment="Top"></TextBlock>
-                                        <TextBlock Grid.Row="6" Text="15" VerticalAlignment="Top"></TextBlock>
-                                        <TextBlock Grid.Row="7" Text="10" VerticalAlignment="Top"></TextBlock>
-                                        <TextBlock Grid.Row="8" Text="5" VerticalAlignment="Top"></TextBlock>
+                                        <TextBlock Grid.Row="0" Text="45" Style="{DynamicResource YAxisLabelStyle}"></TextBlock>
+                                        <TextBlock Grid.Row="1" Text="40" Style="{DynamicResource YAxisLabelStyle}"></TextBlock>
+                                        <TextBlock Grid.Row="2" Text="35" Style="{DynamicResource YAxisLabelStyle}"></TextBlock>
+                                        <TextBlock Grid.Row="3" Text="30" Style="{DynamicResource YAxisLabelStyle}"></TextBlock>
+                                        <TextBlock Grid.Row="4" Text="25" Style="{DynamicResource YAxisLabelStyle}"></TextBlock>
+                                        <TextBlock Grid.Row="5" Text="20" Style="{DynamicResource YAxisLabelStyle}"></TextBlock>
+                                        <TextBlock Grid.Row="6" Text="15" Style="{DynamicResource YAxisLabelStyle}"></TextBlock>
+                                        <TextBlock Grid.Row="7" Text="10" Style="{DynamicResource YAxisLabelStyle}"></TextBlock>
+                                        <TextBlock Grid.Row="8" Text="5" Style="{DynamicResource YAxisLabelStyle}"></TextBlock>
                                     </Grid>
                                 </Border>
                             </Grid>
                             <Grid Grid.Column="1" Grid.Row="2">
                                 <Border BorderThickness="0,1,0,0" BorderBrush="{DynamicResource SystemBrush7}">
                                     <ListBox Style="{DynamicResource ListBoxSumViewStyle}"
-                                     ItemContainerStyle="{DynamicResource ListItemSumViewStyle}"
-                                     ItemsSource="{Binding SumValueItems,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}">
+                                         ItemContainerStyle="{DynamicResource ListItemSumViewStyle}"
+                                         ItemsSource="{Binding SumValueItems,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate DataType="ListBoxItem">
                                                 <Border Width="{Binding ItemWidth}">
@@ -136,7 +135,7 @@
                                         <DataTemplate DataType="ListBoxItem">
                                             <Border VerticalAlignment="Bottom" Width="{Binding ItemWidth}" Height="{Binding ItemHeight}">
                                                 <Border VerticalAlignment="Top">
-                                                    <Ellipse Fill="{Binding LargeValue,Converter={StaticResource LargeSmallToFillConverter}}" 
+                                                    <Ellipse Fill="{Binding Large,Converter={StaticResource LargeSmallToFillConverter}}" 
                                                              Style="{DynamicResource PointStyle}"></Ellipse>
                                                 </Border>
                                             </Border>
@@ -144,7 +143,7 @@
                                     </ListBox.ItemTemplate>
                                 </ListBox>
                             </Grid>
-                            <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0">
+                            <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0">
                                 <Border Style="{DynamicResource TitleStyle}">
                                     <TextBlock Name="TxtSumValueTitle" Text="和值趋势" Style="{DynamicResource TxtTitleStyle}"></TextBlock>
                                 </Border>
@@ -153,633 +152,293 @@
                     </Border>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Border Grid.Row="0" Style="{DynamicResource TitleStyle}">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                            <TextBlock Text="分段统计" Style="{DynamicResource TxtTitleStyle}"></TextBlock>
-                            <ListBox Name="ListBoxSection" Style="{DynamicResource ListBoxSectionStyle}"
-                                 ItemContainerStyle="{DynamicResource ListItemSectionStyle}">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate DataType="ListBoxItem">
-                                        <Border>
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                                </Grid.ColumnDefinitions>
-                                                <Grid Grid.Column="0">
-                                                    <Ellipse Width="10" Height="10" Fill="Transparent" Stroke="{DynamicResource SystemBrush7}" StrokeThickness="1" Style="{DynamicResource SectionEllipseStyle}"></Ellipse>
-                                                    <Ellipse Width="5" Height="5" Fill="{DynamicResource SystemBrush7}" Stroke="Transparent" StrokeThickness="0" Style="{DynamicResource SectionEllipseStyle}"
-                                                        Visibility="{Binding IsChecked,Converter={StaticResource BooleanToVisibilityConverter}}"></Ellipse>
-                                                </Grid>
-                                                <Grid Grid.Column="1">
-                                                    <TextBlock Text="{Binding Name}" Style="{DynamicResource SectionLabelStyle}"></TextBlock>
-                                                </Grid>
-                                            </Grid>
-                                        </Border>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                        </StackPanel>
-                    </Border>
-                    <ListBox Grid.Row="1" Name="ListBoxSectionData" Style="{DynamicResource ListBoxSectionDataStyle}"
-                             ItemContainerStyle="{DynamicResource ListItemSectionDataStyle}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate DataType="ListBoxItem">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="40"></ColumnDefinition>
-                                        <ColumnDefinition Width="20"></ColumnDefinition>
-                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                        <ColumnDefinition Width="40"></ColumnDefinition>
-                                        <ColumnDefinition Width="30"></ColumnDefinition>
-                                        <ColumnDefinition Width="40"></ColumnDefinition>
-                                        <ColumnDefinition Width="30"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <Border Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                    <Border Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                    <Border Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="2" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                    <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                    <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                    <Border Grid.Column="2" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                    <Border Grid.Column="3" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                    <Border Grid.Column="4" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                    <Border Grid.Column="5" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                    <TextBlock Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" Text="{Binding Name}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                    <TextBlock Grid.Column="1" Grid.Row="0" Text="大" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                    <TextBlock Grid.Column="1" Grid.Row="1" Text="小" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                    <TextBlock Grid.Column="1" Grid.Row="2" Text="单" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                    <TextBlock Grid.Column="1" Grid.Row="3" Text="双" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                    <TextBlock Grid.Column="3" Grid.Row="0" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                    <TextBlock Grid.Column="3" Grid.Row="1" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                    <TextBlock Grid.Column="3" Grid.Row="2" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                    <TextBlock Grid.Column="3" Grid.Row="3" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                    <TextBlock Grid.Column="5" Grid.Row="0" Text="最大连" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                    <TextBlock Grid.Column="5" Grid.Row="1" Text="最大连" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                    <TextBlock Grid.Column="5" Grid.Row="2" Text="最大连" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                    <TextBlock Grid.Column="5" Grid.Row="3" Text="最大连" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                    <TextBlock Grid.Column="4" Grid.Row="0" Text="{Binding LargeNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                    <TextBlock Grid.Column="4" Grid.Row="1" Text="{Binding SmallNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                    <TextBlock Grid.Column="4" Grid.Row="2" Text="{Binding SingleNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                    <TextBlock Grid.Column="4" Grid.Row="3" Text="{Binding DoubleNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                    <TextBlock Grid.Column="6" Grid.Row="0" Text="{Binding LargeMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                    <TextBlock Grid.Column="6" Grid.Row="1" Text="{Binding SmallMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                    <TextBlock Grid.Column="6" Grid.Row="2" Text="{Binding SingleMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                    <TextBlock Grid.Column="6" Grid.Row="3" Text="{Binding DoubleMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                    <Grid Grid.Column="2" Grid.Row="0" Grid.RowSpan="4">
-                                        <ListBox ItemsSource="{Binding Items}" Style="{DynamicResource ListBoxSectionNumberStyle}"
-                                             ItemContainerStyle="{DynamicResource ListItemSectionNumberStyle}">
-                                            <ListBox.ItemTemplate>
-                                                <DataTemplate DataType="ListBoxItem">
-                                                    <Grid>
-                                                        <Border VerticalAlignment="Top" Height="{Binding LargeValue,Converter={StaticResource LargeSmallToHeightConverter}}">
-                                                            <Border VerticalAlignment="Bottom">
-                                                                <Grid>
-                                                                    <Ellipse Fill="{Binding LargeValue,Converter={StaticResource LargeSmallToFillConverter}}" Style="{DynamicResource BallStyle}"></Ellipse>
-                                                                    <TextBlock Text="{Binding LargeSmallTimes}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
-                                                                </Grid>
-                                                            </Border>
-                                                        </Border>
-                                                        <Border VerticalAlignment="Top" Height="{Binding SingleValue,Converter={StaticResource SingleDoubleToHeightConverter}}">
-                                                            <Border VerticalAlignment="Bottom">
-                                                                <Grid>
-                                                                    <Ellipse Fill="{Binding SingleValue,Converter={StaticResource SingleDoubleToFillConverter}}" Style="{DynamicResource BallStyle}"></Ellipse>
-                                                                    <TextBlock Text="{Binding SingleDoubleTimes}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
-                                                                </Grid>
-                                                            </Border>
-                                                        </Border>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ListBox.ItemTemplate>
-                                        </ListBox>
-                                    </Grid>
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </Grid>
-                <Grid Grid.Row="2">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Border Grid.Row="0" Style="{DynamicResource TitleStyle}">
-                        <TextBlock Text="5位上大小单双分布" Style="{DynamicResource TxtTitleStyle}"></TextBlock>
-                    </Border>
-                    <Grid Grid.Row="1">
-                        <Border BorderThickness="1" BorderBrush="{DynamicResource SystemBrush7}">
+                    <TabControl Name="TabControlView" Style="{DynamicResource TabControlViewStyle}"
+                                ItemContainerStyle="{DynamicResource TabItemViewStyle}">
+                        <TabItem Header="大小">
                             <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="30"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="30"></RowDefinition>
-                                    <RowDefinition Height="30"></RowDefinition>
-                                    <RowDefinition Height="30"></RowDefinition>
-                                    <RowDefinition Height="30"></RowDefinition>
-                                    <RowDefinition Height="30"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.5"></Border>
-                                <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="5" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.5"></Border>
-                                <TextBlock Grid.Column="0" Grid.Row="0" Text="期号" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                <TextBlock Grid.Column="0" Grid.Row="1" Text="大" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                <TextBlock Grid.Column="0" Grid.Row="2" Text="小" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                <TextBlock Grid.Column="0" Grid.Row="3" Text="单" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                <TextBlock Grid.Column="0" Grid.Row="4" Text="双" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                <ListBox Name="ListBoxDistribute" Grid.Column="1" Grid.Row="0" Grid.RowSpan="5"
-                                         Style="{DynamicResource ListBoxDistributeStyle}"
-                                         ItemContainerStyle="{DynamicResource ListItemDistributeStyle}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate DataType="ListBoxItem">
-                                            <Border Width="{Binding ItemWidth}">
+                                <Border Grid.Row="0" Style="{DynamicResource TitleStyle}">
+                                    <TextBlock Text="每期大小位个数统计" Style="{DynamicResource TxtTitleStyle}"></TextBlock>
+                                </Border>
+                                <Grid Grid.Row="1">
+                                    <Border BorderThickness="1" BorderBrush="{DynamicResource SystemBrush7}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="30"></RowDefinition>
+                                                <RowDefinition Height="30"></RowDefinition>
+                                                <RowDefinition Height="30"></RowDefinition>
+                                            </Grid.RowDefinitions>
+                                            <Border Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.5"></Border>
+                                            <Border Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
+                                            <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.5"></Border>
+                                            <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.5"></Border>
+                                            <Border Grid.Column="2" Grid.Row="0" Grid.RowSpan="3" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
+                                            <TextBlock Grid.Column="0" Grid.Row="0" Text="期号" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                            <TextBlock Grid.Column="0" Grid.Row="1" Text="大" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                            <TextBlock Grid.Column="0" Grid.Row="2" Text="小" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                            <TextBlock Grid.Column="2" Grid.Row="0" Text="汇总" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                            <TextBlock Grid.Column="3" Grid.Row="0" Text="最大值" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                            <TextBlock Grid.Column="2" Grid.Row="1" Style="{DynamicResource TxtSectionCellStyle}"
+                                                        Text="{Binding LargeNum,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"></TextBlock>
+                                            <TextBlock Grid.Column="2" Grid.Row="2" Style="{DynamicResource TxtSectionCellStyle}"
+                                                        Text="{Binding SmallNum,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"></TextBlock>
+                                            <TextBlock Grid.Column="3" Grid.Row="1" Style="{DynamicResource TxtSectionCellStyle}"
+                                                        Text="{Binding LargeMaxNum,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"></TextBlock>
+                                            <TextBlock Grid.Column="3" Grid.Row="2" Style="{DynamicResource TxtSectionCellStyle}"
+                                                        Text="{Binding SmallMaxNum,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"></TextBlock>
+                                            <ListBox Name="ListBoxDistribute" Grid.Column="1" Grid.Row="0" Grid.RowSpan="3"
+                                                 Style="{DynamicResource ListBoxDistributeStyle}"
+                                                 ItemContainerStyle="{DynamicResource ListItemDistributeStyle}">
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate DataType="ListBoxItem">
+                                                        <Border Width="{Binding ItemWidth,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}">
+                                                            <Grid>
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition Height="30"></RowDefinition>
+                                                                    <RowDefinition Height="30"></RowDefinition>
+                                                                    <RowDefinition Height="30"></RowDefinition>
+                                                                </Grid.RowDefinitions>
+                                                                <TextBlock Grid.Row="0" Text="{Binding Number}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Row="1" Text="{Binding LargeNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Row="2" Text="{Binding SmallNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                            </Grid>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </Grid>
+                                    </Border>
+                                </Grid>
+                                <Grid Grid.Row="2">
+                                    <ListBox Name="ListBoxPositionView" Style="{DynamicResource ListBoxPositionViewStyle}"
+                                             ItemContainerStyle="{DynamicResource ListItemPositionViewStyle}">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate DataType="ListBoxItem">
                                                 <Grid>
                                                     <Grid.RowDefinitions>
-                                                        <RowDefinition Height="30"></RowDefinition>
-                                                        <RowDefinition Height="30"></RowDefinition>
-                                                        <RowDefinition Height="30"></RowDefinition>
-                                                        <RowDefinition Height="30"></RowDefinition>
-                                                        <RowDefinition Height="30"></RowDefinition>
+                                                        <RowDefinition Height="Auto"></RowDefinition>
+                                                        <RowDefinition Height="Auto"></RowDefinition>
                                                     </Grid.RowDefinitions>
-                                                    <TextBlock Grid.Row="0" Text="{Binding Number}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                    <TextBlock Grid.Row="1" Text="{Binding LargeNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                    <TextBlock Grid.Row="2" Text="{Binding SmallNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                    <TextBlock Grid.Row="3" Text="{Binding SingleNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                    <TextBlock Grid.Row="4" Text="{Binding DoubleNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                    <Border Grid.Row="0" Style="{DynamicResource TitleStyle}">
+                                                        <TextBlock Text="{Binding Name}" Style="{DynamicResource TxtTitleStyle}"></TextBlock>
+                                                    </Border>
+                                                    <Grid Grid.Row="1">
+                                                        <Border BorderThickness="1" BorderBrush="{DynamicResource SystemBrush7}">
+                                                            <Grid>
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition Height="30"></RowDefinition>
+                                                                    <RowDefinition Height="30"></RowDefinition>
+                                                                    <RowDefinition Height="30"></RowDefinition>
+                                                                </Grid.RowDefinitions>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="50"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="50"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="50"></ColumnDefinition>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Border Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.5"></Border>
+                                                                <Border Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
+                                                                <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.5"></Border>
+                                                                <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.5"></Border>
+                                                                <Border Grid.Column="2" Grid.Row="0" Grid.RowSpan="3" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
+                                                                <TextBlock Grid.Column="0" Grid.Row="0" Text="期号" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="0" Grid.Row="1" Text="大" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="0" Grid.Row="2" Text="小" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="2" Grid.Row="0" Text="汇总" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="3" Grid.Row="0" Text="最大值" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding LargeNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="2" Grid.Row="2" Text="{Binding SmallNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding LargeMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="3" Grid.Row="2" Text="{Binding SmallMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="3">
+                                                                    <ListBox ItemsSource="{Binding Items}" Style="{DynamicResource ListBoxSectionNumberStyle}"
+                                                                             ItemContainerStyle="{DynamicResource ListItemSectionNumberStyle}">
+                                                                        <ListBox.ItemTemplate>
+                                                                            <DataTemplate DataType="ListBoxItem">
+                                                                                <Border Width="{Binding ItemWidth,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}">
+                                                                                    <Grid>
+                                                                                        <Grid.RowDefinitions>
+                                                                                            <RowDefinition Height="30"></RowDefinition>
+                                                                                            <RowDefinition Height="60"></RowDefinition>
+                                                                                        </Grid.RowDefinitions>
+                                                                                        <TextBlock Grid.Row="0" Text="{Binding Number}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                                        <Border Grid.Row="1" VerticalAlignment="Top" Height="{Binding Large,Converter={StaticResource LargeSmallToHeightConverter}}">
+                                                                                            <Border VerticalAlignment="Bottom">
+                                                                                                <Grid>
+                                                                                                    <Ellipse Fill="{Binding Large,Converter={StaticResource LargeSmallToFillConverter}}" Style="{DynamicResource BallStyle}"></Ellipse>
+                                                                                                    <TextBlock Text="{Binding LargeSmallNum}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
+                                                                                                </Grid>
+                                                                                            </Border>
+                                                                                        </Border>
+                                                                                    </Grid>
+                                                                                </Border>
+                                                                            </DataTemplate>
+                                                                        </ListBox.ItemTemplate>
+                                                                    </ListBox>
+                                                                </Grid>
+                                                            </Grid>
+                                                        </Border>
+                                                    </Grid>
                                                 </Grid>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Grid>
                             </Grid>
-                        </Border>
-                    </Grid>
-                </Grid>
-                <Grid Grid.Row="3">
-                    <Border HorizontalAlignment="Right">
-                        <Button Name="BtnDrill" ToolTip="钻取" Style="{DynamicResource BtnDrillStyle}">
+                        </TabItem>
+                        <TabItem Header="单双">
                             <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Image Grid.Column="0" Source="/Themes/Default/Images/00011.png"></Image>
-                                <TextBlock Grid.Column="1" Text="钻取" Style="{DynamicResource TxtModuleTextStyle}"></TextBlock>
-                            </Grid>
-                        </Button>
-                    </Border>
-                </Grid>
-                <Grid Grid.Row="4">
-                    <Border Name="BorderDrill" Visibility="{Binding IsDrill,
-                        RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}},
-                        Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="30"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="30"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="30"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="30"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Text="万" Style="{DynamicResource TxtTitleStyle}"></TextBlock>
-                            <TextBlock Grid.Row="2" Text="千" Style="{DynamicResource TxtTitleStyle}"></TextBlock>
-                            <TextBlock Grid.Row="4" Text="百" Style="{DynamicResource TxtTitleStyle}"></TextBlock>
-                            <TextBlock Grid.Row="6" Text="十" Style="{DynamicResource TxtTitleStyle}"></TextBlock>
-                            <TextBlock Grid.Row="8" Text="个" Style="{DynamicResource TxtTitleStyle}"></TextBlock>
-                            <Grid Grid.Row="1">
-                                <ListBox Name="ListBoxSectionData5" Style="{DynamicResource ListBoxSectionDataStyle}"
-                                     ItemContainerStyle="{DynamicResource ListItemSectionDataStyle}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate DataType="ListBoxItem">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="30"></RowDefinition>
-                                                    <RowDefinition Height="30"></RowDefinition>
-                                                    <RowDefinition Height="30"></RowDefinition>
-                                                    <RowDefinition Height="30"></RowDefinition>
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="40"></ColumnDefinition>
-                                                    <ColumnDefinition Width="20"></ColumnDefinition>
-                                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                                    <ColumnDefinition Width="40"></ColumnDefinition>
-                                                    <ColumnDefinition Width="30"></ColumnDefinition>
-                                                    <ColumnDefinition Width="40"></ColumnDefinition>
-                                                    <ColumnDefinition Width="30"></ColumnDefinition>
-                                                </Grid.ColumnDefinitions>
-                                                <Border Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="2" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="2" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="3" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="4" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="5" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <TextBlock Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" Text="{Binding Name}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="1" Grid.Row="0" Text="大" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="1" Grid.Row="1" Text="小" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="1" Grid.Row="2" Text="单" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="1" Grid.Row="3" Text="双" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="3" Grid.Row="0" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="3" Grid.Row="1" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="3" Grid.Row="2" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="3" Grid.Row="3" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="5" Grid.Row="0" Text="最大连" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="5" Grid.Row="1" Text="最大连" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="5" Grid.Row="2" Text="最大连" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="5" Grid.Row="3" Text="最大连" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="4" Grid.Row="0" Text="{Binding LargeNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="4" Grid.Row="1" Text="{Binding SmallNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="4" Grid.Row="2" Text="{Binding SingleNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="4" Grid.Row="3" Text="{Binding DoubleNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="6" Grid.Row="0" Text="{Binding LargeMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="6" Grid.Row="1" Text="{Binding SmallMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="6" Grid.Row="2" Text="{Binding SingleMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="6" Grid.Row="3" Text="{Binding DoubleMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <Grid Grid.Column="2" Grid.Row="0" Grid.RowSpan="4">
-                                                    <ListBox ItemsSource="{Binding Items}" Style="{DynamicResource ListBoxSectionNumberStyle}"
-                                                         ItemContainerStyle="{DynamicResource ListItemSectionNumberStyle}">
-                                                        <ListBox.ItemTemplate>
-                                                            <DataTemplate DataType="ListBoxItem">
-                                                                <Grid>
-                                                                    <Border VerticalAlignment="Top" Height="{Binding LargeValue,Converter={StaticResource LargeSmallToHeightConverter}}">
-                                                                        <Border VerticalAlignment="Bottom">
-                                                                            <Grid>
-                                                                                <Ellipse Fill="{Binding LargeValue,Converter={StaticResource LargeSmallToFillConverter}}" Style="{DynamicResource BallStyle}"></Ellipse>
-                                                                                <TextBlock Text="{Binding LargeSmallTimes}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
-                                                                            </Grid>
-                                                                        </Border>
-                                                                    </Border>
-                                                                    <Border VerticalAlignment="Top" Height="{Binding SingleValue,Converter={StaticResource SingleDoubleToHeightConverter}}">
-                                                                        <Border VerticalAlignment="Bottom">
-                                                                            <Grid>
-                                                                                <Ellipse Fill="{Binding SingleValue,Converter={StaticResource SingleDoubleToFillConverter}}" Style="{DynamicResource BallStyle}"></Ellipse>
-                                                                                <TextBlock Text="{Binding SingleDoubleTimes}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
-                                                                            </Grid>
-                                                                        </Border>
-                                                                    </Border>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="0" Style="{DynamicResource TitleStyle}">
+                                    <TextBlock Text="每期单双位个数统计" Style="{DynamicResource TxtTitleStyle}"></TextBlock>
+                                </Border>
+                                <Grid Grid.Row="1">
+                                    <Border BorderThickness="1" BorderBrush="{DynamicResource SystemBrush7}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="30"></RowDefinition>
+                                                <RowDefinition Height="30"></RowDefinition>
+                                                <RowDefinition Height="30"></RowDefinition>
+                                            </Grid.RowDefinitions>
+                                            <Border Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.5"></Border>
+                                            <Border Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
+                                            <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.5"></Border>
+                                            <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.5"></Border>
+                                            <Border Grid.Column="2" Grid.Row="0" Grid.RowSpan="3" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
+                                            <TextBlock Grid.Column="0" Grid.Row="0" Text="期号" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                            <TextBlock Grid.Column="0" Grid.Row="1" Text="单" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                            <TextBlock Grid.Column="0" Grid.Row="2" Text="双" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                            <TextBlock Grid.Column="2" Grid.Row="0" Text="汇总" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                            <TextBlock Grid.Column="3" Grid.Row="0" Text="最大值" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                            <TextBlock Grid.Column="2" Grid.Row="1" Style="{DynamicResource TxtSectionCellStyle}"
+                                                        Text="{Binding SingleNum,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"></TextBlock>
+                                            <TextBlock Grid.Column="2" Grid.Row="2" Style="{DynamicResource TxtSectionCellStyle}"
+                                                        Text="{Binding DoubleNum,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"></TextBlock>
+                                            <TextBlock Grid.Column="3" Grid.Row="1" Style="{DynamicResource TxtSectionCellStyle}"
+                                                        Text="{Binding SingleMaxNum,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"></TextBlock>
+                                            <TextBlock Grid.Column="3" Grid.Row="2" Style="{DynamicResource TxtSectionCellStyle}"
+                                                        Text="{Binding DoubleMaxNum,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"></TextBlock>
+                                            <ListBox Name="ListBoxDistributeSingleDouble" Grid.Column="1" Grid.Row="0" Grid.RowSpan="3"
+                                                 Style="{DynamicResource ListBoxDistributeStyle}"
+                                                 ItemContainerStyle="{DynamicResource ListItemDistributeStyle}">
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate DataType="ListBoxItem">
+                                                        <Border Width="{Binding ItemWidth,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}">
+                                                            <Grid>
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition Height="30"></RowDefinition>
+                                                                    <RowDefinition Height="30"></RowDefinition>
+                                                                    <RowDefinition Height="30"></RowDefinition>
+                                                                </Grid.RowDefinitions>
+                                                                <TextBlock Grid.Row="0" Text="{Binding Number}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Row="1" Text="{Binding SingleNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Row="2" Text="{Binding DoubleNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                            </Grid>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </Grid>
+                                    </Border>
+                                </Grid>
+                                <Grid Grid.Row="2">
+                                    <ListBox Name="ListBoxPositionViewSingleDouble" Style="{DynamicResource ListBoxPositionViewStyle}"
+                                             ItemContainerStyle="{DynamicResource ListItemPositionViewStyle}">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate DataType="ListBoxItem">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"></RowDefinition>
+                                                        <RowDefinition Height="Auto"></RowDefinition>
+                                                    </Grid.RowDefinitions>
+                                                    <Border Grid.Row="0" Style="{DynamicResource TitleStyle}">
+                                                        <TextBlock Text="{Binding Name}" Style="{DynamicResource TxtTitleStyle}"></TextBlock>
+                                                    </Border>
+                                                    <Grid Grid.Row="1">
+                                                        <Border BorderThickness="1" BorderBrush="{DynamicResource SystemBrush7}">
+                                                            <Grid>
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition Height="30"></RowDefinition>
+                                                                    <RowDefinition Height="30"></RowDefinition>
+                                                                    <RowDefinition Height="30"></RowDefinition>
+                                                                </Grid.RowDefinitions>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="50"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="50"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="50"></ColumnDefinition>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Border Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.5"></Border>
+                                                                <Border Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
+                                                                <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.5"></Border>
+                                                                <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.5"></Border>
+                                                                <Border Grid.Column="2" Grid.Row="0" Grid.RowSpan="3" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
+                                                                <TextBlock Grid.Column="0" Grid.Row="0" Text="期号" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="0" Grid.Row="1" Text="单" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="0" Grid.Row="2" Text="双" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="2" Grid.Row="0" Text="汇总" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="3" Grid.Row="0" Text="最大值" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding SingleNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="2" Grid.Row="2" Text="{Binding DoubleNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding SingleMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="3" Grid.Row="2" Text="{Binding DoubleMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="3">
+                                                                    <ListBox ItemsSource="{Binding Items}" Style="{DynamicResource ListBoxSectionNumberStyle}"
+                                                                             ItemContainerStyle="{DynamicResource ListItemSectionNumberStyle}">
+                                                                        <ListBox.ItemTemplate>
+                                                                            <DataTemplate DataType="ListBoxItem">
+                                                                                <Border Width="{Binding ItemWidth,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}">
+                                                                                    <Grid>
+                                                                                        <Grid.RowDefinitions>
+                                                                                            <RowDefinition Height="30"></RowDefinition>
+                                                                                            <RowDefinition Height="60"></RowDefinition>
+                                                                                        </Grid.RowDefinitions>
+                                                                                        <TextBlock Grid.Row="0" Text="{Binding Number}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
+                                                                                        <Border Grid.Row="1" VerticalAlignment="Top" Height="{Binding Single,Converter={StaticResource SingleDoubleToHeightConverter}}">
+                                                                                            <Border VerticalAlignment="Bottom">
+                                                                                                <Grid>
+                                                                                                    <Ellipse Fill="{Binding Single,Converter={StaticResource SingleDoubleToFillConverter}}" Style="{DynamicResource BallStyle}"></Ellipse>
+                                                                                                    <TextBlock Text="{Binding SingleDoubleNum}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
+                                                                                                </Grid>
+                                                                                            </Border>
+                                                                                        </Border>
+                                                                                    </Grid>
+                                                                                </Border>
+                                                                            </DataTemplate>
+                                                                        </ListBox.ItemTemplate>
+                                                                    </ListBox>
                                                                 </Grid>
-                                                            </DataTemplate>
-                                                        </ListBox.ItemTemplate>
-                                                    </ListBox>
+                                                            </Grid>
+                                                        </Border>
+                                                    </Grid>
                                                 </Grid>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Grid>
                             </Grid>
-                            <Grid Grid.Row="3">
-                                <ListBox Name="ListBoxSectionData4" Style="{DynamicResource ListBoxSectionDataStyle}"
-                                     ItemContainerStyle="{DynamicResource ListItemSectionDataStyle}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate DataType="ListBoxItem">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="30"></RowDefinition>
-                                                    <RowDefinition Height="30"></RowDefinition>
-                                                    <RowDefinition Height="30"></RowDefinition>
-                                                    <RowDefinition Height="30"></RowDefinition>
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="40"></ColumnDefinition>
-                                                    <ColumnDefinition Width="20"></ColumnDefinition>
-                                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                                    <ColumnDefinition Width="40"></ColumnDefinition>
-                                                    <ColumnDefinition Width="30"></ColumnDefinition>
-                                                    <ColumnDefinition Width="40"></ColumnDefinition>
-                                                    <ColumnDefinition Width="30"></ColumnDefinition>
-                                                </Grid.ColumnDefinitions>
-                                                <Border Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="2" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="2" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="3" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="4" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="5" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <TextBlock Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" Text="{Binding Name}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="1" Grid.Row="0" Text="大" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="1" Grid.Row="1" Text="小" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="1" Grid.Row="2" Text="单" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="1" Grid.Row="3" Text="双" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="3" Grid.Row="0" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="3" Grid.Row="1" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="3" Grid.Row="2" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="3" Grid.Row="3" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="5" Grid.Row="0" Text="最大连" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="5" Grid.Row="1" Text="最大连" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="5" Grid.Row="2" Text="最大连" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="5" Grid.Row="3" Text="最大连" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="4" Grid.Row="0" Text="{Binding LargeNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="4" Grid.Row="1" Text="{Binding SmallNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="4" Grid.Row="2" Text="{Binding SingleNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="4" Grid.Row="3" Text="{Binding DoubleNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="6" Grid.Row="0" Text="{Binding LargeMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="6" Grid.Row="1" Text="{Binding SmallMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="6" Grid.Row="2" Text="{Binding SingleMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="6" Grid.Row="3" Text="{Binding DoubleMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <Grid Grid.Column="2" Grid.Row="0" Grid.RowSpan="4">
-                                                    <ListBox ItemsSource="{Binding Items}" Style="{DynamicResource ListBoxSectionNumberStyle}"
-                                                         ItemContainerStyle="{DynamicResource ListItemSectionNumberStyle}">
-                                                        <ListBox.ItemTemplate>
-                                                            <DataTemplate DataType="ListBoxItem">
-                                                                <Grid>
-                                                                    <Border VerticalAlignment="Top" Height="{Binding LargeValue,Converter={StaticResource LargeSmallToHeightConverter}}">
-                                                                        <Border VerticalAlignment="Bottom">
-                                                                            <Grid>
-                                                                                <Ellipse Fill="{Binding LargeValue,Converter={StaticResource LargeSmallToFillConverter}}" Style="{DynamicResource BallStyle}"></Ellipse>
-                                                                                <TextBlock Text="{Binding LargeSmallTimes}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
-                                                                            </Grid>
-                                                                        </Border>
-                                                                    </Border>
-                                                                    <Border VerticalAlignment="Top" Height="{Binding SingleValue,Converter={StaticResource SingleDoubleToHeightConverter}}">
-                                                                        <Border VerticalAlignment="Bottom">
-                                                                            <Grid>
-                                                                                <Ellipse Fill="{Binding SingleValue,Converter={StaticResource SingleDoubleToFillConverter}}" Style="{DynamicResource BallStyle}"></Ellipse>
-                                                                                <TextBlock Text="{Binding SingleDoubleTimes}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
-                                                                            </Grid>
-                                                                        </Border>
-                                                                    </Border>
-                                                                </Grid>
-                                                            </DataTemplate>
-                                                        </ListBox.ItemTemplate>
-                                                    </ListBox>
-                                                </Grid>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </Grid>
-                            <Grid Grid.Row="5">
-                                <ListBox Name="ListBoxSectionData3" Style="{DynamicResource ListBoxSectionDataStyle}"
-                                     ItemContainerStyle="{DynamicResource ListItemSectionDataStyle}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate DataType="ListBoxItem">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="30"></RowDefinition>
-                                                    <RowDefinition Height="30"></RowDefinition>
-                                                    <RowDefinition Height="30"></RowDefinition>
-                                                    <RowDefinition Height="30"></RowDefinition>
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="40"></ColumnDefinition>
-                                                    <ColumnDefinition Width="20"></ColumnDefinition>
-                                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                                    <ColumnDefinition Width="40"></ColumnDefinition>
-                                                    <ColumnDefinition Width="30"></ColumnDefinition>
-                                                    <ColumnDefinition Width="40"></ColumnDefinition>
-                                                    <ColumnDefinition Width="30"></ColumnDefinition>
-                                                </Grid.ColumnDefinitions>
-                                                <Border Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="2" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="2" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="3" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="4" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="5" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <TextBlock Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" Text="{Binding Name}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="1" Grid.Row="0" Text="大" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="1" Grid.Row="1" Text="小" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="1" Grid.Row="2" Text="单" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="1" Grid.Row="3" Text="双" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="3" Grid.Row="0" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="3" Grid.Row="1" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="3" Grid.Row="2" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="3" Grid.Row="3" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="5" Grid.Row="0" Text="最大连" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="5" Grid.Row="1" Text="最大连" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="5" Grid.Row="2" Text="最大连" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="5" Grid.Row="3" Text="最大连" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="4" Grid.Row="0" Text="{Binding LargeNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="4" Grid.Row="1" Text="{Binding SmallNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="4" Grid.Row="2" Text="{Binding SingleNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="4" Grid.Row="3" Text="{Binding DoubleNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="6" Grid.Row="0" Text="{Binding LargeMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="6" Grid.Row="1" Text="{Binding SmallMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="6" Grid.Row="2" Text="{Binding SingleMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="6" Grid.Row="3" Text="{Binding DoubleMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <Grid Grid.Column="2" Grid.Row="0" Grid.RowSpan="4">
-                                                    <ListBox ItemsSource="{Binding Items}" Style="{DynamicResource ListBoxSectionNumberStyle}"
-                                                         ItemContainerStyle="{DynamicResource ListItemSectionNumberStyle}">
-                                                        <ListBox.ItemTemplate>
-                                                            <DataTemplate DataType="ListBoxItem">
-                                                                <Grid>
-                                                                    <Border VerticalAlignment="Top" Height="{Binding LargeValue,Converter={StaticResource LargeSmallToHeightConverter}}">
-                                                                        <Border VerticalAlignment="Bottom">
-                                                                            <Grid>
-                                                                                <Ellipse Fill="{Binding LargeValue,Converter={StaticResource LargeSmallToFillConverter}}" Style="{DynamicResource BallStyle}"></Ellipse>
-                                                                                <TextBlock Text="{Binding LargeSmallTimes}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
-                                                                            </Grid>
-                                                                        </Border>
-                                                                    </Border>
-                                                                    <Border VerticalAlignment="Top" Height="{Binding SingleValue,Converter={StaticResource SingleDoubleToHeightConverter}}">
-                                                                        <Border VerticalAlignment="Bottom">
-                                                                            <Grid>
-                                                                                <Ellipse Fill="{Binding SingleValue,Converter={StaticResource SingleDoubleToFillConverter}}" Style="{DynamicResource BallStyle}"></Ellipse>
-                                                                                <TextBlock Text="{Binding SingleDoubleTimes}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
-                                                                            </Grid>
-                                                                        </Border>
-                                                                    </Border>
-                                                                </Grid>
-                                                            </DataTemplate>
-                                                        </ListBox.ItemTemplate>
-                                                    </ListBox>
-                                                </Grid>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </Grid>
-                            <Grid Grid.Row="7">
-                                <ListBox Name="ListBoxSectionData2" Style="{DynamicResource ListBoxSectionDataStyle}"
-                                     ItemContainerStyle="{DynamicResource ListItemSectionDataStyle}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate DataType="ListBoxItem">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="30"></RowDefinition>
-                                                    <RowDefinition Height="30"></RowDefinition>
-                                                    <RowDefinition Height="30"></RowDefinition>
-                                                    <RowDefinition Height="30"></RowDefinition>
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="40"></ColumnDefinition>
-                                                    <ColumnDefinition Width="20"></ColumnDefinition>
-                                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                                    <ColumnDefinition Width="40"></ColumnDefinition>
-                                                    <ColumnDefinition Width="30"></ColumnDefinition>
-                                                    <ColumnDefinition Width="40"></ColumnDefinition>
-                                                    <ColumnDefinition Width="30"></ColumnDefinition>
-                                                </Grid.ColumnDefinitions>
-                                                <Border Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="2" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="2" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="3" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="4" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="5" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <TextBlock Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" Text="{Binding Name}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="1" Grid.Row="0" Text="大" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="1" Grid.Row="1" Text="小" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="1" Grid.Row="2" Text="单" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="1" Grid.Row="3" Text="双" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="3" Grid.Row="0" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="3" Grid.Row="1" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="3" Grid.Row="2" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="3" Grid.Row="3" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="5" Grid.Row="0" Text="最大连" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="5" Grid.Row="1" Text="最大连" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="5" Grid.Row="2" Text="最大连" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="5" Grid.Row="3" Text="最大连" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="4" Grid.Row="0" Text="{Binding LargeNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="4" Grid.Row="1" Text="{Binding SmallNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="4" Grid.Row="2" Text="{Binding SingleNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="4" Grid.Row="3" Text="{Binding DoubleNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="6" Grid.Row="0" Text="{Binding LargeMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="6" Grid.Row="1" Text="{Binding SmallMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="6" Grid.Row="2" Text="{Binding SingleMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="6" Grid.Row="3" Text="{Binding DoubleMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <Grid Grid.Column="2" Grid.Row="0" Grid.RowSpan="4">
-                                                    <ListBox ItemsSource="{Binding Items}" Style="{DynamicResource ListBoxSectionNumberStyle}"
-                                                         ItemContainerStyle="{DynamicResource ListItemSectionNumberStyle}">
-                                                        <ListBox.ItemTemplate>
-                                                            <DataTemplate DataType="ListBoxItem">
-                                                                <Grid>
-                                                                    <Border VerticalAlignment="Top" Height="{Binding LargeValue,Converter={StaticResource LargeSmallToHeightConverter}}">
-                                                                        <Border VerticalAlignment="Bottom">
-                                                                            <Grid>
-                                                                                <Ellipse Fill="{Binding LargeValue,Converter={StaticResource LargeSmallToFillConverter}}" Style="{DynamicResource BallStyle}"></Ellipse>
-                                                                                <TextBlock Text="{Binding LargeSmallTimes}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
-                                                                            </Grid>
-                                                                        </Border>
-                                                                    </Border>
-                                                                    <Border VerticalAlignment="Top" Height="{Binding SingleValue,Converter={StaticResource SingleDoubleToHeightConverter}}">
-                                                                        <Border VerticalAlignment="Bottom">
-                                                                            <Grid>
-                                                                                <Ellipse Fill="{Binding SingleValue,Converter={StaticResource SingleDoubleToFillConverter}}" Style="{DynamicResource BallStyle}"></Ellipse>
-                                                                                <TextBlock Text="{Binding SingleDoubleTimes}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
-                                                                            </Grid>
-                                                                        </Border>
-                                                                    </Border>
-                                                                </Grid>
-                                                            </DataTemplate>
-                                                        </ListBox.ItemTemplate>
-                                                    </ListBox>
-                                                </Grid>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </Grid>
-                            <Grid Grid.Row="9">
-                                <ListBox Name="ListBoxSectionData1" Style="{DynamicResource ListBoxSectionDataStyle}"
-                                     ItemContainerStyle="{DynamicResource ListItemSectionDataStyle}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate DataType="ListBoxItem">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="30"></RowDefinition>
-                                                    <RowDefinition Height="30"></RowDefinition>
-                                                    <RowDefinition Height="30"></RowDefinition>
-                                                    <RowDefinition Height="30"></RowDefinition>
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="40"></ColumnDefinition>
-                                                    <ColumnDefinition Width="20"></ColumnDefinition>
-                                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                                    <ColumnDefinition Width="40"></ColumnDefinition>
-                                                    <ColumnDefinition Width="30"></ColumnDefinition>
-                                                    <ColumnDefinition Width="40"></ColumnDefinition>
-                                                    <ColumnDefinition Width="30"></ColumnDefinition>
-                                                </Grid.ColumnDefinitions>
-                                                <Border Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="2" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="2" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="3" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="4" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <Border Grid.Column="5" Grid.Row="0" Grid.RowSpan="4" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
-                                                <TextBlock Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" Text="{Binding Name}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="1" Grid.Row="0" Text="大" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="1" Grid.Row="1" Text="小" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="1" Grid.Row="2" Text="单" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="1" Grid.Row="3" Text="双" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="3" Grid.Row="0" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="3" Grid.Row="1" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="3" Grid.Row="2" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="3" Grid.Row="3" Text="数量" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="5" Grid.Row="0" Text="最大连" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="5" Grid.Row="1" Text="最大连" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="5" Grid.Row="2" Text="最大连" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="5" Grid.Row="3" Text="最大连" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="4" Grid.Row="0" Text="{Binding LargeNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="4" Grid.Row="1" Text="{Binding SmallNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="4" Grid.Row="2" Text="{Binding SingleNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="4" Grid.Row="3" Text="{Binding DoubleNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="6" Grid.Row="0" Text="{Binding LargeMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="6" Grid.Row="1" Text="{Binding SmallMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="6" Grid.Row="2" Text="{Binding SingleMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <TextBlock Grid.Column="6" Grid.Row="3" Text="{Binding DoubleMaxNum}" Style="{DynamicResource TxtSectionCellStyle}"></TextBlock>
-                                                <Grid Grid.Column="2" Grid.Row="0" Grid.RowSpan="4">
-                                                    <ListBox ItemsSource="{Binding Items}" Style="{DynamicResource ListBoxSectionNumberStyle}"
-                                                         ItemContainerStyle="{DynamicResource ListItemSectionNumberStyle}">
-                                                        <ListBox.ItemTemplate>
-                                                            <DataTemplate DataType="ListBoxItem">
-                                                                <Grid>
-                                                                    <Border VerticalAlignment="Top" Height="{Binding LargeValue,Converter={StaticResource LargeSmallToHeightConverter}}">
-                                                                        <Border VerticalAlignment="Bottom">
-                                                                            <Grid>
-                                                                                <Ellipse Fill="{Binding LargeValue,Converter={StaticResource LargeSmallToFillConverter}}" Style="{DynamicResource BallStyle}"></Ellipse>
-                                                                                <TextBlock Text="{Binding LargeSmallTimes}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
-                                                                            </Grid>
-                                                                        </Border>
-                                                                    </Border>
-                                                                    <Border VerticalAlignment="Top" Height="{Binding SingleValue,Converter={StaticResource SingleDoubleToHeightConverter}}">
-                                                                        <Border VerticalAlignment="Bottom">
-                                                                            <Grid>
-                                                                                <Ellipse Fill="{Binding SingleValue,Converter={StaticResource SingleDoubleToFillConverter}}" Style="{DynamicResource BallStyle}"></Ellipse>
-                                                                                <TextBlock Text="{Binding SingleDoubleTimes}" Style="{DynamicResource TxtBallLabelStyle}"></TextBlock>
-                                                                            </Grid>
-                                                                        </Border>
-                                                                    </Border>
-                                                                </Grid>
-                                                            </DataTemplate>
-                                                        </ListBox.ItemTemplate>
-                                                    </ListBox>
-                                                </Grid>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </Grid>
-                        </Grid>
-                    </Border>
+                        </TabItem>
+                    </TabControl>
                 </Grid>
             </Grid>
         </ScrollViewer>

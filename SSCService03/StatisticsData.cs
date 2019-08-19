@@ -152,7 +152,6 @@ namespace SSCService03
                              //DoSingleAnalysis_106(ConstDefine.Const_SetNormal, listPeriodTemp_101);
 
                              //DoHotSingleNum_107(ConstDefine.Const_SetNormal, listPeriodTemp_101);
-
                          }
 
                          ExecuteListSQL(IListStringSQL);

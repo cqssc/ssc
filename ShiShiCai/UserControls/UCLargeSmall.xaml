@@ -271,8 +271,8 @@
                                                                 <TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding LargeMaxNum}" Style="{DynamicResource TxtCellStyle}"></TextBlock>
                                                                 <TextBlock Grid.Column="3" Grid.Row="2" Text="{Binding SmallMaxNum}" Style="{DynamicResource TxtCellStyle}"></TextBlock>
                                                                 <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="3">
-                                                                    <ListBox ItemsSource="{Binding Items}" Style="{DynamicResource ListBoxSectionNumberStyle}"
-                                                                             ItemContainerStyle="{DynamicResource ListItemSectionNumberStyle}">
+                                                                    <ListBox ItemsSource="{Binding Items}" Style="{DynamicResource ListBoxPositionNumberStyle}"
+                                                                             ItemContainerStyle="{DynamicResource ListItemPositionNumberStyle}">
                                                                         <ListBox.ItemTemplate>
                                                                             <DataTemplate DataType="ListBoxItem">
                                                                                 <Border Width="{Binding ItemWidth,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}">

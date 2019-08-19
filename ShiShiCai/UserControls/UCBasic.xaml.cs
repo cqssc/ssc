@@ -202,15 +202,16 @@ namespace ShiShiCai.UserControls
         #endregion
 
 
-        private readonly ObservableCollection<IssueDateItem> mListGroupItems =
-            new ObservableCollection<IssueDateItem>();
+        #region Members
 
-        private readonly ObservableCollection<PositionItem> mListPositionItems =
-            new ObservableCollection<PositionItem>();
-
+        private readonly ObservableCollection<IssueDateItem> mListGroupItems = new ObservableCollection<IssueDateItem>();
+        private readonly ObservableCollection<PositionItem> mListPositionItems = new ObservableCollection<PositionItem>();
         private readonly ObservableCollection<IssueItem> mListIssueItems = new ObservableCollection<IssueItem>();
 
         private bool mIsInited;
+
+        #endregion
+
 
 
         public UCBasic()
@@ -442,7 +443,7 @@ namespace ShiShiCai.UserControls
         private void InitPath()
         {
             double itemWidth = 20;
-            double itemHeight = 15;
+            double itemHeight = 18;
             var firstItem = mListIssueItems.FirstOrDefault();
             if (firstItem != null)
             {

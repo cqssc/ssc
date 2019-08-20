@@ -38,7 +38,7 @@
                     </Border>
                 </Grid>
                 <Grid Grid.Column="1">
-                    
+
                 </Grid>
             </Grid>
         </Grid>
@@ -145,7 +145,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="50*"></ColumnDefinition>
                                     <ColumnDefinition Width="50*"></ColumnDefinition>
-                                    <ColumnDefinition Width="80"></ColumnDefinition>
+                                    <ColumnDefinition Width="120"></ColumnDefinition>
                                     <ColumnDefinition Width="200"></ColumnDefinition>
                                     <ColumnDefinition Width="200"></ColumnDefinition>
                                     <ColumnDefinition Width="200"></ColumnDefinition>
@@ -182,10 +182,10 @@
                                             <RowDefinition Height="18"></RowDefinition>
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="20"></ColumnDefinition>
-                                            <ColumnDefinition Width="20"></ColumnDefinition>
-                                            <ColumnDefinition Width="20"></ColumnDefinition>
-                                            <ColumnDefinition Width="20"></ColumnDefinition>
+                                            <ColumnDefinition Width="30"></ColumnDefinition>
+                                            <ColumnDefinition Width="30"></ColumnDefinition>
+                                            <ColumnDefinition Width="30"></ColumnDefinition>
+                                            <ColumnDefinition Width="30"></ColumnDefinition>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Text="特征" Style="{DynamicResource TxtIssueStyle}"></TextBlock>
                                         <TextBlock Grid.Row="1" Grid.Column="0" Text="大小" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
@@ -356,7 +356,7 @@
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="50*"></ColumnDefinition>
                                                     <ColumnDefinition Width="50*"></ColumnDefinition>
-                                                    <ColumnDefinition Width="80"></ColumnDefinition>
+                                                    <ColumnDefinition Width="120"></ColumnDefinition>
                                                     <ColumnDefinition Width="200"></ColumnDefinition>
                                                     <ColumnDefinition Width="200"></ColumnDefinition>
                                                     <ColumnDefinition Width="200"></ColumnDefinition>
@@ -397,7 +397,7 @@
                                                             <Grid.ColumnDefinitions>
                                                                 <ColumnDefinition Width="50*"></ColumnDefinition>
                                                                 <ColumnDefinition Width="50*"></ColumnDefinition>
-                                                                <ColumnDefinition Width="80"></ColumnDefinition>
+                                                                <ColumnDefinition Width="120"></ColumnDefinition>
                                                                 <ColumnDefinition Width="200"></ColumnDefinition>
                                                                 <ColumnDefinition Width="200"></ColumnDefinition>
                                                                 <ColumnDefinition Width="200"></ColumnDefinition>
@@ -407,19 +407,139 @@
                                                             <Grid.RowDefinitions>
                                                                 <RowDefinition Height="18"></RowDefinition>
                                                             </Grid.RowDefinitions>
-                                                            <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding Serial}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                                            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding FullValue}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                                            <Grid Grid.Column="2" Grid.Row="0">
+                                                            <TextBlock Grid.Column="0" Text="{Binding Serial}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                                            <TextBlock Grid.Column="1" Text="{Binding FullValue}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                                            <Grid Grid.Column="2">
                                                                 <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
-                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
-                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
-                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="30"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="30"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="30"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="30"></ColumnDefinition>
                                                                 </Grid.ColumnDefinitions>
                                                                 <TextBlock Grid.Column="0" Text="{Binding LargeValue,Converter={StaticResource BooleanToLargeConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
                                                                 <TextBlock Grid.Column="1" Text="{Binding SingleValue,Converter={StaticResource BooleanToSingleConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
                                                                 <TextBlock Grid.Column="2" Text="{Binding RepeatValue,Converter={StaticResource BooleanToHasConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
                                                                 <TextBlock Grid.Column="3" Text="{Binding IntervalValue,Converter={StaticResource BooleanToHasConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                                            </Grid>
+                                                            <Grid Grid.Column="3">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                </Grid.ColumnDefinitions>
+                                                                <TextBlock Grid.Column="0" Text="{Binding D5Lost0}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="1" Text="{Binding D5Lost1}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="2" Text="{Binding D5Lost2}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="3" Text="{Binding D5Lost3}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="4" Text="{Binding D5Lost4}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="5" Text="{Binding D5Lost5}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="6" Text="{Binding D5Lost6}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="7" Text="{Binding D5Lost7}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="8" Text="{Binding D5Lost8}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="9" Text="{Binding D5Lost9}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                            </Grid>
+                                                            <Grid Grid.Column="4">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                </Grid.ColumnDefinitions>
+                                                                <TextBlock Grid.Column="0" Text="{Binding D4Lost0}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="1" Text="{Binding D4Lost1}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="2" Text="{Binding D4Lost2}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="3" Text="{Binding D4Lost3}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="4" Text="{Binding D4Lost4}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="5" Text="{Binding D4Lost5}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="6" Text="{Binding D4Lost6}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="7" Text="{Binding D4Lost7}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="8" Text="{Binding D4Lost8}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="9" Text="{Binding D4Lost9}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                            </Grid>
+                                                            <Grid Grid.Column="5">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                </Grid.ColumnDefinitions>
+                                                                <TextBlock Grid.Column="0" Text="{Binding D3Lost0}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="1" Text="{Binding D3Lost1}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="2" Text="{Binding D3Lost2}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="3" Text="{Binding D3Lost3}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="4" Text="{Binding D3Lost4}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="5" Text="{Binding D3Lost5}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="6" Text="{Binding D3Lost6}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="7" Text="{Binding D3Lost7}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="8" Text="{Binding D3Lost8}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="9" Text="{Binding D3Lost9}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                            </Grid>
+                                                            <Grid Grid.Column="6">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                </Grid.ColumnDefinitions>
+                                                                <TextBlock Grid.Column="0" Text="{Binding D2Lost0}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="1" Text="{Binding D2Lost1}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="2" Text="{Binding D2Lost2}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="3" Text="{Binding D2Lost3}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="4" Text="{Binding D2Lost4}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="5" Text="{Binding D2Lost5}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="6" Text="{Binding D2Lost6}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="7" Text="{Binding D2Lost7}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="8" Text="{Binding D2Lost8}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="9" Text="{Binding D2Lost9}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                            </Grid>
+                                                            <Grid Grid.Column="7">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="20"></ColumnDefinition>
+                                                                </Grid.ColumnDefinitions>
+                                                                <TextBlock Grid.Column="0" Text="{Binding D1Lost0}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="1" Text="{Binding D1Lost1}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="2" Text="{Binding D1Lost2}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="3" Text="{Binding D1Lost3}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="4" Text="{Binding D1Lost4}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="5" Text="{Binding D1Lost5}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="6" Text="{Binding D1Lost6}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="7" Text="{Binding D1Lost7}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="8" Text="{Binding D1Lost8}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="9" Text="{Binding D1Lost9}" Style="{DynamicResource TxtLotteryGrayStyle}"></TextBlock>
                                                             </Grid>
                                                             <Grid Grid.Column="3">
                                                                 <Border Width="{Binding D5Width}" HorizontalAlignment="Left">

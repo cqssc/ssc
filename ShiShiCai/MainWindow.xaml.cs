@@ -20,6 +20,9 @@ namespace ShiShiCai
     /// </summary>
     public partial class MainWindow
     {
+
+        #region Members
+
         private bool mIsInited;
 
         private readonly List<IssueItem> mListIssues = new List<IssueItem>();
@@ -33,6 +36,9 @@ namespace ShiShiCai
         private int mCalculateMode;
         private int mCalculateSize;
         private string mCalculateDate;
+
+        #endregion
+        
 
         public MainWindow()
         {

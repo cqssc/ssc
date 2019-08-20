@@ -34,7 +34,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
                     <Border Name="PanelTitle" Style="{DynamicResource ModuleTitleStyle}">
-                        <TextBlock Text="号码走势" Style="{DynamicResource TxtModuleTitleStyle}"></TextBlock>
+                        <TextBlock Text="开奖号码" Style="{DynamicResource TxtModuleTitleStyle}"></TextBlock>
                     </Border>
                 </Grid>
                 <Grid Grid.Column="1">
@@ -365,27 +365,27 @@
                                                 </Grid.ColumnDefinitions>
                                                 <Grid Grid.Column="3">
                                                     <Path Data="{Binding Path5,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}" 
-                                                      StrokeThickness="2" 
+                                                      StrokeThickness="1" 
                                                       Stroke="{Binding Path5Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Path>
                                                 </Grid>
                                                 <Grid Grid.Column="4">
                                                     <Path Data="{Binding Path4,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}" 
-                                                      StrokeThickness="2" 
+                                                      StrokeThickness="1" 
                                                       Stroke="{Binding Path4Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Path>
                                                 </Grid>
                                                 <Grid Grid.Column="5">
                                                     <Path Data="{Binding Path3,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}" 
-                                                      StrokeThickness="2" 
+                                                      StrokeThickness="1" 
                                                       Stroke="{Binding Path3Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Path>
                                                 </Grid>
                                                 <Grid Grid.Column="6">
                                                     <Path Data="{Binding Path2,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}" 
-                                                      StrokeThickness="2" 
+                                                      StrokeThickness="1" 
                                                       Stroke="{Binding Path2Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Path>
                                                 </Grid>
                                                 <Grid Grid.Column="7">
                                                     <Path Data="{Binding Path1,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}" 
-                                                      StrokeThickness="2" 
+                                                      StrokeThickness="1" 
                                                       Stroke="{Binding Path1Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Path>
                                                 </Grid>
                                             </Grid>

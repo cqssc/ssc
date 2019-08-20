@@ -269,11 +269,19 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                    <Border x:Name="Border"
+                    <Grid>
+                        <Border x:Name="Bg" Background="{DynamicResource SystemBrush7}" Opacity="0.2" Visibility="Collapsed"></Border>
+                        <Border x:Name="Border"
                               SnapsToDevicePixels="true"
                             Background="Transparent">
-                        <ContentPresenter Width="20" />
-                    </Border>
+                            <ContentPresenter Width="20" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bg" Property="Visibility" Value="Visible"></Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

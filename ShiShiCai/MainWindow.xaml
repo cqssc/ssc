@@ -183,7 +183,7 @@
                                     <uc:UCLargeSmall x:Name="UCLargeSmall" PageParent="{Binding}"></uc:UCLargeSmall>
                                 </TabItem>
                                 <TabItem Name="TabHot" Header="热度展示">
-
+                                    <uc:UCNumberHot x:Name="UCNumberHot" PageParent="{Binding}"></uc:UCNumberHot>
                                 </TabItem>
                                 <TabItem Name="TabTrend" Header="趋势展示">
 

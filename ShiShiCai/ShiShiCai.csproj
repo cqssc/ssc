@@ -66,6 +66,10 @@
     <Compile Include="Models\LargeSmallDateItem.cs" />
     <Compile Include="Models\LargeSmallItem.cs" />
     <Compile Include="Models\ModuleItem.cs" />
+    <Compile Include="Models\NumberHotDateItem.cs" />
+    <Compile Include="Models\NumberHotItem.cs" />
+    <Compile Include="Models\NumberHotNumberItem.cs" />
+    <Compile Include="Models\NumberHotSectionItem.cs" />
     <Compile Include="Models\PositionItem.cs" />
     <Compile Include="Models\PositionLargeSmallItem.cs" />
     <Compile Include="PopupWindow.xaml.cs">
@@ -81,6 +85,9 @@
     </Compile>
     <Compile Include="UserControls\UCLargeSmall.xaml.cs">
       <DependentUpon>UCLargeSmall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCNumberHot.xaml.cs">
+      <DependentUpon>UCNumberHot.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -190,6 +197,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Themes\Default\UCNumberHot.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\UCBasic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -199,6 +210,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\UCLargeSmall.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCNumberHot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

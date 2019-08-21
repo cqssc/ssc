@@ -83,7 +83,7 @@ namespace ShiShiCai
             InitModuleItems();
             LoadConfig();
 
-            ListBoxModules.SelectedIndex = 0;//默认显示模块
+            ListBoxModules.SelectedIndex = 2;//默认显示模块
 
             mCalculateMode = SscDefines.CALC_MODE_LAST_LOTTERY;
             mCalculateSize = 300;

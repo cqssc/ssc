@@ -763,6 +763,14 @@ namespace ShiShiCai.UserControls
             if (sectionItem == null) { return; }
             var section = sectionItem.Section;
             int maxNum = section;
+            if (section == 15)
+            {
+                maxNum = section / 3;
+            }
+            if (section == 20)
+            {
+                maxNum = section / 4;
+            }
             double height = 120 - 20;
             for (int i = 0; i < mListPosNumberHotItems.Count; i++)
             {
@@ -857,6 +865,14 @@ namespace ShiShiCai.UserControls
             if (sectionItem == null) { return; }
             var section = sectionItem.Section;
             int maxNum = section;
+            if (section == 15)
+            {
+                maxNum = section / 3;
+            }
+            if (section == 20)
+            {
+                maxNum = section / 4;
+            }
             for (int i = 0; i < mListPosNumberHotItems.Count; i++)
             {
                 var posItem = mListPosNumberHotItems[i];
@@ -989,6 +1005,7 @@ namespace ShiShiCai.UserControls
             InitPosItemWidth();
             InitPosYAxisLabels();
             InitPosNumberHeight();
+            InitPosNumberPaths();
         }
 
         void ListBoxAllSection_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1002,11 +1019,11 @@ namespace ShiShiCai.UserControls
 
         void ListBoxPosSection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            InitPosNumberHotItems();
             InitPosNumberHotData();
             InitPosItemWidth();
             InitPosYAxisLabels();
             InitPosNumberHeight();
+            InitPosNumberPaths();
         }
 
         void CheckBoxAllNumber_Checked(object sender, RoutedEventArgs e)

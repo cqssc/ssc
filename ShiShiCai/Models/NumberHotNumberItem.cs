@@ -26,6 +26,10 @@ namespace ShiShiCai.Models
         private int mNumber;
         private Brush mColor;
         private PathGeometry mPath;
+        private int mSum;
+        private int mMax;
+        private int mMin;
+        private double mAvg;
         private bool mIsSelected;
 
         public int Number
@@ -44,6 +48,30 @@ namespace ShiShiCai.Models
         {
             get { return mPath; }
             set { mPath = value; OnPropertyChanged("Path"); }
+        }
+
+        public int Sum
+        {
+            get { return mSum; }
+            set { mSum = value; OnPropertyChanged("Sum"); }
+        }
+
+        public int Max
+        {
+            get { return mMax; }
+            set { mMax = value; OnPropertyChanged("Max"); }
+        }
+
+        public int Min
+        {
+            get { return mMin; }
+            set { mMin = value; OnPropertyChanged("Min"); }
+        }
+
+        public double Avg
+        {
+            get { return mAvg; }
+            set { mAvg = value; OnPropertyChanged("Avg"); }
         }
 
         public bool IsSelected

@@ -406,7 +406,7 @@ namespace ShiShiCai.UserControls
         private void InitAllItemWidth()
         {
             int count = 60;
-            double width = BorderAllNumberHot.ActualWidth - 30;
+            double width = BorderAllNumberHot.ActualWidth - 30 - 160;
             double itemWidth = width / (count * 1.0);
             ItemWidth = itemWidth;
         }
@@ -458,6 +458,20 @@ namespace ShiShiCai.UserControls
             var section = sectionItem.Section;
             int maxNum = section * 2;
             double height = BorderAllNumberHot.ActualHeight - 20;
+
+            #region 重置汇总
+
+            for (int i = 0; i < mListAllNumberItems.Count; i++)
+            {
+                var numberItem = mListAllNumberItems[i];
+                numberItem.Sum = 0;
+                numberItem.Max = 0;
+                numberItem.Min = 999;
+                numberItem.Avg = 0;
+            }
+
+            #endregion
+
             for (int i = 0; i < mListAllNumberHotItems.Count; i++)
             {
                 var item = mListAllNumberHotItems[i];
@@ -533,14 +547,97 @@ namespace ShiShiCai.UserControls
 
                 #endregion
 
+
+                #region 汇总
+
+                for (int k = 0; k < mListAllNumberItems.Count; k++)
+                {
+                    var numberItem = mListAllNumberItems[k];
+                    int number = numberItem.Number;
+                    if (number == 0)
+                    {
+                        numberItem.Sum += item.Num0;
+                        numberItem.Max = Math.Max(item.Num0, numberItem.Max);
+                        numberItem.Min = Math.Min(item.Num0, numberItem.Max);
+                    }
+                    if (number == 1)
+                    {
+                        numberItem.Sum += item.Num1;
+                        numberItem.Max = Math.Max(item.Num1, numberItem.Max);
+                        numberItem.Min = Math.Min(item.Num1, numberItem.Max);
+                    }
+                    if (number == 2)
+                    {
+                        numberItem.Sum += item.Num2;
+                        numberItem.Max = Math.Max(item.Num2, numberItem.Max);
+                        numberItem.Min = Math.Min(item.Num2, numberItem.Max);
+                    }
+                    if (number == 3)
+                    {
+                        numberItem.Sum += item.Num3;
+                        numberItem.Max = Math.Max(item.Num3, numberItem.Max);
+                        numberItem.Min = Math.Min(item.Num3, numberItem.Max);
+                    }
+                    if (number == 4)
+                    {
+                        numberItem.Sum += item.Num4;
+                        numberItem.Max = Math.Max(item.Num4, numberItem.Max);
+                        numberItem.Min = Math.Min(item.Num4, numberItem.Max);
+                    }
+                    if (number == 5)
+                    {
+                        numberItem.Sum += item.Num5;
+                        numberItem.Max = Math.Max(item.Num5, numberItem.Max);
+                        numberItem.Min = Math.Min(item.Num5, numberItem.Max);
+                    }
+                    if (number == 6)
+                    {
+                        numberItem.Sum += item.Num6;
+                        numberItem.Max = Math.Max(item.Num6, numberItem.Max);
+                        numberItem.Min = Math.Min(item.Num6, numberItem.Max);
+                    }
+                    if (number == 7)
+                    {
+                        numberItem.Sum += item.Num7;
+                        numberItem.Max = Math.Max(item.Num7, numberItem.Max);
+                        numberItem.Min = Math.Min(item.Num7, numberItem.Max);
+                    }
+                    if (number == 8)
+                    {
+                        numberItem.Sum += item.Num8;
+                        numberItem.Max = Math.Max(item.Num8, numberItem.Max);
+                        numberItem.Min = Math.Min(item.Num8, numberItem.Max);
+                    }
+                    if (number == 9)
+                    {
+                        numberItem.Sum += item.Num9;
+                        numberItem.Max = Math.Max(item.Num9, numberItem.Max);
+                        numberItem.Min = Math.Min(item.Num9, numberItem.Max);
+                    }
+                }
+
+                #endregion
+
             }
+
+            #region 汇总
+
+            int count = mListAllNumberHotItems.Count;
+            for (int i = 0; i < mListAllNumberItems.Count; i++)
+            {
+                var numberItem = mListAllNumberItems[i];
+                numberItem.Avg = numberItem.Sum / (count * 1.0);
+            }
+
+            #endregion
+
         }
 
         private void InitAllNumberPaths()
         {
             int count = 60;
             int offset = 4;
-            double width = BorderAllNumberHot.ActualWidth - 30;
+            double width = BorderAllNumberHot.ActualWidth - 30 - 160;
             double height = BorderAllNumberHot.ActualHeight - 20;
             double itemWidth = width / (count * 1.0);
             var sectionItem = ListBoxAllSection.SelectedItem as NumberHotSectionItem;

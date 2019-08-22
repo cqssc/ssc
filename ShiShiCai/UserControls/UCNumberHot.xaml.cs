@@ -55,9 +55,43 @@ namespace ShiShiCai.UserControls
             set { SetValue(ItemWidthProperty, value); }
         }
 
+        public static readonly DependencyProperty PosItemWidthProperty =
+            DependencyProperty.Register("PosItemWidth", typeof(double), typeof(UCNumberHot), new PropertyMetadata(default(double)));
+
+        public double PosItemWidth
+        {
+            get { return (double)GetValue(PosItemWidthProperty); }
+            set { SetValue(PosItemWidthProperty, value); }
+        }
+
+        public ObservableCollection<NumberHotDateItem> DateItems
+        {
+            get { return mListDateItems; }
+        }
+
+        public ObservableCollection<NumberHotSectionItem> AllSectionItems
+        {
+            get { return mListAllSectionItems; }
+        }
+
+        public ObservableCollection<NumberHotSectionItem> PosSectionItems
+        {
+            get { return mListPosSectionItems; }
+        }
+
         public ObservableCollection<NumberHotNumberItem> AllNumberItems
         {
             get { return mListAllNumberItems; }
+        }
+
+        public ObservableCollection<NumberHotNumberItem> PosNumberItems
+        {
+            get { return mListPosNumberItems; }
+        }
+
+        public ObservableCollection<int> AllYAxisLabels
+        {
+            get { return mListAllYAxisLabels; }
         }
 
         public ObservableCollection<NumberHotItem> AllNumberHotItems
@@ -65,9 +99,9 @@ namespace ShiShiCai.UserControls
             get { return mListAllNumberHotItems; }
         }
 
-        public ObservableCollection<int> AllYAxisLabels
+        public ObservableCollection<PositionNumberHotItem> PosNumberHotItems
         {
-            get { return mListAllYAxisLabels; }
+            get { return mListPosNumberHotItems; }
         }
 
         #endregion
@@ -81,8 +115,9 @@ namespace ShiShiCai.UserControls
         private readonly ObservableCollection<NumberHotSectionItem> mListPosSectionItems = new ObservableCollection<NumberHotSectionItem>();
         private readonly ObservableCollection<NumberHotNumberItem> mListAllNumberItems = new ObservableCollection<NumberHotNumberItem>();
         private readonly ObservableCollection<NumberHotNumberItem> mListPosNumberItems = new ObservableCollection<NumberHotNumberItem>();
-        private readonly ObservableCollection<NumberHotItem> mListAllNumberHotItems = new ObservableCollection<NumberHotItem>();
         private readonly ObservableCollection<int> mListAllYAxisLabels = new ObservableCollection<int>();
+        private readonly ObservableCollection<NumberHotItem> mListAllNumberHotItems = new ObservableCollection<NumberHotItem>();
+        private readonly ObservableCollection<PositionNumberHotItem> mListPosNumberHotItems = new ObservableCollection<PositionNumberHotItem>();
 
         private bool mIsInited;
 
@@ -96,13 +131,13 @@ namespace ShiShiCai.UserControls
             Loaded += UCNumberHot_Loaded;
             ComboDate.SelectionChanged += ComboDate_SelectionChanged;
             ListBoxAllSection.SelectionChanged += ListBoxAllSection_SelectionChanged;
+            ListBoxPosSection.SelectionChanged += ListBoxPosSection_SelectionChanged;
             ListBoxAllNumber.AddHandler(ToggleButton.CheckedEvent, new RoutedEventHandler(CheckBoxAllNumber_Checked));
             ListBoxAllNumber.AddHandler(ToggleButton.UncheckedEvent, new RoutedEventHandler(CheckBoxAllNumber_Unchecked));
+            ListBoxPosNumber.AddHandler(ToggleButton.CheckedEvent, new RoutedEventHandler(CheckBoxPosNumber_Checked));
+            ListBoxPosNumber.AddHandler(ToggleButton.UncheckedEvent, new RoutedEventHandler(CheckBoxPosNumber_Unchecked));
             ListBoxAllNumberHot.SizeChanged += ListBoxAllNumberHot_SizeChanged;
-
-            ComboDate.ItemsSource = mListDateItems;
-            ListBoxAllSection.ItemsSource = mListAllSectionItems;
-            ListBoxAllNumber.ItemsSource = mListAllNumberItems;
+            ListBoxPosNumberHot.SizeChanged += ListBoxPosNumberHot_SizeChanged;
         }
 
         void UCNumberHot_Loaded(object sender, RoutedEventArgs e)
@@ -130,7 +165,6 @@ namespace ShiShiCai.UserControls
             InitPosNumberItems();
             InitNumberHotData();
             InitDateItems();
-            InitItemWidth();
 
             ComboDate.SelectedItem = mListDateItems.FirstOrDefault();
         }
@@ -161,12 +195,12 @@ namespace ShiShiCai.UserControls
         {
             mListPosSectionItems.Clear();
             NumberHotSectionItem item = new NumberHotSectionItem();
-            item.Section = 5;
+            item.Section = 15;
             item.Name = "15期";
             item.IsSelected = true;
             mListPosSectionItems.Add(item);
             item = new NumberHotSectionItem();
-            item.Section = 5;
+            item.Section = 20;
             item.Name = "20期";
             mListPosSectionItems.Add(item);
         }
@@ -222,34 +256,44 @@ namespace ShiShiCai.UserControls
             mListPosNumberItems.Clear();
             NumberHotNumberItem item = new NumberHotNumberItem();
             item.Number = 0;
+            item.Color = new SolidColorBrush(Color.FromArgb(255, 255, 0, 0));
             item.IsSelected = true;
             mListPosNumberItems.Add(item);
             item = new NumberHotNumberItem();
             item.Number = 1;
+            item.Color = new SolidColorBrush(Color.FromArgb(255, 0, 255, 0));
             mListPosNumberItems.Add(item);
             item = new NumberHotNumberItem();
             item.Number = 2;
+            item.Color = new SolidColorBrush(Color.FromArgb(255, 0, 0, 255));
             mListPosNumberItems.Add(item);
             item = new NumberHotNumberItem();
             item.Number = 3;
+            item.Color = new SolidColorBrush(Color.FromArgb(255, 128, 64, 64));
             mListPosNumberItems.Add(item);
             item = new NumberHotNumberItem();
             item.Number = 4;
+            item.Color = new SolidColorBrush(Color.FromArgb(255, 64, 128, 64));
             mListPosNumberItems.Add(item);
             item = new NumberHotNumberItem();
             item.Number = 5;
+            item.Color = new SolidColorBrush(Color.FromArgb(255, 64, 64, 128));
             mListPosNumberItems.Add(item);
             item = new NumberHotNumberItem();
             item.Number = 6;
+            item.Color = new SolidColorBrush(Color.FromArgb(255, 32, 128, 128));
             mListPosNumberItems.Add(item);
             item = new NumberHotNumberItem();
             item.Number = 7;
+            item.Color = new SolidColorBrush(Color.FromArgb(255, 128, 32, 128));
             mListPosNumberItems.Add(item);
             item = new NumberHotNumberItem();
             item.Number = 8;
+            item.Color = new SolidColorBrush(Color.FromArgb(255, 128, 128, 32));
             mListPosNumberItems.Add(item);
             item = new NumberHotNumberItem();
             item.Number = 9;
+            item.Color = new SolidColorBrush(Color.FromArgb(255, 255, 128, 128));
             mListPosNumberItems.Add(item);
         }
 
@@ -325,14 +369,6 @@ namespace ShiShiCai.UserControls
             }
         }
 
-        private void InitItemWidth()
-        {
-            int count = 60;
-            double width = ListBoxAllNumberHot.ActualWidth;
-            double itemWidth = width / (count * 1.0);
-            ItemWidth = itemWidth;
-        }
-
         private void InitAllNumberHotItems()
         {
             mListAllNumberHotItems.Clear();
@@ -365,6 +401,14 @@ namespace ShiShiCai.UserControls
                 item.Num9 = dataItem.Num9;
                 mListAllNumberHotItems.Add(item);
             }
+        }
+
+        private void InitAllItemWidth()
+        {
+            int count = 60;
+            double width = ListBoxAllNumberHot.ActualWidth;
+            double itemWidth = width / (count * 1.0);
+            ItemWidth = itemWidth;
         }
 
         private void InitAllYAxisLabels()
@@ -488,13 +532,14 @@ namespace ShiShiCai.UserControls
                 }
 
                 #endregion
-                
+
             }
         }
 
         private void InitAllNumberPaths()
         {
             int count = 60;
+            int offset = 4;
             double width = ListBoxAllNumberHot.ActualWidth;
             double height = ListBoxAllNumberHot.ActualHeight;
             double itemWidth = width / (count * 1.0);
@@ -551,7 +596,7 @@ namespace ShiShiCai.UserControls
                 }
                 PathSegmentCollection segments = new PathSegmentCollection();
                 double firstX = itemWidth / 2.0;
-                double firstY = height - (numValue / (maxNum * 1.0)) * height + 5;
+                double firstY = height - (numValue / (maxNum * 1.0)) * height + offset;
                 Point firtPoint = new Point(firstX, firstY);
                 for (int j = 0; j < mListAllNumberHotItems.Count; j++)
                 {
@@ -598,12 +643,332 @@ namespace ShiShiCai.UserControls
                         numValue = hotItem.Num9;
                     }
                     double x = itemWidth * j * 1.0 + itemWidth / 2.0;
-                    double y = height - (numValue / (maxNum * 1.0)) * height + 5;
+                    double y = height - (numValue / (maxNum * 1.0)) * height + offset;
                     Point point = new Point(x, y);
                     segments.Add(new LineSegment { Point = point });
                 }
                 PathGeometry path = new PathGeometry { Figures = new PathFigureCollection { new PathFigure { StartPoint = firtPoint, Segments = segments } } };
                 numberItem.Path = path;
+            }
+        }
+
+        private void InitPosNumberHotItems()
+        {
+            mListPosNumberHotItems.Clear();
+            PositionNumberHotItem item = new PositionNumberHotItem();
+            item.Pos = 5;
+            item.Name = "万位";
+            mListPosNumberHotItems.Add(item);
+            item = new PositionNumberHotItem();
+            item.Pos = 4;
+            item.Name = "千位";
+            mListPosNumberHotItems.Add(item);
+            item = new PositionNumberHotItem();
+            item.Pos = 3;
+            item.Name = "百位";
+            mListPosNumberHotItems.Add(item);
+            item = new PositionNumberHotItem();
+            item.Pos = 2;
+            item.Name = "十位";
+            mListPosNumberHotItems.Add(item);
+            item = new PositionNumberHotItem();
+            item.Pos = 1;
+            item.Name = "个位";
+            mListPosNumberHotItems.Add(item);
+        }
+
+        private void InitPosNumberHotData()
+        {
+            for (int i = 0; i < mListPosNumberHotItems.Count; i++)
+            {
+                var posItem = mListPosNumberHotItems[i];
+                int pos = posItem.Pos;
+                posItem.Items.Clear();
+                var dateItem = ComboDate.SelectedItem as NumberHotDateItem;
+                if (dateItem == null) { return; }
+                int date = dateItem.Date;
+                var sectionItem = ListBoxPosSection.SelectedItem as NumberHotSectionItem;
+                if (sectionItem == null) { return; }
+                int section = sectionItem.Section;
+                var data = mListNumberHotData.Where(n => n.Date == date && n.Section == section && n.Pos == pos).ToList();
+                for (int j = 0; j < data.Count; j++)
+                {
+                    var dataItem = data[j];
+                    NumberHotItem item = new NumberHotItem();
+                    item.Serial = dataItem.Serial;
+                    item.Number = dataItem.Number;
+                    item.Date = dateItem.Date;
+                    item.Pos = pos;
+                    item.Section = section;
+                    item.Num0 = dataItem.Num0;
+                    item.Num1 = dataItem.Num1;
+                    item.Num2 = dataItem.Num2;
+                    item.Num3 = dataItem.Num3;
+                    item.Num4 = dataItem.Num4;
+                    item.Num5 = dataItem.Num5;
+                    item.Num6 = dataItem.Num6;
+                    item.Num7 = dataItem.Num7;
+                    item.Num8 = dataItem.Num8;
+                    item.Num9 = dataItem.Num9;
+                    posItem.Items.Add(item);
+                }
+            }
+        }
+
+        private void InitPosItemWidth()
+        {
+            double width = ListBoxPosNumberHot.ActualWidth;
+            width = width - 30;
+            int count = 60;
+            double itemWidth = width / (count * 1.0);
+            PosItemWidth = itemWidth;
+            for (int i = 0; i < mListPosNumberHotItems.Count; i++)
+            {
+                var posItem = mListPosNumberHotItems[i];
+                posItem.ItemWidth = itemWidth;
+            }
+        }
+
+        private void InitPosYAxisLabels()
+        {
+            for (int i = 0; i < mListPosNumberHotItems.Count; i++)
+            {
+                var posItem = mListPosNumberHotItems[i];
+                posItem.YAxisLabels.Clear();
+                var sectionItem = ListBoxPosSection.SelectedItem as NumberHotSectionItem;
+                if (sectionItem == null) { continue; }
+                var section = sectionItem.Section;
+                if (section == 15)
+                {
+                    posItem.YAxisLabels.Add(15);
+                    posItem.YAxisLabels.Add(12);
+                    posItem.YAxisLabels.Add(9);
+                    posItem.YAxisLabels.Add(6);
+                    posItem.YAxisLabels.Add(3);
+                }
+                if (section == 20)
+                {
+                    posItem.YAxisLabels.Add(20);
+                    posItem.YAxisLabels.Add(16);
+                    posItem.YAxisLabels.Add(12);
+                    posItem.YAxisLabels.Add(8);
+                    posItem.YAxisLabels.Add(4);
+                }
+            }
+        }
+
+        private void InitPosNumberHeight()
+        {
+            var sectionItem = ListBoxPosSection.SelectedItem as NumberHotSectionItem;
+            if (sectionItem == null) { return; }
+            var section = sectionItem.Section;
+            int maxNum = section;
+            double height = 120 - 20;
+            for (int i = 0; i < mListPosNumberHotItems.Count; i++)
+            {
+                var posItem = mListPosNumberHotItems[i];
+                for (int j = 0; j < posItem.Items.Count; j++)
+                {
+                    var item = posItem.Items[j];
+                    item.Num0Height = (item.Num0 / (maxNum * 1.0)) * height;
+                    item.Num1Height = (item.Num1 / (maxNum * 1.0)) * height;
+                    item.Num2Height = (item.Num2 / (maxNum * 1.0)) * height;
+                    item.Num3Height = (item.Num3 / (maxNum * 1.0)) * height;
+                    item.Num4Height = (item.Num4 / (maxNum * 1.0)) * height;
+                    item.Num5Height = (item.Num5 / (maxNum * 1.0)) * height;
+                    item.Num6Height = (item.Num6 / (maxNum * 1.0)) * height;
+                    item.Num7Height = (item.Num7 / (maxNum * 1.0)) * height;
+                    item.Num8Height = (item.Num8 / (maxNum * 1.0)) * height;
+                    item.Num9Height = (item.Num9 / (maxNum * 1.0)) * height;
+
+                    #region 颜色和可见性
+
+                    for (int k = 0; k < mListPosNumberItems.Count; k++)
+                    {
+                        var numberItem = mListPosNumberItems[k];
+                        int number = numberItem.Number;
+                        if (number == 0)
+                        {
+                            item.Num0Color = numberItem.Color;
+                            item.Num0Selected = numberItem.IsSelected;
+                        }
+                        if (number == 1)
+                        {
+                            item.Num1Color = numberItem.Color;
+                            item.Num1Selected = numberItem.IsSelected;
+                        }
+                        if (number == 2)
+                        {
+                            item.Num2Color = numberItem.Color;
+                            item.Num2Selected = numberItem.IsSelected;
+                        }
+                        if (number == 3)
+                        {
+                            item.Num3Color = numberItem.Color;
+                            item.Num3Selected = numberItem.IsSelected;
+                        }
+                        if (number == 4)
+                        {
+                            item.Num4Color = numberItem.Color;
+                            item.Num4Selected = numberItem.IsSelected;
+                        }
+                        if (number == 5)
+                        {
+                            item.Num5Color = numberItem.Color;
+                            item.Num5Selected = numberItem.IsSelected;
+                        }
+                        if (number == 6)
+                        {
+                            item.Num6Color = numberItem.Color;
+                            item.Num6Selected = numberItem.IsSelected;
+                        }
+                        if (number == 7)
+                        {
+                            item.Num7Color = numberItem.Color;
+                            item.Num7Selected = numberItem.IsSelected;
+                        }
+                        if (number == 8)
+                        {
+                            item.Num8Color = numberItem.Color;
+                            item.Num8Selected = numberItem.IsSelected;
+                        }
+                        if (number == 9)
+                        {
+                            item.Num9Color = numberItem.Color;
+                            item.Num9Selected = numberItem.IsSelected;
+                        }
+                    }
+
+                    #endregion
+
+                }
+            }
+        }
+
+        private void InitPosNumberPaths()
+        {
+            int count = 60;
+            int offset = 4;
+            double width = ListBoxPosNumberHot.ActualWidth;
+            width = width - 30;
+            double height = 120 - 20;
+            double itemWidth = width / (count * 1.0);
+            var sectionItem = ListBoxPosSection.SelectedItem as NumberHotSectionItem;
+            if (sectionItem == null) { return; }
+            var section = sectionItem.Section;
+            int maxNum = section;
+            for (int i = 0; i < mListPosNumberHotItems.Count; i++)
+            {
+                var posItem = mListPosNumberHotItems[i];
+                posItem.NumberItems.Clear();
+                for (int j = 0; j < mListPosNumberItems.Count; j++)
+                {
+                    var numberItem = mListPosNumberItems[j];
+                    int number = numberItem.Number;
+                    var firstItem = posItem.Items.FirstOrDefault();
+                    if (firstItem == null) { continue; }
+                    int numValue = 0;
+                    if (number == 0)
+                    {
+                        numValue = firstItem.Num0;
+                    }
+                    if (number == 1)
+                    {
+                        numValue = firstItem.Num1;
+                    }
+                    if (number == 2)
+                    {
+                        numValue = firstItem.Num2;
+                    }
+                    if (number == 3)
+                    {
+                        numValue = firstItem.Num3;
+                    }
+                    if (number == 4)
+                    {
+                        numValue = firstItem.Num4;
+                    }
+                    if (number == 5)
+                    {
+                        numValue = firstItem.Num5;
+                    }
+                    if (number == 6)
+                    {
+                        numValue = firstItem.Num6;
+                    }
+                    if (number == 7)
+                    {
+                        numValue = firstItem.Num7;
+                    }
+                    if (number == 8)
+                    {
+                        numValue = firstItem.Num8;
+                    }
+                    if (number == 9)
+                    {
+                        numValue = firstItem.Num9;
+                    }
+                    PathSegmentCollection segments = new PathSegmentCollection();
+                    double firstX = itemWidth / 2.0;
+                    double firstY = height - (numValue / (maxNum * 1.0)) * height + offset;
+                    Point firtPoint = new Point(firstX, firstY);
+                    for (int k = 0; k < posItem.Items.Count; k++)
+                    {
+                        var hotItem = posItem.Items[k];
+                        numValue = 0;
+                        if (number == 0)
+                        {
+                            numValue = hotItem.Num0;
+                        }
+                        if (number == 1)
+                        {
+                            numValue = hotItem.Num1;
+                        }
+                        if (number == 2)
+                        {
+                            numValue = hotItem.Num2;
+                        }
+                        if (number == 3)
+                        {
+                            numValue = hotItem.Num3;
+                        }
+                        if (number == 4)
+                        {
+                            numValue = hotItem.Num4;
+                        }
+                        if (number == 5)
+                        {
+                            numValue = hotItem.Num5;
+                        }
+                        if (number == 6)
+                        {
+                            numValue = hotItem.Num6;
+                        }
+                        if (number == 7)
+                        {
+                            numValue = hotItem.Num7;
+                        }
+                        if (number == 8)
+                        {
+                            numValue = hotItem.Num8;
+                        }
+                        if (number == 9)
+                        {
+                            numValue = hotItem.Num9;
+                        }
+                        double x = itemWidth * k * 1.0 + itemWidth / 2.0;
+                        double y = height - (numValue / (maxNum * 1.0)) * height + offset;
+                        Point point = new Point(x, y);
+                        segments.Add(new LineSegment { Point = point });
+                    }
+                    PathGeometry path = new PathGeometry { Figures = new PathFigureCollection { new PathFigure { StartPoint = firtPoint, Segments = segments } } };
+                    NumberHotNumberItem newItem = new NumberHotNumberItem();
+                    newItem.Number = numberItem.Number;
+                    newItem.Color = numberItem.Color;
+                    newItem.IsSelected = numberItem.IsSelected;
+                    newItem.Path = path;
+                    posItem.NumberItems.Add(newItem);
+                }
             }
         }
 
@@ -616,39 +981,74 @@ namespace ShiShiCai.UserControls
         {
             InitAllNumberHotItems();
             InitAllYAxisLabels();
-            InitItemWidth();
+            InitAllItemWidth();
             InitAllNumberHeight();
             InitAllNumberPaths();
+            InitPosNumberHotItems();
+            InitPosNumberHotData();
+            InitPosItemWidth();
+            InitPosYAxisLabels();
+            InitPosNumberHeight();
         }
 
         void ListBoxAllSection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             InitAllNumberHotItems();
             InitAllYAxisLabels();
-            InitItemWidth();
+            InitAllItemWidth();
             InitAllNumberHeight();
             InitAllNumberPaths();
         }
 
+        void ListBoxPosSection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            InitPosNumberHotItems();
+            InitPosNumberHotData();
+            InitPosItemWidth();
+            InitPosYAxisLabels();
+            InitPosNumberHeight();
+        }
+
         void CheckBoxAllNumber_Checked(object sender, RoutedEventArgs e)
         {
-            InitItemWidth();
+            InitAllItemWidth();
             InitAllNumberHeight();
             InitAllNumberPaths();
         }
 
         void CheckBoxAllNumber_Unchecked(object sender, RoutedEventArgs e)
         {
-            InitItemWidth();
+            InitAllItemWidth();
             InitAllNumberHeight();
             InitAllNumberPaths();
         }
 
+        void CheckBoxPosNumber_Checked(object sender, RoutedEventArgs e)
+        {
+            InitPosItemWidth();
+            InitPosNumberHeight();
+            InitPosNumberPaths();
+        }
+
+        void CheckBoxPosNumber_Unchecked(object sender, RoutedEventArgs e)
+        {
+            InitPosItemWidth();
+            InitPosNumberHeight();
+            InitPosNumberPaths();
+        }
+
         void ListBoxAllNumberHot_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            InitItemWidth();
+            InitAllItemWidth();
             InitAllNumberHeight();
             InitAllNumberPaths();
+        }
+
+        void ListBoxPosNumberHot_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            InitPosItemWidth();
+            InitPosNumberHeight();
+            InitPosNumberPaths();
         }
 
         #endregion

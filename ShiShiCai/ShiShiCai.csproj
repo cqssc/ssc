@@ -72,6 +72,7 @@
     <Compile Include="Models\NumberHotSectionItem.cs" />
     <Compile Include="Models\PositionItem.cs" />
     <Compile Include="Models\PositionLargeSmallItem.cs" />
+    <Compile Include="Models\PositionNumberHotItem.cs" />
     <Compile Include="PopupWindow.xaml.cs">
       <DependentUpon>PopupWindow.xaml</DependentUpon>
     </Compile>

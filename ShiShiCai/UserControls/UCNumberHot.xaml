@@ -27,7 +27,9 @@
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <Border Style="{DynamicResource BorderDateStyle}">
-                    <ComboBox Name="ComboDate" Style="{DynamicResource ComboDateStyle}">
+                    <ComboBox Name="ComboDate" 
+                              ItemsSource="{Binding DateItems,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCNumberHot}}}"
+                              Style="{DynamicResource ComboDateStyle}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate DataType="ComboBoxItem">
                                 <TextBlock Text="{Binding Date,Converter={StaticResource IntegerToDateConverter}}"></TextBlock>
@@ -53,6 +55,7 @@
                             <TextBlock Grid.Column="0" Grid.Row="0" Text="热度段数" Style="{DynamicResource TxtFormLabelStyle}"></TextBlock>
                             <TextBlock Grid.Column="0" Grid.Row="1" Text="热度数字" Style="{DynamicResource TxtFormLabelStyle}"></TextBlock>
                             <ListBox Name="ListBoxAllSection" Grid.Column="1" Grid.Row="0"
+                                     ItemsSource="{Binding AllSectionItems,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCNumberHot}}}"
                                      Style="{DynamicResource ListBoxSectionStyle}"
                                      ItemContainerStyle="{DynamicResource ListItemSectionStyle}">
                                 <ListBox.ItemTemplate>
@@ -62,6 +65,7 @@
                                 </ListBox.ItemTemplate>
                             </ListBox>
                             <ListBox Name="ListBoxAllNumber" Grid.Column="1" Grid.Row="1"
+                                     ItemsSource="{Binding AllNumberItems,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCNumberHot}}}"
                                      Style="{DynamicResource ListBoxNumberStyle}"
                                      ItemContainerStyle="{DynamicResource ListItemNumberStyle}">
                                 <ListBox.ItemTemplate>
@@ -82,7 +86,7 @@
                             </ListBox>
                             <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="30"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
@@ -108,7 +112,7 @@
                                             <Border Grid.Row="4" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
                                         </Grid>
                                         <Border.RenderTransform>
-                                            <TranslateTransform Y="5"></TranslateTransform>
+                                            <TranslateTransform Y="4"></TranslateTransform>
                                         </Border.RenderTransform>
                                     </Border>
                                 </Grid>
@@ -246,7 +250,234 @@
                         </Grid>
                     </TabItem>
                     <TabItem Header="按位">
-
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"></RowDefinition>
+                                <RowDefinition Height="30"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Column="0" Grid.Row="0" Text="热度段数" Style="{DynamicResource TxtFormLabelStyle}"></TextBlock>
+                            <TextBlock Grid.Column="0" Grid.Row="1" Text="热度数字" Style="{DynamicResource TxtFormLabelStyle}"></TextBlock>
+                            <ListBox Name="ListBoxPosSection" Grid.Column="1" Grid.Row="0"
+                                     ItemsSource="{Binding PosSectionItems,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCNumberHot}}}"
+                                     Style="{DynamicResource ListBoxSectionStyle}"
+                                     ItemContainerStyle="{DynamicResource ListItemSectionStyle}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate DataType="ListBoxItem">
+                                        <RadioButton Content="{Binding Name}" IsChecked="{Binding IsSelected}" Style="{DynamicResource RadioSectionStyle}"></RadioButton>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <ListBox Name="ListBoxPosNumber" Grid.Column="1" Grid.Row="1"
+                                     ItemsSource="{Binding PosNumberItems,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCNumberHot}}}"
+                                     Style="{DynamicResource ListBoxNumberStyle}"
+                                     ItemContainerStyle="{DynamicResource ListItemNumberStyle}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate DataType="ListBoxItem">
+                                        <CheckBox IsChecked="{Binding IsSelected}" Foreground="{Binding Color}"
+                                                  Style="{DynamicResource CheckBoxNumberStyle}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="{Binding Number}" Foreground="{Binding Color}" Style="{DynamicResource TxtFormTextStyle}"></TextBlock>
+                                                <Border Grid.Column="1" Width="15" Height="10" Background="{Binding Color}"></Border>
+                                            </Grid>
+                                        </CheckBox>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <ScrollViewer Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2"
+                                          HorizontalScrollBarVisibility="Disabled"
+                                          VerticalScrollBarVisibility="Hidden">
+                                <Grid>
+                                    <ListBox Name="ListBoxPosNumberHot"
+                                         ItemsSource="{Binding PosNumberHotItems,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCNumberHot}}}"
+                                         Style="{DynamicResource ListBoxPosNumberHotStyle}"
+                                         ItemContainerStyle="{DynamicResource ListItemPosNumberHotStyle}">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate DataType="ListBoxItem">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="30"></RowDefinition>
+                                                        <RowDefinition Height="120"></RowDefinition>
+                                                    </Grid.RowDefinitions>
+                                                    <TextBlock Grid.Row="0" Text="{Binding Name}" Style="{DynamicResource TxtTitleStyle}"></TextBlock>
+                                                    <Grid Grid.Row="1">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="30"></ColumnDefinition>
+                                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="*"></RowDefinition>
+                                                            <RowDefinition Height="20"></RowDefinition>
+                                                        </Grid.RowDefinitions>
+                                                        <Border Grid.Column="0" Grid.Row="0" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}"></Border>
+                                                        <Border Grid.Column="1" Grid.Row="1" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource SystemBrush7}"></Border>
+                                                        <Grid Grid.Column="1" Grid.Row="0">
+                                                            <Border>
+                                                                <Grid>
+                                                                    <Grid.RowDefinitions>
+                                                                        <RowDefinition Height="20*"></RowDefinition>
+                                                                        <RowDefinition Height="20*"></RowDefinition>
+                                                                        <RowDefinition Height="20*"></RowDefinition>
+                                                                        <RowDefinition Height="20*"></RowDefinition>
+                                                                        <RowDefinition Height="20*"></RowDefinition>
+                                                                    </Grid.RowDefinitions>
+                                                                    <Border Grid.Row="0" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
+                                                                    <Border Grid.Row="1" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
+                                                                    <Border Grid.Row="2" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
+                                                                    <Border Grid.Row="3" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
+                                                                    <Border Grid.Row="4" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
+                                                                </Grid>
+                                                                <Border.RenderTransform>
+                                                                    <TranslateTransform Y="4"></TranslateTransform>
+                                                                </Border.RenderTransform>
+                                                            </Border>
+                                                        </Grid>
+                                                        <ListBox Grid.Column="1" Grid.Row="1"
+                                                                 ItemsSource="{Binding Items}"
+                                                                 Style="{DynamicResource ListBoxXAxisStyle}"
+                                                                 ItemContainerStyle="{DynamicResource ListItemXAxisStyle}">
+                                                            <ListBox.ItemTemplate>
+                                                                <DataTemplate DataType="ListBoxItem">
+                                                                    <Border Width="{Binding PosItemWidth,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCNumberHot}}}">
+                                                                        <TextBlock Text="{Binding Number}" Style="{DynamicResource TxtXAxisStyle}"></TextBlock>
+                                                                    </Border>
+                                                                </DataTemplate>
+                                                            </ListBox.ItemTemplate>
+                                                        </ListBox>
+                                                        <ListBox Grid.Column="0" Grid.Row="0"
+                                                                 ItemsSource="{Binding YAxisLabels}"
+                                                                 Style="{DynamicResource ListBoxYAxisStyle}"
+                                                                 ItemContainerStyle="{DynamicResource ListItemYAxisStyle}">
+                                                            <ListBox.ItemTemplate>
+                                                                <DataTemplate DataType="ListBoxItem">
+                                                                    <Border>
+                                                                        <TextBlock Text="{Binding}" Style="{DynamicResource TxtYAxisStyle}"></TextBlock>
+                                                                    </Border>
+                                                                </DataTemplate>
+                                                            </ListBox.ItemTemplate>
+                                                        </ListBox>
+                                                        <ListBox Grid.Column="1" Grid.Row="0"
+                                                                 ItemsSource="{Binding NumberItems}"
+                                                                 Style="{DynamicResource ListBoxPathStyle}"
+                                                                 ItemContainerStyle="{DynamicResource ListItemPathStyle}">
+                                                            <ListBox.ItemTemplate>
+                                                                <DataTemplate DataType="ListBoxItem">
+                                                                    <Border>
+                                                                        <Path Data="{Binding Path}" Stroke="{Binding Color}" StrokeThickness="1"
+                                                                              Visibility="{Binding IsSelected,Converter={StaticResource BooleanToVisibilityConverter}}"></Path>
+                                                                    </Border>
+                                                                </DataTemplate>
+                                                            </ListBox.ItemTemplate>
+                                                        </ListBox>
+                                                        <ListBox Grid.Column="1" Grid.Row="0"
+                                                                 ItemsSource="{Binding Items}"
+                                                                 Style="{DynamicResource ListBoxNumberHotStyle}"
+                                                                 ItemContainerStyle="{DynamicResource ListItemNumberHotStyle}">
+                                                            <ListBox.ItemTemplate>
+                                                                <DataTemplate DataType="ListBoxItem">
+                                                                    <Border Width="{Binding PosItemWidth,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCNumberHot}}}">
+                                                                        <Grid>
+                                                                            <Border VerticalAlignment="Bottom">
+                                                                                <Border Height="{Binding Num0Height}" ToolTip="{Binding Num0}"
+                                                                                        Visibility="{Binding Num0Selected,Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                                                    <Border VerticalAlignment="Top">
+                                                                                        <Ellipse Fill="{Binding Num0Color}" Style="{DynamicResource PointStyle}"></Ellipse>
+                                                                                    </Border>
+                                                                                </Border>
+                                                                            </Border>
+                                                                            <Border VerticalAlignment="Bottom">
+                                                                                <Border Height="{Binding Num1Height}" ToolTip="{Binding Num1}"
+                                                                                        Visibility="{Binding Num1Selected,Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                                                    <Border VerticalAlignment="Top">
+                                                                                        <Ellipse Fill="{Binding Num1Color}" Style="{DynamicResource PointStyle}"></Ellipse>
+                                                                                    </Border>
+                                                                                </Border>
+                                                                            </Border>
+                                                                            <Border VerticalAlignment="Bottom">
+                                                                                <Border Height="{Binding Num2Height}" ToolTip="{Binding Num2}"
+                                                                                        Visibility="{Binding Num2Selected,Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                                                    <Border VerticalAlignment="Top">
+                                                                                        <Ellipse Fill="{Binding Num2Color}" Style="{DynamicResource PointStyle}"></Ellipse>
+                                                                                    </Border>
+                                                                                </Border>
+                                                                            </Border>
+                                                                            <Border VerticalAlignment="Bottom">
+                                                                                <Border Height="{Binding Num3Height}" ToolTip="{Binding Num3}"
+                                                                                        Visibility="{Binding Num3Selected,Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                                                    <Border VerticalAlignment="Top">
+                                                                                        <Ellipse Fill="{Binding Num3Color}" Style="{DynamicResource PointStyle}"></Ellipse>
+                                                                                    </Border>
+                                                                                </Border>
+                                                                            </Border>
+                                                                            <Border VerticalAlignment="Bottom">
+                                                                                <Border Height="{Binding Num4Height}" ToolTip="{Binding Num4}"
+                                                                                        Visibility="{Binding Num4Selected,Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                                                    <Border VerticalAlignment="Top">
+                                                                                        <Ellipse Fill="{Binding Num4Color}" Style="{DynamicResource PointStyle}"></Ellipse>
+                                                                                    </Border>
+                                                                                </Border>
+                                                                            </Border>
+                                                                            <Border VerticalAlignment="Bottom">
+                                                                                <Border Height="{Binding Num5Height}" ToolTip="{Binding Num5}"
+                                                                                        Visibility="{Binding Num5Selected,Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                                                    <Border VerticalAlignment="Top">
+                                                                                        <Ellipse Fill="{Binding Num5Color}" Style="{DynamicResource PointStyle}"></Ellipse>
+                                                                                    </Border>
+                                                                                </Border>
+                                                                            </Border>
+                                                                            <Border VerticalAlignment="Bottom">
+                                                                                <Border Height="{Binding Num6Height}" ToolTip="{Binding Num6}"
+                                                                                        Visibility="{Binding Num6Selected,Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                                                    <Border VerticalAlignment="Top">
+                                                                                        <Ellipse Fill="{Binding Num6Color}" Style="{DynamicResource PointStyle}"></Ellipse>
+                                                                                    </Border>
+                                                                                </Border>
+                                                                            </Border>
+                                                                            <Border VerticalAlignment="Bottom">
+                                                                                <Border Height="{Binding Num7Height}" ToolTip="{Binding Num7}"
+                                                                                        Visibility="{Binding Num7Selected,Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                                                    <Border VerticalAlignment="Top">
+                                                                                        <Ellipse Fill="{Binding Num7Color}" Style="{DynamicResource PointStyle}"></Ellipse>
+                                                                                    </Border>
+                                                                                </Border>
+                                                                            </Border>
+                                                                            <Border VerticalAlignment="Bottom">
+                                                                                <Border Height="{Binding Num8Height}" ToolTip="{Binding Num8}"
+                                                                                        Visibility="{Binding Num8Selected,Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                                                    <Border VerticalAlignment="Top">
+                                                                                        <Ellipse Fill="{Binding Num8Color}" Style="{DynamicResource PointStyle}"></Ellipse>
+                                                                                    </Border>
+                                                                                </Border>
+                                                                            </Border>
+                                                                            <Border VerticalAlignment="Bottom">
+                                                                                <Border Height="{Binding Num9Height}" ToolTip="{Binding Num9}"
+                                                                                        Visibility="{Binding Num9Selected,Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                                                    <Border VerticalAlignment="Top">
+                                                                                        <Ellipse Fill="{Binding Num9Color}" Style="{DynamicResource PointStyle}"></Ellipse>
+                                                                                    </Border>
+                                                                                </Border>
+                                                                            </Border>
+                                                                        </Grid>
+                                                                    </Border>
+                                                                </DataTemplate>
+                                                            </ListBox.ItemTemplate>
+                                                        </ListBox>
+                                                    </Grid>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Grid>
+                            </ScrollViewer>
+                        </Grid>
                     </TabItem>
                 </TabControl>
             </Grid>

@@ -55,15 +55,6 @@ namespace ShiShiCai.UserControls
             set { SetValue(ItemWidthProperty, value); }
         }
 
-        public static readonly DependencyProperty ItemHeightProperty =
-            DependencyProperty.Register("ItemHeight", typeof(double), typeof(UCNumberHot), new PropertyMetadata(default(double)));
-
-        public double ItemHeight
-        {
-            get { return (double)GetValue(ItemHeightProperty); }
-            set { SetValue(ItemHeightProperty, value); }
-        }
-
         public ObservableCollection<NumberHotNumberItem> AllNumberItems
         {
             get { return mListAllNumberItems; }
@@ -334,6 +325,14 @@ namespace ShiShiCai.UserControls
             }
         }
 
+        private void InitItemWidth()
+        {
+            int count = 60;
+            double width = ListBoxAllNumberHot.ActualWidth;
+            double itemWidth = width / (count * 1.0);
+            ItemWidth = itemWidth;
+        }
+
         private void InitAllNumberHotItems()
         {
             mListAllNumberHotItems.Clear();
@@ -376,35 +375,35 @@ namespace ShiShiCai.UserControls
             var section = sectionItem.Section;
             if (section == 5)
             {
-                mListAllYAxisLabels.Add(25);
-                mListAllYAxisLabels.Add(20);
-                mListAllYAxisLabels.Add(15);
                 mListAllYAxisLabels.Add(10);
-                mListAllYAxisLabels.Add(5);
+                mListAllYAxisLabels.Add(8);
+                mListAllYAxisLabels.Add(6);
+                mListAllYAxisLabels.Add(4);
+                mListAllYAxisLabels.Add(2);
             }
             if (section == 10)
             {
-                mListAllYAxisLabels.Add(50);
-                mListAllYAxisLabels.Add(40);
-                mListAllYAxisLabels.Add(30);
                 mListAllYAxisLabels.Add(20);
-                mListAllYAxisLabels.Add(10);
+                mListAllYAxisLabels.Add(16);
+                mListAllYAxisLabels.Add(12);
+                mListAllYAxisLabels.Add(8);
+                mListAllYAxisLabels.Add(4);
             }
             if (section == 15)
             {
-                mListAllYAxisLabels.Add(75);
-                mListAllYAxisLabels.Add(60);
-                mListAllYAxisLabels.Add(45);
                 mListAllYAxisLabels.Add(30);
-                mListAllYAxisLabels.Add(15);
+                mListAllYAxisLabels.Add(24);
+                mListAllYAxisLabels.Add(18);
+                mListAllYAxisLabels.Add(12);
+                mListAllYAxisLabels.Add(6);
             }
             if (section == 20)
             {
-                mListAllYAxisLabels.Add(100);
-                mListAllYAxisLabels.Add(80);
-                mListAllYAxisLabels.Add(60);
                 mListAllYAxisLabels.Add(40);
-                mListAllYAxisLabels.Add(20);
+                mListAllYAxisLabels.Add(32);
+                mListAllYAxisLabels.Add(24);
+                mListAllYAxisLabels.Add(16);
+                mListAllYAxisLabels.Add(8);
             }
         }
 
@@ -413,7 +412,7 @@ namespace ShiShiCai.UserControls
             var sectionItem = ListBoxAllSection.SelectedItem as NumberHotSectionItem;
             if (sectionItem == null) { return; }
             var section = sectionItem.Section;
-            int maxNum = section * 5;
+            int maxNum = section * 2;
             double height = ListBoxAllNumberHot.ActualHeight;
             for (int i = 0; i < mListAllNumberHotItems.Count; i++)
             {
@@ -428,6 +427,9 @@ namespace ShiShiCai.UserControls
                 item.Num7Height = (item.Num7 / (maxNum * 1.0)) * height;
                 item.Num8Height = (item.Num8 / (maxNum * 1.0)) * height;
                 item.Num9Height = (item.Num9 / (maxNum * 1.0)) * height;
+
+
+                #region 颜色和可见性
 
                 for (int k = 0; k < mListAllNumberItems.Count; k++)
                 {
@@ -484,6 +486,9 @@ namespace ShiShiCai.UserControls
                         item.Num9Selected = numberItem.IsSelected;
                     }
                 }
+
+                #endregion
+                
             }
         }
 
@@ -496,7 +501,7 @@ namespace ShiShiCai.UserControls
             var sectionItem = ListBoxAllSection.SelectedItem as NumberHotSectionItem;
             if (sectionItem == null) { return; }
             var section = sectionItem.Section;
-            int maxNum = section * 5;
+            int maxNum = section * 2;
             for (int i = 0; i < mListAllNumberItems.Count; i++)
             {
                 var numberItem = mListAllNumberItems[i];
@@ -602,21 +607,6 @@ namespace ShiShiCai.UserControls
             }
         }
 
-        private void InitItemWidth()
-        {
-            int count = 60;
-            double width = ListBoxAllNumberHot.ActualWidth;
-            double itemWidth = width / (count * 1.0);
-            ItemWidth = itemWidth;
-        }
-
-        private void InitItemHeight()
-        {
-            var height = ListBoxAllNumberHot.ActualHeight;
-            var itemHeight = height / 5.0;
-            ItemHeight = itemHeight;
-        }
-
         #endregion
 
 
@@ -624,20 +614,18 @@ namespace ShiShiCai.UserControls
 
         void ComboDate_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            InitAllYAxisLabels();
             InitAllNumberHotItems();
+            InitAllYAxisLabels();
             InitItemWidth();
-            InitItemHeight();
             InitAllNumberHeight();
             InitAllNumberPaths();
         }
 
         void ListBoxAllSection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            InitAllYAxisLabels();
             InitAllNumberHotItems();
+            InitAllYAxisLabels();
             InitItemWidth();
-            InitItemHeight();
             InitAllNumberHeight();
             InitAllNumberPaths();
         }
@@ -645,7 +633,6 @@ namespace ShiShiCai.UserControls
         void CheckBoxAllNumber_Checked(object sender, RoutedEventArgs e)
         {
             InitItemWidth();
-            InitItemHeight();
             InitAllNumberHeight();
             InitAllNumberPaths();
         }
@@ -653,7 +640,6 @@ namespace ShiShiCai.UserControls
         void CheckBoxAllNumber_Unchecked(object sender, RoutedEventArgs e)
         {
             InitItemWidth();
-            InitItemHeight();
             InitAllNumberHeight();
             InitAllNumberPaths();
         }
@@ -661,7 +647,6 @@ namespace ShiShiCai.UserControls
         void ListBoxAllNumberHot_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             InitItemWidth();
-            InitItemHeight();
             InitAllNumberHeight();
             InitAllNumberPaths();
         }

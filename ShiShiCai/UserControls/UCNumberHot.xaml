@@ -130,7 +130,7 @@
                                          ItemContainerStyle="{DynamicResource ListItemYAxisStyle}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate DataType="ListBoxItem">
-                                            <Border Height="{Binding ItemHeight,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCNumberHot}}}">
+                                            <Border>
                                                 <TextBlock Text="{Binding}" Style="{DynamicResource TxtYAxisStyle}"></TextBlock>
                                             </Border>
                                         </DataTemplate>

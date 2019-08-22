@@ -136,7 +136,7 @@ namespace ShiShiCai.UserControls
             ListBoxAllNumber.AddHandler(ToggleButton.UncheckedEvent, new RoutedEventHandler(CheckBoxAllNumber_Unchecked));
             ListBoxPosNumber.AddHandler(ToggleButton.CheckedEvent, new RoutedEventHandler(CheckBoxPosNumber_Checked));
             ListBoxPosNumber.AddHandler(ToggleButton.UncheckedEvent, new RoutedEventHandler(CheckBoxPosNumber_Unchecked));
-            ListBoxAllNumberHot.SizeChanged += ListBoxAllNumberHot_SizeChanged;
+            BorderAllNumberHot.SizeChanged += ListBoxAllNumberHot_SizeChanged;
             ListBoxPosNumberHot.SizeChanged += ListBoxPosNumberHot_SizeChanged;
         }
 
@@ -406,7 +406,7 @@ namespace ShiShiCai.UserControls
         private void InitAllItemWidth()
         {
             int count = 60;
-            double width = ListBoxAllNumberHot.ActualWidth;
+            double width = BorderAllNumberHot.ActualWidth - 30;
             double itemWidth = width / (count * 1.0);
             ItemWidth = itemWidth;
         }
@@ -457,7 +457,7 @@ namespace ShiShiCai.UserControls
             if (sectionItem == null) { return; }
             var section = sectionItem.Section;
             int maxNum = section * 2;
-            double height = ListBoxAllNumberHot.ActualHeight;
+            double height = BorderAllNumberHot.ActualHeight - 20;
             for (int i = 0; i < mListAllNumberHotItems.Count; i++)
             {
                 var item = mListAllNumberHotItems[i];
@@ -540,8 +540,8 @@ namespace ShiShiCai.UserControls
         {
             int count = 60;
             int offset = 4;
-            double width = ListBoxAllNumberHot.ActualWidth;
-            double height = ListBoxAllNumberHot.ActualHeight;
+            double width = BorderAllNumberHot.ActualWidth - 30;
+            double height = BorderAllNumberHot.ActualHeight - 20;
             double itemWidth = width / (count * 1.0);
             var sectionItem = ListBoxAllSection.SelectedItem as NumberHotSectionItem;
             if (sectionItem == null) { return; }
@@ -740,19 +740,19 @@ namespace ShiShiCai.UserControls
                 var section = sectionItem.Section;
                 if (section == 15)
                 {
-                    posItem.YAxisLabels.Add(15);
-                    posItem.YAxisLabels.Add(12);
-                    posItem.YAxisLabels.Add(9);
-                    posItem.YAxisLabels.Add(6);
+                    posItem.YAxisLabels.Add(5);
+                    posItem.YAxisLabels.Add(4);
                     posItem.YAxisLabels.Add(3);
+                    posItem.YAxisLabels.Add(2);
+                    posItem.YAxisLabels.Add(1);
                 }
                 if (section == 20)
                 {
-                    posItem.YAxisLabels.Add(20);
-                    posItem.YAxisLabels.Add(16);
-                    posItem.YAxisLabels.Add(12);
+                    posItem.YAxisLabels.Add(10);
                     posItem.YAxisLabels.Add(8);
+                    posItem.YAxisLabels.Add(6);
                     posItem.YAxisLabels.Add(4);
+                    posItem.YAxisLabels.Add(2);
                 }
             }
         }
@@ -769,7 +769,7 @@ namespace ShiShiCai.UserControls
             }
             if (section == 20)
             {
-                maxNum = section / 4;
+                maxNum = section / 2;
             }
             double height = 120 - 20;
             for (int i = 0; i < mListPosNumberHotItems.Count; i++)
@@ -871,7 +871,7 @@ namespace ShiShiCai.UserControls
             }
             if (section == 20)
             {
-                maxNum = section / 4;
+                maxNum = section / 2;
             }
             for (int i = 0; i < mListPosNumberHotItems.Count; i++)
             {

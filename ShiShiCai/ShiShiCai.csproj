@@ -58,6 +58,7 @@
     </ApplicationDefinition>
     <Compile Include="Converters\Converters.cs" />
     <Compile Include="DatabaseConfig.cs" />
+    <Compile Include="Models\DateItem.cs" />
     <Compile Include="Models\IModuleView.cs" />
     <Compile Include="Models\IssueDateItem.cs" />
     <Compile Include="Models\IssueGroupItem.cs" />
@@ -73,6 +74,8 @@
     <Compile Include="Models\PositionItem.cs" />
     <Compile Include="Models\PositionLargeSmallItem.cs" />
     <Compile Include="Models\PositionNumberHotItem.cs" />
+    <Compile Include="Models\TendencyItem.cs" />
+    <Compile Include="Models\TendencyTypeItem.cs" />
     <Compile Include="PopupWindow.xaml.cs">
       <DependentUpon>PopupWindow.xaml</DependentUpon>
     </Compile>
@@ -89,6 +92,9 @@
     </Compile>
     <Compile Include="UserControls\UCNumberHot.xaml.cs">
       <DependentUpon>UCNumberHot.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCTendency.xaml.cs">
+      <DependentUpon>UCTendency.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -202,6 +208,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Themes\Default\UCTendency.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\UCBasic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -215,6 +225,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\UCNumberHot.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCTendency.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

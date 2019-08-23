@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="ShiShiCai.UserControls.UCTendency"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:uc="clr-namespace:ShiShiCai.UserControls"
+             xmlns:conv="clr-namespace:ShiShiCai.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="680" d:DesignWidth="800"
+             Style="{DynamicResource ModuleViewStyle}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Themes/Default/MainWindow.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="../Themes/Default/UCTendency.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></BooleanToVisibilityConverter>
+            <conv:IntegerToDateConverter x:Key="IntegerToDateConverter"></conv:IntegerToDateConverter>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Border Style="{DynamicResource MainView}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Border Style="{DynamicResource BorderDateStyle}">
+                    <ComboBox Name="ComboDate" 
+                              ItemsSource="{Binding DateItems,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCTendency}}}"
+                              Style="{DynamicResource ComboDateStyle}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate DataType="ComboBoxItem">
+                                <TextBlock Text="{Binding Date,Converter={StaticResource IntegerToDateConverter}}"></TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </Border>
+            </Grid>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="180"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="类别" Style="{DynamicResource TxtFormLabelStyle}"></TextBlock>
+                <ListBox Grid.Column="1" Grid.Row="0"
+                         ItemsSource="{Binding TypeItems,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCTendency}}}"
+                         Style="{DynamicResource ListBoxTendencyTypeStyle}"
+                         ItemContainerStyle="{DynamicResource ListItemTendencyTypeStyle}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="ListBoxItem">
+                            <CheckBox IsChecked="{Binding IsChecked}"
+                                      Style="{DynamicResource CheckBoxTypeStyle}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Name}" Style="{DynamicResource TxtFormTextStyle}"></TextBlock>
+                                    <Border Grid.Column="1" Background="{Binding Color}" Width="15" Height="10"></Border>
+                                </Grid>
+                            </CheckBox>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>

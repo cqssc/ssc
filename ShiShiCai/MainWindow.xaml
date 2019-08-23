@@ -186,10 +186,7 @@
                                     <uc:UCNumberHot x:Name="UCNumberHot" PageParent="{Binding}"></uc:UCNumberHot>
                                 </TabItem>
                                 <TabItem Name="TabTrend" Header="趋势展示">
-
-                                </TabItem>
-                                <TabItem Name="TabHistory" Header="History">
-
+                                    <uc:UCTendency x:Name="UCTendency" PageParent="{Binding}"></uc:UCTendency>
                                 </TabItem>
                             </TabControl>
                         </Border>

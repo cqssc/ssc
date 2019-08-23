@@ -11,8 +11,8 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Themes/Default/MainWindow.xaml"></ResourceDictionary>
-                <ResourceDictionary Source="/Themes/Default/UCNumberHot.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="../Themes/Default/MainWindow.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="../Themes/Default/UCNumberHot.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></BooleanToVisibilityConverter>
@@ -276,7 +276,7 @@
                                             </Grid.ColumnDefinitions>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="30"></RowDefinition>
-                                                <RowDefinition Height="Auto"></RowDefinition>
+                                                <RowDefinition Height="*"></RowDefinition>
                                             </Grid.RowDefinitions>
                                             <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>
                                             <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SystemBrush7}" Opacity="0.2"></Border>

@@ -18,6 +18,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -140,6 +141,22 @@ namespace ShiShiCai.UserControls
         void ComboDate_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        #endregion
+
+
+        #region Basic
+
+        private void ShowException(string msg)
+        {
+            ThreadPool.QueueUserWorkItem(a => MessageBox.Show(msg, App.AppTitle, MessageBoxButton.OK, MessageBoxImage.Error));
+
+        }
+
+        private void ShowInfomation(string msg)
+        {
+            ThreadPool.QueueUserWorkItem(a => MessageBox.Show(msg, App.AppTitle, MessageBoxButton.OK, MessageBoxImage.Information));
         }
 
         #endregion

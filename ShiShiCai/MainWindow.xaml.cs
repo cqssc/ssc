@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,6 +14,7 @@ using System.Windows.Media;
 using ShiShiCai.Common;
 using ShiShiCai.Models;
 using ShiShiCai.UserControls;
+using Timer = System.Timers.Timer;
 
 namespace ShiShiCai
 {
@@ -59,6 +61,8 @@ namespace ShiShiCai
             BtnRefresh.Click+=BtnRefresh_Click;
 
             DataContext = this;
+            ListBoxModules.ItemsSource = mListModuleItems;
+            ListBoxIssues.ItemsSource = mListIssueItems;
         }
 
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -81,20 +85,17 @@ namespace ShiShiCai
         private void Init()
         {
             WindowState = WindowState.Maximized;
-            ListBoxModules.ItemsSource = mListModuleItems;
-            ListBoxIssues.ItemsSource = mListIssueItems;
 
             InitModuleItems();
             LoadConfig();
 
             ListBoxModules.SelectedIndex = 3;//默认显示模块
 
+            
+            mLoading = true;
             mCalculateMode = SscDefines.CALC_MODE_LAST_LOTTERY;
             mCalculateSize = 300;
-
-            mLoading = true;
             LoadIssues();
-
             InitIssueItems();
             InitLottery();
             InitModule();
@@ -109,6 +110,8 @@ namespace ShiShiCai
         private void Reload()
         {
             mLoading = true;
+            mCalculateMode = SscDefines.CALC_MODE_LAST_LOTTERY;
+            mCalculateSize = 300;
             LoadIssues();
             InitIssueItems();
             InitLottery();
@@ -624,12 +627,13 @@ namespace ShiShiCai
 
         private void ShowException(string msg)
         {
-            MessageBox.Show(msg, App.AppTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+            ThreadPool.QueueUserWorkItem(a => MessageBox.Show(msg, App.AppTitle, MessageBoxButton.OK, MessageBoxImage.Error));
+
         }
 
         private void ShowInfomation(string msg)
         {
-            MessageBox.Show(msg, App.AppTitle, MessageBoxButton.OK, MessageBoxImage.Information);
+            ThreadPool.QueueUserWorkItem(a => MessageBox.Show(msg, App.AppTitle, MessageBoxButton.OK, MessageBoxImage.Information));
         }
 
         private void ShowTipMessage(string msg)

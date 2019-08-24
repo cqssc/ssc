@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -36,9 +37,11 @@ namespace ShiShiCai
         private int mCalculateMode;
         private int mCalculateSize;
         private string mCalculateDate;
+        private bool mLoading;
+        private Timer mRefreshTimer;
 
         #endregion
-        
+
 
         public MainWindow()
         {
@@ -53,6 +56,7 @@ namespace ShiShiCai
             ListBoxModules.SelectionChanged += ListBoxModules_SelectionChanged;
             PanelLeft.SizeChanged += PanelLeft_SizeChanged;
             SliderScale.ValueChanged += SliderScale_ValueChanged;
+            BtnRefresh.Click+=BtnRefresh_Click;
 
             DataContext = this;
         }
@@ -88,12 +92,29 @@ namespace ShiShiCai
             mCalculateMode = SscDefines.CALC_MODE_LAST_LOTTERY;
             mCalculateSize = 300;
 
+            mLoading = true;
             LoadIssues();
 
             InitIssueItems();
             InitLottery();
             InitModule();
             InitCalculateRange();
+            mLoading = false;
+
+            mRefreshTimer = new Timer(3000);
+            mRefreshTimer.Elapsed += RefreshTimer_Elapsed;
+            mRefreshTimer.Start();
+        }
+
+        private void Reload()
+        {
+            mLoading = true;
+            LoadIssues();
+            InitIssueItems();
+            InitLottery();
+            InitModule();
+            InitCalculateRange();
+            mLoading = false;
         }
 
         private void InitModuleItems()
@@ -256,6 +277,61 @@ namespace ShiShiCai
             }
         }
 
+        private bool LoadLastIssue()
+        {
+            try
+            {
+                if (mSystemConfig == null) { return false; }
+                DatabaseConfig dbConfig = mSystemConfig.Database;
+                if (dbConfig == null) { return false; }
+                string strConn = dbConfig.GetConnectionString();
+                if (string.IsNullOrEmpty(strConn)) { return false; }
+                string strSql = string.Format("SELECT TOP 1 * FROM T_101_19 ORDER BY C001 DESC");
+                OperationReturn optReturn = MssqlOperation.GetDataSet(strConn, strSql);
+                if (!optReturn.Result)
+                {
+                    ShowException(string.Format("Fail. [{0}]{1}", optReturn.Code, optReturn.Message));
+                    return false;
+                }
+                DataSet objDataSet = optReturn.Data as DataSet;
+                if (objDataSet == null) { return false; }
+                if (objDataSet.Tables[0].Rows.Count <= 0) { return false; }
+                DataRow dr = objDataSet.Tables[0].Rows[0];
+                string serial = dr["C001"].ToString();
+                if (mNewestIssueItem != null && mNewestIssueItem.Serial == serial) { return false; }
+                IssueItem item = new IssueItem();
+                item.Serial = serial;
+                item.Number = Convert.ToInt32(dr["C005"]);
+                item.Date = Convert.ToInt32(dr["C004"]);
+                item.WeekDay = Convert.ToInt32(dr["C006"]);
+
+                item.D1 = Convert.ToInt32(dr["C010"]);
+                item.D2 = Convert.ToInt32(dr["C020"]);
+                item.D3 = Convert.ToInt32(dr["C030"]);
+                item.D4 = Convert.ToInt32(dr["C040"]);
+                item.D5 = Convert.ToInt32(dr["C050"]);
+
+                item.FullValue = dr["C002"].ToString();
+                item.LargeValue = dr["C007"].ToString() == "1";
+                item.SingleValue = dr["C008"].ToString() == "1";
+                item.SumValue = Convert.ToInt32(dr["C009"]);
+                item.RepeatValue = dr["C100"].ToString() == "1";
+                item.IntervalValue = dr["C101"].ToString() == "1";
+                item.Larger20 = dr["C102"].ToString() == "1";
+                item.AllOne20 = dr["C103"].ToString() == "1";
+                item.PairsVaue = dr["C104"].ToString() == "1";
+                item.SameValue = dr["C105"].ToString() == "1";
+
+                mNewestIssueItem = item;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ShowException(ex.Message);
+                return false;
+            }
+        }
+
         private void InitIssueItems()
         {
             mListIssueItems.Clear();
@@ -307,6 +383,15 @@ namespace ShiShiCai
         public ObservableCollection<IssueItem> ListIssueItems
         {
             get { return mListIssueItems; }
+        }
+
+        public static readonly DependencyProperty AutoRefreshProperty =
+            DependencyProperty.Register("AutoRefresh", typeof(bool), typeof(MainWindow), new PropertyMetadata(true));
+
+        public bool AutoRefresh
+        {
+            get { return (bool)GetValue(AutoRefreshProperty); }
+            set { SetValue(AutoRefreshProperty, value); }
         }
 
         #endregion
@@ -476,6 +561,23 @@ namespace ShiShiCai
             {
                 ShowException(ex.Message);
             }
+        }
+
+        void RefreshTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if (mLoading) { return; }
+            bool isNew = LoadLastIssue();
+            if (!isNew) { return; }
+            Dispatcher.Invoke(new Action(() =>
+            {
+                if (!AutoRefresh) { return; }
+                Reload();
+            }));
+        }
+
+        void BtnRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            Reload();
         }
 
         #endregion

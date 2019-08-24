@@ -154,7 +154,7 @@ namespace ShiShiCai.Converters
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            bool singleValue = (bool) value;
+            bool singleValue = (bool)value;
             return singleValue ? Brushes.DarkViolet : Brushes.Goldenrod;
         }
 
@@ -169,13 +169,29 @@ namespace ShiShiCai.Converters
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            double doubleValue = (double) value;
+            double doubleValue = (double)value;
             return doubleValue.ToString("0.0");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotImplementedException();
+        }
+    }
+
+    public class InverseBooleanConverter : IValueConverter
+    {
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            bool boolValue = (bool)value;
+            return !boolValue;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            bool boolValue = (bool)value;
+            return !boolValue;
         }
     }
 }

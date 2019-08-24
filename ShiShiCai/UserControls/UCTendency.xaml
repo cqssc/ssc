@@ -47,7 +47,7 @@
                     <RowDefinition Height="30"></RowDefinition>
                     <RowDefinition Height="180"></RowDefinition>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Column="0" Grid.Row="0" Text="类别" Style="{DynamicResource TxtFormLabelStyle}"></TextBlock>
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="特征" Style="{DynamicResource TxtFormLabelStyle}"></TextBlock>
                 <ListBox Grid.Column="1" Grid.Row="0"
                          ItemsSource="{Binding TypeItems,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCTendency}}}"
                          Style="{DynamicResource ListBoxTendencyTypeStyle}"

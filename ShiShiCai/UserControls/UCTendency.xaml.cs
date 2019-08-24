@@ -15,13 +15,16 @@
 //
 //======================================================================
 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using ShiShiCai.Common;
 using ShiShiCai.Models;
 
 namespace ShiShiCai.UserControls
@@ -53,14 +56,25 @@ namespace ShiShiCai.UserControls
             get { return mListTypeItems; }
         }
 
+        public ObservableCollection<TendencyItem> TendencyItems
+        {
+            get { return mListTendencyItems; }
+        }
+
         #endregion
 
 
-        private readonly List<TendencyItem> mListTendencyData = new List<TendencyItem>(); 
+        #region Members
+
+        private readonly List<TendencyItem> mListTendencyData = new List<TendencyItem>();
         private readonly ObservableCollection<DateItem> mListDateItems = new ObservableCollection<DateItem>();
         private readonly ObservableCollection<TendencyTypeItem> mListTypeItems = new ObservableCollection<TendencyTypeItem>();
+        private readonly ObservableCollection<TendencyItem> mListTendencyItems = new ObservableCollection<TendencyItem>();
 
         private bool mIsInited;
+
+        #endregion
+
 
         public UCTendency()
         {
@@ -79,6 +93,9 @@ namespace ShiShiCai.UserControls
             }
         }
 
+
+        #region Init and Load
+
         public void Reload()
         {
             Init();
@@ -88,6 +105,7 @@ namespace ShiShiCai.UserControls
         {
             InitTypesItems();
             InitDateItems();
+            LoadTendencyData();
 
             ComboDate.SelectedItem = mListDateItems.FirstOrDefault();
         }
@@ -112,7 +130,7 @@ namespace ShiShiCai.UserControls
         private void InitTypesItems()
         {
             mListTypeItems.Clear();
-            TendencyTypeItem item=new TendencyTypeItem();
+            TendencyTypeItem item = new TendencyTypeItem();
             item.Number = 1;
             item.Name = "重复";
             item.Color = Brushes.DarkRed;
@@ -135,12 +153,73 @@ namespace ShiShiCai.UserControls
             mListTypeItems.Add(item);
         }
 
+        private void LoadTendencyData()
+        {
+            mListTendencyData.Clear();
+            if (PageParent == null) { return; }
+            var issueItems = PageParent.ListIssueItems;
+            if (issueItems == null) { return; }
+            var systemConfig = PageParent.SystemConfig;
+            if (systemConfig == null) { return; }
+            var db = systemConfig.Database;
+            if (db == null) { return; }
+            string strConn = db.GetConnectionString();
+            var first = issueItems.FirstOrDefault();
+            if (first == null) { return; }
+            long begin = long.Parse(first.Serial);
+            long end = long.Parse(first.Serial);
+            for (int i = 0; i < issueItems.Count; i++)
+            {
+                var item = issueItems[i];
+                long serial = long.Parse(item.Serial);
+                begin = Math.Min(serial, begin);
+                end = Math.Max(serial, end);
+            }
+            string strSql = string.Format(
+                "SELECT * FROM T_103_19 WHERE C001 >= {0} AND C001 <= {1} ORDER BY C001, C004", begin, end);
+            OperationReturn optReturn = MssqlOperation.GetDataSet(strConn, strSql);
+            if (!optReturn.Result)
+            {
+                ShowException(string.Format("load number hot data fail. [{0}]{1}", optReturn.Code, optReturn.Message));
+                return;
+            }
+            DataSet objDataSet = optReturn.Data as DataSet;
+            if (objDataSet == null) { return; }
+            for (int i = 0; i < objDataSet.Tables[0].Rows.Count; i++)
+            {
+                DataRow dr = objDataSet.Tables[0].Rows[i];
+                TendencyItem item = new TendencyItem();
+                item.Serial = dr["C001"].ToString();
+                item.Date = Convert.ToInt32(dr["C002"]);
+                item.Number = Convert.ToInt32(dr["C003"]);
+                item.Pos = Convert.ToInt32(dr["C004"]);
+                item.Repeat = dr["C005"].ToString() == "1";
+                item.Osillation = dr["C006"].ToString() == "1";
+                item.Increase = dr["C007"].ToString() == "1";
+                item.Other = dr["C008"].ToString() == "1";
+                item.Times = Convert.ToInt32(dr["C009"]);
+                item.Range = Convert.ToInt32(dr["C010"]);
+                mListTendencyData.Add(item);
+            }
+        }
+
+        private void InitTendencyItems()
+        {
+            mListTendencyItems.Clear();
+            var dateItem = ComboDate.SelectedItem as NumberHotDateItem;
+            if (dateItem == null) { return; }
+            int date = dateItem.Date;
+
+        }
+
+        #endregion
+
 
         #region 事件处理
 
         void ComboDate_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            InitTendencyItems();
         }
 
         #endregion

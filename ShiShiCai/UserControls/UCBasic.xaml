@@ -46,8 +46,9 @@
             <TabControl Name="TabControlView" Style="{DynamicResource TabControlViewStyle}"
                         ItemContainerStyle="{DynamicResource TabItemViewStyle}">
                 <TabItem Header="按日">
-                    <ListBox Name="ListBoxIssueDate" Style="{DynamicResource ListBoxIssueDateStyle}"
-                     ItemContainerStyle="{DynamicResource ListItemIssueDateStyle}">
+                    <ListBox ItemsSource="{Binding GroupItems,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}" 
+                             Style="{DynamicResource ListBoxIssueDateStyle}"
+                             ItemContainerStyle="{DynamicResource ListItemIssueDateStyle}">
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="ListBoxItem">
                                 <Grid>
@@ -90,9 +91,10 @@
                                             <TextBlock Text="间隔" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
                                         </Border>
                                     </Grid>
-                                    <ListBox Grid.Column="2" ItemsSource="{Binding Issues}"
-                                     Style="{DynamicResource ListBoxIssueNumberStyle}"
-                                     ItemContainerStyle="{DynamicResource ListItemIssueNumberStyle}">
+                                    <ListBox Grid.Column="2" 
+                                             ItemsSource="{Binding Issues}"
+                                             Style="{DynamicResource ListBoxIssueNumberStyle}"
+                                             ItemContainerStyle="{DynamicResource ListItemIssueNumberStyle}">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate DataType="ListBoxItem">
                                                 <Grid>
@@ -389,8 +391,9 @@
                                                       Stroke="{Binding Path1Color,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}"></Path>
                                                 </Grid>
                                             </Grid>
-                                            <ListBox Name="ListBoxIssueItem" Style="{DynamicResource ListBoxLotteryStyle}"
-                                                 ItemContainerStyle="{DynamicResource ListItemLotteryStyle}">
+                                            <ListBox ItemsSource="{Binding IssueItems,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}" 
+                                                     Style="{DynamicResource ListBoxLotteryStyle}"
+                                                     ItemContainerStyle="{DynamicResource ListItemLotteryStyle}">
                                                 <ListBox.ItemTemplate>
                                                     <DataTemplate DataType="ListBoxItem">
                                                         <Grid>

@@ -33,7 +33,9 @@
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
                     <Border Style="{DynamicResource BorderDateStyle}">
-                        <ComboBox Name="ComboDate" Style="{DynamicResource ComboDateStyle}">
+                        <ComboBox Name="ComboDate" 
+                                  ItemsSource="{Binding DateItems,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}" 
+                                  Style="{DynamicResource ComboDateStyle}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate DataType="ComboBoxItem">
                                     <TextBlock Text="{Binding Date,Converter={StaticResource IntegerToDateConverter}}"></TextBlock>
@@ -138,9 +140,9 @@
                                 <Path Data="{Binding SumValuePath,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"
                                        StrokeThickness="2" Stroke="Tan"></Path>
                                 <ListBox Name="ListBoxSumView"
-                                     Style="{DynamicResource ListBoxSumViewStyle}"
-                                     ItemContainerStyle="{DynamicResource ListItemSumViewStyle}"
-                                     ItemsSource="{Binding SumValueItems,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}">
+                                         ItemsSource="{Binding SumValueItems,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"
+                                         Style="{DynamicResource ListBoxSumViewStyle}"
+                                         ItemContainerStyle="{DynamicResource ListItemSumViewStyle}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate DataType="ListBoxItem">
                                             <Border VerticalAlignment="Bottom" Width="{Binding ItemWidth}" Height="{Binding ItemHeight}">
@@ -162,7 +164,8 @@
                     </Border>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <TabControl Name="TabControlView" Style="{DynamicResource TabControlViewStyle}"
+                    <TabControl Name="TabControlView" 
+                                Style="{DynamicResource TabControlViewStyle}"
                                 ItemContainerStyle="{DynamicResource TabItemViewStyle}">
                         <TabItem Header="大小">
                             <Grid>
@@ -206,9 +209,10 @@
                                                         Text="{Binding LargeMaxNum,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"></TextBlock>
                                             <TextBlock Grid.Column="3" Grid.Row="2" Style="{DynamicResource TxtCellStyle}"
                                                         Text="{Binding SmallMaxNum,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"></TextBlock>
-                                            <ListBox Name="ListBoxDistribute" Grid.Column="1" Grid.Row="0" Grid.RowSpan="3"
-                                                 Style="{DynamicResource ListBoxDistributeStyle}"
-                                                 ItemContainerStyle="{DynamicResource ListItemDistributeStyle}">
+                                            <ListBox Grid.Column="1" Grid.Row="0" Grid.RowSpan="3"
+                                                     ItemsSource="{Binding SumValueItems,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"
+                                                     Style="{DynamicResource ListBoxDistributeStyle}"
+                                                     ItemContainerStyle="{DynamicResource ListItemDistributeStyle}">
                                                 <ListBox.ItemTemplate>
                                                     <DataTemplate DataType="ListBoxItem">
                                                         <Border Width="{Binding ItemWidth,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}">
@@ -230,7 +234,8 @@
                                     </Border>
                                 </Grid>
                                 <Grid Grid.Row="2">
-                                    <ListBox Name="ListBoxPositionView" Style="{DynamicResource ListBoxPositionViewStyle}"
+                                    <ListBox ItemsSource="{Binding PositionItems,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"
+                                             Style="{DynamicResource ListBoxPositionViewStyle}"
                                              ItemContainerStyle="{DynamicResource ListItemPositionViewStyle}">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate DataType="ListBoxItem">
@@ -348,9 +353,10 @@
                                                         Text="{Binding SingleMaxNum,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"></TextBlock>
                                             <TextBlock Grid.Column="3" Grid.Row="2" Style="{DynamicResource TxtCellStyle}"
                                                         Text="{Binding DoubleMaxNum,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"></TextBlock>
-                                            <ListBox Name="ListBoxDistributeSingleDouble" Grid.Column="1" Grid.Row="0" Grid.RowSpan="3"
-                                                 Style="{DynamicResource ListBoxDistributeStyle}"
-                                                 ItemContainerStyle="{DynamicResource ListItemDistributeStyle}">
+                                            <ListBox  Grid.Column="1" Grid.Row="0" Grid.RowSpan="3"
+                                                      ItemsSource="{Binding SumValueItems,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}"
+                                                      Style="{DynamicResource ListBoxDistributeStyle}"
+                                                      ItemContainerStyle="{DynamicResource ListItemDistributeStyle}">
                                                 <ListBox.ItemTemplate>
                                                     <DataTemplate DataType="ListBoxItem">
                                                         <Border Width="{Binding ItemWidth,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}">
@@ -372,7 +378,8 @@
                                     </Border>
                                 </Grid>
                                 <Grid Grid.Row="2">
-                                    <ListBox Name="ListBoxPositionViewSingleDouble" Style="{DynamicResource ListBoxPositionViewStyle}"
+                                    <ListBox ItemsSource="{Binding PositionItems,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCLargeSmall}}}" 
+                                             Style="{DynamicResource ListBoxPositionViewStyle}"
                                              ItemContainerStyle="{DynamicResource ListItemPositionViewStyle}">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate DataType="ListBoxItem">

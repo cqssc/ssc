@@ -207,6 +207,21 @@ namespace ShiShiCai.UserControls
         #endregion
 
 
+        #region 集合列表
+
+        public ObservableCollection<IssueDateItem> GroupItems
+        {
+            get { return mListGroupItems; }
+        }
+
+        public ObservableCollection<IssueItem> IssueItems
+        {
+            get { return mListIssueItems; }
+        }
+
+        #endregion
+
+
         #region Members
 
         private readonly List<IssueItem> mListLostData = new List<IssueItem>();
@@ -219,7 +234,6 @@ namespace ShiShiCai.UserControls
         #endregion
 
 
-
         public UCBasic()
         {
             InitializeComponent();
@@ -229,9 +243,6 @@ namespace ShiShiCai.UserControls
 
             CommandBindings.Add(new CommandBinding(PositionClickCommand,
                 PositionClick_Executed, (s, ce) => ce.CanExecute = true));
-
-            ListBoxIssueDate.ItemsSource = mListGroupItems;
-            ListBoxIssueItem.ItemsSource = mListIssueItems;
         }
 
         void UCBasic_Loaded(object sender, RoutedEventArgs e)
@@ -249,6 +260,15 @@ namespace ShiShiCai.UserControls
         public void Reload()
         {
             Init();
+        }
+
+        public void Refresh(IssueItem issueItem)
+        {
+            LoadLostData();
+            RefreshIssueItem(issueItem);
+            RefreshIssueDateItem(issueItem);
+            InitPath();
+            InitIssuePaths();
         }
 
         private void Init()
@@ -403,63 +423,62 @@ namespace ShiShiCai.UserControls
             if (items == null) { return; }
             foreach (var item in items)
             {
-                var data = mListLostData.FirstOrDefault(l => l.Serial == item.Serial);
-                if (data != null)
+                var dataItem = mListLostData.FirstOrDefault(l => l.Serial == item.Serial);
+                if (dataItem != null)
                 {
-                    item.D1Lost0 = data.D1Lost0;
-                    item.D1Lost1 = data.D1Lost1;
-                    item.D1Lost2 = data.D1Lost2;
-                    item.D1Lost3 = data.D1Lost3;
-                    item.D1Lost4 = data.D1Lost4;
-                    item.D1Lost5 = data.D1Lost5;
-                    item.D1Lost6 = data.D1Lost6;
-                    item.D1Lost7 = data.D1Lost7;
-                    item.D1Lost8 = data.D1Lost8;
-                    item.D1Lost9 = data.D1Lost9;
+                    item.D1Lost0 = dataItem.D1Lost0;
+                    item.D1Lost1 = dataItem.D1Lost1;
+                    item.D1Lost2 = dataItem.D1Lost2;
+                    item.D1Lost3 = dataItem.D1Lost3;
+                    item.D1Lost4 = dataItem.D1Lost4;
+                    item.D1Lost5 = dataItem.D1Lost5;
+                    item.D1Lost6 = dataItem.D1Lost6;
+                    item.D1Lost7 = dataItem.D1Lost7;
+                    item.D1Lost8 = dataItem.D1Lost8;
+                    item.D1Lost9 = dataItem.D1Lost9;
 
-                    item.D2Lost0 = data.D2Lost0;
-                    item.D2Lost1 = data.D2Lost1;
-                    item.D2Lost2 = data.D2Lost2;
-                    item.D2Lost3 = data.D2Lost3;
-                    item.D2Lost4 = data.D2Lost4;
-                    item.D2Lost5 = data.D2Lost5;
-                    item.D2Lost6 = data.D2Lost6;
-                    item.D2Lost7 = data.D2Lost7;
-                    item.D2Lost8 = data.D2Lost8;
-                    item.D2Lost9 = data.D2Lost9;
+                    item.D2Lost0 = dataItem.D2Lost1;
+                    item.D2Lost2 = dataItem.D2Lost2;
+                    item.D2Lost3 = dataItem.D2Lost3;
+                    item.D2Lost4 = dataItem.D2Lost4;
+                    item.D2Lost5 = dataItem.D2Lost5;
+                    item.D2Lost6 = dataItem.D2Lost6;
+                    item.D2Lost7 = dataItem.D2Lost7;
+                    item.D2Lost8 = dataItem.D2Lost8;
+                    item.D2Lost9 = dataItem.D2Lost9;
 
-                    item.D3Lost0 = data.D3Lost0;
-                    item.D3Lost1 = data.D3Lost1;
-                    item.D3Lost2 = data.D3Lost2;
-                    item.D3Lost3 = data.D3Lost3;
-                    item.D3Lost4 = data.D3Lost4;
-                    item.D3Lost5 = data.D3Lost5;
-                    item.D3Lost6 = data.D3Lost6;
-                    item.D3Lost7 = data.D3Lost7;
-                    item.D3Lost8 = data.D3Lost8;
-                    item.D3Lost9 = data.D3Lost9;
+                    item.D3Lost0 = dataItem.D3Lost0;
+                    item.D3Lost1 = dataItem.D3Lost1;
+                    item.D3Lost2 = dataItem.D3Lost2;
+                    item.D3Lost3 = dataItem.D3Lost3;
+                    item.D3Lost4 = dataItem.D3Lost4;
+                    item.D3Lost5 = dataItem.D3Lost5;
+                    item.D3Lost6 = dataItem.D3Lost6;
+                    item.D3Lost7 = dataItem.D3Lost7;
+                    item.D3Lost8 = dataItem.D3Lost8;
+                    item.D3Lost9 = dataItem.D3Lost9;
 
-                    item.D4Lost0 = data.D4Lost0;
-                    item.D4Lost1 = data.D4Lost1;
-                    item.D4Lost2 = data.D4Lost2;
-                    item.D4Lost3 = data.D4Lost3;
-                    item.D4Lost4 = data.D4Lost4;
-                    item.D4Lost5 = data.D4Lost5;
-                    item.D4Lost6 = data.D4Lost6;
-                    item.D4Lost7 = data.D4Lost7;
-                    item.D4Lost8 = data.D4Lost8;
-                    item.D4Lost9 = data.D4Lost9;
+                    item.D4Lost0 = dataItem.D4Lost0;
+                    item.D4Lost1 = dataItem.D4Lost1;
+                    item.D4Lost2 = dataItem.D4Lost2;
+                    item.D4Lost3 = dataItem.D4Lost3;
+                    item.D4Lost4 = dataItem.D4Lost4;
+                    item.D4Lost5 = dataItem.D4Lost5;
+                    item.D4Lost6 = dataItem.D4Lost6;
+                    item.D4Lost7 = dataItem.D4Lost7;
+                    item.D4Lost8 = dataItem.D4Lost8;
+                    item.D4Lost9 = dataItem.D4Lost9;
 
-                    item.D5Lost0 = data.D5Lost0;
-                    item.D5Lost1 = data.D5Lost1;
-                    item.D5Lost2 = data.D5Lost2;
-                    item.D5Lost3 = data.D5Lost3;
-                    item.D5Lost4 = data.D5Lost4;
-                    item.D5Lost5 = data.D5Lost5;
-                    item.D5Lost6 = data.D5Lost6;
-                    item.D5Lost7 = data.D5Lost7;
-                    item.D5Lost8 = data.D5Lost8;
-                    item.D5Lost9 = data.D5Lost9;
+                    item.D5Lost0 = dataItem.D5Lost0;
+                    item.D5Lost1 = dataItem.D5Lost1;
+                    item.D5Lost2 = dataItem.D5Lost2;
+                    item.D5Lost3 = dataItem.D5Lost3;
+                    item.D5Lost4 = dataItem.D5Lost4;
+                    item.D5Lost5 = dataItem.D5Lost5;
+                    item.D5Lost6 = dataItem.D5Lost6;
+                    item.D5Lost7 = dataItem.D5Lost7;
+                    item.D5Lost8 = dataItem.D5Lost8;
+                    item.D5Lost9 = dataItem.D5Lost9;
                 }
 
                 item.D1Width = item.D1 * 20.0 + 20;
@@ -699,6 +718,155 @@ namespace ShiShiCai.UserControls
                 PathGeometry path = new PathGeometry { Figures = new PathFigureCollection { new PathFigure { StartPoint = first, Segments = segments } } };
                 Path5 = path;
             }
+        }
+
+        private void RefreshIssueItem(IssueItem issueItem)
+        {
+            string serial = issueItem.Serial;
+            var dataItem = mListLostData.FirstOrDefault(l => l.Serial == serial);
+            if (dataItem == null) { return;}
+            issueItem.D1Lost0 = dataItem.D1Lost0;
+            issueItem.D1Lost1 = dataItem.D1Lost1;
+            issueItem.D1Lost2 = dataItem.D1Lost2;
+            issueItem.D1Lost3 = dataItem.D1Lost3;
+            issueItem.D1Lost4 = dataItem.D1Lost4;
+            issueItem.D1Lost5 = dataItem.D1Lost5;
+            issueItem.D1Lost6 = dataItem.D1Lost6;
+            issueItem.D1Lost7 = dataItem.D1Lost7;
+            issueItem.D1Lost8 = dataItem.D1Lost8;
+            issueItem.D1Lost9 = dataItem.D1Lost9;
+
+            issueItem.D2Lost0 = dataItem.D2Lost0;
+            issueItem.D2Lost1 = dataItem.D2Lost1;
+            issueItem.D2Lost2 = dataItem.D2Lost2;
+            issueItem.D2Lost3 = dataItem.D2Lost3;
+            issueItem.D2Lost4 = dataItem.D2Lost4;
+            issueItem.D2Lost5 = dataItem.D2Lost5;
+            issueItem.D2Lost6 = dataItem.D2Lost6;
+            issueItem.D2Lost7 = dataItem.D2Lost7;
+            issueItem.D2Lost8 = dataItem.D2Lost8;
+            issueItem.D2Lost9 = dataItem.D2Lost9;
+
+            issueItem.D3Lost0 = dataItem.D3Lost0;
+            issueItem.D3Lost1 = dataItem.D3Lost1;
+            issueItem.D3Lost2 = dataItem.D3Lost2;
+            issueItem.D3Lost3 = dataItem.D3Lost3;
+            issueItem.D3Lost4 = dataItem.D3Lost4;
+            issueItem.D3Lost5 = dataItem.D3Lost5;
+            issueItem.D3Lost6 = dataItem.D3Lost6;
+            issueItem.D3Lost7 = dataItem.D3Lost7;
+            issueItem.D3Lost8 = dataItem.D3Lost8;
+            issueItem.D3Lost9 = dataItem.D3Lost9;
+
+            issueItem.D4Lost0 = dataItem.D4Lost0;
+            issueItem.D4Lost1 = dataItem.D4Lost1;
+            issueItem.D4Lost2 = dataItem.D4Lost2;
+            issueItem.D4Lost3 = dataItem.D4Lost3;
+            issueItem.D4Lost4 = dataItem.D4Lost4;
+            issueItem.D4Lost5 = dataItem.D4Lost5;
+            issueItem.D4Lost6 = dataItem.D4Lost6;
+            issueItem.D4Lost7 = dataItem.D4Lost7;
+            issueItem.D4Lost8 = dataItem.D4Lost8;
+            issueItem.D4Lost9 = dataItem.D4Lost9;
+
+            issueItem.D5Lost0 = dataItem.D5Lost0;
+            issueItem.D5Lost1 = dataItem.D5Lost1;
+            issueItem.D5Lost2 = dataItem.D5Lost2;
+            issueItem.D5Lost3 = dataItem.D5Lost3;
+            issueItem.D5Lost4 = dataItem.D5Lost4;
+            issueItem.D5Lost5 = dataItem.D5Lost5;
+            issueItem.D5Lost6 = dataItem.D5Lost6;
+            issueItem.D5Lost7 = dataItem.D5Lost7;
+            issueItem.D5Lost8 = dataItem.D5Lost8;
+            issueItem.D5Lost9 = dataItem.D5Lost9;
+
+            issueItem.D1Width = issueItem.D1 * 20.0 + 20;
+            issueItem.D2Width = issueItem.D2 * 20.0 + 20;
+            issueItem.D3Width = issueItem.D3 * 20.0 + 20;
+            issueItem.D4Width = issueItem.D4 * 20.0 + 20;
+            issueItem.D5Width = issueItem.D5 * 20.0 + 20;
+            mListIssueItems.Insert(0,issueItem);
+        }
+
+        private void RefreshIssueDateItem(IssueItem issueItem)
+        {
+            int date = issueItem.Date;
+            var dateItem = mListGroupItems.FirstOrDefault(d => d.Date == date);
+            if (dateItem == null) { return;}
+            string serial = issueItem.Serial;
+            var dataItem = mListLostData.FirstOrDefault(l => l.Serial == serial);
+            if (dataItem == null) { return;}
+            issueItem.D1Height = 120 * 1.0 / 10.0 * issueItem.D1 + 10;
+            issueItem.D2Height = 120 * 1.0 / 10.0 * issueItem.D2 + 10;
+            issueItem.D3Height = 120 * 1.0 / 10.0 * issueItem.D3 + 10;
+            issueItem.D4Height = 120 * 1.0 / 10.0 * issueItem.D4 + 10;
+            issueItem.D5Height = 120 * 1.0 / 10.0 * issueItem.D5 + 10;
+            dateItem.Issues.Add(issueItem);
+
+            int number = 1;
+            var numberGroup = dateItem.Groups.FirstOrDefault(n => n.Number == number);
+            if (numberGroup == null)
+            {
+                numberGroup = new IssueGroupItem();
+                numberGroup.Number = number;
+                dateItem.Groups.Add(numberGroup);
+            }
+            IssueNumberItem numberItem = new IssueNumberItem();
+            numberItem.Number = number;
+            numberItem.Value = issueItem.D1;
+            numberGroup.Values.Add(numberItem);
+
+            number = 2;
+            numberGroup = dateItem.Groups.FirstOrDefault(n => n.Number == number);
+            if (numberGroup == null)
+            {
+                numberGroup = new IssueGroupItem();
+                numberGroup.Number = number;
+                dateItem.Groups.Add(numberGroup);
+            }
+            numberItem = new IssueNumberItem();
+            numberItem.Number = number;
+            numberItem.Value = issueItem.D2;
+            numberGroup.Values.Add(numberItem);
+
+            number = 3;
+            numberGroup = dateItem.Groups.FirstOrDefault(n => n.Number == number);
+            if (numberGroup == null)
+            {
+                numberGroup = new IssueGroupItem();
+                numberGroup.Number = number;
+                dateItem.Groups.Add(numberGroup);
+            }
+            numberItem = new IssueNumberItem();
+            numberItem.Number = number;
+            numberItem.Value = issueItem.D3;
+            numberGroup.Values.Add(numberItem);
+
+            number = 4;
+            numberGroup = dateItem.Groups.FirstOrDefault(n => n.Number == number);
+            if (numberGroup == null)
+            {
+                numberGroup = new IssueGroupItem();
+                numberGroup.Number = number;
+                dateItem.Groups.Add(numberGroup);
+            }
+            numberItem = new IssueNumberItem();
+            numberItem.Number = number;
+            numberItem.Value = issueItem.D4;
+            numberGroup.Values.Add(numberItem);
+
+            number = 5;
+            numberGroup = dateItem.Groups.FirstOrDefault(n => n.Number == number);
+            if (numberGroup == null)
+            {
+                numberGroup = new IssueGroupItem();
+                numberGroup.Number = number;
+                dateItem.Groups.Add(numberGroup);
+            }
+            numberItem = new IssueNumberItem();
+            numberItem.Number = number;
+            numberItem.Value = issueItem.D5;
+            numberGroup.Values.Add(numberItem);
         }
 
         #endregion

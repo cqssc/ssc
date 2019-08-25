@@ -20,6 +20,9 @@ namespace ShiShiCai.Models
     public interface IModuleView
     {
         MainWindow PageParent { get; set; }
+
         void Reload();
+
+        void Refresh(IssueItem issueItem);
     }
 }

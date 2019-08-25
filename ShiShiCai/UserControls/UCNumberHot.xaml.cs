@@ -65,7 +65,7 @@ namespace ShiShiCai.UserControls
             set { SetValue(PosItemWidthProperty, value); }
         }
 
-        public ObservableCollection<NumberHotDateItem> DateItems
+        public ObservableCollection<DateItem> DateItems
         {
             get { return mListDateItems; }
         }
@@ -111,7 +111,7 @@ namespace ShiShiCai.UserControls
         #region Members
 
         private readonly List<NumberHotItem> mListNumberHotData = new List<NumberHotItem>();
-        private readonly ObservableCollection<NumberHotDateItem> mListDateItems = new ObservableCollection<NumberHotDateItem>();
+        private readonly ObservableCollection<DateItem> mListDateItems = new ObservableCollection<DateItem>();
         private readonly ObservableCollection<NumberHotSectionItem> mListAllSectionItems = new ObservableCollection<NumberHotSectionItem>();
         private readonly ObservableCollection<NumberHotSectionItem> mListPosSectionItems = new ObservableCollection<NumberHotSectionItem>();
         private readonly ObservableCollection<NumberHotNumberItem> mListAllNumberItems = new ObservableCollection<NumberHotNumberItem>();
@@ -158,13 +158,28 @@ namespace ShiShiCai.UserControls
             Init();
         }
 
+        public void Refresh(IssueItem issueItem)
+        {
+            LoadNumberHotData();
+            int date = issueItem.Date;
+            var dateItem = ComboDate.SelectedItem as DateItem;
+            if (dateItem == null) { return; }
+            if (date != dateItem.Date) { return; }
+            RefreshAllNumberHotItem(issueItem);
+            RefreshPosNumberHotItem(issueItem);
+            InitAllNumberHeight();
+            InitAllNumberPaths();
+            InitPosNumberHeight();
+            InitPosNumberPaths();
+        }
+
         private void Init()
         {
             InitAllSectionItems();
             InitPosSectionItems();
             InitAllNumberItems();
             InitPosNumberItems();
-            InitNumberHotData();
+            LoadNumberHotData();
             InitDateItems();
 
             ComboDate.SelectedItem = mListDateItems.FirstOrDefault();
@@ -298,7 +313,7 @@ namespace ShiShiCai.UserControls
             mListPosNumberItems.Add(item);
         }
 
-        private void InitNumberHotData()
+        private void LoadNumberHotData()
         {
             mListNumberHotData.Clear();
             if (PageParent == null) { return; }
@@ -364,7 +379,7 @@ namespace ShiShiCai.UserControls
             foreach (var dateGroup in dateGroups)
             {
                 int date = dateGroup.Key;
-                NumberHotDateItem item = new NumberHotDateItem();
+                DateItem item = new DateItem();
                 item.Date = date;
                 mListDateItems.Add(item);
             }
@@ -373,7 +388,7 @@ namespace ShiShiCai.UserControls
         private void InitAllNumberHotItems()
         {
             mListAllNumberHotItems.Clear();
-            var dateItem = ComboDate.SelectedItem as NumberHotDateItem;
+            var dateItem = ComboDate.SelectedItem as DateItem;
             if (dateItem == null) { return; }
             int date = dateItem.Date;
             var sectionItem = ListBoxAllSection.SelectedItem as NumberHotSectionItem;
@@ -782,7 +797,7 @@ namespace ShiShiCai.UserControls
                 var posItem = mListPosNumberHotItems[i];
                 int pos = posItem.Pos;
                 posItem.Items.Clear();
-                var dateItem = ComboDate.SelectedItem as NumberHotDateItem;
+                var dateItem = ComboDate.SelectedItem as DateItem;
                 if (dateItem == null) { return; }
                 int date = dateItem.Date;
                 var sectionItem = ListBoxPosSection.SelectedItem as NumberHotSectionItem;
@@ -1083,6 +1098,68 @@ namespace ShiShiCai.UserControls
                     newItem.Path = path;
                     posItem.NumberItems.Add(newItem);
                 }
+            }
+        }
+
+        private void RefreshAllNumberHotItem(IssueItem issueItem)
+        {
+            var sectionItem = ListBoxAllSection.SelectedItem as NumberHotSectionItem;
+            if (sectionItem == null) { return; }
+            int section = sectionItem.Section;
+            int pos = 6;
+            string serial = issueItem.Serial;
+            var dataItem =
+                mListNumberHotData.FirstOrDefault(l => l.Serial == serial && l.Pos == pos && l.Section == section);
+            if (dataItem == null) { return;}
+            NumberHotItem item = new NumberHotItem();
+            item.Serial = dataItem.Serial;
+            item.Number = dataItem.Number;
+            item.Date = issueItem.Date;
+            item.Pos = pos;
+            item.Section = section;
+            item.Num0 = dataItem.Num0;
+            item.Num1 = dataItem.Num1;
+            item.Num2 = dataItem.Num2;
+            item.Num3 = dataItem.Num3;
+            item.Num4 = dataItem.Num4;
+            item.Num5 = dataItem.Num5;
+            item.Num6 = dataItem.Num6;
+            item.Num7 = dataItem.Num7;
+            item.Num8 = dataItem.Num8;
+            item.Num9 = dataItem.Num9;
+            mListAllNumberHotItems.Add(item);
+        }
+
+        private void RefreshPosNumberHotItem(IssueItem issueItem)
+        {
+            for (int i = 0; i < mListPosNumberHotItems.Count; i++)
+            {
+                var posItem = mListPosNumberHotItems[i];
+                int pos = posItem.Pos;
+                var sectionItem = ListBoxPosSection.SelectedItem as NumberHotSectionItem;
+                if (sectionItem == null) { continue; }
+                int section = sectionItem.Section;
+                string serial = issueItem.Serial;
+                var dataItem =
+                    mListNumberHotData.FirstOrDefault(l => l.Serial == serial && l.Pos == pos && l.Section == section);
+                if (dataItem == null) { continue;}
+                NumberHotItem item = new NumberHotItem();
+                item.Serial = dataItem.Serial;
+                item.Number = dataItem.Number;
+                item.Date = issueItem.Date;
+                item.Pos = pos;
+                item.Section = section;
+                item.Num0 = dataItem.Num0;
+                item.Num1 = dataItem.Num1;
+                item.Num2 = dataItem.Num2;
+                item.Num3 = dataItem.Num3;
+                item.Num4 = dataItem.Num4;
+                item.Num5 = dataItem.Num5;
+                item.Num6 = dataItem.Num6;
+                item.Num7 = dataItem.Num7;
+                item.Num8 = dataItem.Num8;
+                item.Num9 = dataItem.Num9;
+                posItem.Items.Add(item);
             }
         }
 

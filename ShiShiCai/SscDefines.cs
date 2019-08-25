@@ -34,6 +34,7 @@ namespace ShiShiCai
 
         #endregion
 
+
         #region 统计
 
         public const int CALC_MODE_LAST_LOTTERY = 1;
@@ -55,6 +56,15 @@ namespace ShiShiCai
         public const string SECTION_NAME_20 = "20期";
         public const string SECTION_NAME_30 = "30期";
         public const string SECTION_NAME_DAY = "全天";
+
+        #endregion
+
+
+        #region 刷新模式
+
+        public const int REFRESH_MODE_NONE = 0;           //无刷新
+        public const int REFRESH_MODE_RELOAD = 1;           //全部数据重新加载
+        public const int REFRESH_MODE_LOTTERY = 2;  //日期不变，只刷新最新一期
 
         #endregion
 

@@ -64,10 +64,8 @@
     <Compile Include="Models\IssueGroupItem.cs" />
     <Compile Include="Models\IssueItem.cs" />
     <Compile Include="Models\IssueNumberItem.cs" />
-    <Compile Include="Models\LargeSmallDateItem.cs" />
     <Compile Include="Models\LargeSmallItem.cs" />
     <Compile Include="Models\ModuleItem.cs" />
-    <Compile Include="Models\NumberHotDateItem.cs" />
     <Compile Include="Models\NumberHotItem.cs" />
     <Compile Include="Models\NumberHotNumberItem.cs" />
     <Compile Include="Models\NumberHotSectionItem.cs" />

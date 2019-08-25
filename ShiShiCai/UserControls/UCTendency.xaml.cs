@@ -101,6 +101,11 @@ namespace ShiShiCai.UserControls
             Init();
         }
 
+        public void Refresh(IssueItem issueItem)
+        {
+
+        }
+
         private void Init()
         {
             InitTypesItems();
@@ -206,9 +211,6 @@ namespace ShiShiCai.UserControls
         private void InitTendencyItems()
         {
             mListTendencyItems.Clear();
-            var dateItem = ComboDate.SelectedItem as NumberHotDateItem;
-            if (dateItem == null) { return; }
-            int date = dateItem.Date;
 
         }
 

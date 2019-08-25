@@ -58,7 +58,7 @@ namespace ShiShiCai
             ListBoxModules.SelectionChanged += ListBoxModules_SelectionChanged;
             PanelLeft.SizeChanged += PanelLeft_SizeChanged;
             SliderScale.ValueChanged += SliderScale_ValueChanged;
-            BtnRefresh.Click+=BtnRefresh_Click;
+            BtnRefresh.Click += BtnRefresh_Click;
 
             DataContext = this;
             ListBoxModules.ItemsSource = mListModuleItems;
@@ -89,9 +89,9 @@ namespace ShiShiCai
             InitModuleItems();
             LoadConfig();
 
-            ListBoxModules.SelectedIndex = 3;//默认显示模块
+            ListBoxModules.SelectedIndex = 0;//默认显示模块
 
-            
+
             mLoading = true;
             mCalculateMode = SscDefines.CALC_MODE_LAST_LOTTERY;
             mCalculateSize = 300;
@@ -116,6 +116,20 @@ namespace ShiShiCai
             InitIssueItems();
             InitLottery();
             InitModule();
+            InitCalculateRange();
+            mLoading = false;
+        }
+
+        private void Refresh()
+        {
+            mLoading = true;
+            if (mCalculateMode == SscDefines.CALC_MODE_LAST_LOTTERY)
+            {
+                mListIssues.Insert(0, mNewestIssueItem);
+                mListIssueItems.Insert(0, mNewestIssueItem);
+                InitLottery();
+                RefreshModule();
+            }
             InitCalculateRange();
             mLoading = false;
         }
@@ -184,7 +198,7 @@ namespace ShiShiCai
                 if (dbConfig == null) { return; }
                 string strConn = dbConfig.GetConnectionString();
                 if (string.IsNullOrEmpty(strConn)) { return; }
-                string strSql = string.Format("SELECT TOP {0} * FROM T_101_19 ORDER BY C001 DESC", mCalculateSize);
+                string strSql = string.Format("SELECT TOP {0} * FROM T_101_19 WHERE C099 = 1 ORDER BY C001 DESC", mCalculateSize);
                 OperationReturn optReturn = MssqlOperation.GetDataSet(strConn, strSql);
                 if (!optReturn.Result)
                 {
@@ -237,7 +251,7 @@ namespace ShiShiCai
                 if (dbConfig == null) { return; }
                 string strConn = dbConfig.GetConnectionString();
                 if (string.IsNullOrEmpty(strConn)) { return; }
-                string strSql = string.Format("SELECT * FROM T_101_19 WHERE C004 = {0} ORDER BY C001 DESC", date);
+                string strSql = string.Format("SELECT * FROM T_101_19 WHERE C099 = 1 C004 = {0} ORDER BY C001 DESC", date);
                 OperationReturn optReturn = MssqlOperation.GetDataSet(strConn, strSql);
                 if (!optReturn.Result)
                 {
@@ -280,58 +294,70 @@ namespace ShiShiCai
             }
         }
 
-        private bool LoadLastIssue()
+        private int LoadLastIssue()
         {
+            //判断刷新，返回0：没有刷新；1：全部重新加载；2：刷新一期新数据；-1：报错
             try
             {
-                if (mSystemConfig == null) { return false; }
+                if (mSystemConfig == null) { return 0; }
                 DatabaseConfig dbConfig = mSystemConfig.Database;
-                if (dbConfig == null) { return false; }
+                if (dbConfig == null) { return 0; }
                 string strConn = dbConfig.GetConnectionString();
-                if (string.IsNullOrEmpty(strConn)) { return false; }
-                string strSql = string.Format("SELECT TOP 1 * FROM T_101_19 ORDER BY C001 DESC");
+                if (string.IsNullOrEmpty(strConn)) { return 0; }
+                string strSql = string.Format("SELECT TOP 1 * FROM T_101_19 WHERE C099 = 1 ORDER BY C001 DESC");
                 OperationReturn optReturn = MssqlOperation.GetDataSet(strConn, strSql);
                 if (!optReturn.Result)
                 {
-                    ShowException(string.Format("Fail. [{0}]{1}", optReturn.Code, optReturn.Message));
-                    return false;
+                    WriteLog("LoadLastIssue", string.Format("Fail. [{0}]{1}", optReturn.Code, optReturn.Message));
+                    return -1;
                 }
                 DataSet objDataSet = optReturn.Data as DataSet;
-                if (objDataSet == null) { return false; }
-                if (objDataSet.Tables[0].Rows.Count <= 0) { return false; }
+                if (objDataSet == null) { return 0; }
+                if (objDataSet.Tables[0].Rows.Count <= 0) { return 0; }
                 DataRow dr = objDataSet.Tables[0].Rows[0];
                 string serial = dr["C001"].ToString();
-                if (mNewestIssueItem != null && mNewestIssueItem.Serial == serial) { return false; }
-                IssueItem item = new IssueItem();
-                item.Serial = serial;
-                item.Number = Convert.ToInt32(dr["C005"]);
-                item.Date = Convert.ToInt32(dr["C004"]);
-                item.WeekDay = Convert.ToInt32(dr["C006"]);
+                int date = Convert.ToInt32(dr["C004"]);
+                if (mNewestIssueItem == null) { return 0; }
+                string lastSerial = mNewestIssueItem.Serial;
+                int lastDate = mNewestIssueItem.Date;
+                if (date > lastDate)
+                {
+                    return SscDefines.REFRESH_MODE_RELOAD;
+                }
+                if (date == lastDate && serial != lastSerial)
+                {
+                    IssueItem item = new IssueItem();
+                    item.Serial = serial;
+                    item.Number = Convert.ToInt32(dr["C005"]);
+                    item.Date = Convert.ToInt32(dr["C004"]);
+                    item.WeekDay = Convert.ToInt32(dr["C006"]);
 
-                item.D1 = Convert.ToInt32(dr["C010"]);
-                item.D2 = Convert.ToInt32(dr["C020"]);
-                item.D3 = Convert.ToInt32(dr["C030"]);
-                item.D4 = Convert.ToInt32(dr["C040"]);
-                item.D5 = Convert.ToInt32(dr["C050"]);
+                    item.D1 = Convert.ToInt32(dr["C010"]);
+                    item.D2 = Convert.ToInt32(dr["C020"]);
+                    item.D3 = Convert.ToInt32(dr["C030"]);
+                    item.D4 = Convert.ToInt32(dr["C040"]);
+                    item.D5 = Convert.ToInt32(dr["C050"]);
 
-                item.FullValue = dr["C002"].ToString();
-                item.LargeValue = dr["C007"].ToString() == "1";
-                item.SingleValue = dr["C008"].ToString() == "1";
-                item.SumValue = Convert.ToInt32(dr["C009"]);
-                item.RepeatValue = dr["C100"].ToString() == "1";
-                item.IntervalValue = dr["C101"].ToString() == "1";
-                item.Larger20 = dr["C102"].ToString() == "1";
-                item.AllOne20 = dr["C103"].ToString() == "1";
-                item.PairsVaue = dr["C104"].ToString() == "1";
-                item.SameValue = dr["C105"].ToString() == "1";
+                    item.FullValue = dr["C002"].ToString();
+                    item.LargeValue = dr["C007"].ToString() == "1";
+                    item.SingleValue = dr["C008"].ToString() == "1";
+                    item.SumValue = Convert.ToInt32(dr["C009"]);
+                    item.RepeatValue = dr["C100"].ToString() == "1";
+                    item.IntervalValue = dr["C101"].ToString() == "1";
+                    item.Larger20 = dr["C102"].ToString() == "1";
+                    item.AllOne20 = dr["C103"].ToString() == "1";
+                    item.PairsVaue = dr["C104"].ToString() == "1";
+                    item.SameValue = dr["C105"].ToString() == "1";
 
-                mNewestIssueItem = item;
-                return true;
+                    mNewestIssueItem = item;
+                    return SscDefines.REFRESH_MODE_LOTTERY;
+                }
+                return -1;
             }
             catch (Exception ex)
             {
-                ShowException(ex.Message);
-                return false;
+                WriteLog("LoadLastIssue", string.Format("Fail. {0}", ex.Message));
+                return 0;
             }
         }
 
@@ -371,6 +397,13 @@ namespace ShiShiCai
                 TxtCalculateRange.Text = string.Format("显示 {0} 共 {1} 期", ParseStandardDate(mCalculateDate),
                     mListIssues.Count);
             }
+        }
+
+        private void RefreshModule()
+        {
+            var view = TabControlModule.SelectedContent as IModuleView;
+            if (view == null) { return; }
+            view.Refresh(mNewestIssueItem);
         }
 
         #endregion
@@ -569,18 +602,42 @@ namespace ShiShiCai
         void RefreshTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             if (mLoading) { return; }
-            bool isNew = LoadLastIssue();
-            if (!isNew) { return; }
-            Dispatcher.Invoke(new Action(() =>
+            int refresh = LoadLastIssue();
+            if (refresh >= 0)
             {
-                if (!AutoRefresh) { return; }
-                Reload();
-            }));
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    if (!AutoRefresh) { return; }
+                    if (refresh == SscDefines.REFRESH_MODE_RELOAD)
+                    {
+                        Reload();
+                    }
+                    else
+                    {
+                        Refresh();
+                    }
+                }));
+            }
         }
 
         void BtnRefresh_Click(object sender, RoutedEventArgs e)
         {
-            Reload();
+            if (mLoading) { return; }
+            int refresh = LoadLastIssue();
+            if (refresh >= 0)
+            {
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    if (refresh == SscDefines.REFRESH_MODE_RELOAD)
+                    {
+                        Reload();
+                    }
+                    else
+                    {
+                        Refresh();
+                    }
+                }));
+            }
         }
 
         #endregion

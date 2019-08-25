@@ -422,12 +422,29 @@ namespace ShiShiCai
         }
 
         public static readonly DependencyProperty AutoRefreshProperty =
-            DependencyProperty.Register("AutoRefresh", typeof(bool), typeof(MainWindow), new PropertyMetadata(true));
+            DependencyProperty.Register("AutoRefresh", typeof(bool), typeof(MainWindow), new PropertyMetadata(true, OnAutoRefreshChanged));
 
         public bool AutoRefresh
         {
             get { return (bool)GetValue(AutoRefreshProperty); }
             set { SetValue(AutoRefreshProperty, value); }
+        }
+
+        private static void OnAutoRefreshChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as MainWindow).OnAutoRefreshChanged((bool)e.NewValue);
+        }
+
+        public void OnAutoRefreshChanged(bool auto)
+        {
+            if (auto)
+            {
+                mRefreshTimer.Start();
+            }
+            else
+            {
+                mRefreshTimer.Stop();
+            }
         }
 
         #endregion

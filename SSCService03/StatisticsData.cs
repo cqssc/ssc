@@ -243,11 +243,11 @@ namespace SSCService03
             ALostAll_102.LongPeriod_001 = ACurrentPeriod_101.LongPeriod_001;
             ALostAll_102.DateNumber_002 = ACurrentPeriod_101.DateNumber_004;
             ALostAll_102.ShortPeriod_003 = ACurrentPeriod_101.ShortPeriod_005;
-            ALostAll_102.Remain20Lost_004 = 0;
-            ALostAll_102.Appear20Lost_005 = 0;
-            ALostAll_102.Remain20MLost_006 = 0;
-            ALostAll_102.Appear20MLost_007 = 0;
-            ALostAll_102.Appear20PositionNum_008 = 0;
+            ALostAll_102.Appear20Lost_004 = 0;
+            ALostAll_102.Appear20MLost_005 = 0;
+            ALostAll_102.Remain20Lost_006 = 0;
+            ALostAll_102.Remain20MLost_007 = 0;
+            ALostAll_102.Remain20PositionValueNum_008 = 0;
             ALostAll_102.Remain20PositionNum_009 = 0;
 
             ALostAll_102.PreLost_101 = -1;
@@ -397,24 +397,93 @@ namespace SSCService03
 
                 #region  补全特殊统计数据
                 //剩下>20期遗失的数量-------最新期遗失 
-
-
                 //出现>20期遗失的数量-------前一期遗失
-
-
                 //剩下>20M1的数量 -------最新期遗失
-
-
                 //出现>20M1的数量-------前一期遗失
-
-
                 //>20期遗失出现时的出现位置数量---前一期遗失   其实相当于是10个位了
+                //剩下>20期遗失数字分布的个数数量---最新期遗失
+                List<int> listLostValueSingleOdd = new List<int>();
+                List<int> listLostValueSingleEven = new List<int>();
+                List<int> listLostPositionValueNum = new List<int>();
+                int count20=0;
+                for (int i = 1; i <= 5;i++ )
+                {
+                    listLostValueSingleOdd.Clear();
+                    listLostValueSingleEven.Clear();
+                    count20 = 0;
+                    for (int j = 0; j <= 9;j++ )
+                    {
+                        int temp = int.Parse(GetObjectPropertyValue(IPreLostAll_102, String.Format("Lost_0{0}{1}", i, j)));  
+                        if(temp>=20 &&(!listLostPositionValueNum.Contains(j)))
+                        {
+                            listLostPositionValueNum.Add(j);
+                        }
+                        if (j % 2 == 0)
+                        {
+                            listLostValueSingleOdd.Add(temp);
+                        }
+                        else 
+                        {
+                            listLostValueSingleEven.Add(temp);
+                        }
+                    }
+                    count20 = listLostValueSingleOdd.Count(s => s >= 20);
+                    if(count20>=1)
+                    {
+                        ALostAll_102.Remain20PositionNum_009 += 1;
+                        ALostAll_102.Remain20MLost_007 += 1;
+                        ALostAll_102.Remain20Lost_006 += count20;
+                    }
+                    count20 = listLostValueSingleEven.Count(p => p >= 20);
+                    if (count20 >= 1)
+                    {
+                        ALostAll_102.Remain20PositionNum_009 += 1;
+                        ALostAll_102.Remain20MLost_007 += 1;
+                        ALostAll_102.Remain20Lost_006 += count20;
+                    }                  
+                }
+                ALostAll_102.Remain20PositionValueNum_008 = listLostPositionValueNum.Count;
 
+                List<int> listLostValueBenTemp = new List<int>();
+                for (int i = 1; i <= 5;i++ ) 
+                {
+                    listLostValueBenTemp.Clear();
+                    int LostValue_008 = int.Parse(GetObjectPropertyValue(ALostAll_102, String.Format("PreLost_10{0}", i)));
+                    int PositionVale_005 = int.Parse(GetObjectPropertyValue(ICurrentPeriod_101, String.Format("Wei{0}_0{0}0", i)));
 
-                //>20期遗失数字分布的个数数量---最新期遗失
+                    if (PositionVale_005 % 2 == 0)
+                    {
+                        listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(IPreLostAll_102, String.Format("Lost_0{0}0", i))));
+                        listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(IPreLostAll_102, String.Format("Lost_0{0}2", i))));
+                        listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(IPreLostAll_102, String.Format("Lost_0{0}4", i))));
+                        listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(IPreLostAll_102, String.Format("Lost_0{0}6", i))));
+                        listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(IPreLostAll_102, String.Format("Lost_0{0}8", i))));
+                    }
+                    else 
+                    {
+                        listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(IPreLostAll_102, String.Format("Lost_0{0}1", i))));
+                        listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(IPreLostAll_102, String.Format("Lost_0{0}3", i))));
+                        listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(IPreLostAll_102, String.Format("Lost_0{0}5", i))));
+                        listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(IPreLostAll_102, String.Format("Lost_0{0}7", i))));
+                        listLostValueBenTemp.Add(int.Parse(GetObjectPropertyValue(IPreLostAll_102, String.Format("Lost_0{0}9", i))));
+                    }
 
+                    if(LostValue_008>20)
+                    {
+                        ALostAll_102.Appear20Lost_004 += 1;
+                        int order = GetOrder(listLostValueBenTemp, LostValue_008);
+                        if(order==1)
+                        {
+                            ALostAll_102.Appear20MLost_005 += 1;
+                        }
+                    }
+                   
+                    
+                }
+                
 
                 #endregion
+
 
                 #endregion
             }
@@ -459,11 +528,11 @@ namespace SSCService03
                     drCurrent["C001"] = AlostAllWei.LongPeriod_001.ToString();
                     drCurrent["C002"] = AlostAllWei.DateNumber_002.ToString();
                     drCurrent["C003"] = AlostAllWei.ShortPeriod_003;
-                    drCurrent["C004"] = AlostAllWei.Remain20Lost_004;
-                    drCurrent["C005"] = AlostAllWei.Appear20Lost_005;
-                    drCurrent["C006"] = AlostAllWei.Remain20MLost_006;
-                    drCurrent["C007"] = AlostAllWei.Appear20MLost_007;
-                    drCurrent["C008"] = AlostAllWei.Appear20PositionNum_008;
+                    drCurrent["C004"] = AlostAllWei.Appear20Lost_004;
+                    drCurrent["C005"] = AlostAllWei.Appear20MLost_005;
+                    drCurrent["C006"] = AlostAllWei.Remain20Lost_006;
+                    drCurrent["C007"] = AlostAllWei.Remain20MLost_007;
+                    drCurrent["C008"] = AlostAllWei.Remain20PositionValueNum_008;
                     drCurrent["C009"] = AlostAllWei.Remain20PositionNum_009;
 
                     drCurrent["C050"] = AlostAllWei.Lost_050;
@@ -531,11 +600,11 @@ namespace SSCService03
                     drNewRow["C001"] = AlostAllWei.LongPeriod_001.ToString();
                     drNewRow["C002"] = AlostAllWei.DateNumber_002.ToString();
                     drNewRow["C003"] = AlostAllWei.ShortPeriod_003;
-                    drNewRow["C004"] = AlostAllWei.Remain20Lost_004;
-                    drNewRow["C005"] = AlostAllWei.Appear20Lost_005;
-                    drNewRow["C006"] = AlostAllWei.Remain20MLost_006;
-                    drNewRow["C007"] = AlostAllWei.Appear20MLost_007;
-                    drNewRow["C008"] = AlostAllWei.Appear20PositionNum_008;
+                    drNewRow["C004"] = AlostAllWei.Appear20Lost_004;
+                    drNewRow["C005"] = AlostAllWei.Appear20MLost_005;
+                    drNewRow["C006"] = AlostAllWei.Remain20Lost_006;
+                    drNewRow["C007"] = AlostAllWei.Remain20MLost_007;
+                    drNewRow["C008"] = AlostAllWei.Remain20PositionValueNum_008;
                     drNewRow["C009"] = AlostAllWei.Remain20PositionNum_009;
                     drNewRow["C050"] = AlostAllWei.Lost_050;
                     drNewRow["C051"] = AlostAllWei.Lost_051;
@@ -636,11 +705,11 @@ namespace SSCService03
                     lostall_102.LongPeriod_001 = long.Parse(drNewRow["C001"].ToString());
                     lostall_102.DateNumber_002 = long.Parse(drNewRow["C002"].ToString());
                     lostall_102.ShortPeriod_003 = int.Parse(drNewRow["C003"].ToString());
-                    lostall_102.Remain20Lost_004 = int.Parse(drNewRow["C004"].ToString());
-                    lostall_102.Appear20Lost_005 = int.Parse(drNewRow["C005"].ToString());
-                    lostall_102.Remain20MLost_006 = int.Parse(drNewRow["C006"].ToString());
-                    lostall_102.Appear20MLost_007 = int.Parse(drNewRow["C007"].ToString());
-                    lostall_102.Appear20PositionNum_008 = int.Parse(drNewRow["C008"].ToString());
+                    lostall_102.Appear20Lost_004 = int.Parse(drNewRow["C004"].ToString());
+                    lostall_102.Appear20MLost_005 = int.Parse(drNewRow["C005"].ToString());
+                    lostall_102.Remain20Lost_006 = int.Parse(drNewRow["C006"].ToString());
+                    lostall_102.Remain20MLost_007 = int.Parse(drNewRow["C007"].ToString());
+                    lostall_102.Remain20PositionValueNum_008 = int.Parse(drNewRow["C008"].ToString());
                     lostall_102.Remain20PositionNum_009 = int.Parse(drNewRow["C009"].ToString());
 
                     lostall_102.Lost_050 = int.Parse(drNewRow["C050"].ToString());
@@ -1927,7 +1996,7 @@ namespace SSCService03
                     }
                 }
             }
-
+            
 
             for (int i = 1; i <= 5;i++ )
             {

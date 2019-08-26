@@ -154,6 +154,8 @@ namespace SSCService03
                              //DoHotSingleNum_107(ConstDefine.Const_SetNormal, listPeriodTemp_101);
                          }
 
+                         string strSql = string.Format("update T_101_{0}  Set C099=1 where C001={1}", IStrYY, ICurrentPeriod_101.LongPeriod_001);
+                         IListStringSQL.Add(strSql);
                          ExecuteListSQL(IListStringSQL);
                          IListStringSQL.Clear();
 
@@ -241,7 +243,12 @@ namespace SSCService03
             ALostAll_102.LongPeriod_001 = ACurrentPeriod_101.LongPeriod_001;
             ALostAll_102.DateNumber_002 = ACurrentPeriod_101.DateNumber_004;
             ALostAll_102.ShortPeriod_003 = ACurrentPeriod_101.ShortPeriod_005;
-
+            ALostAll_102.Remain20Lost_004 = 0;
+            ALostAll_102.Appear20Lost_005 = 0;
+            ALostAll_102.Remain20MLost_006 = 0;
+            ALostAll_102.Appear20MLost_007 = 0;
+            ALostAll_102.Appear20PositionNum_008 = 0;
+            ALostAll_102.Remain20PositionNum_009 = 0;
 
             ALostAll_102.PreLost_101 = -1;
             ALostAll_102.PreLost_102 = -1;
@@ -387,8 +394,29 @@ namespace SSCService03
                 ALostAll_102.PreLost_104 = int.Parse(GetObjectPropertyValue(IPreLostAll_102, string.Format("Lost_04{0}", ACurrentPeriod_101.Wei4_040)));
                 ALostAll_102.PreLost_105 = int.Parse(GetObjectPropertyValue(IPreLostAll_102, string.Format("Lost_05{0}", ACurrentPeriod_101.Wei5_050)));
 
+
+                #region  补全特殊统计数据
+                //剩下>20期遗失的数量-------最新期遗失 
+
+
+                //出现>20期遗失的数量-------前一期遗失
+
+
+                //剩下>20M1的数量 -------最新期遗失
+
+
+                //出现>20M1的数量-------前一期遗失
+
+
+                //>20期遗失出现时的出现位置数量---前一期遗失   其实相当于是10个位了
+
+
+                //>20期遗失数字分布的个数数量---最新期遗失
+
+
                 #endregion
 
+                #endregion
             }
 
             if (UpdateOrADDLostAll_102(ALostAll_102))
@@ -405,7 +433,6 @@ namespace SSCService03
         public static bool UpdateOrADDLostAll_102(LostAll_102 AlostAllWei)
         {
             bool flag = true;
-
             #region
             IDbConnection objConn;
             IDbDataAdapter objAdapter;
@@ -432,6 +459,13 @@ namespace SSCService03
                     drCurrent["C001"] = AlostAllWei.LongPeriod_001.ToString();
                     drCurrent["C002"] = AlostAllWei.DateNumber_002.ToString();
                     drCurrent["C003"] = AlostAllWei.ShortPeriod_003;
+                    drCurrent["C004"] = AlostAllWei.Remain20Lost_004;
+                    drCurrent["C005"] = AlostAllWei.Appear20Lost_005;
+                    drCurrent["C006"] = AlostAllWei.Remain20MLost_006;
+                    drCurrent["C007"] = AlostAllWei.Appear20MLost_007;
+                    drCurrent["C008"] = AlostAllWei.Appear20PositionNum_008;
+                    drCurrent["C009"] = AlostAllWei.Remain20PositionNum_009;
+
                     drCurrent["C050"] = AlostAllWei.Lost_050;
                     drCurrent["C051"] = AlostAllWei.Lost_051;
                     drCurrent["C052"] = AlostAllWei.Lost_052;
@@ -481,9 +515,7 @@ namespace SSCService03
                     drCurrent["C016"] = AlostAllWei.Lost_016;
                     drCurrent["C017"] = AlostAllWei.Lost_017;
                     drCurrent["C018"] = AlostAllWei.Lost_018;
-                    drCurrent["C019"] = AlostAllWei.Lost_019;
-
-                 
+                    drCurrent["C019"] = AlostAllWei.Lost_019;                 
                     drCurrent["C101"] = AlostAllWei.PreLost_101;
                     drCurrent["C102"] = AlostAllWei.PreLost_102;
                     drCurrent["C103"] = AlostAllWei.PreLost_103;
@@ -499,6 +531,12 @@ namespace SSCService03
                     drNewRow["C001"] = AlostAllWei.LongPeriod_001.ToString();
                     drNewRow["C002"] = AlostAllWei.DateNumber_002.ToString();
                     drNewRow["C003"] = AlostAllWei.ShortPeriod_003;
+                    drNewRow["C004"] = AlostAllWei.Remain20Lost_004;
+                    drNewRow["C005"] = AlostAllWei.Appear20Lost_005;
+                    drNewRow["C006"] = AlostAllWei.Remain20MLost_006;
+                    drNewRow["C007"] = AlostAllWei.Appear20MLost_007;
+                    drNewRow["C008"] = AlostAllWei.Appear20PositionNum_008;
+                    drNewRow["C009"] = AlostAllWei.Remain20PositionNum_009;
                     drNewRow["C050"] = AlostAllWei.Lost_050;
                     drNewRow["C051"] = AlostAllWei.Lost_051;
                     drNewRow["C052"] = AlostAllWei.Lost_052;
@@ -598,6 +636,13 @@ namespace SSCService03
                     lostall_102.LongPeriod_001 = long.Parse(drNewRow["C001"].ToString());
                     lostall_102.DateNumber_002 = long.Parse(drNewRow["C002"].ToString());
                     lostall_102.ShortPeriod_003 = int.Parse(drNewRow["C003"].ToString());
+                    lostall_102.Remain20Lost_004 = int.Parse(drNewRow["C004"].ToString());
+                    lostall_102.Appear20Lost_005 = int.Parse(drNewRow["C005"].ToString());
+                    lostall_102.Remain20MLost_006 = int.Parse(drNewRow["C006"].ToString());
+                    lostall_102.Appear20MLost_007 = int.Parse(drNewRow["C007"].ToString());
+                    lostall_102.Appear20PositionNum_008 = int.Parse(drNewRow["C008"].ToString());
+                    lostall_102.Remain20PositionNum_009 = int.Parse(drNewRow["C009"].ToString());
+
                     lostall_102.Lost_050 = int.Parse(drNewRow["C050"].ToString());
                     lostall_102.Lost_051 = int.Parse(drNewRow["C051"].ToString());
                     lostall_102.Lost_052 = int.Parse(drNewRow["C052"].ToString());

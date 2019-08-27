@@ -404,6 +404,8 @@ namespace SSCService03
                 //剩下>20期遗失数字分布的个数数量---最新期遗失
                 List<int> listLostValueSingleOdd = new List<int>();
                 List<int> listLostValueSingleEven = new List<int>();
+
+                //遗失数字是否全是集中在某几个数字上面.  大于20的所有数字-某几个数字的个数
                 List<int> listLostPositionValueNum = new List<int>();
                 int count20=0;
                 for (int i = 1; i <= 5;i++ )
@@ -476,15 +478,21 @@ namespace SSCService03
                         {
                             ALostAll_102.Appear20MLost_005 += 1;
                         }
-                    }
-                   
-                    
+                    }   
                 }
-                
+                string strSQl = String.Empty;
+                if(ALostAll_102.Appear20Lost_004>=1)
+                {
+                    strSQl = string.Format("update T_101_{0}  set  C102={1} where C001={2} ", IStrYY, ALostAll_102.Appear20Lost_004 ,ICurrentPeriod_101.LongPeriod_001);
+                    IListStringSQL.Add(strSQl);
+                }
+                if(ALostAll_102.Appear20MLost_005>=1)
+                {
+                    strSQl = string.Format("update T_101_{0}  set  C103={1} where C001={2} ", IStrYY, ALostAll_102.Appear20MLost_005, ICurrentPeriod_101.LongPeriod_001);
+                    IListStringSQL.Add(strSQl);
+                }
 
                 #endregion
-
-
                 #endregion
             }
 

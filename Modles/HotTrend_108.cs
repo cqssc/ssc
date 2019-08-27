@@ -23,12 +23,23 @@ namespace Modles
 
         public int SplitValueType_005 { get; set; }
 
-        public int SplitValueType_006 { get; set; }
+        public int FenMu_006 { get; set; }
 
-        //该段内出现个数       
-        public int AppearCount_007 { get; set; }
-        //除出来的热度值
-        public decimal HotValue_008 { get; set; }
+        public int RepickNum_010 { get; set; }
+
+        public decimal RepickRate_011 { get; set; }
+
+        public int SwingNum_020 { get; set; }
+
+        public decimal SwingRate_021 { get; set; }
+
+        public int AddOrSubNum_030 { get; set; }
+
+        public decimal AddOrSubRate_031 { get; set; }
+
+        public int OtherNum_040 { get; set; }
+
+        public decimal OtherRate_041 { get; set; }
 
 
     }

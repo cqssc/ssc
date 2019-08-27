@@ -1053,7 +1053,7 @@ namespace SSCService03
         /// <param name="AType">0:当前期  1：当前期的前一期</param>
         /// <param name="LongPeriodNumber"></param>
         /// <returns></returns>
-        public static List< ContinueTrend_103> GetDataLostTrend_103(int AType ,long LongPeriodNumber) 
+        public static List< ContinueTrend_103> GetDataLostTrend_103(int AType ,long LongPeriodNumber,int DataCount=-1) 
         {
             List<ContinueTrend_103> ListLostTrend_103 = null;
             String StrSQL = string.Empty;
@@ -1064,6 +1064,9 @@ namespace SSCService03
                     break;
                 case 1://得到前一期
                     StrSQL = string.Format("select top 5 * from T_103_{0} where C001<{1} order by  C001 desc", IStrYY, LongPeriodNumber);
+                    break;
+                case 2://得到某期前多少期
+                    StrSQL = string.Format("select top 5*{2} * from T_103_{0} where C001<={1} order by  C001 desc", IStrYY, LongPeriodNumber,DataCount);
                     break;
                 default:
                     break;
@@ -2362,82 +2365,6 @@ namespace SSCService03
             }
         }
 
-        //public static bool DoHotSingleNum_107(int AType, List<PeriodDetail_101> AListPeriodDetail)
-        //{
-        //    bool flag = true;
-
-        //    List<HotSingleNum_107> listHotStatistics = new List<HotSingleNum_107>();
-        //    List<SingleAnalysis_106> ListSingleAnalysis_106 = new List<SingleAnalysis_106>();
-        //    ListSingleAnalysis_106 = GetDataSingleAnalysis_106(240, ICurrentPeriod_101.LongPeriod_001);
-        //    List<SingleAnalysis_106> listSingle106Temp = new List<SingleAnalysis_106>();
-
-        //    if (ListSingleAnalysis_106.Count >= 5)
-        //    {
-        //        listSingle106Temp = ListSingleAnalysis_106.Take(5 * 5).ToList();
-        //        DoHotStatistics1(5, AListPeriodDetail, ref listHotStatistics);
-
-        //        listSingle106Temp = ListSingleAnalysis_106.Take(5 * 10).ToList();
-        //        DoHotStatistics1(10, AListPeriodDetail, ref listHotStatistics);
-
-        //        listSingle106Temp = ListSingleAnalysis_106.Take(5 * 15).ToList();
-        //        DoHotStatistics1(15, AListPeriodDetail, ref listHotStatistics);
-
-        //        listSingle106Temp = ListSingleAnalysis_106.Take(5 * 20).ToList();
-        //        DoHotStatistics1(20, AListPeriodDetail, ref listHotStatistics);
-
-        //    }
-
-        //    //写数据
-        //    if (listHotStatistics.Count > 0)
-        //    {
-        //        UpdateOrAddHotSingleNum_107(listHotStatistics);
-        //    }
-
-        //    return flag;
-        //}
-        //public static void DoHotStatistics(int ASpliteType, List<SingleAnalysis_106> AlistSingle106, PeriodDetail_101 APeriodDetail, ref List<HotSingleNum_107> AlistHotStatistics_107)
-        //{
-        //    if (AlistSingle106.Count > 0)
-        //    {
-        //        decimal pecentage = 0;
-        //        int coutNum = 0;
-        //        for (int i = 1; i <= 6; i++) //位
-        //        {
-        //            for (int j = 0; j <= 9; j++) //0~9的值
-        //            {
-        //                coutNum = 0;
-        //                pecentage = 0;
-        //                HotSingleNum_107 hs = new HotSingleNum_107();
-        //                hs.LongPeriod_001 = APeriodDetail.LongPeriod_001;
-        //                hs.DateNumber_002 = APeriodDetail.DateNumber_004;
-        //                hs.ShortPeriod_003 = APeriodDetail.ShortPeriod_005;
-
-        //                hs.PositionType_004 = i;
-        //                hs.PositionVale_005 = j;
-        //                hs.SplitValueType_006 = ASpliteType;
-        //                if (i == 6)
-        //                {
-        //                    coutNum = AlistSingle106.Where(p => p.PositionVale_005 == j).Count();
-        //                    hs.NumberAllCount_009 = AlistSingle106.Count;
-        //                    pecentage = Math.Round((decimal)coutNum / AlistSingle106.Count, 2);
-
-        //                }
-        //                else
-        //                {
-        //                    coutNum = AlistSingle106.Where(p => p.PositionVale_005 == j && p.PositionType_004 == i).Count();
-        //                    hs.NumberAllCount_009 = AlistSingle106.Count / 5;
-        //                    pecentage = Math.Round((decimal)coutNum / AlistSingle106.Count, 2);
-
-        //                }
-
-        //                hs.AppearCount_007 = coutNum;
-        //                hs.HotValue_008 = pecentage;
-
-        //                AlistHotStatistics_107.Add(hs);
-        //            }
-        //        }
-        //    }
-        //}
 
         public static bool UpdateOrAddHotSingleNum_107(List<HotSingleNum_107> AListHotStatistics_104) 
         {
@@ -2523,13 +2450,151 @@ namespace SSCService03
         #endregion
 
         #region  DoHotTrend_108
-        public static void DoHotTrend_108() { }
+        public static bool DoHotTrend_108()
+        {
+            bool flag = true;
+            List<HotTrend_108> listHotTrend108 = new List<HotTrend_108>();
+            List<ContinueTrend_103> listContinueTrend_103 = new List<ContinueTrend_103>();
+            listContinueTrend_103 = GetDataLostTrend_103(2, ICurrentPeriod_101.LongPeriod_001, 20);
+            List<ContinueTrend_103> listContinueTrend_103Temp = new List<ContinueTrend_103>();
 
-        public static void InitHotTrend_108() { }
+            if (listContinueTrend_103.Count >= 0)
+            {
+                listContinueTrend_103Temp = listContinueTrend_103.Take(5*5).ToList();
+                DoHotTrendStatistics(5, listContinueTrend_103Temp, ref listHotTrend108);
 
-        public static void UpdateOrAddHotTrend_108() { }
+                listContinueTrend_103Temp = listContinueTrend_103.Take(10*5).ToList();
+                DoHotTrendStatistics(10, listContinueTrend_103Temp, ref listHotTrend108);
 
-        public static void GetDataHotTrend_108() { }
+                listContinueTrend_103Temp = listContinueTrend_103.Take(15*5).ToList();
+                DoHotTrendStatistics(15, listContinueTrend_103Temp, ref listHotTrend108);
+
+                listContinueTrend_103Temp = listContinueTrend_103.Take(20*5).ToList();
+                DoHotTrendStatistics(20, listContinueTrend_103Temp, ref listHotTrend108);
+            }
+
+            //写数据
+            if (listHotTrend108.Count > 0)
+            {
+                UpdateOrAddHotTrend_108(listHotTrend108);
+            }
+
+            return flag;
+
+        }
+
+        public static void DoHotTrendStatistics(int ASpliteType, List<ContinueTrend_103> AlistContinueTrend103, ref  List<HotTrend_108> AlistHotStatistics_108) 
+        {
+            
+            for (int i = 1; i <= 5;i++ )
+            {
+                HotTrend_108 ht = new HotTrend_108();
+                ht.LongPeriod_001 = ICurrentPeriod_101.LongPeriod_001;
+                ht.DateNumber_002 = ICurrentPeriod_101.DateNumber_004;
+                ht.ShortPeriod_003 = ICurrentPeriod_101.ShortPeriod_005;
+                ht.PositionType_004 = i;
+                ht.SplitValueType_005 = ASpliteType;
+                ht.FenMu_006 = AlistContinueTrend103.Count/5;
+                ht.RepickNum_010 = AlistContinueTrend103.Where(p=>p.PositionType_004==i && p.Repick_005==1).Count();
+                ht.RepickRate_011 = Math.Round((decimal)ht.RepickNum_010 / ht.FenMu_006, 2);
+
+                ht.SwingNum_020 = AlistContinueTrend103.Where(p => p.PositionType_004 == i && p.Swing_006 == 1).Count();
+                ht.SwingRate_021 = Math.Round((decimal)ht.SwingNum_020 / ht.FenMu_006, 2);
+
+
+                ht.AddOrSubNum_030 = AlistContinueTrend103.Where(p => p.PositionType_004 == i && p.AddOrSub_007 == 1).Count();
+                ht.AddOrSubRate_031 = Math.Round((decimal)ht.AddOrSubNum_030 / ht.FenMu_006, 2);
+
+
+                ht.OtherNum_040 = AlistContinueTrend103.Where(p => p.PositionType_004 == i && p.Other_008 == 1).Count();
+                ht.OtherRate_041 = Math.Round((decimal)ht.OtherNum_040 / ht.FenMu_006, 2);
+
+                AlistHotStatistics_108.Add(ht);
+
+            }
+        }
+      
+        public static bool UpdateOrAddHotTrend_108(List<HotTrend_108> AlistHotStatistics_108)
+        {
+            bool flag = true;
+            #region
+            IDbConnection objConn;
+            IDbDataAdapter objAdapter;
+            DbCommandBuilder objCmdBuilder;
+            try
+            {
+                string strSql = string.Empty;
+                strSql = string.Format("Select * from T_108_{1} where C001={0}", ICurrentPeriod_101.LongPeriod_001, IStrYY);
+
+                objConn = DbHelperSQL.GetConnection(ISqlConnect);
+                objAdapter = DbHelperSQL.GetDataAdapter(objConn, strSql);
+                objCmdBuilder = DbHelperSQL.GetCommandBuilder(objAdapter);
+                objCmdBuilder.ConflictOption = ConflictOption.OverwriteChanges;
+                objCmdBuilder.SetAllValues = false;
+
+                DataSet objDataSet = new DataSet();
+                objAdapter.Fill(objDataSet);
+
+                foreach (HotTrend_108 ss in AlistHotStatistics_108)
+                {
+                    DataRow drCurrent = objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C004={1}  AND C005={2} ", ss.LongPeriod_001, ss.PositionType_004, ss.SplitValueType_005)).Count() > 0 ? objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C004={1}  AND C005={2} ", ss.LongPeriod_001, ss.PositionType_004, ss.SplitValueType_005)).First() : null;
+
+                    if (drCurrent != null) //更新
+                    {
+                        drCurrent.BeginEdit();
+                        drCurrent["C001"] = ss.LongPeriod_001.ToString();
+                        drCurrent["C002"] = ss.DateNumber_002.ToString();
+                        drCurrent["C003"] = ss.ShortPeriod_003;
+                        drCurrent["C004"] = ss.PositionType_004;
+                        drCurrent["C005"] = ss.SplitValueType_005;
+                        drCurrent["C006"] = ss.FenMu_006;
+                        drCurrent["C010"] = ss.RepickNum_010;
+                        drCurrent["C011"] = ss.RepickRate_011;
+                        drCurrent["C020"] = ss.SwingNum_020;
+                        drCurrent["C021"] = ss.SwingRate_021;
+                        drCurrent["C030"] = ss.AddOrSubNum_030;
+                        drCurrent["C031"] = ss.AddOrSubRate_031;
+                        drCurrent["C040"] = ss.OtherNum_040;
+                        drCurrent["C041"] = ss.OtherRate_041;
+                        drCurrent.EndEdit();
+                    }
+                    else //添加新行
+                    {
+                        DataRow drNewRow = objDataSet.Tables[0].NewRow();
+                        drNewRow["C001"] = ss.LongPeriod_001.ToString();
+                        drNewRow["C002"] = ss.DateNumber_002.ToString();
+                        drNewRow["C003"] = ss.ShortPeriod_003;
+                        drNewRow["C004"] = ss.PositionType_004;
+                        drNewRow["C005"] = ss.SplitValueType_005;
+                        drNewRow["C006"] = ss.FenMu_006;
+                        drNewRow["C010"] = ss.RepickNum_010;
+                        drNewRow["C011"] = ss.RepickRate_011;
+                        drNewRow["C020"] = ss.SwingNum_020;
+                        drNewRow["C021"] = ss.SwingRate_021;
+                        drNewRow["C030"] = ss.AddOrSubNum_030;
+                        drNewRow["C031"] = ss.AddOrSubRate_031;
+                        drNewRow["C040"] = ss.OtherNum_040;
+                        drNewRow["C041"] = ss.OtherRate_041;
+                        objDataSet.Tables[0].Rows.Add(drNewRow);
+                    }
+                }
+                objAdapter.Update(objDataSet);
+                objDataSet.AcceptChanges();
+                FileLog.WriteInfo("UpdateOrAddHotTrend_108() ", "Success :" + ICurrentPeriod_101.LongPeriod_001);
+
+            }
+            catch (Exception e)
+            {
+                FileLog.WriteError("UpdateOrAddHotTrend_108() ", e.Message);
+                return flag = false;
+            }
+            #endregion
+            return flag;
+        
+        }
+
+        public static void GetDataHotTrend_108()
+        { }
         #endregion
 
         #region  DoHotCross_109

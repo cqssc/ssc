@@ -26,6 +26,31 @@ namespace Modles
         public int ShortPeriod_003 { set; get; }
 
 
+
+        //出现>20期遗失的数量  >20期遗失出现时的出现位置数量
+        public int Appear20Lost_004 { set; get; }
+
+        //出现>20M1的数量 
+        public int Appear20MLost_005 { set; get; }
+
+
+
+        //剩下>20期遗失的数量
+        public int Remain20Lost_006 { set; get; }
+
+        //剩下>20M1的数量
+        public int Remain20MLost_007 { set; get; }
+
+        //剩下>20集中的数字个数
+        public int Remain20PositionValueNum_008 { set; get; }
+
+        //>剩下20期遗失数字分布的个数数量
+        public int Remain20PositionNum_009 { set; get; }
+
+
+        
+
+
         public int Lost_010 { set; get; }
 
         public int Lost_011 { set; get; }

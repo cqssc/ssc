@@ -93,9 +93,10 @@ namespace SSCService03
                             Task t6 = Task.Factory.StartNew(delegate { DoHotSingleNum_107(ConstDefine.Const_SetZero, listPeriodTemp_101); });
                             Task.WaitAll(t1, t2, t3, t4, t5, t6);
 
-                            Task t7 = Task.Factory.StartNew(delegate { DoSingleAnalysis_106(ConstDefine.Const_SetZero, listPeriodTemp_101); });
+                            Task t7 = Task.Factory.StartNew(delegate { DoSingleAnalysis_106(ConstDefine.Const_SetZero, listPeriodTemp_101); }); 
+                            Task t8 = Task.Factory.StartNew(delegate { DoHotTrend_108(); });
 
-                            t7.Wait();
+                            Task.WaitAll(t7, t8);
 
                             //DoLostAll_102(ConstDefine.Const_SetZero, listPeriodTemp_101, ref  ICurrentLostAll_102);
 
@@ -134,10 +135,11 @@ namespace SSCService03
                              Task t5 = Task.Factory.StartNew(delegate { DoLostSingleNumAll_105(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
                              Task t6 = Task.Factory.StartNew(delegate { DoHotSingleNum_107(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
                              Task.WaitAll(t1, t2, t3, t4, t5, t6);
-
+                            
                              Task t7 = Task.Factory.StartNew(delegate { DoSingleAnalysis_106(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
+                             Task t8 = Task.Factory.StartNew(delegate { DoHotTrend_108(); });
 
-                             t7.Wait();
+                             Task.WaitAll(t7, t8);
 
                              //DoLostAll_102(ConstDefine.Const_SetNormal, listPeriodTemp_101, ref  ICurrentLostAll_102);
 
@@ -1066,7 +1068,7 @@ namespace SSCService03
                     StrSQL = string.Format("select top 5 * from T_103_{0} where C001<{1} order by  C001 desc", IStrYY, LongPeriodNumber);
                     break;
                 case 2://得到某期前多少期
-                    StrSQL = string.Format("select top 5*{2} * from T_103_{0} where C001<={1} order by  C001 desc", IStrYY, LongPeriodNumber,DataCount);
+                    StrSQL = string.Format("select top {2} * from T_103_{0} where C001<={1} order by  C001 desc", IStrYY, LongPeriodNumber,DataCount*5);
                     break;
                 default:
                     break;

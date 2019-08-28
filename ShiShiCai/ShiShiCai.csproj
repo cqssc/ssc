@@ -73,7 +73,8 @@
     <Compile Include="Models\PositionLargeSmallItem.cs" />
     <Compile Include="Models\PositionNumberHotItem.cs" />
     <Compile Include="Models\TendencyItem.cs" />
-    <Compile Include="Models\TendencyTypeItem.cs" />
+    <Compile Include="Models\TendencyNumberItem.cs" />
+    <Compile Include="Models\TendencyPositionItem.cs" />
     <Compile Include="PopupWindow.xaml.cs">
       <DependentUpon>PopupWindow.xaml</DependentUpon>
     </Compile>

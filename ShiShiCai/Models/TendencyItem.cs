@@ -20,7 +20,7 @@ using System.ComponentModel;
 
 namespace ShiShiCai.Models
 {
-    public class TendencyItem:INotifyPropertyChanged
+    public class TendencyItem : INotifyPropertyChanged
     {
         private string mSerial;
         private int mNumber;
@@ -34,6 +34,8 @@ namespace ShiShiCai.Models
 
         private int mTimes;
         private int mRange;
+
+        private double mItemHeight;
 
         public string Serial
         {
@@ -93,6 +95,12 @@ namespace ShiShiCai.Models
         {
             get { return mRange; }
             set { mRange = value; OnPropertyChanged("Range"); }
+        }
+
+        public double ItemHeight
+        {
+            get { return mItemHeight; }
+            set { mItemHeight = value; OnPropertyChanged("ItemHeight"); }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

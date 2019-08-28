@@ -89,7 +89,7 @@ namespace ShiShiCai
             InitModuleItems();
             LoadConfig();
 
-            ListBoxModules.SelectedIndex = 0;//默认显示模块
+            ListBoxModules.SelectedIndex = 3;//默认显示模块
 
 
             mLoading = true;

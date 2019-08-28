@@ -23,6 +23,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using ShiShiCai.Common;
 using ShiShiCai.Models;
@@ -46,19 +47,38 @@ namespace ShiShiCai.UserControls
             set { SetValue(PageParentProperty, value); }
         }
 
+        public static readonly DependencyProperty ItemWidthProperty =
+            DependencyProperty.Register("ItemWidth", typeof(double), typeof(UCTendency), new PropertyMetadata(default(double)));
+
+        public double ItemWidth
+        {
+            get { return (double)GetValue(ItemWidthProperty); }
+            set { SetValue(ItemWidthProperty, value); }
+        }
+
         public ObservableCollection<DateItem> DateItems
         {
             get { return mListDateItems; }
         }
 
-        public ObservableCollection<TendencyTypeItem> TypeItems
+        public ObservableCollection<PositionItem> PositionItems
         {
-            get { return mListTypeItems; }
+            get { return mListPositionItems; }
         }
 
-        public ObservableCollection<TendencyItem> TendencyItems
+        public ObservableCollection<TendencyNumberItem> NumberItems
         {
-            get { return mListTendencyItems; }
+            get { return mListNumberItems; }
+        }
+
+        public ObservableCollection<int> NumberYAxisLabels
+        {
+            get { return mListNumberYAxisLabels; }
+        }
+
+        public ObservableCollection<TendencyPositionItem> TendencyPosItems
+        {
+            get { return mListTendecyPosItems; }
         }
 
         #endregion
@@ -67,9 +87,11 @@ namespace ShiShiCai.UserControls
         #region Members
 
         private readonly List<TendencyItem> mListTendencyData = new List<TendencyItem>();
+        private readonly ObservableCollection<PositionItem> mListPositionItems = new ObservableCollection<PositionItem>();
         private readonly ObservableCollection<DateItem> mListDateItems = new ObservableCollection<DateItem>();
-        private readonly ObservableCollection<TendencyTypeItem> mListTypeItems = new ObservableCollection<TendencyTypeItem>();
-        private readonly ObservableCollection<TendencyItem> mListTendencyItems = new ObservableCollection<TendencyItem>();
+        private readonly ObservableCollection<TendencyNumberItem> mListNumberItems = new ObservableCollection<TendencyNumberItem>();
+        private readonly ObservableCollection<int> mListNumberYAxisLabels = new ObservableCollection<int>();
+        private readonly ObservableCollection<TendencyPositionItem> mListTendecyPosItems = new ObservableCollection<TendencyPositionItem>();
 
         private bool mIsInited;
 
@@ -82,6 +104,9 @@ namespace ShiShiCai.UserControls
 
             Loaded += UCTendency_Loaded;
             ComboDate.SelectionChanged += ComboDate_SelectionChanged;
+            BorderChart.SizeChanged += BorderChart_SizeChanged;
+            ListBoxPositions.AddHandler(ToggleButton.CheckedEvent, new RoutedEventHandler(CheckBoxNumber_Checked));
+            ListBoxPositions.AddHandler(ToggleButton.UncheckedEvent, new RoutedEventHandler(CheckBoxNumber_Unchecked));
         }
 
         void UCTendency_Loaded(object sender, RoutedEventArgs e)
@@ -108,11 +133,50 @@ namespace ShiShiCai.UserControls
 
         private void Init()
         {
-            InitTypesItems();
+            InitPositionItems();
             InitDateItems();
             LoadTendencyData();
 
             ComboDate.SelectedItem = mListDateItems.FirstOrDefault();
+        }
+
+        private void InitPositionItems()
+        {
+            mListPositionItems.Clear();
+            PositionItem item = new PositionItem();
+            item.Number = 5;
+            item.Name = "万位";
+            item.IsShow = true;
+            item.Brush = Brushes.Red;
+            mListPositionItems.Add(item);
+            item = new PositionItem();
+            item.Number = 4;
+            item.Name = "千位";
+            item.Brush = Brushes.Green;
+            mListPositionItems.Add(item);
+            item = new PositionItem();
+            item.Number = 3;
+            item.Name = "百位";
+            item.Brush = Brushes.Blue;
+            mListPositionItems.Add(item);
+            item = new PositionItem();
+            item.Number = 2;
+            item.Name = "十位";
+            item.Brush = Brushes.Orange;
+            mListPositionItems.Add(item);
+            item = new PositionItem();
+            item.Number = 1;
+            item.Name = "个位";
+            item.Brush = Brushes.Fuchsia;
+            mListPositionItems.Add(item);
+        }
+
+        private void InitItemWidth()
+        {
+            int count = 60;
+            double width = BorderChart.ActualWidth - 30 - 80;
+            double itemWidth = width / (count * 1.0);
+            ItemWidth = itemWidth;
         }
 
         private void InitDateItems()
@@ -130,32 +194,6 @@ namespace ShiShiCai.UserControls
                 item.Date = date;
                 mListDateItems.Add(item);
             }
-        }
-
-        private void InitTypesItems()
-        {
-            mListTypeItems.Clear();
-            TendencyTypeItem item = new TendencyTypeItem();
-            item.Number = 1;
-            item.Name = "重复";
-            item.Color = Brushes.DarkRed;
-            item.IsChecked = true;
-            mListTypeItems.Add(item);
-            item = new TendencyTypeItem();
-            item.Number = 2;
-            item.Name = "振荡";
-            item.Color = Brushes.DarkGreen;
-            mListTypeItems.Add(item);
-            item = new TendencyTypeItem();
-            item.Number = 3;
-            item.Name = "递增减";
-            item.Color = Brushes.DarkOrange;
-            mListTypeItems.Add(item);
-            item = new TendencyTypeItem();
-            item.Number = 4;
-            item.Name = "其他";
-            item.Color = Brushes.DarkBlue;
-            mListTypeItems.Add(item);
         }
 
         private void LoadTendencyData()
@@ -208,10 +246,239 @@ namespace ShiShiCai.UserControls
             }
         }
 
-        private void InitTendencyItems()
+        private void InitTendencyNumberItems()
         {
-            mListTendencyItems.Clear();
+            mListNumberItems.Clear();
+            DateItem dateItem = ComboDate.SelectedItem as DateItem;
+            if (dateItem == null) { return; }
+            int date = dateItem.Date;
+            var data = mListTendencyData.Where(t => t.Date == date);
+            var dataGroups = data.GroupBy(t => t.Number);
+            foreach (var dataGroup in dataGroups)
+            {
+                int number = dataGroup.Key;
+                TendencyNumberItem item = new TendencyNumberItem();
+                item.Date = date;
+                item.Number = number;
+                foreach (var dataItem in dataGroup)
+                {
+                    string serial = dataItem.Serial;
+                    item.Serial = serial;
+                    int pos = dataItem.Pos;
+                    if (pos == 1)
+                    {
+                        item.D1Range = dataItem.Range;
+                    }
+                    if (pos == 2)
+                    {
+                        item.D2Range = dataItem.Range;
+                    }
+                    if (pos == 3)
+                    {
+                        item.D3Range = dataItem.Range;
+                    }
+                    if (pos == 4)
+                    {
+                        item.D4Range = dataItem.Range;
+                    }
+                    if (pos == 5)
+                    {
+                        item.D5Range = dataItem.Range;
+                    }
+                }
+                mListNumberItems.Add(item);
+            }
+        }
 
+        private void InitNumberHeights()
+        {
+            double height = BorderChart.ActualHeight - 20;
+            int maxValue = 0;
+
+
+            #region 找到最大振幅值
+
+            for (int i = 0; i < mListNumberItems.Count; i++)
+            {
+                var item = mListNumberItems[i];
+                maxValue = Math.Max(item.D1Range, maxValue);
+                maxValue = Math.Max(item.D2Range, maxValue);
+                maxValue = Math.Max(item.D3Range, maxValue);
+                maxValue = Math.Max(item.D4Range, maxValue);
+                maxValue = Math.Max(item.D5Range, maxValue);
+            }
+
+            #endregion
+
+
+            #region 确定振幅的Y轴标签，一般分为5段，标签值取整
+
+            mListNumberYAxisLabels.Clear();
+            int mod = maxValue % 5;
+            int div = maxValue / 5;
+            if (mod > 0)
+            {
+                div = div + 1;
+            }
+            maxValue = div * 5;
+            for (int i = 5; i >= 1; i--)
+            {
+                mListNumberYAxisLabels.Add(i * div);
+            }
+
+            #endregion
+
+
+            for (int i = 0; i < mListNumberItems.Count; i++)
+            {
+                var item = mListNumberItems[i];
+
+                #region 高度
+
+                item.D1Height = item.D1Range / (maxValue * 1.0) * height;
+                item.D2Height = item.D2Range / (maxValue * 1.0) * height;
+                item.D3Height = item.D3Range / (maxValue * 1.0) * height;
+                item.D4Height = item.D4Range / (maxValue * 1.0) * height;
+                item.D5Height = item.D5Range / (maxValue * 1.0) * height;
+
+                #endregion
+
+
+                #region 颜色和可见性
+
+                for (int k = 0; k < mListPositionItems.Count; k++)
+                {
+                    var posItem = mListPositionItems[k];
+                    int pos = posItem.Number;
+                    bool isShow = posItem.IsShow;
+                    if (pos == 1)
+                    {
+                        item.D1Color = posItem.Brush;
+                        item.D1Visible = isShow;
+                    }
+                    if (pos == 2)
+                    {
+                        item.D2Color = posItem.Brush;
+                        item.D2Visible = isShow;
+                    }
+                    if (pos == 3)
+                    {
+                        item.D3Color = posItem.Brush;
+                        item.D3Visible = isShow;
+                    }
+                    if (pos == 4)
+                    {
+                        item.D4Color = posItem.Brush;
+                        item.D4Visible = isShow;
+                    }
+                    if (pos == 5)
+                    {
+                        item.D5Color = posItem.Brush;
+                        item.D5Visible = isShow;
+                    }
+                }
+
+                #endregion
+
+            }
+        }
+
+        private void InitTendencyPosItems()
+        {
+            mListTendecyPosItems.Clear();
+            for (int i = 0; i < mListPositionItems.Count; i++)
+            {
+                var posItem = mListPositionItems[i];
+                int pos = posItem.Number;
+                TendencyPositionItem item = new TendencyPositionItem();
+                item.Pos = pos;
+                var positionItem = mListPositionItems.FirstOrDefault(p => p.Number == pos);
+                if (positionItem != null)
+                {
+                    item.Color = positionItem.Brush;
+                    item.Visible = positionItem.IsShow;
+                }
+                for (int j = 0; j < mListNumberItems.Count; j++)
+                {
+                    item.Items.Add(mListNumberItems[j]);
+                }
+                mListTendecyPosItems.Add(item);
+            }
+        }
+
+        private void InitNumberPaths()
+        {
+            double itemWidth = ItemWidth;
+            double height = BorderChart.ActualHeight - 20;
+            for (int i = 0; i < mListTendecyPosItems.Count; i++)
+            {
+                var posItem = mListTendecyPosItems[i];
+                var pos = posItem.Pos;
+                var positionItem = mListPositionItems.FirstOrDefault(p => p.Number == pos);
+                if (positionItem != null)
+                {
+                    posItem.Color = positionItem.Brush;
+                    posItem.Visible = positionItem.IsShow;
+                }
+                PathSegmentCollection segments = new PathSegmentCollection();
+                var firstItem = posItem.Items.FirstOrDefault();
+                if (firstItem == null) { continue; }
+                double itemHeight = 0;
+                if (pos == 1)
+                {
+                    itemHeight = firstItem.D1Height;
+                }
+                if (pos == 2)
+                {
+                    itemHeight = firstItem.D2Height;
+                }
+                if (pos == 3)
+                {
+                    itemHeight = firstItem.D3Height;
+                }
+                if (pos == 4)
+                {
+                    itemHeight = firstItem.D4Height;
+                }
+                if (pos == 5)
+                {
+                    itemHeight = firstItem.D5Height;
+                }
+                double firstX = itemWidth / 2.0;
+                double firstY = height - itemHeight + 4;
+                Point firtPoint = new Point(firstX, firstY);
+                for (int j = 0; j < posItem.Items.Count; j++)
+                {
+                    var item = posItem.Items[j];
+                    itemHeight = 0;
+                    if (pos == 1)
+                    {
+                        itemHeight = item.D1Height;
+                    }
+                    if (pos == 2)
+                    {
+                        itemHeight = item.D2Height;
+                    }
+                    if (pos == 3)
+                    {
+                        itemHeight = item.D3Height;
+                    }
+                    if (pos == 4)
+                    {
+                        itemHeight = item.D4Height;
+                    }
+                    if (pos == 5)
+                    {
+                        itemHeight = item.D5Height;
+                    }
+                    double x = itemWidth * j + itemWidth / 2.0;
+                    double y = height - itemHeight + 4;
+                    Point point = new Point(x, y);
+                    segments.Add(new LineSegment { Point = point });
+                }
+                PathGeometry path = new PathGeometry { Figures = new PathFigureCollection { new PathFigure { StartPoint = firtPoint, Segments = segments } } };
+                posItem.Path = path;
+            }
         }
 
         #endregion
@@ -221,8 +488,38 @@ namespace ShiShiCai.UserControls
 
         void ComboDate_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            InitTendencyItems();
+            InitTendencyNumberItems();
+            InitTendencyPosItems();
+            InitItemWidth();
+            InitNumberHeights();
+            InitNumberPaths();
         }
+
+        void BorderChart_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            InitItemWidth();
+            InitNumberHeights();
+            InitNumberPaths();
+        }
+
+        void CheckBoxNumber_Checked(object sender, RoutedEventArgs e)
+        {
+            InitNumberHeights();
+            InitNumberPaths();
+        }
+
+        void CheckBoxNumber_Unchecked(object sender, RoutedEventArgs e)
+        {
+            InitNumberHeights();
+            InitNumberPaths();
+        }
+
+        #endregion
+
+
+        #region Others
+
+
 
         #endregion
 

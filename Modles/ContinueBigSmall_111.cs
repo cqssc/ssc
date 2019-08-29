@@ -28,13 +28,17 @@ namespace Modles
         public int Odd_008 { get; set; }
 
         public int BigSmallContinue_009 { get; set; }
-
         public int EvenOddContinue_010 { get; set; }
-
         public int ComposeBig_011 { get; set; }
         public int ComposeSmall_012 { get; set; }
         public int ComposeEven_013 { get; set; }
         public int ComposeOdd_014 { get; set; }
+
+        public decimal BigContinueRate_015 { get; set; }
+        public decimal SmallContinueRate_016 { get; set; }
+        public decimal EvenContinueRate_017 { get; set; }
+        public decimal OddContinueRate_018 { get; set; }
+
 
     }
 }

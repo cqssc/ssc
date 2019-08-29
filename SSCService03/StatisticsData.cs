@@ -98,20 +98,6 @@ namespace SSCService03
 
                             Task.WaitAll(t7, t8);
 
-                            //DoLostAll_102(ConstDefine.Const_SetZero, listPeriodTemp_101, ref  ICurrentLostAll_102);
-
-                            //DoLostTrend_103(ConstDefine.Const_SetZero, listPeriodTemp_101);
-
-                            //DoContinueBigSmall_111(ConstDefine.Const_SetZero, listPeriodTemp_101);
-
-                            //DoLostCross_104(ConstDefine.Const_SetZero, listPeriodTemp_101);
-
-                            //DoLostSingleNumAll_105(ConstDefine.Const_SetZero, listPeriodTemp_101);
-
-                            //DoSingleAnalysis_106(ConstDefine.Const_SetZero, listPeriodTemp_101);
-
-                            //DoHotSingleNum_107(ConstDefine.Const_SetZero, listPeriodTemp_101);
-
 
                              //108
 
@@ -141,19 +127,6 @@ namespace SSCService03
 
                              Task.WaitAll(t7, t8);
 
-                             //DoLostAll_102(ConstDefine.Const_SetNormal, listPeriodTemp_101, ref  ICurrentLostAll_102);
-
-                             //DoLostTrend_103(ConstDefine.Const_SetNormal, listPeriodTemp_101);
-
-                             //DoContinueBigSmall_111(ConstDefine.Const_SetNormal, listPeriodTemp_101);
-
-                             //DoLostCross_104(ConstDefine.Const_SetNormal, listPeriodTemp_101);
-
-                             //DoLostSingleNumAll_105(ConstDefine.Const_SetNormal, listPeriodTemp_101);
-
-                             //DoSingleAnalysis_106(ConstDefine.Const_SetNormal, listPeriodTemp_101);
-
-                             //DoHotSingleNum_107(ConstDefine.Const_SetNormal, listPeriodTemp_101);
                          }
 
                          string strSql = string.Format("update T_101_{0}  Set C099=1 where C001={1}", IStrYY, ICurrentPeriod_101.LongPeriod_001);
@@ -2294,6 +2267,18 @@ namespace SSCService03
 
             }
 
+            if(listHotStatistics.Count>0)
+            {
+                List<HotSingleNum_107> listHotStatisticsTemp = listHotStatistics.Where(p=>p.SliptType_005==6).ToList();
+                foreach(HotSingleNum_107  hs in listHotStatisticsTemp)
+                {
+                    hs.Appear789CountRate_020 = Math.Round((decimal)(hs.AppearCount_017 + hs.AppearCount_018 + hs.AppearCount_019) / (hs.SliptType_005 * 5 * 3), 2);
+                    hs.Appear012CountRate_021 = Math.Round((decimal)(hs.AppearCount_010 + hs.AppearCount_011 + hs.AppearCount_012) / (hs.SliptType_005 * 5 * 3), 2);
+                    hs.Appear3456CountRate_022 = Math.Round((decimal)(hs.AppearCount_013 + hs.AppearCount_014 + hs.AppearCount_015 + hs.AppearCount_016) / (hs.SliptType_005 * 5 * 4), 2);
+                }
+            }
+
+
             //写数据
             if (listHotStatistics.Count > 0)
             {
@@ -2411,6 +2396,9 @@ namespace SSCService03
                         drCurrent["C017"] = ss.AppearCount_017;
                         drCurrent["C018"] = ss.AppearCount_018;
                         drCurrent["C019"] = ss.AppearCount_019;
+                        drCurrent["C020"] = ss.Appear789CountRate_020;
+                        drCurrent["C021"] = ss.Appear012CountRate_021;
+                        drCurrent["C022"] = ss.Appear3456CountRate_022;
                         drCurrent.EndEdit();
                     }
                     else //添加新行
@@ -2431,6 +2419,9 @@ namespace SSCService03
                         drNewRow["C017"] = ss.AppearCount_017;
                         drNewRow["C018"] = ss.AppearCount_018;
                         drNewRow["C019"] = ss.AppearCount_019;
+                        drNewRow["C020"] = ss.Appear789CountRate_020;
+                        drNewRow["C021"] = ss.Appear012CountRate_021;
+                        drNewRow["C022"] = ss.Appear3456CountRate_022;
                         objDataSet.Tables[0].Rows.Add(drNewRow);
                     }                   
                 }
@@ -2448,7 +2439,6 @@ namespace SSCService03
             return flag;
         }
 
-        public static void GetDataHotSingleNum_107() { }
         #endregion
 
         #region  DoHotTrend_108

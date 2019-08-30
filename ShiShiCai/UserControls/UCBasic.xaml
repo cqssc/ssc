@@ -18,6 +18,7 @@
             <conv:BooleanToLargeConverter x:Key="BooleanToLargeConverter"></conv:BooleanToLargeConverter>
             <conv:BooleanToSingleConverter x:Key="BooleanToSingleConverter"></conv:BooleanToSingleConverter>
             <conv:BooleanToHasConverter x:Key="BooleanToHasConverter"></conv:BooleanToHasConverter>
+            <conv:IntegerToNullNumberConverter x:Key="IntegerToNullNumberConverter"></conv:IntegerToNullNumberConverter>
             <conv:IntegerToDateConverter x:Key="IntegerToDateConverter"></conv:IntegerToDateConverter>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -122,9 +123,9 @@
                                                         <TextBlock Text="{Binding LargeValue,Converter={StaticResource BooleanToLargeConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
                                                     </Border>
                                                     <TextBlock Grid.Row="7" Text="{Binding SingleValue,Converter={StaticResource BooleanToSingleConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                                    <TextBlock Grid.Row="8" Text="{Binding RepeatValue,Converter={StaticResource BooleanToHasConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                                    <TextBlock Grid.Row="8" Text="{Binding RepeatValue,Converter={StaticResource IntegerToNullNumberConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
                                                     <Border Grid.Row="9" Style="{DynamicResource BorderBottomLineStyle}">
-                                                        <TextBlock Text="{Binding IntervalValue,Converter={StaticResource BooleanToHasConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                                        <TextBlock Text="{Binding IntervalValue,Converter={StaticResource IntegerToNullNumberConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
                                                     </Border>
                                                 </Grid>
                                             </DataTemplate>
@@ -421,8 +422,8 @@
                                                                 </Grid.ColumnDefinitions>
                                                                 <TextBlock Grid.Column="0" Text="{Binding LargeValue,Converter={StaticResource BooleanToLargeConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
                                                                 <TextBlock Grid.Column="1" Text="{Binding SingleValue,Converter={StaticResource BooleanToSingleConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                                                <TextBlock Grid.Column="2" Text="{Binding RepeatValue,Converter={StaticResource BooleanToHasConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                                                <TextBlock Grid.Column="3" Text="{Binding IntervalValue,Converter={StaticResource BooleanToHasConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="2" Text="{Binding RepeatValue,Converter={StaticResource IntegerToNullNumberConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                                                <TextBlock Grid.Column="3" Text="{Binding IntervalValue,Converter={StaticResource IntegerToNullNumberConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
                                                             </Grid>
                                                             <Grid Grid.Column="3">
                                                                 <Grid.ColumnDefinitions>

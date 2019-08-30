@@ -50,12 +50,12 @@ namespace ShiShiCai.Models
 
         private bool mLargeValue;   //大小
         private bool mSingleValue;  //单双
-        private bool mRepeatValue;  //重复
-        private bool mIntervalValue;//间隔
-        private bool mLarger20;     //>20期
-        private bool mAllOne20;     //20期老1
-        private bool mPairsValue;   //一对
-        private bool mSameValue;    //豹子
+        private int mRepeatValue;  //重复
+        private int mIntervalValue;//间隔
+        private int mLarger20;     //>20期
+        private int mAllOne20;     //20期老1
+        private int mPairsValue;   //一对
+        private int mSameValue;    //豹子
 
         #endregion
 
@@ -227,37 +227,37 @@ namespace ShiShiCai.Models
             set { mSingleValue = value; OnPropertyChanged("SingleValue"); }
         }
 
-        public bool RepeatValue
+        public int RepeatValue
         {
             get { return mRepeatValue; }
             set { mRepeatValue = value; OnPropertyChanged("RepeatValue"); }
         }
 
-        public bool IntervalValue
+        public int IntervalValue
         {
             get { return mIntervalValue; }
             set { mIntervalValue = value; OnPropertyChanged("IntervalValue"); }
         }
 
-        public bool Larger20
+        public int Larger20
         {
             get { return mLarger20; }
             set { mLarger20 = value; OnPropertyChanged("Larger20"); }
         }
 
-        public bool AllOne20
+        public int AllOne20
         {
             get { return mAllOne20; }
             set { mAllOne20 = value; OnPropertyChanged("AllOne20"); }
         }
 
-        public bool PairsVaue
+        public int PairsVaue
         {
             get { return mPairsValue; }
             set { mPairsValue = value; OnPropertyChanged("PairsVaue"); }
         }
 
-        public bool SameValue
+        public int SameValue
         {
             get { return mSameValue; }
             set { mSameValue = value; OnPropertyChanged("SameValue"); }

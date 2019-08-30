@@ -62,6 +62,25 @@ namespace ShiShiCai.Converters
         }
     }
 
+    public class IntegerToNullNumberConverter : IValueConverter
+    {
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            int intValue = (int)value;
+            if (intValue <= 0)
+            {
+                return "";
+            }
+            return intValue.ToString();
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class BooleanToHasConverter : IValueConverter
     {
 

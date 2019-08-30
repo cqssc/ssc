@@ -34,6 +34,10 @@ namespace Modles
         public int AppearCount_018 { get; set; }
         public int AppearCount_019 { get; set; }
 
+        public decimal Appear789CountRate_020 { get; set; }
+        public decimal Appear012CountRate_021 { get; set; }
+        public decimal Appear3456CountRate_022 { get; set; }
+
 
         
     }

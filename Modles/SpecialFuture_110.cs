@@ -30,13 +30,17 @@ namespace Modles
 
 
         public string ScoreBack_009 { set; get; }
-        public string ScoreBack_010 { set; get; }
-
+        public int ScoreBack_010 { set; get; }
         public int ScoreBack_011 { set; get; }
         public int ScoreBack_012 { set; get; }
         public int ScoreBack_013 { set; get; }
         public int ScoreBack_014 { set; get; }
         public int ScoreBack_015 { set; get; }
+        public int ScoreBack_016 { set; get; }
+        public int ScoreBack_017 { set; get; }
+        public int ScoreBack_018 { set; get; }
+        public int ScoreBack_019 { set; get; }
+        public int ScoreBack_020 { set; get; }
 
 
     }

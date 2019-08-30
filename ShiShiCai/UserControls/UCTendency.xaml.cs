@@ -122,7 +122,13 @@ namespace ShiShiCai.UserControls
 
         public void Refresh(IssueItem issueItem)
         {
-
+            LoadTendencyData();
+            RefreshTendencyNumberItem(issueItem);
+            RefreshTendencyPosItem(issueItem);
+            InitItemWidth();
+            InitNumberHeights();
+            InitNumberPaths();
+            InitCaculateInfos();
         }
 
         private void Init()
@@ -538,6 +544,92 @@ namespace ShiShiCai.UserControls
                 posItem.Max2 = max2;
                 posItem.Max3 = max3;
                 posItem.Max4 = max4;
+            }
+        }
+
+        private void RefreshTendencyNumberItem(IssueItem issueItem)
+        {
+            DateItem dateItem = ComboDate.SelectedItem as DateItem;
+            if (dateItem == null) { return; }
+            int date = dateItem.Date;
+            if (date != issueItem.Date) { return; }
+            string serial = issueItem.Serial;
+            var data = mListTendencyData.Where(t => t.Serial == serial).ToList();
+            if (data.Count <= 0) { return; }
+            TendencyNumberItem item = new TendencyNumberItem();
+            item.Serial = serial;
+            item.Date = date;
+            for (int i = 0; i < data.Count; i++)
+            {
+                var dataItem = data[i];
+                item.Number = dataItem.Number;
+                int pos = dataItem.Pos;
+                if (pos == 1)
+                {
+                    item.D1Range = dataItem.Range;
+                }
+                if (pos == 2)
+                {
+                    item.D2Range = dataItem.Range;
+                }
+                if (pos == 3)
+                {
+                    item.D3Range = dataItem.Range;
+                }
+                if (pos == 4)
+                {
+                    item.D4Range = dataItem.Range;
+                }
+                if (pos == 5)
+                {
+                    item.D5Range = dataItem.Range;
+                }
+            }
+            mListNumberItems.Add(item);
+        }
+
+        private void RefreshTendencyPosItem(IssueItem issueItem)
+        {
+            DateItem dateItem = ComboDate.SelectedItem as DateItem;
+            if (dateItem == null) { return; }
+            int date = dateItem.Date;
+            if (date != issueItem.Date) { return; }
+            for (int i = 0; i < mListPositionItems.Count; i++)
+            {
+                var posItem = mListPositionItems[i];
+                int pos = posItem.Pos;
+                string serial = issueItem.Serial;
+                var numberItem = mListNumberItems.FirstOrDefault(n => n.Serial == serial);
+                if (numberItem != null)
+                {
+                    posItem.NumberItems.Add(numberItem);
+                }
+                var dataItem = mListTendencyData.FirstOrDefault(t => t.Serial == serial && t.Pos == pos);
+                if (dataItem == null) { continue; }
+                TendencyDetailItem item = new TendencyDetailItem();
+                item.Serial = serial;
+                item.Number = dataItem.Number;
+                item.Date = date;
+                item.Pos = pos;
+                if (dataItem.Repeat)
+                {
+                    item.Category = 1;
+                }
+                if (dataItem.Osillation)
+                {
+                    item.Category = 2;
+                }
+                if (dataItem.Increase)
+                {
+                    item.Category = 3;
+                }
+                if (dataItem.Other)
+                {
+                    item.Category = 4;
+                }
+                item.Times = dataItem.Times;
+                item.Range = dataItem.Range;
+                posItem.Items.Add(item);
             }
         }
 

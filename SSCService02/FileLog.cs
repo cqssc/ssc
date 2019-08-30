@@ -9,7 +9,7 @@ namespace SSCService02
 {
     public class FileLog
     {
-        public static string FilePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\ss03\\Log";//存放日志的路径
+        public static string FilePath = System.AppDomain.CurrentDomain.BaseDirectory + "\\ss02\\Log";//存放日志的路径
         public static long FileMaxSize = 10240000;//日志文件的最大长度
         public static string FileName = string.Empty;//日志文件名
         public static bool EnabledConsole = true;//是否向控制台输出日志

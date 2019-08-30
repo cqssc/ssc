@@ -72,6 +72,7 @@
     <Compile Include="Models\PositionItem.cs" />
     <Compile Include="Models\PositionLargeSmallItem.cs" />
     <Compile Include="Models\PositionNumberHotItem.cs" />
+    <Compile Include="Models\TendencyDetailItem.cs" />
     <Compile Include="Models\TendencyItem.cs" />
     <Compile Include="Models\TendencyNumberItem.cs" />
     <Compile Include="Models\TendencyPositionItem.cs" />

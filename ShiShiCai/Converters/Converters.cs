@@ -194,4 +194,66 @@ namespace ShiShiCai.Converters
             return !boolValue;
         }
     }
+
+    public class TendencyCategoryToHeightConverter : IValueConverter
+    {
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            int cat = (int)value;
+            if (cat == 1)
+            {
+                return 19;
+            }
+            if (cat == 2)
+            {
+                return 49;
+            }
+            if (cat == 3)
+            {
+                return 79;
+            }
+            if (cat == 4)
+            {
+                return 109;
+            }
+            return 0;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class TendencyCategoryToColorConverter : IValueConverter
+    {
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            int cat = (int)value;
+            if (cat == 1)
+            {
+                return Brushes.Red;
+            }
+            if (cat == 2)
+            {
+                return Brushes.Green;
+            }
+            if (cat == 3)
+            {
+                return Brushes.Orange;
+            }
+            if (cat == 4)
+            {
+                return Brushes.Blue;
+            }
+            return Brushes.Transparent; ;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

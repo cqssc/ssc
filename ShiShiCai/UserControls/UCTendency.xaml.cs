@@ -61,7 +61,7 @@ namespace ShiShiCai.UserControls
             get { return mListDateItems; }
         }
 
-        public ObservableCollection<PositionItem> PositionItems
+        public ObservableCollection<TendencyPositionItem> PositionItems
         {
             get { return mListPositionItems; }
         }
@@ -76,22 +76,16 @@ namespace ShiShiCai.UserControls
             get { return mListNumberYAxisLabels; }
         }
 
-        public ObservableCollection<TendencyPositionItem> TendencyPosItems
-        {
-            get { return mListTendecyPosItems; }
-        }
-
         #endregion
 
 
         #region Members
 
         private readonly List<TendencyItem> mListTendencyData = new List<TendencyItem>();
-        private readonly ObservableCollection<PositionItem> mListPositionItems = new ObservableCollection<PositionItem>();
+        private readonly ObservableCollection<TendencyPositionItem> mListPositionItems = new ObservableCollection<TendencyPositionItem>();
         private readonly ObservableCollection<DateItem> mListDateItems = new ObservableCollection<DateItem>();
         private readonly ObservableCollection<TendencyNumberItem> mListNumberItems = new ObservableCollection<TendencyNumberItem>();
         private readonly ObservableCollection<int> mListNumberYAxisLabels = new ObservableCollection<int>();
-        private readonly ObservableCollection<TendencyPositionItem> mListTendecyPosItems = new ObservableCollection<TendencyPositionItem>();
 
         private bool mIsInited;
 
@@ -143,31 +137,31 @@ namespace ShiShiCai.UserControls
         private void InitPositionItems()
         {
             mListPositionItems.Clear();
-            PositionItem item = new PositionItem();
-            item.Number = 5;
+            TendencyPositionItem item = new TendencyPositionItem();
+            item.Pos = 5;
             item.Name = "万位";
-            item.IsShow = true;
-            item.Brush = Brushes.Red;
+            item.Visible = true;
+            item.Color = Brushes.Red;
             mListPositionItems.Add(item);
-            item = new PositionItem();
-            item.Number = 4;
+            item = new TendencyPositionItem();
+            item.Pos = 4;
             item.Name = "千位";
-            item.Brush = Brushes.Green;
+            item.Color = Brushes.Green;
             mListPositionItems.Add(item);
-            item = new PositionItem();
-            item.Number = 3;
+            item = new TendencyPositionItem();
+            item.Pos = 3;
             item.Name = "百位";
-            item.Brush = Brushes.Blue;
+            item.Color = Brushes.Blue;
             mListPositionItems.Add(item);
-            item = new PositionItem();
-            item.Number = 2;
+            item = new TendencyPositionItem();
+            item.Pos = 2;
             item.Name = "十位";
-            item.Brush = Brushes.Orange;
+            item.Color = Brushes.Orange;
             mListPositionItems.Add(item);
-            item = new PositionItem();
-            item.Number = 1;
+            item = new TendencyPositionItem();
+            item.Pos = 1;
             item.Name = "个位";
-            item.Brush = Brushes.Fuchsia;
+            item.Color = Brushes.Fuchsia;
             mListPositionItems.Add(item);
         }
 
@@ -223,7 +217,7 @@ namespace ShiShiCai.UserControls
             OperationReturn optReturn = MssqlOperation.GetDataSet(strConn, strSql);
             if (!optReturn.Result)
             {
-                ShowException(string.Format("load number hot data fail. [{0}]{1}", optReturn.Code, optReturn.Message));
+                ShowException(string.Format("load tendency data fail. [{0}]{1}", optReturn.Code, optReturn.Message));
                 return;
             }
             DataSet objDataSet = optReturn.Data as DataSet;
@@ -349,31 +343,31 @@ namespace ShiShiCai.UserControls
                 for (int k = 0; k < mListPositionItems.Count; k++)
                 {
                     var posItem = mListPositionItems[k];
-                    int pos = posItem.Number;
-                    bool isShow = posItem.IsShow;
+                    int pos = posItem.Pos;
+                    bool isShow = posItem.Visible;
                     if (pos == 1)
                     {
-                        item.D1Color = posItem.Brush;
+                        item.D1Color = posItem.Color;
                         item.D1Visible = isShow;
                     }
                     if (pos == 2)
                     {
-                        item.D2Color = posItem.Brush;
+                        item.D2Color = posItem.Color;
                         item.D2Visible = isShow;
                     }
                     if (pos == 3)
                     {
-                        item.D3Color = posItem.Brush;
+                        item.D3Color = posItem.Color;
                         item.D3Visible = isShow;
                     }
                     if (pos == 4)
                     {
-                        item.D4Color = posItem.Brush;
+                        item.D4Color = posItem.Color;
                         item.D4Visible = isShow;
                     }
                     if (pos == 5)
                     {
-                        item.D5Color = posItem.Brush;
+                        item.D5Color = posItem.Color;
                         item.D5Visible = isShow;
                     }
                 }
@@ -383,45 +377,16 @@ namespace ShiShiCai.UserControls
             }
         }
 
-        private void InitTendencyPosItems()
-        {
-            mListTendecyPosItems.Clear();
-            for (int i = 0; i < mListPositionItems.Count; i++)
-            {
-                var posItem = mListPositionItems[i];
-                int pos = posItem.Number;
-                TendencyPositionItem item = new TendencyPositionItem();
-                item.Pos = pos;
-                var positionItem = mListPositionItems.FirstOrDefault(p => p.Number == pos);
-                if (positionItem != null)
-                {
-                    item.Color = positionItem.Brush;
-                    item.Visible = positionItem.IsShow;
-                }
-                for (int j = 0; j < mListNumberItems.Count; j++)
-                {
-                    item.Items.Add(mListNumberItems[j]);
-                }
-                mListTendecyPosItems.Add(item);
-            }
-        }
-
         private void InitNumberPaths()
         {
             double itemWidth = ItemWidth;
             double height = BorderChart.ActualHeight - 20;
-            for (int i = 0; i < mListTendecyPosItems.Count; i++)
+            for (int i = 0; i < mListPositionItems.Count; i++)
             {
-                var posItem = mListTendecyPosItems[i];
+                var posItem = mListPositionItems[i];
                 var pos = posItem.Pos;
-                var positionItem = mListPositionItems.FirstOrDefault(p => p.Number == pos);
-                if (positionItem != null)
-                {
-                    posItem.Color = positionItem.Brush;
-                    posItem.Visible = positionItem.IsShow;
-                }
                 PathSegmentCollection segments = new PathSegmentCollection();
-                var firstItem = posItem.Items.FirstOrDefault();
+                var firstItem = posItem.NumberItems.FirstOrDefault();
                 if (firstItem == null) { continue; }
                 double itemHeight = 0;
                 if (pos == 1)
@@ -447,9 +412,9 @@ namespace ShiShiCai.UserControls
                 double firstX = itemWidth / 2.0;
                 double firstY = height - itemHeight + 4;
                 Point firtPoint = new Point(firstX, firstY);
-                for (int j = 0; j < posItem.Items.Count; j++)
+                for (int j = 0; j < posItem.NumberItems.Count; j++)
                 {
-                    var item = posItem.Items[j];
+                    var item = posItem.NumberItems[j];
                     itemHeight = 0;
                     if (pos == 1)
                     {
@@ -481,6 +446,101 @@ namespace ShiShiCai.UserControls
             }
         }
 
+        private void InitTendencyPosItems()
+        {
+            DateItem dateItem = ComboDate.SelectedItem as DateItem;
+            if (dateItem == null) { return; }
+            int date = dateItem.Date;
+            for (int i = 0; i < mListPositionItems.Count; i++)
+            {
+                var posItem = mListPositionItems[i];
+                int pos = posItem.Pos;
+                posItem.NumberItems.Clear();
+                posItem.Items.Clear();
+                for (int j = 0; j < mListNumberItems.Count; j++)
+                {
+                    posItem.NumberItems.Add(mListNumberItems[j]);
+                }
+                var data = mListTendencyData.Where(t => t.Date == date && t.Pos == pos).OrderBy(t => t.Number).ToList();
+                for (int j = 0; j < data.Count; j++)
+                {
+                    var dataItem = data[j];
+                    TendencyDetailItem item = new TendencyDetailItem();
+                    item.Serial = dataItem.Serial;
+                    item.Number = dataItem.Number;
+                    item.Date = dataItem.Date;
+                    item.Pos = pos;
+                    if (dataItem.Repeat)
+                    {
+                        item.Category = 1;
+                    }
+                    if (dataItem.Osillation)
+                    {
+                        item.Category = 2;
+                    }
+                    if (dataItem.Increase)
+                    {
+                        item.Category = 3;
+                    }
+                    if (dataItem.Other)
+                    {
+                        item.Category = 4;
+                    }
+                    item.Times = dataItem.Times;
+                    item.Range = dataItem.Range;
+                    posItem.Items.Add(item);
+                }
+            }
+        }
+
+        private void InitCaculateInfos()
+        {
+            for (int i = 0; i < mListPositionItems.Count; i++)
+            {
+                var posItem = mListPositionItems[i];
+                int sum1 = 0;
+                int sum2 = 0;
+                int sum3 = 0;
+                int sum4 = 0;
+                int max1 = 0;
+                int max2 = 0;
+                int max3 = 0;
+                int max4 = 0;
+                for (int j = 0; j < posItem.Items.Count; j++)
+                {
+                    var item = posItem.Items[j];
+                    if (item.Category == 1)
+                    {
+                        sum1++;
+                        max1 = Math.Max(max1, item.Times);
+                    }
+                    if (item.Category == 2)
+                    {
+                        sum2++;
+                        max2 = Math.Max(max2, item.Times);
+                    }
+                    if (item.Category == 3)
+                    {
+                        sum3++;
+                        max3 = Math.Max(max3, item.Times);
+                    }
+                    if (item.Category == 4)
+                    {
+                        sum4++;
+                        max4 = Math.Max(max4, item.Times);
+                    }
+                }
+                posItem.Sum1 = sum1;
+                posItem.Sum2 = sum2;
+                posItem.Sum3 = sum3;
+                posItem.Sum4 = sum4;
+                posItem.Max1 = max1;
+                posItem.Max2 = max2;
+                posItem.Max3 = max3;
+                posItem.Max4 = max4;
+            }
+        }
+
         #endregion
 
 
@@ -493,6 +553,7 @@ namespace ShiShiCai.UserControls
             InitItemWidth();
             InitNumberHeights();
             InitNumberPaths();
+            InitCaculateInfos();
         }
 
         void BorderChart_SizeChanged(object sender, SizeChangedEventArgs e)

@@ -51,7 +51,6 @@ namespace ShiShiCai.Models
         private bool mD4Visible;
         private bool mD5Visible;
 
-
         public string Serial
         {
             get { return mSerial; }
@@ -189,7 +188,6 @@ namespace ShiShiCai.Models
             get { return mD5Visible; }
             set { mD5Visible = value; OnPropertyChanged("D5Visible"); }
         }
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -1230,9 +1230,7 @@ namespace SSCService03
                                 cbs1.ComposeSmall_012 = countsmall;
                                 cbs1.ComposeEven_013 = counteven;
                                 cbs1.ComposeOdd_014 = countodd;
-                            }
-
-                            
+                            }                            
                             #endregion
                           
                         }
@@ -1293,10 +1291,16 @@ namespace SSCService03
                     }
                     #endregion
                 }
-
-
             }
            
+            //#region  计算连出率
+            //foreach(ContinueBigSmall_111  cb in listContinueBigSmall_111Temp)
+            //{
+            //    decimal contiuneRate = 0;
+            //    decimal jishuRate1 = 0;
+            //    decimal jishuRate2 = 1.2M;
+            //}
+            //#endregion
 
             if (UpdataOrAddContinueBigSmall_111( listContinueBigSmall_111Temp))
             {
@@ -1967,6 +1971,8 @@ namespace SSCService03
                                   
             List<SingleAnalysis_106> ListSingleAnalysis_106Temp = new List<SingleAnalysis_106>();
 
+            List<SpecialFuture_110> listSpecialFuture110Temp = new List<SpecialFuture_110>();
+
             //保存0~9的数量
             List<int> listAllNumCount = new List<int>();
             //保存临时的PeriodDetail_101
@@ -2037,6 +2043,79 @@ namespace SSCService03
                 singTemp.LostEvenODDOrderNum_009 = 0;
                 singTemp.LostAllOrderNum_010 = 0;
 
+                #region 110 表 写数据 某位大于20期遗失大于3个，当前期出了一个
+                if(listLostValueBenTemp.Count(s=>s>=20)>=3   && singTemp.LostValue_008>=20)
+                {
+                    SpecialFuture_110 specialFuture_108 = InitDetailSpecialFutrue_110(ICurrentPeriod_101.LongPeriod_001, i, singTemp.PositionVale_005, EnumFutureType.F_Three20InSingle);
+                    StringBuilder sb = new StringBuilder();
+                    if (singTemp.PositionVale_005 % 2 == 0)
+                    {
+                        for (int k = 0; k < 5; k++)
+                        {
+                            if (listLostValueBenTemp[k] >= 20)
+                            {
+                                switch (k)
+                                {
+                                    case 0:
+                                        sb.Append("0").Append(",");
+                                        break;
+                                    case 1:
+                                        sb.Append("2").Append(",");
+                                        break;
+                                    case 2:
+                                        sb.Append("4").Append(",");
+                                        break;
+                                    case 3:
+                                        sb.Append("6").Append(",");
+                                        break;
+                                    case 4:
+                                        sb.Append("8").Append(",");
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                    else 
+                    {
+                        for (int k = 0; k < 5; k++)
+                        {
+                            if (listLostValueBenTemp[k] >= 20)
+                            {
+                                switch (k)
+                                {
+                                    case 0:
+                                        sb.Append("1").Append(",");
+                                        break;
+                                    case 1:
+                                        sb.Append("3").Append(",");
+                                        break;
+                                    case 2:
+                                        sb.Append("5").Append(",");
+                                        break;
+                                    case 3:
+                                        sb.Append("7").Append(",");
+                                        break;
+                                    case 4:
+                                        sb.Append("9").Append(",");
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                    specialFuture_108.ScoreBack_009 = sb.ToString().TrimEnd(',');
+
+                    listSpecialFuture110Temp.Add(specialFuture_108);
+
+                }
+
+
+                #endregion
+
+
                 switch (AType)
                 {
                     case -1: //Const_SetZero
@@ -2060,6 +2139,13 @@ namespace SSCService03
                 IListStringSQL.Add(ss);                
 
             }
+
+
+            if (listSpecialFuture110Temp.Count>0)
+            {
+                UpdateOrAddSpecialFuture_110(listSpecialFuture110Temp);
+            }
+
 
             if (UpdateOrAddSingleAnalysis_106(ListSingleAnalysis_106Temp))
             {
@@ -2584,12 +2670,10 @@ namespace SSCService03
             return flag;
         
         }
-
-        public static void GetDataHotTrend_108()
-        { }
+       
         #endregion
 
-        #region  DoHotCross_109
+        #region  DoHotCross_109  横向遗漏表
         public static void DoHotCross_109() { }
 
         public static void InitHotCross_109() { }
@@ -2600,16 +2684,518 @@ namespace SSCService03
         #endregion
 
 
-        #region  DoSpecialFuture_110
-        public static void DoSpecialFuture_110() { }
+        #region  DoSpecialFuture_110  常用投注方式命中率统计
 
-        //初始化108
-        public static SpecialFuture_110 InitDetailSpecialFutrue_108(SingleAnalysis_106 ASingleAnalysis_103, EnumFutureType AFutrue)
+        public static void DoSpecialFuture_110(List<PeriodDetail_101> AListPeriod_101)
+        {
+            List<int> listSingleNumValue = new List<int>();
+            List<SpecialFuture_110> listSfTemp = new List<SpecialFuture_110>();
+            List<SpecialFuture_110> listSpecialFuture_108new = new List<SpecialFuture_110>();
+            List<SingleAnalysis_106> AListSingleAnalysis_106 = GetDataSingleAnalysis_106(100, ICurrentPeriod_101.LongPeriod_001);
+            for (int i = 1; i <= 5; i++) //1位到5位
+            {
+                listSfTemp.Clear();
+                listSpecialFuture_108new.Clear();
+                listSfTemp = IListSpecialFuture_108_NotComplete.Where(p => p.PositionType_002 == i).ToList();
+                int periodCount = 0;
+                listSingleNumValue.Clear();
+
+                SingleAnalysis_106 singTemp = AListSingleAnalysis_106.Where(p => p.PositionType_004 == i && p.LongPeriod_001 == ICurrentPeriod_101.LongPeriod_001).Count() > 0 ? AListSingleAnalysis_106.Where(p => p.PositionType_004 == i && p.LongPeriod_001 == ICurrentPeriod_101.LongPeriod_001).First() : null;
+                if (singTemp == null) return;
+
+                foreach (PeriodDetail_101 p in AListPeriod_101)
+                {
+                    periodCount++;
+                    listSingleNumValue.Add(int.Parse(GetObjectPropertyValue(p, String.Format("Wei{0}_0{0}0", i))));
+                    if (periodCount >= 25)
+                    {
+                        break;
+                    }
+                }
+
+                #region  //处理预警数据
+                {
+                    //F_Xian=1, 线性
+                    if (GetXianXinAlarm(listSingleNumValue[0], listSingleNumValue[1], listSingleNumValue[2], listSingleNumValue[3]))
+                    {
+                        if (listSfTemp.Where(p => p.PositionType_002 == i && p.FutureType_004 == 1).Count() == 0)
+                        {
+                            SpecialFuture_110 specialFuture_108 = InitDetailSpecialFutrue_110(singTemp.LongPeriod_001,singTemp.PositionType_004,singTemp.PositionVale_005, EnumFutureType.F_Xian);
+                            listSpecialFuture_108new.Add(specialFuture_108);
+                        }
+                    }
+                    //F_FanXian=2, 反线性
+                    if (GetFanXianXinAlarm(listSingleNumValue[0], listSingleNumValue[1], listSingleNumValue[2], listSingleNumValue[3]))
+                    {
+                        if (listSfTemp.Where(p => p.PositionType_002 == i && p.FutureType_004 == 2).Count() == 0)
+                        {
+                            SpecialFuture_110 specialFuture_108 = InitDetailSpecialFutrue_110(singTemp.LongPeriod_001, singTemp.PositionType_004, singTemp.PositionVale_005, EnumFutureType.F_FanXian);
+                            listSpecialFuture_108new.Add(specialFuture_108);
+                        }
+                    }
+                    //F_AddOneOriginal=3, 加1复位
+                    if (GetAddOneOriginalAlarm(listSingleNumValue[0], listSingleNumValue[1], listSingleNumValue[2]))
+                    {
+                        SpecialFuture_110 specialFuture_108 = InitDetailSpecialFutrue_110(singTemp.LongPeriod_001, singTemp.PositionType_004, singTemp.PositionVale_005, EnumFutureType.F_AddOneOriginal);
+                        listSpecialFuture_108new.Add(specialFuture_108);
+                    }
+
+                    //F_SubOneOriginal=4,  减1复位
+                    if (GetSubOneOriginalAlarm(listSingleNumValue[0], listSingleNumValue[1], listSingleNumValue[2]))
+                    {
+                        SpecialFuture_110 specialFuture_108 = InitDetailSpecialFutrue_110(singTemp.LongPeriod_001, singTemp.PositionType_004, singTemp.PositionVale_005, EnumFutureType.F_SubOneOriginal);
+                        listSpecialFuture_108new.Add(specialFuture_108);
+                    }
+
+                    //F_32283=5, 32283
+                    if (Get32283Alarm(listSingleNumValue[0], listSingleNumValue[1], listSingleNumValue[2], listSingleNumValue[3]))
+                    {
+                        SpecialFuture_110 specialFuture_108 = InitDetailSpecialFutrue_110(singTemp.LongPeriod_001, singTemp.PositionType_004, singTemp.PositionVale_005, EnumFutureType.F_32283);
+                        listSpecialFuture_108new.Add(specialFuture_108);
+                    }
+                }
+                #endregion
+
+                #region    //没有完成的要处理  IListSpecialFuture_108_NotComplete
+                foreach (SpecialFuture_110 sf in listSfTemp)
+                {
+                    #region
+                    switch (sf.FutureType_004)
+                    {
+                        case 1: // F_Xian=1, 线性
+                            {
+                                if (listSingleNumValue.Count >= 5)
+                                {
+                                    bool flag = false;
+                                    flag = GetXianXinJudge(listSingleNumValue[0], listSingleNumValue[1], listSingleNumValue[2], listSingleNumValue[3], listSingleNumValue[4]);
+                                    AddDetailSpecialFuture_108(flag, AListPeriod_101[0].LongPeriod_001, sf);
+                                }
+                            }
+                            break;
+                        case 2:  //F_FanXian=2, 反线性
+                            {
+                                if (listSingleNumValue.Count >= 5)
+                                {
+                                    bool flag = false;
+                                    flag = GetFanXianXinJudge(listSingleNumValue[0], listSingleNumValue[1], listSingleNumValue[2], listSingleNumValue[3], listSingleNumValue[4]);
+                                    AddDetailSpecialFuture_108(flag, AListPeriod_101[0].LongPeriod_001, sf);
+                                }
+                            }
+                            break;
+                        case 3://F_AddOneOriginal=3, 加1复位
+                            {
+                                if (listSingleNumValue.Count >= 5)
+                                {
+                                    bool flag = false;
+                                    flag = GetAddOneOriginalJudge(listSingleNumValue[0], listSingleNumValue[1], listSingleNumValue[2], listSingleNumValue[3]);
+                                    AddDetailSpecialFuture_108(flag, AListPeriod_101[0].LongPeriod_001, sf);
+
+                                }
+                            }
+                            break;
+                        case 4://F_SubOneOriginal=4,  减1复位
+                            {
+                                bool flag = false;
+                                flag = GetSubOneOriginalJudge(listSingleNumValue[0], listSingleNumValue[1], listSingleNumValue[2], listSingleNumValue[3]);
+                                AddDetailSpecialFuture_108(flag, AListPeriod_101[0].LongPeriod_001, sf);
+                            }
+                            break;
+                        case 5://F_32283=5, 32283
+                            {
+                                bool flag = false;
+                                flag = Get32283Judge(listSingleNumValue[0], listSingleNumValue[3]);
+                                AddDetailSpecialFuture_108(flag, AListPeriod_101[0].LongPeriod_001, sf);
+                            }
+                            break;
+                        case 6://F_Three20InSingle, 单位单双遗失大于20以上3期内打出
+                            {
+                                #region
+                                int span = AListPeriod_101.Where(p => p.LongPeriod_001 >= sf.LongPeriod_001 && p.LongPeriod_001 <= ICurrentPeriod_101.LongPeriod_001).Count() - 1;
+                                //如果一直是双 ,期数上在3期内
+                                if (sf.PositionVale_003 % 2 == 1)
+                                {
+                                    //单
+                                    if (listSingleNumValue[0] % 2 == 1)
+                                    {
+                                        if (sf.ScoreBack_009.Contains(listSingleNumValue[0].ToString()))
+                                        {
+                                            sf.IsComplete_005 = 1;
+                                            sf.IsScore_006 = 1;
+                                            sf.ScoreSpan_007 = 1;
+                                            sf.ScoreLongPeriod_008 = AListPeriod_101[0].LongPeriod_001;
+                                        }
+                                        else if (span >= 3)
+                                        {
+                                            sf.IsComplete_005 = 1;
+                                            sf.IsScore_006 = 0;
+                                            sf.ScoreLongPeriod_008 = AListPeriod_101[0].LongPeriod_001;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (listSingleNumValue[0] % 2 == 0)
+                                    {
+                                        if (sf.ScoreBack_009.Contains(listSingleNumValue[0].ToString()))
+                                        {
+                                            sf.IsComplete_005 = 1;
+                                            sf.IsScore_006 = 1;
+                                            sf.ScoreSpan_007 = 1;
+                                            sf.ScoreLongPeriod_008 = AListPeriod_101[0].LongPeriod_001;
+                                        }
+                                        else if (span >= 3)
+                                        {
+                                            sf.IsComplete_005 = 1;
+                                            sf.IsScore_006 = 0;
+                                            sf.ScoreLongPeriod_008 = AListPeriod_101[0].LongPeriod_001;
+                                        }
+                                    }
+                                }
+                                #endregion
+                            }
+                            break;
+                        case 7: //F_ThreeConRepick  连续3对
+                            {
+                            }
+                            break;
+                        case 8: //F_BigConOriginalBig 单位大长连后变小后复大
+                            {
+                            }
+                            break;
+                        case 9://F_SmallConOriginalSmall  单位小长连后变大后复小
+                            {
+                            }
+                            break;
+                        case 10: //F_EvenConOriginalEven 单位单长连后变双后复单
+                            {
+                            }
+                            break;
+                        case 11: //F_OddConOriginalOdd 单位双长连后变双后复双
+                            {
+                            }
+                            break;
+                        case 12: // F_LostOver6=14,>20期遗失大于6期未出出后后短期出
+                            {
+                            }
+                            break;
+                        case 13://F_RecpickOver6=15, 重复连续6期及上未出短期出
+                            {
+                            }
+                            break;
+                        case 14:// F_SpanOneOver6=16, 间隔连续6期及上未出出来后短期出
+                            {
+                            }
+                            break;
+                        case 15: // F_LostNumOver10=17 >20期遗失短期内冲到10个数以上出后狂出
+                            {
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    #endregion
+                }
+                #endregion
+
+                #region  //写数据
+                {
+
+                    if (listSpecialFuture_108new.Count > 0)
+                    {
+                        if (UpdateOrAddSpecialFuture_110(listSpecialFuture_108new))
+                        {
+                            FileLog.WriteInfo("UpdateOrAddSpecialFuture_110 1 ", "success");
+                        }
+                        else
+                        {
+                            FileLog.WriteInfo("UpdateOrAddSpecialFuture_110  1", "fail");
+                        }
+                    }
+
+                    if (listSfTemp.Count > 0)
+                    {
+                        if (UpdateOrAddSpecialFuture_110(listSfTemp))
+                        {
+                            FileLog.WriteInfo("UpdateOrAddSpecialFuture_110  2", "success");
+                        }
+                        else
+                        {
+                            FileLog.WriteInfo("UpdateOrAddSpecialFuture_110  2", "fail");
+                        }
+                    }
+                }
+                #endregion
+
+
+            }
+        }
+        #region 特征判定
+        //补全更新数据108
+        public static void AddDetailSpecialFuture_108(bool flag, long LongPeriod, SpecialFuture_110 sf)
+        {
+            if (flag)
+            {
+                sf.IsComplete_005 = 1;
+                sf.IsScore_006 = 1;
+                sf.ScoreSpan_007 = 1;
+                sf.ScoreLongPeriod_008 = LongPeriod;
+            }
+            else
+            {
+                sf.IsComplete_005 = 1;
+                sf.IsScore_006 = 0;
+                sf.ScoreLongPeriod_008 = LongPeriod;
+            }
+
+        }
+        //add one判定
+        public static bool GetAddOneOriginalJudge(int one, int two, int three, int four)
+        {
+            bool flag = false;
+            if (four == one)
+            {
+                return true;
+            }
+            else if (four > one)
+            {
+                if ((one + 2) >= four)
+                {
+                    flag = true;
+                }
+            }
+            else if (four < one)
+            {
+                if ((four + 2) > one)
+                {
+                    flag = true;
+                }
+            }
+            return flag;
+        }
+
+        //sub one判定
+        public static bool GetSubOneOriginalJudge(int one, int two, int three, int four)
+        {
+            bool flag = false;
+            if (four == one)
+            {
+                return true;
+            }
+            else if (four > one)
+            {
+                if ((one + 2) >= four)
+                {
+                    flag = true;
+                }
+            }
+            else if (four < one)
+            {
+                if ((four + 2) > one)
+                {
+                    flag = true;
+                }
+            }
+
+            return flag;
+        }
+        //32283判定
+        public static bool Get32283Judge(int one, int four)
+        {
+            bool flag = false;
+            if (one == four)
+            {
+                return true;
+            }
+
+            return flag;
+        }
+        //8288判定
+        public static bool Get8288Judge(int one, int four)
+        {
+            bool flag = false;
+            if (one == four)
+            {
+                return true;
+            }
+            return flag;
+        }
+        //8828判定
+        public static bool Get8828Judge(int one, int four)
+        {
+            bool flag = false;
+            if (one == four)
+            {
+                return true;
+            }
+            return flag;
+        }
+
+        public static bool GetXianXinJudge(int one, int two, int three, int four, int five)
+        {
+            bool flag = false;
+            int span1 = one - two;
+            int span2 = two - three;
+            int span3 = three - four;
+            int span4 = four - five;
+
+            if (Math.Abs(span1) >= Math.Abs(span2) && Math.Abs(span2) >= Math.Abs(span3) && Math.Abs(span3) >= Math.Abs(span4)
+                && (span1 * span2 < 0) && (span1 * span3 > 0) && (span2 * span4 > 0)
+                )
+            {
+                flag = true;
+            }
+
+
+            return flag;
+        }
+        public static bool GetFanXianXinJudge(int one, int two, int three, int four, int five)
+        {
+            bool flag = false;
+            int span1 = one - two;
+            int span2 = two - three;
+            int span3 = three - four;
+            int span4 = four - five;
+
+            if (Math.Abs(span1) <= Math.Abs(span2) && Math.Abs(span2) <= Math.Abs(span3) && Math.Abs(span3) <= Math.Abs(span4)
+                && (span1 * span2 < 0) && (span1 * span3 > 0) && (span2 * span4 > 0)
+                )
+            {
+                flag = true;
+            }
+
+
+            return flag;
+        }
+
+        #endregion
+        #region  特征预警
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="one">为最开始时数据</param>
+        /// <param name="two"></param>
+        /// <param name="three"></param>
+        /// <param name="four">为最后的数据</param>
+        /// <returns></returns>
+        public static bool GetXianXinAlarm(int one, int two, int three, int four)
+        {
+            bool flag = false;
+            int span1 = one - two;
+            int span2 = two - three;
+            int span3 = three - four;
+            if (Math.Abs(span1) >= Math.Abs(span2) && Math.Abs(span2) >= Math.Abs(span3) && (span1 * span2) < 0 && (span1 * span3) > 0)
+            {
+                flag = true;
+            }
+
+            return flag;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="one">为最开始时数据</param>
+        /// <param name="two"></param>
+        /// <param name="three"></param>
+        /// <param name="four">为最后的数据</param>
+        /// <returns></returns>
+        public static bool GetFanXianXinAlarm(int one, int two, int three, int four)
+        {
+            bool flag = false;
+            int span1 = one - two;
+            int span2 = two - three;
+            int span3 = three - four;
+            if (Math.Abs(span1) <= Math.Abs(span2) && Math.Abs(span2) <= Math.Abs(span3) && (span1 * span2) < 0 && (span1 * span3) > 0)
+            {
+                flag = true;
+            }
+
+            return flag;
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="one">最近的数字</param>
+        /// <param name="two"></param>
+        /// <param name="three"></param>
+        /// <returns></returns>
+        public static bool GetSubOneOriginalAlarm(int one, int two, int three)
+        {
+            bool flag = false;
+            if ((one - two) == 1 && (three - two) >= 3)
+            {
+                return true;
+            }
+            else if ((two - one) == 1 && (two - three) >= 3)
+            {
+                return true;
+            }
+            return flag;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="one">最近的数字</param>
+        /// <param name="two"></param>
+        /// <param name="three"></param>
+        /// <returns></returns>
+        public static bool GetAddOneOriginalAlarm(int one, int two, int three)
+        {
+            bool flag = false;
+            if ((two - one) == 1 && (three - two) >= 3)
+            {
+                return true;
+            }
+            else if ((one - two) == 1 && (two - three) >= 3)
+            {
+                return true;
+            }
+            return flag;
+        }
+
+        public static bool Get32283Alarm(int one, int two, int three, int four)
+        {
+            bool flag = false;
+            if ((two == three) && (four % 2 != three % 2) && (one % 2 == two % 2))
+            {
+                return true;
+            }
+            return flag;
+        }
+
+        public static bool Get8288Alarm(int one, int two, int three, int four)
+        {
+            bool flag = false;
+            if ((one == three) && (one != two) && (four != three))
+            {
+                return true;
+            }
+            return flag;
+        }
+
+        public static bool Get8828Alarm(int one, int two, int three, int four)
+        {
+            bool flag = false;
+            if ((one != two) && (two == three) && (four != three))
+            {
+                return true;
+            }
+            return flag;
+        }
+
+
+        #endregion
+
+        //初始化110
+        public static SpecialFuture_110 InitDetailSpecialFutrue_110( long APeriod,int AWeiType,int PositionValue ,EnumFutureType AFutrue)
         {
             SpecialFuture_110 specialFuture_108 = new SpecialFuture_110();
-            specialFuture_108.LongPeriod_001 = ASingleAnalysis_103.LongPeriod_001;
-            specialFuture_108.PositionType_002 = ASingleAnalysis_103.PositionType_004;
-            specialFuture_108.PositionVale_003 = ASingleAnalysis_103.PositionVale_005;
+            specialFuture_108.LongPeriod_001 = APeriod;
+            specialFuture_108.PositionType_002 = AWeiType;
+            specialFuture_108.PositionVale_003 = PositionValue;
             specialFuture_108.IsComplete_005 = 0;
             switch (AFutrue)
             {
@@ -2654,45 +3240,104 @@ namespace SSCService03
             specialFuture_108.IsScore_006 = 0;
             specialFuture_108.ScoreSpan_007 = 0;
             specialFuture_108.ScoreLongPeriod_008 = 0;
-            specialFuture_108.ScoreBack_009 = "";
-            specialFuture_108.ScoreBack_010 = "";
+            specialFuture_108.ScoreBack_009 = string.Empty;
+            specialFuture_108.ScoreBack_010 = 0;
             specialFuture_108.ScoreBack_011 = 0;
             specialFuture_108.ScoreBack_012 = 0;
             specialFuture_108.ScoreBack_013 = 0;
             specialFuture_108.ScoreBack_014 = 0;
             specialFuture_108.ScoreBack_015 = 0;
+            specialFuture_108.ScoreBack_016 = 0;
+            specialFuture_108.ScoreBack_017 = 0;
+            specialFuture_108.ScoreBack_018 = 0;
+            specialFuture_108.ScoreBack_019 = 0;
+            specialFuture_108.ScoreBack_020 = 0;
 
 
             return specialFuture_108;
         }
 
-        public static void UpdateOrAddSpecialFuture_110() { }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="AListSpecialFuture110"></param>
+        /// <returns></returns>
+        public static bool UpdateOrAddSpecialFuture_110(List<SpecialFuture_110> AListSpecialFuture110 )
+        {
+            bool flag = true;
+            #region
+            IDbConnection objConn;
+            IDbDataAdapter objAdapter;
+            DbCommandBuilder objCmdBuilder;
+            try
+            {
+                string strSql = string.Empty;
+                long beforePeriod = GetBeforePeriodValue59(ICurrentPeriod_101.LongPeriod_001,15);
+                strSql = string.Format("Select * from T_110_{1} where C001>={0}", beforePeriod, IStrYY);
+
+                objConn = DbHelperSQL.GetConnection(ISqlConnect);
+                objAdapter = DbHelperSQL.GetDataAdapter(objConn, strSql);
+                objCmdBuilder = DbHelperSQL.GetCommandBuilder(objAdapter);
+                objCmdBuilder.ConflictOption = ConflictOption.OverwriteChanges;
+                objCmdBuilder.SetAllValues = false;
+
+                DataSet objDataSet = new DataSet();
+                objAdapter.Fill(objDataSet);
+
+                foreach (SpecialFuture_110 ss in AListSpecialFuture110)
+                {
+                    DataRow drCurrent = objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C002={1}  AND C003={2} AND C004={3} ", ss.LongPeriod_001, ss.PositionType_002, ss.PositionVale_003, ss.FutureType_004)).Count() > 0 ? objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C002={1}  AND C003={2} AND C004={3} ", ss.LongPeriod_001, ss.PositionType_002, ss.PositionVale_003, ss.FutureType_004)).First() : null;
+
+                    if (drCurrent != null) //更新
+                    {
+                        drCurrent.BeginEdit();
+                        drCurrent["C001"] = ss.LongPeriod_001.ToString();
+                        drCurrent["C002"] = ss.PositionType_002;
+                        drCurrent["C003"] = ss.PositionVale_003;
+                        drCurrent["C004"] = ss.FutureType_004;
+                        drCurrent["C005"] = ss.IsComplete_005;
+                        drCurrent["C006"] = ss.IsScore_006;
+                        drCurrent["C007"] = ss.ScoreSpan_007;
+                        drCurrent["C008"] = ss.ScoreLongPeriod_008;
+                        drCurrent["C009"] = ss.ScoreBack_009;
+                        drCurrent["C010"] = ss.ScoreBack_010;
+                        drCurrent.EndEdit();
+                    }
+                    else //添加新行
+                    {
+                        DataRow drNewRow = objDataSet.Tables[0].NewRow();
+                        drNewRow["C001"] = ss.LongPeriod_001.ToString();
+                        drNewRow["C002"] = ss.PositionType_002;
+                        drNewRow["C003"] = ss.PositionVale_003;
+                        drNewRow["C004"] = ss.FutureType_004;
+                        drNewRow["C005"] = ss.IsComplete_005;
+                        drNewRow["C006"] = ss.IsScore_006;
+                        drNewRow["C007"] = ss.ScoreSpan_007;
+                        drNewRow["C008"] = ss.ScoreLongPeriod_008;
+                        drNewRow["C009"] = ss.ScoreBack_009;
+                        drNewRow["C010"] = ss.ScoreBack_010;
+                        objDataSet.Tables[0].Rows.Add(drNewRow);
+                    }
+                }
+                objAdapter.Update(objDataSet);
+                objDataSet.AcceptChanges();
+                FileLog.WriteInfo("UpdateOrAddSpecialFuture_110() ", "Success :" + ICurrentPeriod_101.LongPeriod_001);
+
+            }
+            catch (Exception e)
+            {
+                FileLog.WriteError("UpdateOrAddSpecialFuture_110() ", e.Message);
+                return flag = false;
+            }
+            #endregion
+            return flag;
+
+        }
 
         public static void GetDataSpecialFuture_110() { }
         #endregion
 
-
-        #region  横向遗漏表
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="AType">-1为置0，1</param>
-        /// <param name="AListPeriod_101"></param>
-        /// <returns></returns>
-        public static bool DoLostCross_109(int AType, List<PeriodDetail_101> AListPeriod_101) 
-        {
-            bool flag = true;
-
-
-            return flag;
-        }
-
-
-
-        #endregion
-
-
+        
         #region  公用方法
         static bool ExecuteListSQL(List<String> AListStringSQL) 
         {

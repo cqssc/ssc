@@ -257,7 +257,7 @@ namespace ShiShiCai
                 if (dbConfig == null) { return; }
                 string strConn = dbConfig.GetConnectionString();
                 if (string.IsNullOrEmpty(strConn)) { return; }
-                string strSql = string.Format("SELECT * FROM T_101_19 WHERE C099 = 1 C004 = {0} ORDER BY C001 DESC", date);
+                string strSql = string.Format("SELECT * FROM T_101_19 WHERE C099 = 1 AND C004 = {0} ORDER BY C001 DESC", date);
                 OperationReturn optReturn = MssqlOperation.GetDataSet(strConn, strSql);
                 if (!optReturn.Result)
                 {

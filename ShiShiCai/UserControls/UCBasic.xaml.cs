@@ -207,6 +207,20 @@ namespace ShiShiCai.UserControls
         #endregion
 
 
+        #region ItemWidth
+
+        public static readonly DependencyProperty ItemWidthProperty =
+            DependencyProperty.Register("ItemWidth", typeof(double), typeof(UCBasic), new PropertyMetadata(default(double)));
+
+        public double ItemWidth
+        {
+            get { return (double)GetValue(ItemWidthProperty); }
+            set { SetValue(ItemWidthProperty, value); }
+        }
+
+        #endregion
+
+
         #region 集合列表
 
         public ObservableCollection<IssueDateItem> GroupItems
@@ -240,6 +254,7 @@ namespace ShiShiCai.UserControls
 
             Loaded += UCBasic_Loaded;
             TabControlView.SelectionChanged += TabControlView_SelectionChanged;
+            ListBoxIssueDateItems.SizeChanged += ListBoxIssueDateItems_SizeChanged;
 
             CommandBindings.Add(new CommandBinding(PositionClickCommand,
                 PositionClick_Executed, (s, ce) => ce.CanExecute = true));
@@ -277,6 +292,7 @@ namespace ShiShiCai.UserControls
             InitPositionItems();
             InitIssueItems();
             InitIssueDateItems();
+            InitItemWidth();
             InitIssuePaths();
             InitPath();
         }
@@ -581,6 +597,14 @@ namespace ShiShiCai.UserControls
             }
         }
 
+        private void InitItemWidth()
+        {
+            double width = ListBoxIssueDateItems.ActualWidth - 60;
+            int count = 60;
+            double itemWidth = width / (count * 1.0);
+            ItemWidth = itemWidth;
+        }
+
         private void InitIssuePaths()
         {
             for (int i = 0; i < mListGroupItems.Count; i++)
@@ -724,7 +748,7 @@ namespace ShiShiCai.UserControls
         {
             string serial = issueItem.Serial;
             var dataItem = mListLostData.FirstOrDefault(l => l.Serial == serial);
-            if (dataItem == null) { return;}
+            if (dataItem == null) { return; }
             issueItem.D1Lost0 = dataItem.D1Lost0;
             issueItem.D1Lost1 = dataItem.D1Lost1;
             issueItem.D1Lost2 = dataItem.D1Lost2;
@@ -785,17 +809,17 @@ namespace ShiShiCai.UserControls
             issueItem.D3Width = issueItem.D3 * 20.0 + 20;
             issueItem.D4Width = issueItem.D4 * 20.0 + 20;
             issueItem.D5Width = issueItem.D5 * 20.0 + 20;
-            mListIssueItems.Insert(0,issueItem);
+            mListIssueItems.Insert(0, issueItem);
         }
 
         private void RefreshIssueDateItem(IssueItem issueItem)
         {
             int date = issueItem.Date;
             var dateItem = mListGroupItems.FirstOrDefault(d => d.Date == date);
-            if (dateItem == null) { return;}
+            if (dateItem == null) { return; }
             string serial = issueItem.Serial;
             var dataItem = mListLostData.FirstOrDefault(l => l.Serial == serial);
-            if (dataItem == null) { return;}
+            if (dataItem == null) { return; }
             issueItem.D1Height = 120 * 1.0 / 10.0 * issueItem.D1 + 10;
             issueItem.D2Height = 120 * 1.0 / 10.0 * issueItem.D2 + 10;
             issueItem.D3Height = 120 * 1.0 / 10.0 * issueItem.D3 + 10;
@@ -941,6 +965,13 @@ namespace ShiShiCai.UserControls
                 Path5Visible = pItem.IsShow;
                 Path5Color = pItem.Brush;
             }
+        }
+
+        void ListBoxIssueDateItems_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            InitItemWidth();
+            InitIssuePaths();
+            InitPath();
         }
 
         #endregion

@@ -274,7 +274,7 @@
                         <Border x:Name="Border"
                               SnapsToDevicePixels="true"
                             Background="Transparent">
-                            <ContentPresenter Width="20" />
+                            <ContentPresenter />
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>

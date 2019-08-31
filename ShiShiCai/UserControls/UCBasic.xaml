@@ -47,7 +47,8 @@
             <TabControl Name="TabControlView" Style="{DynamicResource TabControlViewStyle}"
                         ItemContainerStyle="{DynamicResource TabItemViewStyle}">
                 <TabItem Header="按日">
-                    <ListBox ItemsSource="{Binding GroupItems,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}" 
+                    <ListBox Name="ListBoxIssueDateItems" 
+                             ItemsSource="{Binding GroupItems,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}" 
                              Style="{DynamicResource ListBoxIssueDateStyle}"
                              ItemContainerStyle="{DynamicResource ListItemIssueDateStyle}">
                         <ListBox.ItemTemplate>
@@ -130,38 +131,40 @@
                                              ItemContainerStyle="{DynamicResource ListItemIssueNumberStyle}">
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate DataType="ListBoxItem">
-                                                    <Grid>
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="18"></RowDefinition>
-                                                            <RowDefinition Height="18"></RowDefinition>
-                                                            <RowDefinition Height="18"></RowDefinition>
-                                                            <RowDefinition Height="18"></RowDefinition>
-                                                            <RowDefinition Height="18"></RowDefinition>
-                                                            <RowDefinition Height="18"></RowDefinition>
-                                                            <RowDefinition Height="18"></RowDefinition>
-                                                            <RowDefinition Height="18"></RowDefinition>
-                                                            <RowDefinition Height="18"></RowDefinition>
-                                                            <RowDefinition Height="18"></RowDefinition>
-                                                            <RowDefinition Height="18"></RowDefinition>
-                                                            <RowDefinition Height="18"></RowDefinition>
-                                                            <RowDefinition Height="18"></RowDefinition>
-                                                            <RowDefinition Height="18"></RowDefinition>
-                                                        </Grid.RowDefinitions>
-                                                        <TextBlock Grid.Row="0" Text="{Binding Number}" Style="{DynamicResource TxtIssueStyle}"></TextBlock>
-                                                        <TextBlock Grid.Row="1" Text="{Binding D5}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                                        <TextBlock Grid.Row="2" Text="{Binding D4}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                                        <TextBlock Grid.Row="3" Text="{Binding D3}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                                        <TextBlock Grid.Row="4" Text="{Binding D2}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                                        <TextBlock Grid.Row="5" Text="{Binding D1}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                                        <TextBlock Grid.Row="6" Text="{Binding LargeValue,Converter={StaticResource BooleanToLargeConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                                        <TextBlock Grid.Row="7" Text="{Binding SingleValue,Converter={StaticResource BooleanToSingleConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                                        <TextBlock Grid.Row="8" Text="{Binding RepeatValue,Converter={StaticResource IntegerToNullNumberConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                                        <TextBlock Grid.Row="9" Text="{Binding IntervalValue,Converter={StaticResource IntegerToNullNumberConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                                        <TextBlock Grid.Row="10" Text="{Binding Larger20,Converter={StaticResource IntegerToNullNumberConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                                        <TextBlock Grid.Row="11" Text="{Binding AllOne20,Converter={StaticResource IntegerToNullNumberConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                                        <TextBlock Grid.Row="12" Text="{Binding PairsVaue,Converter={StaticResource IntegerToNullNumberConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                                        <TextBlock Grid.Row="13" Text="{Binding SameValue,Converter={StaticResource IntegerToNullNumberConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
-                                                    </Grid>
+                                                    <Border Width="{Binding ItemWidth,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type uc:UCBasic}}}">
+                                                        <Grid>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="18"></RowDefinition>
+                                                                <RowDefinition Height="18"></RowDefinition>
+                                                                <RowDefinition Height="18"></RowDefinition>
+                                                                <RowDefinition Height="18"></RowDefinition>
+                                                                <RowDefinition Height="18"></RowDefinition>
+                                                                <RowDefinition Height="18"></RowDefinition>
+                                                                <RowDefinition Height="18"></RowDefinition>
+                                                                <RowDefinition Height="18"></RowDefinition>
+                                                                <RowDefinition Height="18"></RowDefinition>
+                                                                <RowDefinition Height="18"></RowDefinition>
+                                                                <RowDefinition Height="18"></RowDefinition>
+                                                                <RowDefinition Height="18"></RowDefinition>
+                                                                <RowDefinition Height="18"></RowDefinition>
+                                                                <RowDefinition Height="18"></RowDefinition>
+                                                            </Grid.RowDefinitions>
+                                                            <TextBlock Grid.Row="0" Text="{Binding Number}" Style="{DynamicResource TxtIssueStyle}"></TextBlock>
+                                                            <TextBlock Grid.Row="1" Text="{Binding D5}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                                            <TextBlock Grid.Row="2" Text="{Binding D4}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                                            <TextBlock Grid.Row="3" Text="{Binding D3}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                                            <TextBlock Grid.Row="4" Text="{Binding D2}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                                            <TextBlock Grid.Row="5" Text="{Binding D1}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                                            <TextBlock Grid.Row="6" Text="{Binding LargeValue,Converter={StaticResource BooleanToLargeConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                                            <TextBlock Grid.Row="7" Text="{Binding SingleValue,Converter={StaticResource BooleanToSingleConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                                            <TextBlock Grid.Row="8" Text="{Binding RepeatValue,Converter={StaticResource IntegerToNullNumberConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                                            <TextBlock Grid.Row="9" Text="{Binding IntervalValue,Converter={StaticResource IntegerToNullNumberConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                                            <TextBlock Grid.Row="10" Text="{Binding Larger20,Converter={StaticResource IntegerToNullNumberConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                                            <TextBlock Grid.Row="11" Text="{Binding AllOne20,Converter={StaticResource IntegerToNullNumberConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                                            <TextBlock Grid.Row="12" Text="{Binding PairsVaue,Converter={StaticResource IntegerToNullNumberConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                                            <TextBlock Grid.Row="13" Text="{Binding SameValue,Converter={StaticResource IntegerToNullNumberConverter}}" Style="{DynamicResource TxtLotteryStyle}"></TextBlock>
+                                                        </Grid>
+                                                    </Border>
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>
                                         </ListBox>

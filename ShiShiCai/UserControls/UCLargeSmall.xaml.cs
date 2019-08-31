@@ -501,7 +501,7 @@ namespace ShiShiCai.UserControls
                 int doubleMaxNum = 0;
                 for (int j = 0; j < posItem.Items.Count; j++)
                 {
-                    var item = posItem.Items[i];
+                    var item = posItem.Items[j];
                     if (item.Large)
                     {
                         largeNum++;

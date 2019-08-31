@@ -232,6 +232,12 @@ namespace ShiShiCai
                     item.AllOne20 = dr["C103"].ToString() == "" ? 0 : Convert.ToInt32(dr["C103"]);
                     item.PairsVaue = dr["C104"].ToString() == "" ? 0 : Convert.ToInt32(dr["C104"]);
                     item.SameValue = dr["C105"].ToString() == "" ? 0 : Convert.ToInt32(dr["C105"]);
+
+                    item.S1 = Convert.ToInt32(dr["C011"]);
+                    item.S2 = Convert.ToInt32(dr["C021"]);
+                    item.S3 = Convert.ToInt32(dr["C031"]);
+                    item.S4 = Convert.ToInt32(dr["C041"]);
+                    item.S5 = Convert.ToInt32(dr["C051"]);
                     mListIssues.Add(item);
                 }
             }
@@ -285,6 +291,12 @@ namespace ShiShiCai
                     item.AllOne20 = dr["C103"].ToString() == "" ? 0 : Convert.ToInt32(dr["C103"]);
                     item.PairsVaue = dr["C104"].ToString() == "" ? 0 : Convert.ToInt32(dr["C104"]);
                     item.SameValue = dr["C105"].ToString() == "" ? 0 : Convert.ToInt32(dr["C105"]);
+
+                    item.S1 = Convert.ToInt32(dr["C011"]);
+                    item.S2 = Convert.ToInt32(dr["C021"]);
+                    item.S3 = Convert.ToInt32(dr["C031"]);
+                    item.S4 = Convert.ToInt32(dr["C041"]);
+                    item.S5 = Convert.ToInt32(dr["C051"]);
                     mListIssues.Add(item);
                 }
             }
@@ -348,6 +360,12 @@ namespace ShiShiCai
                     item.AllOne20 = dr["C103"].ToString() == "" ? 0 : Convert.ToInt32(dr["C103"]);
                     item.PairsVaue = dr["C104"].ToString() == "" ? 0 : Convert.ToInt32(dr["C104"]);
                     item.SameValue = dr["C105"].ToString() == "" ? 0 : Convert.ToInt32(dr["C105"]);
+
+                    item.S1 = Convert.ToInt32(dr["C011"]);
+                    item.S2 = Convert.ToInt32(dr["C021"]);
+                    item.S3 = Convert.ToInt32(dr["C031"]);
+                    item.S4 = Convert.ToInt32(dr["C041"]);
+                    item.S5 = Convert.ToInt32(dr["C051"]);
 
                     mNewestIssueItem = item;
                     return SscDefines.REFRESH_MODE_LOTTERY;

@@ -60,6 +60,17 @@ namespace ShiShiCai.Models
         #endregion
 
 
+        #region 位排序
+
+        private int mS1;
+        private int mS2;
+        private int mS3;
+        private int mS4;
+        private int mS5;
+
+        #endregion
+
+
         #region 高度宽度
 
         private double mD1Height;
@@ -261,6 +272,41 @@ namespace ShiShiCai.Models
         {
             get { return mSameValue; }
             set { mSameValue = value; OnPropertyChanged("SameValue"); }
+        }
+
+        #endregion
+
+
+        #region 位排序
+
+        public int S1
+        {
+            get { return mS1; }
+            set { mS1 = value; OnPropertyChanged("S1"); }
+        }
+
+        public int S2
+        {
+            get { return mS2; }
+            set { mS2 = value; OnPropertyChanged("S2"); }
+        }
+
+        public int S3
+        {
+            get { return mS3; }
+            set { mS3 = value; OnPropertyChanged("S3"); }
+        }
+
+        public int S4
+        {
+            get { return mS4; }
+            set { mS4 = value; OnPropertyChanged("S4"); }
+        }
+
+        public int S5
+        {
+            get { return mS5; }
+            set { mS5 = value; OnPropertyChanged("S5"); }
         }
 
         #endregion

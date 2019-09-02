@@ -10,6 +10,7 @@ namespace Modles
     {
         public long LongPeriod_001 { get; set; }
 
+
         public int PositionType_002 { get; set; }
 
         public int PositionVale_003 { get; set; }
@@ -29,11 +30,17 @@ namespace Modles
         public long ScoreLongPeriod_008 { set; get; }
 
 
-        public string ScoreBack_009 { set; get; }
-        public int ScoreBack_010 { set; get; }
-        public int ScoreBack_011 { set; get; }
-        public int ScoreBack_012 { set; get; }
-        public int ScoreBack_013 { set; get; }
+        public string AlarmBeforeValues_009 { set; get; } //预警前数字
+        public string FutureTypeNote_010 { set; get; } //特征类型解释
+
+
+        //日期的前6位
+        public Int64 DateNumber_011 { get; set; }
+
+        //数字期
+        public int ShortPeriod_012 { set; get; }
+
+        public string  RealAppearValues_013 { set; get; } //实际出现数字
         public int ScoreBack_014 { set; get; }
         public int ScoreBack_015 { set; get; }
         public int ScoreBack_016 { set; get; }

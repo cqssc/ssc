@@ -38,9 +38,7 @@ namespace SSCService03
         private static PeriodDetail_101 ICurrentPeriod_101;
         private static LostAll_102 ICurrentLostAll_102;
         private static LostAll_102 IPreLostAll_102;
-
-        private static List<SpecialFuture_110> IListSpecialFuture_108_NotComplete;
-
+       
 
 
         //存储更新字段的SQL语句，在程序最后一次性执行。
@@ -54,8 +52,7 @@ namespace SSCService03
             ICurrentPeriod_101 = new PeriodDetail_101();
             ICurrentLostAll_102 = new LostAll_102();
             IPreLostAll_102 = new LostAll_102();
-
-            IListSpecialFuture_108_NotComplete = new List<SpecialFuture_110>();
+           
 
             IListStringSQL.Clear();
         }        
@@ -93,7 +90,7 @@ namespace SSCService03
                             Task t6 = Task.Factory.StartNew(delegate { DoHotSingleNum_107(ConstDefine.Const_SetZero, listPeriodTemp_101); });
                             Task.WaitAll(t1, t2, t3, t4, t5, t6);
 
-                            Task t7 = Task.Factory.StartNew(delegate { DoSingleAnalysis_106(ConstDefine.Const_SetZero, listPeriodTemp_101); }); 
+                            Task t7 = Task.Factory.StartNew(delegate { DoSingleAnalysis_106(ConstDefine.Const_SetZero, listPeriodTemp_101); });
                             Task t8 = Task.Factory.StartNew(delegate { DoHotTrend_108(); });
 
                             Task.WaitAll(t7, t8);
@@ -121,11 +118,15 @@ namespace SSCService03
                              Task t5 = Task.Factory.StartNew(delegate { DoLostSingleNumAll_105(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
                              Task t6 = Task.Factory.StartNew(delegate { DoHotSingleNum_107(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
                              Task.WaitAll(t1, t2, t3, t4, t5, t6);
-                            
+
                              Task t7 = Task.Factory.StartNew(delegate { DoSingleAnalysis_106(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
+
                              Task t8 = Task.Factory.StartNew(delegate { DoHotTrend_108(); });
 
+                             Task t9 = Task.Factory.StartNew(delegate { DoSpecialFuture_110(listPeriodTemp_101); });    
                              Task.WaitAll(t7, t8);
+
+                             t9.Wait();
 
                          }
 
@@ -2043,10 +2044,10 @@ namespace SSCService03
                 singTemp.LostEvenODDOrderNum_009 = 0;
                 singTemp.LostAllOrderNum_010 = 0;
 
-                #region 110 表 写数据 某位大于20期遗失大于3个，当前期出了一个
-                if(listLostValueBenTemp.Count(s=>s>=20)>=3   && singTemp.LostValue_008>=20)
+                #region 110 表 写数据 某位大于20期遗失大于2个，当前期出了一个
+                if(listLostValueBenTemp.Count(s=>s>=20)>=2   && singTemp.LostValue_008>=20)
                 {
-                    SpecialFuture_110 specialFuture_108 = InitDetailSpecialFutrue_110(ICurrentPeriod_101.LongPeriod_001, i, singTemp.PositionVale_005, EnumFutureType.F_Three20InSingle);
+                    SpecialFuture_110 specialFuture_108 = InitDetailSpecialFutrue_110(i, singTemp.PositionVale_005, EnumFutureType.F_Big20InSingle);
                     StringBuilder sb = new StringBuilder();
                     if (singTemp.PositionVale_005 % 2 == 0)
                     {
@@ -2106,7 +2107,7 @@ namespace SSCService03
                             }
                         }
                     }
-                    specialFuture_108.ScoreBack_009 = sb.ToString().TrimEnd(',');
+                    specialFuture_108.AlarmBeforeValues_009 = sb.ToString().TrimEnd(',');
 
                     listSpecialFuture110Temp.Add(specialFuture_108);
 
@@ -2307,7 +2308,7 @@ namespace SSCService03
         {
             List<SingleAnalysis_106> listSingleAnalysis = new List<SingleAnalysis_106>();
             string strSql = string.Empty;
-            strSql = String.Format("select top {0} C001,C002,C003,C004,C005,C008 from T_103_{2} where C001<= {1}  order by C001 desc ", ACount * 5, APeriod, IStrYY);
+            strSql = String.Format("select top {0} C001,C002,C003,C004,C005,C008 from T_106_{2} where C001<= {1}  order by C001 desc ", ACount * 5, APeriod, IStrYY);
 
             DataSet ds = DBHelp.DbHelperSQL.GetDataSet(ISqlConnect, strSql);
 
@@ -2688,15 +2689,18 @@ namespace SSCService03
 
         public static void DoSpecialFuture_110(List<PeriodDetail_101> AListPeriod_101)
         {
+            if (AListPeriod_101.Count <= 5) return;
             List<int> listSingleNumValue = new List<int>();
             List<SpecialFuture_110> listSfTemp = new List<SpecialFuture_110>();
-            List<SpecialFuture_110> listSpecialFuture_108new = new List<SpecialFuture_110>();
+            List<SpecialFuture_110> listSpecialFuture_110new = new List<SpecialFuture_110>();
             List<SingleAnalysis_106> AListSingleAnalysis_106 = GetDataSingleAnalysis_106(100, ICurrentPeriod_101.LongPeriod_001);
+            List<SpecialFuture_110> IListSpecialFuture_110_NotComplete = GetDataSpecialFuture_110(0); //得到未完成的
+           
             for (int i = 1; i <= 5; i++) //1位到5位
             {
                 listSfTemp.Clear();
-                listSpecialFuture_108new.Clear();
-                listSfTemp = IListSpecialFuture_108_NotComplete.Where(p => p.PositionType_002 == i).ToList();
+                listSpecialFuture_110new.Clear();
+                listSfTemp = IListSpecialFuture_110_NotComplete.Where(p => p.PositionType_002 == i).ToList();
                 int periodCount = 0;
                 listSingleNumValue.Clear();
 
@@ -2720,8 +2724,9 @@ namespace SSCService03
                     {
                         if (listSfTemp.Where(p => p.PositionType_002 == i && p.FutureType_004 == 1).Count() == 0)
                         {
-                            SpecialFuture_110 specialFuture_108 = InitDetailSpecialFutrue_110(singTemp.LongPeriod_001,singTemp.PositionType_004,singTemp.PositionVale_005, EnumFutureType.F_Xian);
-                            listSpecialFuture_108new.Add(specialFuture_108);
+                            SpecialFuture_110 specialFuture_108 = InitDetailSpecialFutrue_110(singTemp.PositionType_004,singTemp.PositionVale_005, EnumFutureType.F_Xian);
+                            specialFuture_108.AlarmBeforeValues_009 = new StringBuilder().Append(listSingleNumValue[0]).Append(",").Append(listSingleNumValue[1]).Append(",").Append(listSingleNumValue[2]).Append(",").Append(listSingleNumValue[3]).ToString();
+                            listSpecialFuture_110new.Add(specialFuture_108);
                         }
                     }
                     //F_FanXian=2, 反线性
@@ -2729,29 +2734,33 @@ namespace SSCService03
                     {
                         if (listSfTemp.Where(p => p.PositionType_002 == i && p.FutureType_004 == 2).Count() == 0)
                         {
-                            SpecialFuture_110 specialFuture_108 = InitDetailSpecialFutrue_110(singTemp.LongPeriod_001, singTemp.PositionType_004, singTemp.PositionVale_005, EnumFutureType.F_FanXian);
-                            listSpecialFuture_108new.Add(specialFuture_108);
+                            SpecialFuture_110 specialFuture_108 = InitDetailSpecialFutrue_110(singTemp.PositionType_004, singTemp.PositionVale_005, EnumFutureType.F_FanXian);
+                            specialFuture_108.AlarmBeforeValues_009 = new StringBuilder().Append(listSingleNumValue[0]).Append(",").Append(listSingleNumValue[1]).Append(",").Append(listSingleNumValue[2]).Append(",").Append(listSingleNumValue[3]).ToString();
+                            listSpecialFuture_110new.Add(specialFuture_108);
                         }
                     }
                     //F_AddOneOriginal=3, 加1复位
                     if (GetAddOneOriginalAlarm(listSingleNumValue[0], listSingleNumValue[1], listSingleNumValue[2]))
                     {
-                        SpecialFuture_110 specialFuture_108 = InitDetailSpecialFutrue_110(singTemp.LongPeriod_001, singTemp.PositionType_004, singTemp.PositionVale_005, EnumFutureType.F_AddOneOriginal);
-                        listSpecialFuture_108new.Add(specialFuture_108);
+                        SpecialFuture_110 specialFuture_108 = InitDetailSpecialFutrue_110(singTemp.PositionType_004, singTemp.PositionVale_005, EnumFutureType.F_AddOneOriginal);
+                        specialFuture_108.AlarmBeforeValues_009 = new StringBuilder().Append(listSingleNumValue[0]).Append(",").Append(listSingleNumValue[1]).Append(",").Append(listSingleNumValue[2]).ToString();
+                        listSpecialFuture_110new.Add(specialFuture_108);
                     }
 
                     //F_SubOneOriginal=4,  减1复位
                     if (GetSubOneOriginalAlarm(listSingleNumValue[0], listSingleNumValue[1], listSingleNumValue[2]))
                     {
-                        SpecialFuture_110 specialFuture_108 = InitDetailSpecialFutrue_110(singTemp.LongPeriod_001, singTemp.PositionType_004, singTemp.PositionVale_005, EnumFutureType.F_SubOneOriginal);
-                        listSpecialFuture_108new.Add(specialFuture_108);
+                        SpecialFuture_110 specialFuture_108 = InitDetailSpecialFutrue_110(singTemp.PositionType_004, singTemp.PositionVale_005, EnumFutureType.F_SubOneOriginal);
+                        specialFuture_108.AlarmBeforeValues_009 = new StringBuilder().Append(listSingleNumValue[0]).Append(",").Append(listSingleNumValue[1]).Append(",").Append(listSingleNumValue[2]).ToString();
+                        listSpecialFuture_110new.Add(specialFuture_108);
                     }
 
                     //F_32283=5, 32283
                     if (Get32283Alarm(listSingleNumValue[0], listSingleNumValue[1], listSingleNumValue[2], listSingleNumValue[3]))
                     {
-                        SpecialFuture_110 specialFuture_108 = InitDetailSpecialFutrue_110(singTemp.LongPeriod_001, singTemp.PositionType_004, singTemp.PositionVale_005, EnumFutureType.F_32283);
-                        listSpecialFuture_108new.Add(specialFuture_108);
+                        SpecialFuture_110 specialFuture_108 = InitDetailSpecialFutrue_110(singTemp.PositionType_004, singTemp.PositionVale_005, EnumFutureType.F_32283);
+                        specialFuture_108.AlarmBeforeValues_009 = new StringBuilder().Append(listSingleNumValue[0]).Append(",").Append(listSingleNumValue[1]).Append(",").Append(listSingleNumValue[2]).Append(",").Append(listSingleNumValue[3]).ToString();
+                        listSpecialFuture_110new.Add(specialFuture_108);
                     }
                 }
                 #endregion
@@ -2768,6 +2777,7 @@ namespace SSCService03
                                 {
                                     bool flag = false;
                                     flag = GetXianXinJudge(listSingleNumValue[0], listSingleNumValue[1], listSingleNumValue[2], listSingleNumValue[3], listSingleNumValue[4]);
+                                    sf.RealAppearValues_013 = listSingleNumValue[0].ToString();
                                     AddDetailSpecialFuture_108(flag, AListPeriod_101[0].LongPeriod_001, sf);
                                 }
                             }
@@ -2778,6 +2788,7 @@ namespace SSCService03
                                 {
                                     bool flag = false;
                                     flag = GetFanXianXinJudge(listSingleNumValue[0], listSingleNumValue[1], listSingleNumValue[2], listSingleNumValue[3], listSingleNumValue[4]);
+                                    sf.RealAppearValues_013 = listSingleNumValue[0].ToString();
                                     AddDetailSpecialFuture_108(flag, AListPeriod_101[0].LongPeriod_001, sf);
                                 }
                             }
@@ -2788,6 +2799,7 @@ namespace SSCService03
                                 {
                                     bool flag = false;
                                     flag = GetAddOneOriginalJudge(listSingleNumValue[0], listSingleNumValue[1], listSingleNumValue[2], listSingleNumValue[3]);
+                                    sf.RealAppearValues_013 = listSingleNumValue[0].ToString();
                                     AddDetailSpecialFuture_108(flag, AListPeriod_101[0].LongPeriod_001, sf);
 
                                 }
@@ -2797,6 +2809,7 @@ namespace SSCService03
                             {
                                 bool flag = false;
                                 flag = GetSubOneOriginalJudge(listSingleNumValue[0], listSingleNumValue[1], listSingleNumValue[2], listSingleNumValue[3]);
+                                sf.RealAppearValues_013 = listSingleNumValue[0].ToString();
                                 AddDetailSpecialFuture_108(flag, AListPeriod_101[0].LongPeriod_001, sf);
                             }
                             break;
@@ -2804,6 +2817,7 @@ namespace SSCService03
                             {
                                 bool flag = false;
                                 flag = Get32283Judge(listSingleNumValue[0], listSingleNumValue[3]);
+                                sf.RealAppearValues_013 = listSingleNumValue[0].ToString();
                                 AddDetailSpecialFuture_108(flag, AListPeriod_101[0].LongPeriod_001, sf);
                             }
                             break;
@@ -2812,43 +2826,56 @@ namespace SSCService03
                                 #region
                                 int span = AListPeriod_101.Where(p => p.LongPeriod_001 >= sf.LongPeriod_001 && p.LongPeriod_001 <= ICurrentPeriod_101.LongPeriod_001).Count() - 1;
                                 //如果一直是双 ,期数上在3期内
+                                
                                 if (sf.PositionVale_003 % 2 == 1)
                                 {
-                                    //单
-                                    if (listSingleNumValue[0] % 2 == 1)
+
+                                    if (listSingleNumValue[0] % 2 == 1)//单
                                     {
-                                        if (sf.ScoreBack_009.Contains(listSingleNumValue[0].ToString()))
+                                        if (sf.AlarmBeforeValues_009.Contains(listSingleNumValue[0].ToString()))
                                         {
                                             sf.IsComplete_005 = 1;
                                             sf.IsScore_006 = 1;
                                             sf.ScoreSpan_007 = 1;
+                                            sf.RealAppearValues_013 = listSingleNumValue[0].ToString();
                                             sf.ScoreLongPeriod_008 = AListPeriod_101[0].LongPeriod_001;
                                         }
                                         else if (span >= 3)
                                         {
                                             sf.IsComplete_005 = 1;
                                             sf.IsScore_006 = 0;
+                                            sf.RealAppearValues_013 = listSingleNumValue[0].ToString();
                                             sf.ScoreLongPeriod_008 = AListPeriod_101[0].LongPeriod_001;
                                         }
                                     }
+                                    else //双
+                                    {
+                                        sf.RealAppearValues_013 = listSingleNumValue[0].ToString() + ",";
+                                    }
                                 }
-                                else
+                                else  //双
                                 {
                                     if (listSingleNumValue[0] % 2 == 0)
                                     {
-                                        if (sf.ScoreBack_009.Contains(listSingleNumValue[0].ToString()))
+                                        if (sf.AlarmBeforeValues_009.Contains(listSingleNumValue[0].ToString()))
                                         {
                                             sf.IsComplete_005 = 1;
                                             sf.IsScore_006 = 1;
                                             sf.ScoreSpan_007 = 1;
+                                            sf.RealAppearValues_013 = listSingleNumValue[0].ToString();
                                             sf.ScoreLongPeriod_008 = AListPeriod_101[0].LongPeriod_001;
                                         }
                                         else if (span >= 3)
                                         {
                                             sf.IsComplete_005 = 1;
                                             sf.IsScore_006 = 0;
+                                            sf.RealAppearValues_013 = listSingleNumValue[0].ToString() + ",";
                                             sf.ScoreLongPeriod_008 = AListPeriod_101[0].LongPeriod_001;
                                         }
+                                    }
+                                    else  //单
+                                    {
+                                        sf.RealAppearValues_013 = listSingleNumValue[0].ToString() + ",";
                                     }
                                 }
                                 #endregion
@@ -2900,9 +2927,9 @@ namespace SSCService03
                 #region  //写数据
                 {
 
-                    if (listSpecialFuture_108new.Count > 0)
+                    if (listSpecialFuture_110new.Count > 0)
                     {
-                        if (UpdateOrAddSpecialFuture_110(listSpecialFuture_108new))
+                        if (UpdateOrAddSpecialFuture_110(listSpecialFuture_110new))
                         {
                             FileLog.WriteInfo("UpdateOrAddSpecialFuture_110 1 ", "success");
                         }
@@ -3190,68 +3217,79 @@ namespace SSCService03
         #endregion
 
         //初始化110
-        public static SpecialFuture_110 InitDetailSpecialFutrue_110( long APeriod,int AWeiType,int PositionValue ,EnumFutureType AFutrue)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="AWeiType"></param>
+        /// <param name="PositionValue"></param>
+        /// <param name="AFutrue"></param>
+        /// <returns></returns>
+        public static SpecialFuture_110 InitDetailSpecialFutrue_110(int AWeiType,int PositionValue ,EnumFutureType AFutrue)
         {
             SpecialFuture_110 specialFuture_108 = new SpecialFuture_110();
-            specialFuture_108.LongPeriod_001 = APeriod;
+            specialFuture_108.LongPeriod_001 = ICurrentPeriod_101.LongPeriod_001;
             specialFuture_108.PositionType_002 = AWeiType;
-            specialFuture_108.PositionVale_003 = PositionValue;
+            specialFuture_108.PositionVale_003 = PositionValue;  //大10，小11，单12，双13
             specialFuture_108.IsComplete_005 = 0;
+            specialFuture_108.IsScore_006 = 0;
+            specialFuture_108.ScoreSpan_007 = 0;
+            specialFuture_108.ScoreLongPeriod_008 = 0;
+            specialFuture_108.AlarmBeforeValues_009 = string.Empty;
+            specialFuture_108.FutureTypeNote_010 = string.Empty;
+            specialFuture_108.DateNumber_011 = ICurrentPeriod_101.DateNumber_004;
+            specialFuture_108.ShortPeriod_012 = ICurrentPeriod_101.ShortPeriod_005;
+            specialFuture_108.RealAppearValues_013 = string.Empty;
+            specialFuture_108.ScoreBack_014 = 0;
+            specialFuture_108.ScoreBack_015 = 0;
+
             switch (AFutrue)
             {
                 case EnumFutureType.F_Xian:
                     {
                         specialFuture_108.FutureType_004 = (int)EnumFutureType.F_Xian;
+                        specialFuture_108.FutureTypeNote_010 = "线性";
                     }
                     break;
                 case EnumFutureType.F_FanXian:
                     {
                         specialFuture_108.FutureType_004 = (int)EnumFutureType.F_FanXian;
+                        specialFuture_108.FutureTypeNote_010 = "反线性";
                     }
                     break;
                 case EnumFutureType.F_AddOneOriginal:
                     {
                         specialFuture_108.FutureType_004 = (int)EnumFutureType.F_AddOneOriginal;
+                        specialFuture_108.FutureTypeNote_010 = "加1";
                     }
                     break;
                 case EnumFutureType.F_SubOneOriginal:
                     {
                         specialFuture_108.FutureType_004 = (int)EnumFutureType.F_SubOneOriginal;
+                        specialFuture_108.FutureTypeNote_010 = "减1";
                     }
                     break;
                 case EnumFutureType.F_32283:
                     {
                         specialFuture_108.FutureType_004 = (int)EnumFutureType.F_32283;
+                        specialFuture_108.FutureTypeNote_010 = "32283";
                     }
                     break;
-                case EnumFutureType.F_Three20InSingle:
+                case EnumFutureType.F_Big20InSingle:
                     {
-                        specialFuture_108.FutureType_004 = (int)EnumFutureType.F_Three20InSingle;
+                        specialFuture_108.FutureType_004 = (int)EnumFutureType.F_Big20InSingle;
+                        specialFuture_108.FutureTypeNote_010 = "本位20期遗失大于2";
                     }
                     break;
                 case EnumFutureType.F_ThreeConRepick:
                     {
                         specialFuture_108.FutureType_004 = (int)EnumFutureType.F_ThreeConRepick;
+                        specialFuture_108.FutureTypeNote_010 = "3期重复";
                     }
                     break;
                 default:
                     break;
             }
-            specialFuture_108.IsScore_006 = 0;
-            specialFuture_108.ScoreSpan_007 = 0;
-            specialFuture_108.ScoreLongPeriod_008 = 0;
-            specialFuture_108.ScoreBack_009 = string.Empty;
-            specialFuture_108.ScoreBack_010 = 0;
-            specialFuture_108.ScoreBack_011 = 0;
-            specialFuture_108.ScoreBack_012 = 0;
-            specialFuture_108.ScoreBack_013 = 0;
-            specialFuture_108.ScoreBack_014 = 0;
-            specialFuture_108.ScoreBack_015 = 0;
-            specialFuture_108.ScoreBack_016 = 0;
-            specialFuture_108.ScoreBack_017 = 0;
-            specialFuture_108.ScoreBack_018 = 0;
-            specialFuture_108.ScoreBack_019 = 0;
-            specialFuture_108.ScoreBack_020 = 0;
+        
 
 
             return specialFuture_108;
@@ -3272,7 +3310,9 @@ namespace SSCService03
             try
             {
                 string strSql = string.Empty;
-                long beforePeriod = GetBeforePeriodValue59(ICurrentPeriod_101.LongPeriod_001,15);
+                //得到15期的期号？？？
+                long beforePeriod = GetBeforePeriodValue59(ICurrentPeriod_101.LongPeriod_001,30);
+
                 strSql = string.Format("Select * from T_110_{1} where C001>={0}", beforePeriod, IStrYY);
 
                 objConn = DbHelperSQL.GetConnection(ISqlConnect);
@@ -3286,7 +3326,7 @@ namespace SSCService03
 
                 foreach (SpecialFuture_110 ss in AListSpecialFuture110)
                 {
-                    DataRow drCurrent = objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C002={1}  AND C003={2} AND C004={3} ", ss.LongPeriod_001, ss.PositionType_002, ss.PositionVale_003, ss.FutureType_004)).Count() > 0 ? objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C002={1}  AND C003={2} AND C004={3} ", ss.LongPeriod_001, ss.PositionType_002, ss.PositionVale_003, ss.FutureType_004)).First() : null;
+                    DataRow drCurrent = objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C002={1}  AND C003={2} AND C004={3} ", ss.LongPeriod_001, ss.PositionType_002, ss.PositionVale_003, ss.FutureType_004)).Count() > 0 ? objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C002={1}  AND  C003={2}  AND  C004={3} ", ss.LongPeriod_001, ss.PositionType_002, ss.PositionVale_003, ss.FutureType_004)).First() : null;
 
                     if (drCurrent != null) //更新
                     {
@@ -3299,8 +3339,11 @@ namespace SSCService03
                         drCurrent["C006"] = ss.IsScore_006;
                         drCurrent["C007"] = ss.ScoreSpan_007;
                         drCurrent["C008"] = ss.ScoreLongPeriod_008;
-                        drCurrent["C009"] = ss.ScoreBack_009;
-                        drCurrent["C010"] = ss.ScoreBack_010;
+                        drCurrent["C009"] = ss.AlarmBeforeValues_009;
+                        drCurrent["C010"] = ss.FutureTypeNote_010;
+                        drCurrent["C011"] = ss.DateNumber_011;
+                        drCurrent["C012"] = ss.ShortPeriod_012;
+                        drCurrent["C013"] = ss.RealAppearValues_013;
                         drCurrent.EndEdit();
                     }
                     else //添加新行
@@ -3314,13 +3357,17 @@ namespace SSCService03
                         drNewRow["C006"] = ss.IsScore_006;
                         drNewRow["C007"] = ss.ScoreSpan_007;
                         drNewRow["C008"] = ss.ScoreLongPeriod_008;
-                        drNewRow["C009"] = ss.ScoreBack_009;
-                        drNewRow["C010"] = ss.ScoreBack_010;
+                        drNewRow["C009"] = ss.AlarmBeforeValues_009;
+                        drNewRow["C010"] = ss.FutureTypeNote_010;
+                        drNewRow["C011"] = ss.DateNumber_011;
+                        drNewRow["C012"] = ss.ShortPeriod_012;
+                        drNewRow["C013"] = ss.RealAppearValues_013;
                         objDataSet.Tables[0].Rows.Add(drNewRow);
                     }
                 }
                 objAdapter.Update(objDataSet);
                 objDataSet.AcceptChanges();
+          
                 FileLog.WriteInfo("UpdateOrAddSpecialFuture_110() ", "Success :" + ICurrentPeriod_101.LongPeriod_001);
 
             }
@@ -3334,7 +3381,48 @@ namespace SSCService03
 
         }
 
-        public static void GetDataSpecialFuture_110() { }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="AType">0 得到未完成的规律</param>
+        /// <returns></returns>
+        public static List<SpecialFuture_110> GetDataSpecialFuture_110(int AType)
+        {
+            List<SpecialFuture_110> ListSpecialFutrue110 = new List<SpecialFuture_110>();
+            String StrSQL = string.Empty;
+            switch (AType)
+            {
+                case 0:  //得到当前期
+                    StrSQL = string.Format("select  * from T_110_{0} where C005=0 order by  C001 desc", IStrYY );
+                    break;
+                default:
+                    break;
+            }
+            DataSet ds = DBHelp.DbHelperSQL.GetDataSet(ISqlConnect, StrSQL);
+            if (ds != null && ds.Tables[0] != null && ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow drNewRow in ds.Tables[0].Rows)
+                {
+                    SpecialFuture_110 sf110 = new SpecialFuture_110();
+                    sf110.LongPeriod_001= long.Parse(drNewRow["C001"].ToString());
+                    sf110.PositionType_002=int.Parse(drNewRow["C002"].ToString());
+                    sf110.PositionVale_003 = int.Parse(drNewRow["C003"].ToString());
+                    sf110.FutureType_004= int.Parse(drNewRow["C004"].ToString());
+                    sf110.IsComplete_005 = int.Parse(drNewRow["C005"].ToString());
+                    sf110.IsScore_006= int.Parse(drNewRow["C006"].ToString());
+                    sf110.ScoreSpan_007= int.Parse(drNewRow["C007"].ToString());
+                    sf110.ScoreLongPeriod_008 = int.Parse(drNewRow["C008"].ToString());
+                    sf110.AlarmBeforeValues_009 = drNewRow["C009"] != DBNull.Value ? drNewRow["C009"].ToString() : string.Empty;
+                    sf110.FutureTypeNote_010 = drNewRow["C010"] != DBNull.Value ? drNewRow["C010"].ToString() : string.Empty;                                  sf110.DateNumber_011 = long.Parse(drNewRow["C011"].ToString());
+                    sf110.ShortPeriod_012 = int.Parse(drNewRow["C012"].ToString());
+                    sf110.RealAppearValues_013 = drNewRow["C013"] != DBNull.Value ? drNewRow["C013"].ToString() : string.Empty; 
+                    ListSpecialFutrue110.Add(sf110);
+                }
+            }
+
+            return ListSpecialFutrue110;
+        }
         #endregion
 
         

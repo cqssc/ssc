@@ -43,11 +43,6 @@ namespace Modles
         public string  RealAppearValues_013 { set; get; } //实际出现数字
         public int ScoreBack_014 { set; get; }
         public int ScoreBack_015 { set; get; }
-        public int ScoreBack_016 { set; get; }
-        public int ScoreBack_017 { set; get; }
-        public int ScoreBack_018 { set; get; }
-        public int ScoreBack_019 { set; get; }
-        public int ScoreBack_020 { set; get; }
 
 
     }

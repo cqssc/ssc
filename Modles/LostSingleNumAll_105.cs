@@ -20,13 +20,31 @@ namespace Modles
          //单个数字0~9
         public int SingleNum_004{ set; get; }
 
-        public int IsAppear_005 { set; get; }
+        public long NotAppearPeriodStart_005 { set; get; }
 
-        public int LostValue_006 { set; get; }
+        public int  LostSpan_006 { set; get; }
 
-         //出现个数
-        public int AppearCount_007 { set; get; }
+        public int AppearNumCount_007 { set; get; }  //用于判定是否出现
 
-        public int PreLostValue_008 { get; set; }
+        public int IsComplete_008 { set; get; }
+
+        public long Later1Period_009 { set; get; }
+
+        public int LaterAppearNum_010 { set; get; }
+
+        public long Later2Period_011 { set; get; }
+        public int Later2AppearNum_012 { set; get; }
+
+        public long Later3Period_013 { set; get; }
+        public int Later3AppearNum_014 { set; get; }
+
+        public long Later4Period_015 { set; get; }
+        public int Later4AppearNum_016 { set; get; }
+
+
+        public long Later5Period_017 { set; get; }
+        public int Later5AppearNum_018 { set; get; }
+
+
     }
 }

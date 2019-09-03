@@ -86,7 +86,7 @@ namespace SSCService03
                             Task t2 = Task.Factory.StartNew(delegate { DoLostTrend_103(ConstDefine.Const_SetZero, listPeriodTemp_101); });
                             Task t3 = Task.Factory.StartNew(delegate { DoContinueBigSmall_111(ConstDefine.Const_SetZero, listPeriodTemp_101); });
                             Task t4 = Task.Factory.StartNew(delegate { DoLostCross_104(ConstDefine.Const_SetZero, listPeriodTemp_101); });
-                            Task t5 = Task.Factory.StartNew(delegate { DoLostSingleNumAll_105(ConstDefine.Const_SetZero, listPeriodTemp_101); });
+                            Task t5 = Task.Factory.StartNew(delegate { DoLostSingleNumAll_105( listPeriodTemp_101); });
                             Task t6 = Task.Factory.StartNew(delegate { DoHotSingleNum_107(ConstDefine.Const_SetZero, listPeriodTemp_101); });
                             Task.WaitAll(t1, t2, t3, t4, t5, t6);
 
@@ -115,7 +115,8 @@ namespace SSCService03
                              Task t2 = Task.Factory.StartNew(delegate { DoLostTrend_103(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
                              Task t3 = Task.Factory.StartNew(delegate { DoContinueBigSmall_111(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
                              Task t4 = Task.Factory.StartNew(delegate { DoLostCross_104(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
-                             Task t5 = Task.Factory.StartNew(delegate { DoLostSingleNumAll_105(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
+                             Task t5 = Task.Factory.StartNew(delegate { DoLostSingleNumAll_105( listPeriodTemp_101); });
+
                              Task t6 = Task.Factory.StartNew(delegate { DoHotSingleNum_107(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
                              Task.WaitAll(t1, t2, t3, t4, t5, t6);
 
@@ -1763,65 +1764,71 @@ namespace SSCService03
         #endregion
 
         #region  DoLostSingleNumAll_105 遗失数字全部
-        public static bool DoLostSingleNumAll_105(int AType, List<PeriodDetail_101> AListPeriod_101) 
+        public static bool DoLostSingleNumAll_105( List<PeriodDetail_101> AListPeriod_101) 
         {
             bool flag = true;
             List<LostSingleNumAll_105> listLostSingleNumAll_105Temp = new List<LostSingleNumAll_105>();
-            List<LostSingleNumAll_105> listLostSingleNumAll_105Pre = null;
-            LostSingleNumAll_105 lostSingleNumPre = null;
-            if (AType == ConstDefine.Const_SetNormal)
-            {
-                listLostSingleNumAll_105Pre = GetDataLostSingleNumAll_105(1, ICurrentPeriod_101.LongPeriod_001);
-            }
+            List<LostSingleNumAll_105> listLostSingleNumAll_105Pre = new List<LostSingleNumAll_105>();
+
+            //小于2期就直接不处理
+            if (AListPeriod_101.Count <3)  return true;            
+            listLostSingleNumAll_105Pre = GetDataLostSingleNumAll_105(0, ICurrentPeriod_101.LongPeriod_001);           
+
             for (int i = 0; i <= 9;i++ )
             {
-                LostSingleNumAll_105 lostSingleNumAll_105 = new LostSingleNumAll_105();
-                InitLostSingleNumAll_105(i,ref lostSingleNumAll_105);
-                listLostSingleNumAll_105Temp.Add(lostSingleNumAll_105);
-                int count = 0;
-                count = GetMatchCount(AListPeriod_101[0].AwardNumber_002, i.ToString());
-                if (count > 0)
+                #region
+                LostSingleNumAll_105   lostSingleNumPre = null;
+                int countSpan = 0;
+                long startPeriod = 0;
+                for (int j = 0; i <= AListPeriod_101.Count - 1; j++)
                 {
-                    lostSingleNumAll_105.IsAppear_005 = 1;
-                    lostSingleNumAll_105.AppearCount_007 = count;
-                    lostSingleNumAll_105.LostValue_006 = 0;
-                    if (AType == ConstDefine.Const_SetNormal)
+                    if (!AListPeriod_101[j].AwardNumber_002.Contains(i.ToString()))
                     {
-                        if (listLostSingleNumAll_105Pre != null && listLostSingleNumAll_105Pre.Count > 0 && listLostSingleNumAll_105Pre.Where(p => p.SingleNum_004 == i).Count() > 0)
+                        countSpan = j + 1;
+                        if (countSpan >= AListPeriod_101.Count && countSpan >= 3)
                         {
-                            lostSingleNumPre = listLostSingleNumAll_105Pre.Where(p => p.SingleNum_004 == i).First();
-                            lostSingleNumAll_105.PreLostValue_008 = lostSingleNumPre.LostValue_006;
-                        }
-                        else
-                        {
-                            lostSingleNumAll_105.PreLostValue_008 = 1;
+                            startPeriod = AListPeriod_101[j].LongPeriod_001;
                         }
                     }
                     else
                     {
-                        lostSingleNumAll_105.PreLostValue_008 = 1;
+                        if (countSpan >= 3)
+                        {
+                            startPeriod = AListPeriod_101[j - 1].LongPeriod_001;
+                        }
+                        break;
                     }
                 }
-                else 
-                {
-                    lostSingleNumAll_105.IsAppear_005 = 0;
-                    lostSingleNumAll_105.AppearCount_007 = 0;
-                    if (AType == ConstDefine.Const_SetNormal)
-                    {
-                        if (listLostSingleNumAll_105Pre != null && listLostSingleNumAll_105Pre.Count > 0 && listLostSingleNumAll_105Pre.Where(p => p.SingleNum_004 == i).Count() > 0)
-                        {
-                            lostSingleNumPre = listLostSingleNumAll_105Pre.Where(p => p.SingleNum_004 == i).First();
-                            lostSingleNumAll_105.LostValue_006 = lostSingleNumPre.LostValue_006 + 1;
-                        }
-                        else
-                        {
-                            lostSingleNumAll_105.LostValue_006 = 1;
-                        }
-                    }
 
+                if (countSpan >= 3)
+                {
+                    if (listLostSingleNumAll_105Pre.Where(p => p.SingleNum_004 == i && p.NotAppearPeriodStart_005 == startPeriod).Count() > 0)
+                    {
+                        lostSingleNumPre = listLostSingleNumAll_105Pre.Where(p => p.SingleNum_004 == i && p.NotAppearPeriodStart_005 == startPeriod).First();
+                        lostSingleNumPre.LongPeriod_001 = ICurrentPeriod_101.LongPeriod_001;
+                        lostSingleNumPre.LostSpan_006 = countSpan;
+                    }
+                    else
+                    {
+                        LostSingleNumAll_105 ls = new LostSingleNumAll_105();
+                        InitLostSingleNumAll_105(i, ref ls);
+                        ls.NotAppearPeriodStart_005 = startPeriod;
+                        ls.LostSpan_006 = countSpan;
+                        listLostSingleNumAll_105Temp.Add(ls);
+                    }
                 }
-               
+                #endregion
             }
+            listLostSingleNumAll_105Pre = listLostSingleNumAll_105Pre.OrderByDescending(p => p.LongPeriod_001).ToList();
+            foreach (LostSingleNumAll_105 ls in listLostSingleNumAll_105Pre)
+            {
+                
+
+
+            }
+
+
+
 
             if (UpdateOrAddLostSingleNumAll_105(listLostSingleNumAll_105Temp))
             {
@@ -1841,10 +1848,20 @@ namespace SSCService03
             lostSingleNumAll_105.DateNumber_002 = ICurrentPeriod_101.DateNumber_004;
             lostSingleNumAll_105.ShortPeriod_003 = ICurrentPeriod_101.ShortPeriod_005;
             lostSingleNumAll_105.SingleNum_004 = SingleNum_004;
-            lostSingleNumAll_105.IsAppear_005 = 0;
-            lostSingleNumAll_105.LostValue_006 = 1;
-            lostSingleNumAll_105.AppearCount_007 = 0;
-            lostSingleNumAll_105.PreLostValue_008 = -1;
+            lostSingleNumAll_105.NotAppearPeriodStart_005 = 0;
+            lostSingleNumAll_105.LostSpan_006 = 0;
+            lostSingleNumAll_105.AppearNumCount_007 = 0;
+            lostSingleNumAll_105.IsComplete_008 = 0;
+            lostSingleNumAll_105.Later1Period_009 = 0;
+            lostSingleNumAll_105.LaterAppearNum_010 = 0;
+            lostSingleNumAll_105.Later2Period_011 = 0;
+            lostSingleNumAll_105.Later2AppearNum_012 = 0;
+            lostSingleNumAll_105.Later3Period_013 = 0;
+            lostSingleNumAll_105.Later3AppearNum_014 = 0;
+            lostSingleNumAll_105.Later4Period_015 = 0;
+            lostSingleNumAll_105.Later4AppearNum_016 = 0;
+            lostSingleNumAll_105.Later5Period_017 = 0;
+            lostSingleNumAll_105.Later5AppearNum_018 = 0;
         }
 
         public static bool UpdateOrAddLostSingleNumAll_105(List<LostSingleNumAll_105> listLostSingleNumAll_105)
@@ -1880,10 +1897,20 @@ namespace SSCService03
                         drCurrent["C002"] = ss.DateNumber_002.ToString();
                         drCurrent["C003"] = ss.ShortPeriod_003;
                         drCurrent["C004"] = ss.SingleNum_004;
-                        drCurrent["C005"] = ss.IsAppear_005;
-                        drCurrent["C006"] = ss.LostValue_006;
-                        drCurrent["C007"] = ss.AppearCount_007;
-                        drCurrent["C008"] = ss.PreLostValue_008;
+                        drCurrent["C005"] = ss.NotAppearPeriodStart_005;
+                        drCurrent["C006"] = ss.LostSpan_006;
+                        drCurrent["C007"] = ss.AppearNumCount_007;
+                        drCurrent["C008"] = ss.IsComplete_008;
+                        drCurrent["C009"] = ss.Later1Period_009;
+                        drCurrent["C010"] = ss.LaterAppearNum_010;
+                        drCurrent["C011"] = ss.Later2Period_011;
+                        drCurrent["C012"] = ss.Later2AppearNum_012;
+                        drCurrent["C013"] = ss.Later3Period_013;
+                        drCurrent["C014"] = ss.Later3AppearNum_014;
+                        drCurrent["C015"] = ss.Later4Period_015;
+                        drCurrent["C016"] = ss.Later4AppearNum_016;
+                        drCurrent["C017"] = ss.Later5Period_017;
+                        drCurrent["C018"] = ss.Later5AppearNum_018;
                         drCurrent.EndEdit();
                     }
                     else //添加新行
@@ -1893,10 +1920,20 @@ namespace SSCService03
                         drNewRow["C002"] = ss.DateNumber_002.ToString();
                         drNewRow["C003"] = ss.ShortPeriod_003;
                         drNewRow["C004"] = ss.SingleNum_004;
-                        drNewRow["C005"] = ss.IsAppear_005;
-                        drNewRow["C006"] = ss.LostValue_006;
-                        drNewRow["C007"] = ss.AppearCount_007;
-                        drNewRow["C008"] = ss.PreLostValue_008;
+                        drNewRow["C005"] = ss.NotAppearPeriodStart_005;
+                        drNewRow["C006"] = ss.LostSpan_006;
+                        drNewRow["C007"] = ss.AppearNumCount_007;
+                        drNewRow["C008"] = ss.IsComplete_008;
+                        drNewRow["C009"] = ss.Later1Period_009;
+                        drNewRow["C010"] = ss.LaterAppearNum_010;
+                        drNewRow["C011"] = ss.Later2Period_011;
+                        drNewRow["C012"] = ss.Later2AppearNum_012;
+                        drNewRow["C013"] = ss.Later3Period_013;
+                        drNewRow["C014"] = ss.Later3AppearNum_014;
+                        drNewRow["C015"] = ss.Later4Period_015;
+                        drNewRow["C016"] = ss.Later4AppearNum_016;
+                        drNewRow["C017"] = ss.Later5Period_017;
+                        drNewRow["C018"] = ss.Later5AppearNum_018;
                         objDataSet.Tables[0].Rows.Add(drNewRow);
                     }
                 }
@@ -1915,17 +1952,20 @@ namespace SSCService03
         
         }
 
-        public static List<LostSingleNumAll_105> GetDataLostSingleNumAll_105(int AType, long LongPeriodNumber)
+        /// <summary>
+        /// 的到未完成的数字全位遗失
+        /// </summary>
+        /// <param name="AType"></param>
+        /// <param name="LongPeriodNumber"></param>
+        /// <returns></returns>
+        public static List<LostSingleNumAll_105> GetDataLostSingleNumAll_105(int AType, long LongPeriodNumber=-1)
         {
-            List<LostSingleNumAll_105> ListLostTrend_103 = null;
+            List<LostSingleNumAll_105> ListLostSingleNumAll105 = null;
             String StrSQL = string.Empty;
             switch (AType)
             {
-                case 0:  //得到当前期
-                    StrSQL = string.Format("select top 10 * from T_111_{0} where C001={1} order by  C001 desc", IStrYY, LongPeriodNumber);
-                    break;
-                case 1://得到前一期
-                    StrSQL = string.Format("select top 10 * from T_111_{0} where C001<{1} order by  C001 desc", IStrYY, LongPeriodNumber);
+                case 0:  //得到未完成的期数
+                    StrSQL = string.Format("select *  from T_105_{0} where C008=0 order by  C001 desc", IStrYY);
                     break;
                 default:
                     break;
@@ -1933,22 +1973,33 @@ namespace SSCService03
             DataSet ds = DBHelp.DbHelperSQL.GetDataSet(ISqlConnect, StrSQL);
             if (ds != null && ds.Tables[0] != null && ds.Tables[0].Rows.Count > 0)
             {
-                ListLostTrend_103 = new List<LostSingleNumAll_105>();
+                ListLostSingleNumAll105 = new List<LostSingleNumAll_105>();
                 foreach (DataRow drNewRow in ds.Tables[0].Rows)
                 {
-                    LostSingleNumAll_105 lostTrend_103 = new LostSingleNumAll_105();
-                    lostTrend_103.LongPeriod_001 = long.Parse(drNewRow["C001"].ToString());
-                    lostTrend_103.DateNumber_002 = long.Parse(drNewRow["C002"].ToString());
-                    lostTrend_103.ShortPeriod_003 = int.Parse(drNewRow["C003"].ToString());
-                    lostTrend_103.SingleNum_004 = int.Parse(drNewRow["C004"].ToString());
-                    lostTrend_103.IsAppear_005 = int.Parse(drNewRow["C005"].ToString());
-                    lostTrend_103.LostValue_006 = int.Parse(drNewRow["C006"].ToString());
-                    lostTrend_103.AppearCount_007 = int.Parse(drNewRow["C007"].ToString());
-                    lostTrend_103.PreLostValue_008 = int.Parse(drNewRow["C008"].ToString());
-                    ListLostTrend_103.Add(lostTrend_103);
+                    LostSingleNumAll_105 lost105 = new LostSingleNumAll_105();
+                    lost105.LongPeriod_001 = long.Parse(drNewRow["C001"].ToString());
+                    lost105.DateNumber_002 = long.Parse(drNewRow["C002"].ToString());
+                    lost105.ShortPeriod_003 = int.Parse(drNewRow["C003"].ToString());
+                    lost105.SingleNum_004 = int.Parse(drNewRow["C004"].ToString());
+                    lost105.NotAppearPeriodStart_005 = int.Parse(drNewRow["C005"].ToString());
+                    lost105.LostSpan_006 = int.Parse(drNewRow["C006"].ToString());
+                    lost105.AppearNumCount_007 = int.Parse(drNewRow["C007"].ToString());
+                    lost105.IsComplete_008 = int.Parse(drNewRow["C008"].ToString());
+
+                    lost105.Later1Period_009 = long.Parse(drNewRow["C009"].ToString());
+                    lost105.LaterAppearNum_010 = int.Parse(drNewRow["C010"].ToString());
+                    lost105.Later2Period_011 = long.Parse(drNewRow["C011"].ToString());
+                    lost105.Later2AppearNum_012 = int.Parse(drNewRow["C012"].ToString());
+                    lost105.Later3Period_013 = long.Parse(drNewRow["C013"].ToString());
+                    lost105.Later3AppearNum_014 = int.Parse(drNewRow["C014"].ToString());
+                    lost105.Later4Period_015 = long.Parse(drNewRow["C015"].ToString());
+                    lost105.Later4AppearNum_016 = int.Parse(drNewRow["C016"].ToString());
+                    lost105.Later5Period_017 = long.Parse(drNewRow["C017"].ToString());
+                    lost105.Later5AppearNum_018 = int.Parse(drNewRow["C018"].ToString());
+                    ListLostSingleNumAll105.Add(lost105);
                 }
             }
-            return ListLostTrend_103;
+            return ListLostSingleNumAll105;
         }
         #endregion
 

@@ -114,22 +114,24 @@ namespace SSCService03
                              listPeriodTemp_101 = GetListPeriodDetail_101(ConstDefine.Const_GetPreSpan, ICurrentPeriod_101.LongPeriod_001, 59 * 6);
 
                              Task t1 = Task.Factory.StartNew(delegate { DoLostAll_102(ConstDefine.Const_SetNormal, listPeriodTemp_101, ref  ICurrentLostAll_102); });
-                             Task t2 = Task.Factory.StartNew(delegate { DoLostTrend_103(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
-                             Task t3 = Task.Factory.StartNew(delegate { DoContinueBigSmall_111(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
-                             Task t4 = Task.Factory.StartNew(delegate { DoLostCross_104(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
+                             //Task t2 = Task.Factory.StartNew(delegate { DoLostTrend_103(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
+                             //Task t3 = Task.Factory.StartNew(delegate { DoContinueBigSmall_111(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
+                             //Task t4 = Task.Factory.StartNew(delegate { DoLostCross_104(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
                              Task t5 = Task.Factory.StartNew(delegate { DoLostSingleNumAll_105( listPeriodTemp_101); });
 
-                             Task t6 = Task.Factory.StartNew(delegate { DoHotSingleNum_107(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
-                             Task.WaitAll(t1, t2, t3, t4, t5, t6);
+                             Task.WaitAll(t1,t5);
 
-                             Task t7 = Task.Factory.StartNew(delegate { DoSingleAnalysis_106(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
+                             //Task t6 = Task.Factory.StartNew(delegate { DoHotSingleNum_107(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
+                             //Task.WaitAll(t1, t2, t3, t4, t5, t6);
 
-                             Task t8 = Task.Factory.StartNew(delegate { DoHotTrend_108(); });
+                             //Task t7 = Task.Factory.StartNew(delegate { DoSingleAnalysis_106(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
 
-                             Task t9 = Task.Factory.StartNew(delegate { DoSpecialFuture_110(listPeriodTemp_101); });    
-                             Task.WaitAll(t7, t8);
+                             //Task t8 = Task.Factory.StartNew(delegate { DoHotTrend_108(); });
 
-                             t9.Wait();
+                             //Task t9 = Task.Factory.StartNew(delegate { DoSpecialFuture_110(listPeriodTemp_101); });    
+                             //Task.WaitAll(t7, t8);
+
+                             //t9.Wait();
 
                          }
 
@@ -1772,7 +1774,7 @@ namespace SSCService03
             List<LostSingleNumAll_105> listLostSingleNumAll_105Temp = new List<LostSingleNumAll_105>();
             List<LostSingleNumAll_105> listLostSingleNumAll_105Pre = new List<LostSingleNumAll_105>();
 
-            //小于2期就直接不处理
+            //小于3期就直接不处理
             if (AListPeriod_101.Count <3)  return true;            
             listLostSingleNumAll_105Pre = GetDataLostSingleNumAll_105(0, ICurrentPeriod_101.LongPeriod_001);           
 
@@ -1808,7 +1810,10 @@ namespace SSCService03
                     {
                         lostSingleNumPre = listLostSingleNumAll_105Pre.Where(p => p.SingleNum_004 == i && p.NotAppearPeriodStart_005 == startPeriod).First();
                         lostSingleNumPre.LongPeriod_001 = ICurrentPeriod_101.LongPeriod_001;
+                        lostSingleNumPre.DateNumber_002 = ICurrentPeriod_101.DateNumber_004;
+                        lostSingleNumPre.ShortPeriod_003 = ICurrentPeriod_101.ShortPeriod_005;
                         lostSingleNumPre.LostSpan_006 = countSpan;
+
                     }
                     else
                     {
@@ -1822,6 +1827,7 @@ namespace SSCService03
                 #endregion
             }
 
+            
             listLostSingleNumAll_105Pre = listLostSingleNumAll_105Pre.OrderByDescending(p => p.LongPeriod_001).ToList();
             foreach (LostSingleNumAll_105 ls in listLostSingleNumAll_105Pre)
             {                
@@ -1887,6 +1893,11 @@ namespace SSCService03
             else 
             {
                 flag = false;
+            }
+
+            if (UpdateOrAddLostSingleNumAll_105(listLostSingleNumAll_105Temp)) 
+            {
+                flag = true;
             }
 
             return flag;
@@ -2010,7 +2021,7 @@ namespace SSCService03
         /// <returns></returns>
         public static List<LostSingleNumAll_105> GetDataLostSingleNumAll_105(int AType, long LongPeriodNumber=-1)
         {
-            List<LostSingleNumAll_105> ListLostSingleNumAll105 = null;
+            List<LostSingleNumAll_105> ListLostSingleNumAll105 =new List<LostSingleNumAll_105>();
             String StrSQL = string.Empty;
             switch (AType)
             {
@@ -2031,7 +2042,7 @@ namespace SSCService03
                     lost105.DateNumber_002 = long.Parse(drNewRow["C002"].ToString());
                     lost105.ShortPeriod_003 = int.Parse(drNewRow["C003"].ToString());
                     lost105.SingleNum_004 = int.Parse(drNewRow["C004"].ToString());
-                    lost105.NotAppearPeriodStart_005 = int.Parse(drNewRow["C005"].ToString());
+                    lost105.NotAppearPeriodStart_005 = long.Parse(drNewRow["C005"].ToString());
                     lost105.LostSpan_006 = int.Parse(drNewRow["C006"].ToString());
                     lost105.AppearNumCount_007 = int.Parse(drNewRow["C007"].ToString());
                     lost105.IsComplete_008 = int.Parse(drNewRow["C008"].ToString());

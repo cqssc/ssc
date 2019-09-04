@@ -38,6 +38,8 @@ namespace SSCService03
         private static PeriodDetail_101 ICurrentPeriod_101;
         private static LostAll_102 ICurrentLostAll_102;
         private static LostAll_102 IPreLostAll_102;
+
+        private static int ILostSpanSet = 3;
        
 
 
@@ -48,7 +50,7 @@ namespace SSCService03
         public StatisticsData()
         {
             ISqlConnect = ConfigurationManager.AppSettings["SqlServerConnect"] != null ? ConfigurationManager.AppSettings["SqlServerConnect"] : "Data Source=127.0.0.1,1433;Initial Catalog=Pocker;User Id=sa;Password=net,123";
-
+            ILostSpanSet = ConfigurationManager.AppSettings["LostSpanSet"] != null ? int.Parse(ConfigurationManager.AppSettings["LostSpanSet"].ToString()) : 3;
             ICurrentPeriod_101 = new PeriodDetail_101();
             ICurrentLostAll_102 = new LostAll_102();
             IPreLostAll_102 = new LostAll_102();
@@ -1785,14 +1787,14 @@ namespace SSCService03
                     if (!AListPeriod_101[j].AwardNumber_002.Contains(i.ToString()))
                     {
                         countSpan = j + 1;
-                        if (countSpan >= AListPeriod_101.Count && countSpan >= 3)
+                        if (countSpan >= AListPeriod_101.Count && countSpan >= ILostSpanSet)
                         {
                             startPeriod = AListPeriod_101[j].LongPeriod_001;
                         }
                     }
                     else
                     {
-                        if (countSpan >= 3)
+                        if (countSpan >= ILostSpanSet)
                         {
                             startPeriod = AListPeriod_101[j - 1].LongPeriod_001;
                         }
@@ -1819,12 +1821,60 @@ namespace SSCService03
                 }
                 #endregion
             }
+
             listLostSingleNumAll_105Pre = listLostSingleNumAll_105Pre.OrderByDescending(p => p.LongPeriod_001).ToList();
             foreach (LostSingleNumAll_105 ls in listLostSingleNumAll_105Pre)
-            {
-                
-
-
+            {                
+                //如果ls的出现个数>0，然后求ls 001字段的与当前期间了间隔，更新其后的字段吧。
+               if(ls.AppearNumCount_007>0 )
+               {
+                   int span = AListPeriod_101.Where(p=>p.LongPeriod_001>ls.LongPeriod_001).Count();
+                   int count = 0;
+                   count = GetMatchCount(ICurrentPeriod_101.AwardNumber_002, ls.SingleNum_004.ToString());
+                   switch (span)
+                   {
+                       case 0:
+                           { 
+                           }
+                           break;
+                       case 1:
+                           {
+                                  ls.Later1Period_009 = ICurrentPeriod_101.LongPeriod_001;
+                                  ls.LaterAppearNum_010 = count;
+                           }
+                           break;
+                       case 2:
+                           {
+                               ls.Later2Period_011 = ICurrentPeriod_101.LongPeriod_001;
+                               ls.Later2AppearNum_012 = count;
+                           }
+                           break;
+                       case 3:
+                           {
+                               ls.Later3Period_013 = ICurrentPeriod_101.LongPeriod_001;
+                               ls.Later3AppearNum_014 = count;
+                           }
+                           break;
+                       case 4:
+                           {
+                               ls.Later4Period_015 = ICurrentPeriod_101.LongPeriod_001;
+                               ls.Later4AppearNum_016 = count;
+                           }
+                           break;
+                       case 5:
+                           {
+                               ls.Later5Period_017 = ICurrentPeriod_101.LongPeriod_001;
+                               ls.Later5AppearNum_018 = count;
+                               ls.IsComplete_008 = 1;
+                           }
+                           break;
+                       default: 
+                           {
+                               ls.IsComplete_008 = 1;
+                           }
+                           break;
+                   }
+               }
             }
 
 

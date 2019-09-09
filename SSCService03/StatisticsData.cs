@@ -83,7 +83,6 @@ namespace SSCService03
                              //置0
                             listPeriodTemp_101.Clear();
                             listPeriodTemp_101 = GetListPeriodDetail_101(ConstDefine.Const_GetPreSpan, ICurrentPeriod_101.LongPeriod_001, 3);
-
                             Task t1 = Task.Factory.StartNew(delegate { DoLostAll_102(ConstDefine.Const_SetZero, listPeriodTemp_101, ref  ICurrentLostAll_102); });
                             Task t2 = Task.Factory.StartNew(delegate { DoLostTrend_103(ConstDefine.Const_SetZero, listPeriodTemp_101); });
                             Task t3 = Task.Factory.StartNew(delegate { DoContinueBigSmall_111(ConstDefine.Const_SetZero, listPeriodTemp_101); });
@@ -114,24 +113,21 @@ namespace SSCService03
                              listPeriodTemp_101 = GetListPeriodDetail_101(ConstDefine.Const_GetPreSpan, ICurrentPeriod_101.LongPeriod_001, 59 * 6);
 
                              Task t1 = Task.Factory.StartNew(delegate { DoLostAll_102(ConstDefine.Const_SetNormal, listPeriodTemp_101, ref  ICurrentLostAll_102); });
-                             //Task t2 = Task.Factory.StartNew(delegate { DoLostTrend_103(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
-                             //Task t3 = Task.Factory.StartNew(delegate { DoContinueBigSmall_111(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
-                             //Task t4 = Task.Factory.StartNew(delegate { DoLostCross_104(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
+                             Task t2 = Task.Factory.StartNew(delegate { DoLostTrend_103(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
+                             Task t3 = Task.Factory.StartNew(delegate { DoContinueBigSmall_111(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
+                             Task t4 = Task.Factory.StartNew(delegate { DoLostCross_104(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
                              Task t5 = Task.Factory.StartNew(delegate { DoLostSingleNumAll_105( listPeriodTemp_101); });
+                            
+                             Task t6 = Task.Factory.StartNew(delegate { DoHotSingleNum_107(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
+                             Task.WaitAll(t1, t2, t3, t4, t5, t6);
 
-                             Task.WaitAll(t1,t5);
+                             Task t7 = Task.Factory.StartNew(delegate { DoSingleAnalysis_106(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
 
-                             //Task t6 = Task.Factory.StartNew(delegate { DoHotSingleNum_107(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
-                             //Task.WaitAll(t1, t2, t3, t4, t5, t6);
+                             Task t8 = Task.Factory.StartNew(delegate { DoHotTrend_108(); });                           
+                             Task.WaitAll(t7, t8);
 
-                             //Task t7 = Task.Factory.StartNew(delegate { DoSingleAnalysis_106(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
-
-                             //Task t8 = Task.Factory.StartNew(delegate { DoHotTrend_108(); });
-
-                             //Task t9 = Task.Factory.StartNew(delegate { DoSpecialFuture_110(listPeriodTemp_101); });    
-                             //Task.WaitAll(t7, t8);
-
-                             //t9.Wait();
+                             Task t9 = Task.Factory.StartNew(delegate { DoSpecialFuture_110(listPeriodTemp_101); });
+                             t9.Wait();
 
                          }
 
@@ -1830,61 +1826,71 @@ namespace SSCService03
             
             listLostSingleNumAll_105Pre = listLostSingleNumAll_105Pre.OrderByDescending(p => p.LongPeriod_001).ToList();
             foreach (LostSingleNumAll_105 ls in listLostSingleNumAll_105Pre)
-            {                
+            {
+                int span = AListPeriod_101.Where(p => p.LongPeriod_001 > ls.LongPeriod_001).Count();
+                int count = 0;
+                count = GetMatchCount(ICurrentPeriod_101.AwardNumber_002, ls.SingleNum_004.ToString());
                 //如果ls的出现个数>0，然后求ls 001字段的与当前期间了间隔，更新其后的字段吧。
-               if(ls.AppearNumCount_007>0 )
-               {
-                   int span = AListPeriod_101.Where(p=>p.LongPeriod_001>ls.LongPeriod_001).Count();
-                   int count = 0;
-                   count = GetMatchCount(ICurrentPeriod_101.AwardNumber_002, ls.SingleNum_004.ToString());
-                   switch (span)
-                   {
-                       case 0:
-                           { 
-                           }
-                           break;
-                       case 1:
-                           {
-                                  ls.Later1Period_009 = ICurrentPeriod_101.LongPeriod_001;
-                                  ls.LaterAppearNum_010 = count;
-                           }
-                           break;
-                       case 2:
-                           {
-                               ls.Later2Period_011 = ICurrentPeriod_101.LongPeriod_001;
-                               ls.Later2AppearNum_012 = count;
-                           }
-                           break;
-                       case 3:
-                           {
-                               ls.Later3Period_013 = ICurrentPeriod_101.LongPeriod_001;
-                               ls.Later3AppearNum_014 = count;
-                           }
-                           break;
-                       case 4:
-                           {
-                               ls.Later4Period_015 = ICurrentPeriod_101.LongPeriod_001;
-                               ls.Later4AppearNum_016 = count;
-                           }
-                           break;
-                       case 5:
-                           {
-                               ls.Later5Period_017 = ICurrentPeriod_101.LongPeriod_001;
-                               ls.Later5AppearNum_018 = count;
-                               ls.IsComplete_008 = 1;
-                           }
-                           break;
-                       default: 
-                           {
-                               ls.IsComplete_008 = 1;
-                           }
-                           break;
-                   }
-               }
+                if (ls.AppearNumCount_007 > 0)
+                {
+                    switch (span)
+                    {
+                        case 0:
+                            {
+                            }
+                            break;
+                        case 1:
+                            {
+                                ls.Later1Period_009 = ICurrentPeriod_101.LongPeriod_001;
+                                ls.LaterAppearNum_010 = count;
+                            }
+                            break;
+                        case 2:
+                            {
+                                ls.Later2Period_011 = ICurrentPeriod_101.LongPeriod_001;
+                                ls.Later2AppearNum_012 = count;
+                            }
+                            break;
+                        case 3:
+                            {
+                                ls.Later3Period_013 = ICurrentPeriod_101.LongPeriod_001;
+                                ls.Later3AppearNum_014 = count;
+                            }
+                            break;
+                        case 4:
+                            {
+                                ls.Later4Period_015 = ICurrentPeriod_101.LongPeriod_001;
+                                ls.Later4AppearNum_016 = count;
+                            }
+                            break;
+                        case 5:
+                            {
+                                ls.Later5Period_017 = ICurrentPeriod_101.LongPeriod_001;
+                                ls.Later5AppearNum_018 = count;
+                                ls.IsComplete_008 = 1;
+                            }
+                            break;
+                        default:
+                            {
+                                ls.IsComplete_008 = 1;
+                            }
+                            break;
+                    }
+                }
+                else 
+                {
+                    if(count>0)//出现了
+                    {
+                        ls.LongPeriod_001 = ICurrentPeriod_101.LongPeriod_001;
+                        ls.DateNumber_002 = ICurrentPeriod_101.DateNumber_004;
+                        ls.ShortPeriod_003 = ICurrentPeriod_101.ShortPeriod_005;
+                        ls.AppearNumCount_007 = count;
+                    }                 
+                }
+                listLostSingleNumAll_105Temp.Add(ls);
             }
 
-
-
+            listLostSingleNumAll_105Temp = listLostSingleNumAll_105Temp.OrderBy(p=>p.LongPeriod_001).ToList();
 
             if (UpdateOrAddLostSingleNumAll_105(listLostSingleNumAll_105Temp))
             {
@@ -1893,11 +1899,6 @@ namespace SSCService03
             else 
             {
                 flag = false;
-            }
-
-            if (UpdateOrAddLostSingleNumAll_105(listLostSingleNumAll_105Temp)) 
-            {
-                flag = true;
             }
 
             return flag;
@@ -1936,7 +1937,7 @@ namespace SSCService03
             try
             {
                 string strSql = string.Empty;
-                strSql = string.Format("Select * from T_105_{1} where C001={0}", ICurrentPeriod_101.LongPeriod_001, IStrYY);
+                strSql = string.Format("Select * from T_105_{1} where C008=0 ", ICurrentPeriod_101.LongPeriod_001, IStrYY);
 
                 objConn = DbHelperSQL.GetConnection(ISqlConnect);
                 objAdapter = DbHelperSQL.GetDataAdapter(objConn, strSql);
@@ -1949,7 +1950,7 @@ namespace SSCService03
 
                 foreach (LostSingleNumAll_105 ss in listLostSingleNumAll_105)
                 {
-                    DataRow drCurrent = objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C004={1}  ", ss.LongPeriod_001, ss.SingleNum_004)).Count() > 0 ? objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C004={1}  ", ss.LongPeriod_001, ss.SingleNum_004)).First() : null;
+                    DataRow drCurrent = objDataSet.Tables[0].Select(string.Format("C004={0}  AND  C005={1}  ", ss.SingleNum_004, ss.NotAppearPeriodStart_005)).Count() > 0 ? objDataSet.Tables[0].Select(string.Format("C004={0}  AND  C005={1}  ", ss.SingleNum_004, ss.NotAppearPeriodStart_005)).First() : null;
 
                     if (drCurrent != null) //更新
                     {

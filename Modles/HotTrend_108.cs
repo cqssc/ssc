@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Modles
 {
+    /// <summary>
+    /// 作废--趋势热度
+    /// </summary>
     public class HotTrend_108
     {
         /// <summary>

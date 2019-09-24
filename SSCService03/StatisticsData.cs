@@ -83,27 +83,27 @@ namespace SSCService03
                              //置0
                             listPeriodTemp_101.Clear();
                             listPeriodTemp_101 = GetListPeriodDetail_101(ConstDefine.Const_GetPreSpan, ICurrentPeriod_101.LongPeriod_001, 3);
-                            Task t1 = Task.Factory.StartNew(delegate { DoLostAll_102(ConstDefine.Const_SetZero, listPeriodTemp_101, ref  ICurrentLostAll_102); });
-                            Task t2 = Task.Factory.StartNew(delegate { DoLostTrend_103(ConstDefine.Const_SetZero, listPeriodTemp_101); });
-                            Task t3 = Task.Factory.StartNew(delegate { DoContinueBigSmall_111(ConstDefine.Const_SetZero, listPeriodTemp_101); });
-                            Task t4 = Task.Factory.StartNew(delegate { DoLostCross_104(ConstDefine.Const_SetZero, listPeriodTemp_101); });
-                            Task t5 = Task.Factory.StartNew(delegate { DoLostSingleNumAll_105( listPeriodTemp_101); });
-                            Task t6 = Task.Factory.StartNew(delegate { DoHotSingleNum_107(ConstDefine.Const_SetZero, listPeriodTemp_101); });
-                            Task.WaitAll(t1, t2, t3, t4, t5, t6);
+                            DoLostAll_102(ConstDefine.Const_SetZero, listPeriodTemp_101, ref  ICurrentLostAll_102);
+                            DoLostTrend_103(ConstDefine.Const_SetZero, listPeriodTemp_101);
+                            DoContinueBigSmall_111(ConstDefine.Const_SetZero, listPeriodTemp_101);
+                            DoLostCross_104(ConstDefine.Const_SetZero, listPeriodTemp_101);
+                            DoLostSingleNumAll_105(listPeriodTemp_101);
+                            DoHotSingleNum_107(ConstDefine.Const_SetZero, listPeriodTemp_101);
+                            DoSingleAnalysis_106(ConstDefine.Const_SetZero, listPeriodTemp_101);
 
-                            Task t7 = Task.Factory.StartNew(delegate { DoSingleAnalysis_106(ConstDefine.Const_SetZero, listPeriodTemp_101); });
-                            Task t8 = Task.Factory.StartNew(delegate { DoHotTrend_108(); });
+                            //Task t1 = Task.Factory.StartNew(delegate { DoLostAll_102(ConstDefine.Const_SetZero, listPeriodTemp_101, ref  ICurrentLostAll_102); });
+                            //Task t2 = Task.Factory.StartNew(delegate { DoLostTrend_103(ConstDefine.Const_SetZero, listPeriodTemp_101); });
+                            //Task t3 = Task.Factory.StartNew(delegate { DoContinueBigSmall_111(ConstDefine.Const_SetZero, listPeriodTemp_101); });
+                            //Task t4 = Task.Factory.StartNew(delegate { DoLostCross_104(ConstDefine.Const_SetZero, listPeriodTemp_101); });
+                            //Task t5 = Task.Factory.StartNew(delegate { DoLostSingleNumAll_105( listPeriodTemp_101); });
+                            //Task t6 = Task.Factory.StartNew(delegate { DoHotSingleNum_107(ConstDefine.Const_SetZero, listPeriodTemp_101); });
+                            //Task.WaitAll(t1, t2, t3, t4, t5, t6);
 
-                            Task.WaitAll(t7, t8);
+                            //Task t7 = Task.Factory.StartNew(delegate { DoSingleAnalysis_106(ConstDefine.Const_SetZero, listPeriodTemp_101); });
+                            //Task t8 = Task.Factory.StartNew(delegate { DoHotTrend_108(); });
 
+                            //Task.WaitAll(t7, t8);
 
-                             //108
-
-
-                             //109
-
-
-                             //120
 
                          }
                          else
@@ -111,23 +111,30 @@ namespace SSCService03
                              //取前面6天的数据倒序
                              listPeriodTemp_101.Clear();
                              listPeriodTemp_101 = GetListPeriodDetail_101(ConstDefine.Const_GetPreSpan, ICurrentPeriod_101.LongPeriod_001, 59 * 6);
+                             DoLostAll_102(ConstDefine.Const_SetNormal, listPeriodTemp_101, ref  ICurrentLostAll_102);
+                             DoLostTrend_103(ConstDefine.Const_SetNormal, listPeriodTemp_101);
+                             DoContinueBigSmall_111(ConstDefine.Const_SetNormal, listPeriodTemp_101);
+                             DoLostCross_104(ConstDefine.Const_SetNormal, listPeriodTemp_101);
+                             DoLostSingleNumAll_105(listPeriodTemp_101);
+                             DoHotSingleNum_107(ConstDefine.Const_SetNormal, listPeriodTemp_101);
+                             DoSingleAnalysis_106(ConstDefine.Const_SetNormal, listPeriodTemp_101);
+                           
+                             DoSpecialFuture_110(listPeriodTemp_101); 
 
-                             Task t1 = Task.Factory.StartNew(delegate { DoLostAll_102(ConstDefine.Const_SetNormal, listPeriodTemp_101, ref  ICurrentLostAll_102); });
-                             Task t2 = Task.Factory.StartNew(delegate { DoLostTrend_103(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
-                             Task t3 = Task.Factory.StartNew(delegate { DoContinueBigSmall_111(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
-                             Task t4 = Task.Factory.StartNew(delegate { DoLostCross_104(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
-                             Task t5 = Task.Factory.StartNew(delegate { DoLostSingleNumAll_105( listPeriodTemp_101); });
+                             //Task t1 = Task.Factory.StartNew(delegate { DoLostAll_102(ConstDefine.Const_SetNormal, listPeriodTemp_101, ref  ICurrentLostAll_102); });
+                             //Task t2 = Task.Factory.StartNew(delegate { DoLostTrend_103(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
+                             //Task t3 = Task.Factory.StartNew(delegate { DoContinueBigSmall_111(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
+                             //Task t4 = Task.Factory.StartNew(delegate { DoLostCross_104(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
+                             //Task t5 = Task.Factory.StartNew(delegate { DoLostSingleNumAll_105( listPeriodTemp_101); });
                             
-                             Task t6 = Task.Factory.StartNew(delegate { DoHotSingleNum_107(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
-                             Task.WaitAll(t1, t2, t3, t4, t5, t6);
+                             //Task t6 = Task.Factory.StartNew(delegate { DoHotSingleNum_107(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
+                             //Task.WaitAll(t1, t2, t3, t4, t5, t6);
 
-                             Task t7 = Task.Factory.StartNew(delegate { DoSingleAnalysis_106(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
-
-                             Task t8 = Task.Factory.StartNew(delegate { DoHotTrend_108(); });                           
-                             Task.WaitAll(t7, t8);
-
-                             Task t9 = Task.Factory.StartNew(delegate { DoSpecialFuture_110(listPeriodTemp_101); });
-                             t9.Wait();
+                             //Task t7 = Task.Factory.StartNew(delegate { DoSingleAnalysis_106(ConstDefine.Const_SetNormal, listPeriodTemp_101); });
+                             //Task t8 = Task.Factory.StartNew(delegate { DoHotTrend_108(); });                           
+                             //Task.WaitAll(t7, t8);
+                             //Task t9 = Task.Factory.StartNew(delegate { DoSpecialFuture_110(listPeriodTemp_101); });
+                             //t9.Wait();
 
                          }
 
@@ -777,165 +784,10 @@ namespace SSCService03
                 List<int> listSingleNumValue = new List<int>();
                 for (int i = 1; i <= 5; i++) //1位到5位
                 {
-                    #region
-                    int periodCount = 0;
-                    listSingleNumValue.Clear();
-                    foreach (PeriodDetail_101 p in AListPeriod_101)
-                    {
-                        periodCount++;
-                        listSingleNumValue.Add(int.Parse(GetObjectPropertyValue(p, String.Format("Wei{0}_0{0}0", i))));
-                        if (periodCount >= 25)
-                        {
-                            break;
-                        }
-                    }
+                    //每一个类型都判断
 
-                    ContinueTrend_103 lostTrend_103 = new ContinueTrend_103();
-                    #region 初始化
-                    lostTrend_103.LongPeriod_001 = AListPeriod_101[0].LongPeriod_001;
-                    lostTrend_103.DateNumber_002 = AListPeriod_101[0].DateNumber_004;
-                    lostTrend_103.ShortPeriod_003 = AListPeriod_101[0].ShortPeriod_005;
-                    lostTrend_103.PositionType_004 = i;
-                    lostTrend_103.Repick_005 = 0;
-                    lostTrend_103.Swing_006 = 0;
-                    lostTrend_103.AddOrSub_007 = 0;
-                    lostTrend_103.Other_008 = 0;
-                    lostTrend_103.ContinueValue_009 = 1;
-                    lostTrend_103.SwingValue_010 = 0;
-                    #endregion
-
-                    if (Atype == ConstDefine.Const_SetZero)
-                    {
-                        lostTrend_103.Other_008 = 1;
-                        lostTrend_103.ContinueValue_009 = 1;
-                    }
-                    else if (Atype == ConstDefine.Const_SetNormal)
-                    {
-
-                        switch (AListPeriod_101.Count)
-                        {
-                            case 1: 
-                                {
-                                    lostTrend_103.Repick_005 = 0;
-                                    lostTrend_103.Swing_006 = 0;
-                                    lostTrend_103.AddOrSub_007 = 0;
-                                    lostTrend_103.Other_008 = 1;
-                                    lostTrend_103.ContinueValue_009 = 1;
-                                    lostTrend_103.SwingValue_010 = 0;
-                                }
-                                break;
-                            case 2:
-                                {
-                                    if (listSingleNumValue[0] == listSingleNumValue[1])//重复
-                                    {
-                                        lostTrend_103.Repick_005 = 1;
-                                        lostTrend_103.ContinueValue_009 = 1;
-                                        lostTrend_103.SwingValue_010 = 0;
-                                    }
-                                    else //其它
-                                    {
-                                        lostTrend_103.Other_008 = 1;
-                                        lostTrend_103.ContinueValue_009 = 1;
-                                        lostTrend_103.SwingValue_010 = Math.Abs(listSingleNumValue[0] - listSingleNumValue[1]);
-                                    }
-                                }
-                                break;
-                            default:
-                                {
-                                    int aIntTemp = listSingleNumValue[0] - listSingleNumValue[1];
-                                    int bIntTemp = (listSingleNumValue[0] - listSingleNumValue[1]) * (listSingleNumValue[1] - listSingleNumValue[2]);
-                                    int continueCount = 0;
-                                    if (listLostTrend_103Pre != null && listLostTrend_103Pre.Count > 0 && listLostTrend_103Pre.Where(p => p.PositionType_004 == i).Count() > 0)
-                                    {
-                                        #region
-                                        if (aIntTemp == 0)  //重复
-                                        {
-                                            lostTrend_103.Repick_005 = 1;
-                                            continueCount = 0;
-                                            for (int k = 0; k < listSingleNumValue.Count; k++)
-                                            {
-                                                if ((k + 1) < listSingleNumValue.Count && (listSingleNumValue[k] == listSingleNumValue[k + 1]))
-                                                {
-                                                    continueCount++;
-                                                }
-                                                else
-                                                {
-                                                    break;
-                                                }
-                                            }
-                                            lostTrend_103.ContinueValue_009 = continueCount;
-                                            lostTrend_103.SwingValue_010 = 0;
-                                        }
-                                        else
-                                        {
-                                            #region
-                                            if (bIntTemp < 0)  //振荡
-                                            {
-                                                lostTrend_103.Swing_006 = 1;
-                                                continueCount = 0;
-                                                for (int k = 0; k < listSingleNumValue.Count; k++)
-                                                {
-                                                    if ((k + 2) < listSingleNumValue.Count && (listSingleNumValue[k] - listSingleNumValue[k + 1]) * (listSingleNumValue[k + 1] - listSingleNumValue[k + 2]) < 0)
-                                                    {
-                                                        continueCount++;
-                                                    }
-                                                    else
-                                                    {
-                                                        break;
-                                                    }
-                                                }
-
-                                                lostTrend_103.ContinueValue_009 = continueCount;
-                                                lostTrend_103.SwingValue_010 = Math.Abs(aIntTemp);
-                                            }
-                                            else if (bIntTemp > 0) //递增减
-                                            {
-                                                lostTrend_103.AddOrSub_007 = 1;
-
-                                                continueCount = 0;
-                                                for (int k = 0; k < listSingleNumValue.Count; k++)
-                                                {
-                                                    if ((k + 2) < listSingleNumValue.Count && (listSingleNumValue[k] - listSingleNumValue[k + 1]) * (listSingleNumValue[k + 1] - listSingleNumValue[k + 2]) > 0)
-                                                    {
-                                                        continueCount++;
-                                                    }
-                                                    else
-                                                    {
-                                                        break;
-                                                    }
-                                                }
-
-                                                lostTrend_103.ContinueValue_009 = continueCount;
-                                                lostTrend_103.SwingValue_010 = Math.Abs(aIntTemp);
-                                            }
-                                            else //其它
-                                            {
-                                                lostTrend_103.Other_008 = 1;
-                                                lostTrend_103.ContinueValue_009 = 1;
-                                                lostTrend_103.SwingValue_010 = Math.Abs(aIntTemp);
-                                            }
-
-                                            #endregion
-                                        }
-
-                                        #endregion
-                                    }
-                                    else 
-                                    {
-                                        lostTrend_103.Repick_005 = 0;
-                                        lostTrend_103.Swing_006 = 0;
-                                        lostTrend_103.AddOrSub_007 = 0;
-                                        lostTrend_103.Other_008 = 1;
-                                        lostTrend_103.ContinueValue_009 = 1;
-                                        lostTrend_103.SwingValue_010 = 0;
-                                    }
-                                
-                                }
-                                break;
-                        }  
-                    }
-                    listLostTrend_103Temp.Add(lostTrend_103);
-                    #endregion
+                    //前一个用这期判断一下
+                 
                 }
 
                 if (UpdataOrAddLostTreand_103(listLostTrend_103Temp))
@@ -984,12 +836,9 @@ namespace SSCService03
                         drCurrent["C002"] = ss.DateNumber_002.ToString();
                         drCurrent["C003"] = ss.ShortPeriod_003;
                         drCurrent["C004"] = ss.PositionType_004;
-                        drCurrent["C005"] = ss.Repick_005;
-                        drCurrent["C006"] = ss.Swing_006;
-                        drCurrent["C007"] = ss.AddOrSub_007;
-                        drCurrent["C008"] = ss.Other_008;
-                        drCurrent["C009"] = ss.ContinueValue_009;
-                        drCurrent["C010"] = ss.SwingValue_010;
+                        drCurrent["C005"] = ss.TrendType_005;
+                        drCurrent["C006"] = ss.ContinueValue_006;
+                        drCurrent["C007"] = ss.IsComplete_007;
                         drCurrent.EndEdit();
                     }
                     else //添加新行
@@ -999,12 +848,9 @@ namespace SSCService03
                         drNewRow["C002"] = ss.DateNumber_002.ToString();
                         drNewRow["C003"] = ss.ShortPeriod_003;
                         drNewRow["C004"] = ss.PositionType_004;
-                        drNewRow["C005"] = ss.Repick_005;
-                        drNewRow["C006"] = ss.Swing_006;
-                        drNewRow["C007"] = ss.AddOrSub_007;
-                        drNewRow["C008"] = ss.Other_008;
-                        drNewRow["C009"] = ss.ContinueValue_009;
-                        drNewRow["C010"] = ss.SwingValue_010;
+                        drNewRow["C005"] = ss.TrendType_005;
+                        drNewRow["C006"] = ss.ContinueValue_006;
+                        drNewRow["C007"] = ss.IsComplete_007;
 
                         objDataSet.Tables[0].Rows.Add(drNewRow);
                     }
@@ -1059,12 +905,9 @@ namespace SSCService03
                     lostTrend_103.DateNumber_002 = long.Parse(drNewRow["C002"].ToString());
                     lostTrend_103.ShortPeriod_003 = int.Parse(drNewRow["C003"].ToString());
                     lostTrend_103.PositionType_004 = int.Parse(drNewRow["C004"].ToString());
-                    lostTrend_103.Repick_005 = int.Parse(drNewRow["C005"].ToString());
-                    lostTrend_103.Swing_006 = int.Parse(drNewRow["C006"].ToString());
-                    lostTrend_103.AddOrSub_007 = int.Parse(drNewRow["C007"].ToString());
-                    lostTrend_103.Other_008 = int.Parse(drNewRow["C008"].ToString());
-                    lostTrend_103.ContinueValue_009 = int.Parse(drNewRow["C009"].ToString());
-                    lostTrend_103.SwingValue_010 = int.Parse(drNewRow["C010"].ToString());
+                    lostTrend_103.TrendType_005 = int.Parse(drNewRow["C005"].ToString());
+                    lostTrend_103.ContinueValue_006 = int.Parse(drNewRow["C006"].ToString());
+                    lostTrend_103.IsComplete_007 = int.Parse(drNewRow["C007"].ToString());
                     ListLostTrend_103.Add(lostTrend_103);
                 }
             }
@@ -1074,236 +917,237 @@ namespace SSCService03
         #endregion
 
         #region  DoContinueBigSmall_111大小单双持续表
-
         public static bool DoContinueBigSmall_111(int AType, List<PeriodDetail_101> AListPeriod_101) 
         {
             bool flag = true;
 
             List<ContinueBigSmall_111> listContinueBigSmall_111Temp = new List<ContinueBigSmall_111>();
             List<ContinueBigSmall_111> listContinueBigSmall_111Pre = null;
-            ContinueBigSmall_111 continueBigSmall_111Pre = null;
             if(AType==ConstDefine.Const_SetNormal)
             {
                 listContinueBigSmall_111Pre = GetDataContinueBigSmall_111(1, ICurrentPeriod_101.LongPeriod_001);
             }
             if(AListPeriod_101 !=null && AListPeriod_101.Count>0)
             {
-                int countbig = 0;
-                int countsmall = 0;
-                int counteven = 0;
-                int countodd = 0;
                 for (int i = 1; i <= 6;i++ ) 
                 {
-                    ContinueBigSmall_111 cbs1 = new ContinueBigSmall_111(); 
-                    listContinueBigSmall_111Temp.Add(cbs1);
-                    InitContinueBigSmall_111(i,ref cbs1);
-                    #region
                     int tempValue = 0;
+
                     if (i != 6)
                     {
-                        tempValue = int.Parse(GetObjectPropertyValue(ICurrentPeriod_101, String.Format("Wei{0}_0{0}0", i)));   
-                    }
-                    else 
-                    {
-                        tempValue = ICurrentPeriod_101.AllSub_009;
-                    }                                    
-
-                    if (AType == ConstDefine.Const_SetNormal)
-                    {
-                        #region
-                        #endregion
-                        if (listContinueBigSmall_111Pre != null && listContinueBigSmall_111Pre.Count > 0 && listContinueBigSmall_111Pre.Where(p => p.PositionType_004 == i).Count() > 0)
-                        {
-                            continueBigSmall_111Pre = listContinueBigSmall_111Pre.Where(p => p.PositionType_004 == i).First();
-                            if (i != 6)
-                            {
-                                if (tempValue >= 5)
-                                {
-                                    cbs1.Big_005 = 1; //大出现
-                                    countbig++;
-                                }
-                                else
-                                {
-                                    cbs1.Small_006 = 1; //小出现
-                                    countsmall++;
-                                }
-                                if (tempValue % 2 == 1)
-                                {
-                                    cbs1.Even_007 = 1; //单出现
-                                    counteven++;
-                                }
-                                else
-                                {
-                                    cbs1.Odd_008 = 1; //双出现
-                                    countodd++;
-                                }
-
-                            }
-                            else 
-                            {
-                                if (tempValue >= 23)
-                                {
-                                    cbs1.Big_005 = 1; //大出现
-                                }
-                                else
-                                {
-                                    cbs1.Small_006 = 1; //小出现
-                                }
-                                if (tempValue % 2 == 1)
-                                {
-                                    cbs1.Even_007 = 1; //单出现
-                                }
-                                else
-                                {
-                                    cbs1.Odd_008 = 1; //双出现
-                                }
-                                cbs1.ComposeBig_011 = countbig;
-                                cbs1.ComposeSmall_012 = countsmall;
-                                cbs1.ComposeEven_013 = counteven;
-                                cbs1.ComposeOdd_014 = countodd;
-                            }                            
-
-
-                            if (continueBigSmall_111Pre.Big_005 == cbs1.Big_005)
-                            {
-                                cbs1.BigSmallContinue_009 = continueBigSmall_111Pre.BigSmallContinue_009 + 1;
-                            }
-                            else 
-                            {
-                                cbs1.BigSmallContinue_009 = 1;
-                            }
-
-                            if (continueBigSmall_111Pre.Even_007 == cbs1.Even_007)
-                            {
-                                cbs1.EvenOddContinue_010 = continueBigSmall_111Pre.EvenOddContinue_010 + 1;
-                            }
-                            else 
-                            {
-                                cbs1.EvenOddContinue_010 = 1;
-                            }
-
-
-                        }
-                        else
-                        {
-                            #region
-                            if (i != 6)
-                            {
-                                if (tempValue >= 5)
-                                {
-                                    cbs1.Big_005 = 1; //大出现
-                                    countbig++;
-                                }
-                                else
-                                {
-                                    cbs1.Small_006 = 1; //小出现
-                                    countsmall++;
-                                }
-                                if (tempValue % 2 == 1)
-                                {
-                                    cbs1.Even_007 = 1; //单出现
-                                    counteven++;
-                                }
-                                else
-                                {
-                                    cbs1.Odd_008 = 1; //双出现
-                                    countodd++;
-                                }
-                            }
-                            else
-                            {
-                                if (tempValue >= 23)
-                                {
-                                    cbs1.Big_005 = 1; //大出现
-                                }
-                                else
-                                {
-                                    cbs1.Small_006 = 1; //小出现
-                                }
-                                if (tempValue % 2 == 1)
-                                {
-                                    cbs1.Even_007 = 1; //单出现
-                                }
-                                else
-                                {
-                                    cbs1.Odd_008 = 1; //双出现
-                                }
-                                cbs1.ComposeBig_011 = countbig;
-                                cbs1.ComposeSmall_012 = countsmall;
-                                cbs1.ComposeEven_013 = counteven;
-                                cbs1.ComposeOdd_014 = countodd;
-                            }                            
-                            #endregion
-                          
-                        }
+                        tempValue = int.Parse(GetObjectPropertyValue(ICurrentPeriod_101, String.Format("Wei{0}_0{0}0", i)));
                     }
                     else
                     {
+                        tempValue = ICurrentPeriod_101.AllSub_009;
+                    }  
+
+                    if (AType != ConstDefine.Const_SetNormal) //初始
+                    {
                         #region
+                        ContinueBigSmall_111 cbs_bs = new ContinueBigSmall_111();
+                        InitContinueBigSmall_111(i, ref cbs_bs);
+                        listContinueBigSmall_111Temp.Add(cbs_bs);
+                        ContinueBigSmall_111 cbs_eo = new ContinueBigSmall_111();
+                        InitContinueBigSmall_111(i, ref cbs_eo);
+                        listContinueBigSmall_111Temp.Add(cbs_eo);
+                        if (tempValue % 2 == 1)
+                        {
+                            cbs_eo.BSOEType_005 = 3; //单出现
+                           
+                        }
+                        else
+                        {
+                            cbs_eo.BSOEType_005 = 4; //双出现
+                        }
                         if (i != 6)
                         {
                             if (tempValue >= 5)
                             {
-                                cbs1.Big_005 = 1; //大出现
-                                countbig++;
+                                cbs_bs.BSOEType_005 = 1; //大出现
                             }
                             else
                             {
-                                cbs1.Small_006 = 1; //小出现
-                                countsmall++;
+                                cbs_bs.BSOEType_005 = 2; //小出现
                             }
-                            if (tempValue % 2 == 1)
-                            {
-                                cbs1.Even_007 = 1; //单出现
-                                counteven++;
-                            }
-                            else
-                            {
-                                cbs1.Odd_008 = 1; //双出现
-                                countodd++;
-                            }
+
                         }
                         else
                         {
                             if (tempValue >= 23)
                             {
-                                cbs1.Big_005 = 1; //大出现
+                                cbs_bs.BSOEType_005 = 1; //大出现
                             }
                             else
                             {
-                                cbs1.Small_006 = 1; //小出现
+                                cbs_bs.BSOEType_005 = 2; //小出现
                             }
-
-                            if (tempValue % 2 == 1)
-                            {
-                                cbs1.Even_007 = 1; //单出现
-                            }
-                            else
-                            {
-                                cbs1.Odd_008 = 1; //双出现
-                            }
-                            cbs1.ComposeBig_011 = countbig;
-                            cbs1.ComposeSmall_012 = countsmall;
-                            cbs1.ComposeEven_013 = counteven;
-                            cbs1.ComposeOdd_014 = countodd;
                         }
-
-                        
                         #endregion
                     }
-                    #endregion
+                    else
+                    {
+
+                        #region
+                        ContinueBigSmall_111 cbs_bs = listContinueBigSmall_111Pre.Where(p => p.PositionType_004 == i && (p.BSOEType_005 == 1 || p.BSOEType_005 == 2)).Count() > 0 ? listContinueBigSmall_111Pre.Where(p => p.PositionType_004 == i && (p.BSOEType_005 == 1 || p.BSOEType_005 == 2)).First() : null;
+                        ContinueBigSmall_111 cbs_eo = listContinueBigSmall_111Pre.Where(p => p.PositionType_004 == i && (p.BSOEType_005 == 3 || p.BSOEType_005 == 4)).Count() > 0 ? listContinueBigSmall_111Pre.Where(p => p.PositionType_004 == i && (p.BSOEType_005 == 3 || p.BSOEType_005 == 4)).First() : null;
+                        if (cbs_bs != null && cbs_eo != null)
+                        {
+                            #region 单双
+                                if (tempValue % 2 == 1)
+                                {
+                                    if (cbs_eo.BSOEType_005 == 3)
+                                    {
+                                        cbs_eo.ContinueValue_006++;
+                                        listContinueBigSmall_111Temp.Add(cbs_eo);
+                                    }
+                                    else 
+                                    {
+                                        cbs_eo.IsComplete_007 = 1;
+                                        ContinueBigSmall_111 cbs_eo1 = new ContinueBigSmall_111();
+                                        cbs_eo1.BSOEType_005 = 3;
+                                        InitContinueBigSmall_111(i, ref cbs_eo1);
+                                        listContinueBigSmall_111Temp.Add(cbs_eo1);
+                                    }
+                                   
+                                }
+                                else
+                                {
+                                    if (cbs_eo.BSOEType_005 == 4)
+                                    {
+                                        cbs_eo.ContinueValue_006++;
+                                        listContinueBigSmall_111Temp.Add(cbs_eo);
+                                    }
+                                    else 
+                                    {
+                                        cbs_eo.IsComplete_007 = 1;
+                                        ContinueBigSmall_111 cbs_eo1 = new ContinueBigSmall_111();
+                                        cbs_eo1.BSOEType_005 = 4;
+                                        InitContinueBigSmall_111(i, ref cbs_eo1);
+                                        listContinueBigSmall_111Temp.Add(cbs_eo1);
+                                    }
+                                }
+                            #endregion
+
+                            #region  //大小
+                                if (i == 6)
+                                {
+                                    if (tempValue >= 23)
+                                    {
+                                        if (cbs_bs.BSOEType_005 == 1)
+                                        {
+                                            cbs_bs.ContinueValue_006++;
+                                        }
+                                        else 
+                                        {
+                                            cbs_bs.IsComplete_007 = 1;
+                                            ContinueBigSmall_111 cbs_bs1 = new ContinueBigSmall_111();
+                                            cbs_bs1.BSOEType_005 = 1;
+                                            InitContinueBigSmall_111(i, ref cbs_bs1);
+                                            listContinueBigSmall_111Temp.Add(cbs_bs1);
+
+                                        }
+                                    }
+                                    else 
+                                    {
+                                        if (cbs_bs.BSOEType_005 == 2)
+                                        {
+                                            cbs_bs.ContinueValue_006++;
+                                        }
+                                        else
+                                        {
+                                            cbs_bs.IsComplete_007 = 1;
+                                            ContinueBigSmall_111 cbs_bs1 = new ContinueBigSmall_111();
+                                            cbs_bs1.BSOEType_005 = 2;
+                                            InitContinueBigSmall_111(i, ref cbs_bs1);
+                                            listContinueBigSmall_111Temp.Add(cbs_bs1);
+                                        }
+                                    }
+                                }
+                                else 
+                                {
+                                    if (tempValue >= 5)
+                                    {
+                                        if (cbs_bs.BSOEType_005 == 1)
+                                        {
+                                            cbs_bs.ContinueValue_006++;
+                                        }
+                                        else
+                                        {
+                                            cbs_bs.IsComplete_007 = 1;
+                                            ContinueBigSmall_111 cbs_bs1 = new ContinueBigSmall_111();
+                                            cbs_bs1.BSOEType_005 = 1;
+                                            InitContinueBigSmall_111(i, ref cbs_bs1);
+                                            listContinueBigSmall_111Temp.Add(cbs_bs1);
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (cbs_bs.BSOEType_005 == 2)
+                                        {
+                                            cbs_bs.ContinueValue_006++;
+                                        }
+                                        else
+                                        {
+                                            cbs_bs.IsComplete_007 = 1;
+                                            ContinueBigSmall_111 cbs_bs1 = new ContinueBigSmall_111();
+                                            cbs_bs1.BSOEType_005 = 2;
+                                            InitContinueBigSmall_111(i, ref cbs_bs1);
+                                            listContinueBigSmall_111Temp.Add(cbs_bs1);
+                                        }
+                                    }
+                                }
+
+                            #endregion
+
+                        }
+                        else
+                        {
+                             #region
+                                cbs_bs = new ContinueBigSmall_111();
+                                InitContinueBigSmall_111(i, ref cbs_bs);
+                                 cbs_eo = new ContinueBigSmall_111();
+                                 InitContinueBigSmall_111(i, ref cbs_eo);
+                                 listContinueBigSmall_111Temp.Add(cbs_eo);
+                                if (tempValue % 2 == 1)
+                                {
+                                    cbs_eo.BSOEType_005 = 3; //单出现
+                                }
+                                else
+                                {
+                                    cbs_eo.BSOEType_005 = 4; //双出现
+                                }
+                                if (i != 6)
+                                {
+                                    if (tempValue >= 5)
+                                    {
+                                        cbs_bs.BSOEType_005 = 1; //大出现
+                                    }
+                                    else
+                                    {
+                                        cbs_bs.BSOEType_005 = 2; //小出现
+                                    }
+
+                                }
+                                else
+                                {
+                                    if (tempValue >= 23)
+                                    {
+                                        cbs_bs.BSOEType_005 = 1; //大出现
+                                    }
+                                    else
+                                    {
+                                        cbs_bs.BSOEType_005 = 1; //小出现
+                                    }
+                                }
+                        #endregion
+                        }
+                        #endregion
+                    }                        
                 }
             }
            
-            //#region  计算连出率
-            //foreach(ContinueBigSmall_111  cb in listContinueBigSmall_111Temp)
-            //{
-            //    decimal contiuneRate = 0;
-            //    decimal jishuRate1 = 0;
-            //    decimal jishuRate2 = 1.2M;
-            //}
-            //#endregion
-
             if (UpdataOrAddContinueBigSmall_111( listContinueBigSmall_111Temp))
             {
                 flag = true;
@@ -1324,16 +1168,9 @@ namespace SSCService03
             AcontinueBigSmall_111.DateNumber_002 = ICurrentPeriod_101.DateNumber_004;
             AcontinueBigSmall_111.ShortPeriod_003 = ICurrentPeriod_101.ShortPeriod_005;
             AcontinueBigSmall_111.PositionType_004 = AWeiType;
-            AcontinueBigSmall_111.Big_005 = 0;
-            AcontinueBigSmall_111.Small_006 = 0;
-            AcontinueBigSmall_111.Even_007 = 0;
-            AcontinueBigSmall_111.Odd_008 = 0;
-            AcontinueBigSmall_111.BigSmallContinue_009 = 1;
-            AcontinueBigSmall_111.EvenOddContinue_010 = 1;
-            AcontinueBigSmall_111.ComposeBig_011 = 0;
-            AcontinueBigSmall_111.ComposeSmall_012 = 0;
-            AcontinueBigSmall_111.ComposeEven_013 = 0;
-            AcontinueBigSmall_111.ComposeOdd_014 = 0;
+            AcontinueBigSmall_111.BSOEType_005 = 0;
+            AcontinueBigSmall_111.ContinueValue_006 = 0;
+            AcontinueBigSmall_111.IsComplete_007 = 0;
 
         }
 
@@ -1369,16 +1206,9 @@ namespace SSCService03
                         drCurrent["C002"] = ss.DateNumber_002.ToString();
                         drCurrent["C003"] = ss.ShortPeriod_003;
                         drCurrent["C004"] = ss.PositionType_004;
-                        drCurrent["C005"] = ss.Big_005;
-                        drCurrent["C006"] = ss.Small_006;
-                        drCurrent["C007"] = ss.Even_007;
-                        drCurrent["C008"] = ss.Odd_008;
-                        drCurrent["C009"] = ss.BigSmallContinue_009;
-                        drCurrent["C010"] = ss.EvenOddContinue_010;
-                        drCurrent["C011"] = ss.ComposeBig_011;
-                        drCurrent["C012"] = ss.ComposeSmall_012;
-                        drCurrent["C013"] = ss.ComposeEven_013;
-                        drCurrent["C014"] = ss.ComposeOdd_014;
+                        drCurrent["C005"] = ss.BSOEType_005;
+                        drCurrent["C006"] = ss.ContinueValue_006;
+                        drCurrent["C007"] = ss.IsComplete_007;
                         drCurrent.EndEdit();
                     }
                     else //添加新行
@@ -1388,16 +1218,9 @@ namespace SSCService03
                         drNewRow["C002"] = ss.DateNumber_002.ToString();
                         drNewRow["C003"] = ss.ShortPeriod_003;
                         drNewRow["C004"] = ss.PositionType_004;
-                        drNewRow["C005"] = ss.Big_005;
-                        drNewRow["C006"] = ss.Small_006;
-                        drNewRow["C007"] = ss.Even_007;
-                        drNewRow["C008"] = ss.Odd_008;
-                        drNewRow["C009"] = ss.BigSmallContinue_009;
-                        drNewRow["C010"] = ss.EvenOddContinue_010;
-                        drNewRow["C011"] = ss.ComposeBig_011;
-                        drNewRow["C012"] = ss.ComposeSmall_012;
-                        drNewRow["C013"] = ss.ComposeEven_013;
-                        drNewRow["C014"] = ss.ComposeOdd_014;
+                        drNewRow["C005"] = ss.BSOEType_005;
+                        drNewRow["C006"] = ss.ContinueValue_006;
+                        drNewRow["C007"] = ss.IsComplete_007;
                         objDataSet.Tables[0].Rows.Add(drNewRow);
                     }
                 }
@@ -1430,8 +1253,8 @@ namespace SSCService03
                 case 0:  //得到当前期
                     StrSQL = string.Format("select top 6 * from T_111_{0} where C001={1} order by  C001 desc", IStrYY, LongPeriodNumber);
                     break;
-                case 1://得到前一期
-                    StrSQL = string.Format("select top 6 * from T_111_{0} where C001<{1} order by  C001 desc", IStrYY, LongPeriodNumber);
+                case 1://得到前面未完成的
+                    StrSQL = string.Format("select  * from T_111_{0} where C001<{1} AND  C007=0  order by  C001 desc", IStrYY, LongPeriodNumber);
                     break;
                 default:
                     break;
@@ -1447,16 +1270,9 @@ namespace SSCService03
                     lostTrend_103.DateNumber_002 = long.Parse(drNewRow["C002"].ToString());
                     lostTrend_103.ShortPeriod_003 = int.Parse(drNewRow["C003"].ToString());
                     lostTrend_103.PositionType_004 = int.Parse(drNewRow["C004"].ToString());
-                    lostTrend_103.Big_005 = int.Parse(drNewRow["C005"].ToString());
-                    lostTrend_103.Small_006 = int.Parse(drNewRow["C006"].ToString());
-                    lostTrend_103.Even_007 = int.Parse(drNewRow["C007"].ToString());
-                    lostTrend_103.Odd_008 = int.Parse(drNewRow["C008"].ToString());
-                    lostTrend_103.BigSmallContinue_009 = int.Parse(drNewRow["C009"].ToString());
-                    lostTrend_103.EvenOddContinue_010 = int.Parse(drNewRow["C010"].ToString());
-                    lostTrend_103.ComposeBig_011 = int.Parse(drNewRow["C011"].ToString());
-                    lostTrend_103.ComposeSmall_012= int.Parse(drNewRow["C012"].ToString());
-                    lostTrend_103.ComposeEven_013= int.Parse(drNewRow["C013"].ToString());
-                    lostTrend_103.ComposeOdd_014= int.Parse(drNewRow["C014"].ToString());
+                    lostTrend_103.BSOEType_005 = int.Parse(drNewRow["C005"].ToString());
+                    lostTrend_103.ContinueValue_006 = int.Parse(drNewRow["C006"].ToString());
+                    lostTrend_103.IsComplete_007 = int.Parse(drNewRow["C007"].ToString());
                     ListLostTrend_103.Add(lostTrend_103);
                 }
             }
@@ -2678,32 +2494,32 @@ namespace SSCService03
         public static void DoHotTrendStatistics(int ASpliteType, List<ContinueTrend_103> AlistContinueTrend103, ref  List<HotTrend_108> AlistHotStatistics_108) 
         {
             
-            for (int i = 1; i <= 5;i++ )
-            {
-                HotTrend_108 ht = new HotTrend_108();
-                ht.LongPeriod_001 = ICurrentPeriod_101.LongPeriod_001;
-                ht.DateNumber_002 = ICurrentPeriod_101.DateNumber_004;
-                ht.ShortPeriod_003 = ICurrentPeriod_101.ShortPeriod_005;
-                ht.PositionType_004 = i;
-                ht.SplitValueType_005 = ASpliteType;
-                ht.FenMu_006 = AlistContinueTrend103.Count/5;
-                ht.RepickNum_010 = AlistContinueTrend103.Where(p=>p.PositionType_004==i && p.Repick_005==1).Count();
-                ht.RepickRate_011 = Math.Round((decimal)ht.RepickNum_010 / ht.FenMu_006, 2);
+            //for (int i = 1; i <= 5;i++ )
+            //{
+            //    HotTrend_108 ht = new HotTrend_108();
+            //    ht.LongPeriod_001 = ICurrentPeriod_101.LongPeriod_001;
+            //    ht.DateNumber_002 = ICurrentPeriod_101.DateNumber_004;
+            //    ht.ShortPeriod_003 = ICurrentPeriod_101.ShortPeriod_005;
+            //    ht.PositionType_004 = i;
+            //    ht.SplitValueType_005 = ASpliteType;
+            //    ht.FenMu_006 = AlistContinueTrend103.Count/5;
+            //    ht.RepickNum_010 = AlistContinueTrend103.Where(p=>p.PositionType_004==i && p.Repick_005==1).Count();
+            //    ht.RepickRate_011 = Math.Round((decimal)ht.RepickNum_010 / ht.FenMu_006, 2);
 
-                ht.SwingNum_020 = AlistContinueTrend103.Where(p => p.PositionType_004 == i && p.Swing_006 == 1).Count();
-                ht.SwingRate_021 = Math.Round((decimal)ht.SwingNum_020 / ht.FenMu_006, 2);
-
-
-                ht.AddOrSubNum_030 = AlistContinueTrend103.Where(p => p.PositionType_004 == i && p.AddOrSub_007 == 1).Count();
-                ht.AddOrSubRate_031 = Math.Round((decimal)ht.AddOrSubNum_030 / ht.FenMu_006, 2);
+            //    ht.SwingNum_020 = AlistContinueTrend103.Where(p => p.PositionType_004 == i && p.Swing_006 == 1).Count();
+            //    ht.SwingRate_021 = Math.Round((decimal)ht.SwingNum_020 / ht.FenMu_006, 2);
 
 
-                ht.OtherNum_040 = AlistContinueTrend103.Where(p => p.PositionType_004 == i && p.Other_008 == 1).Count();
-                ht.OtherRate_041 = Math.Round((decimal)ht.OtherNum_040 / ht.FenMu_006, 2);
+            //    ht.AddOrSubNum_030 = AlistContinueTrend103.Where(p => p.PositionType_004 == i && p.AddOrSub_007 == 1).Count();
+            //    ht.AddOrSubRate_031 = Math.Round((decimal)ht.AddOrSubNum_030 / ht.FenMu_006, 2);
 
-                AlistHotStatistics_108.Add(ht);
 
-            }
+            //    ht.OtherNum_040 = AlistContinueTrend103.Where(p => p.PositionType_004 == i && p.Other_008 == 1).Count();
+            //    ht.OtherRate_041 = Math.Round((decimal)ht.OtherNum_040 / ht.FenMu_006, 2);
+
+            //    AlistHotStatistics_108.Add(ht);
+
+            //}
         }
       
         public static bool UpdateOrAddHotTrend_108(List<HotTrend_108> AlistHotStatistics_108)

@@ -19,25 +19,11 @@ namespace Modles
 
         public int PositionType_004 { get; set; }
 
-        public int Big_005 { get; set; } 
+        public int BSOEType_005 { get; set; }
 
-        public int Small_006 { get; set; } 
+        public int ContinueValue_006 { get; set; }
 
-        public int Even_007 { get; set; } 
-
-        public int Odd_008 { get; set; }
-
-        public int BigSmallContinue_009 { get; set; }
-        public int EvenOddContinue_010 { get; set; }
-        public int ComposeBig_011 { get; set; }
-        public int ComposeSmall_012 { get; set; }
-        public int ComposeEven_013 { get; set; }
-        public int ComposeOdd_014 { get; set; }
-
-        public decimal BigContinueRate_015 { get; set; }
-        public decimal SmallContinueRate_016 { get; set; }
-        public decimal EvenContinueRate_017 { get; set; }
-        public decimal OddContinueRate_018 { get; set; }
+        public int IsComplete_007 { get; set; }
 
 
     }

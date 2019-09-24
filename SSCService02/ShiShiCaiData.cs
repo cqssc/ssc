@@ -269,6 +269,12 @@ namespace SSCService02
                         drCurrent["C007"] = pp.BigOrSmall_007;
                         drCurrent["C008"] = pp.EvenODD_008;
                         drCurrent["C009"] = pp.AllSub_009;
+
+                        drCurrent["C106"] = pp.CountBig_106;
+                        drCurrent["C107"] = pp.CountSmall_107;
+                        drCurrent["C108"] = pp.CountEven_108;
+                        drCurrent["C109"] = pp.CountOdd_109;
+
                         drCurrent.EndEdit();
                     }
                     else //添加新行
@@ -289,6 +295,11 @@ namespace SSCService02
                         drNewRow["C007"] = pp.BigOrSmall_007;
                         drNewRow["C008"] = pp.EvenODD_008;
                         drNewRow["C009"] = pp.AllSub_009;
+
+                        drNewRow["C106"] = pp.CountBig_106;
+                        drNewRow["C107"] = pp.CountSmall_107;
+                        drNewRow["C108"] = pp.CountEven_108;
+                        drNewRow["C109"] = pp.CountOdd_109;
                         objDataSet.Tables[0].Rows.Add(drNewRow);
                     }
                 }
@@ -638,6 +649,50 @@ namespace SSCService02
                             period.Wei3_030 = int.Parse(charTemp[2].ToString());
                             period.Wei2_020 = int.Parse(charTemp[3].ToString());
                             period.Wei1_010 = int.Parse(charTemp[4].ToString());
+                            int countBig = 0;
+                            int countEven = 0;
+                            if (period.Wei5_050>=5)
+                            {
+                                countBig++;
+                            }
+                            if (period.Wei4_040 >= 5)
+                            {
+                                countBig++;
+                            }
+                            if (period.Wei3_030 >= 5)
+                            {
+                                countBig++;
+                            }
+                            if (period.Wei2_020 >= 5)
+                            {
+                                countBig++;
+                            }
+                            if (period.Wei1_010 >= 5)
+                            {
+                                countBig++;
+                            }
+
+                            if (period.Wei5_050 %2==1)
+                            {
+                                countEven++;
+                            }
+                            if (period.Wei4_040 % 2 == 1)
+                            {
+                                countEven++;
+                            }
+                            if (period.Wei3_030 % 2 == 1)
+                            {
+                                countEven++;
+                            }
+                            if (period.Wei2_020 % 2 == 1)
+                            {
+                                countEven++;
+                            }
+                            if (period.Wei1_010 % 2 == 1)
+                            {
+                                countEven++;
+                            }
+
                             int total = period.Wei5_050 + period.Wei4_040 + period.Wei3_030 + period.Wei2_020 + period.Wei1_010;
                             period.AllSub_009 = total;
                             if (total >= 23)
@@ -663,6 +718,10 @@ namespace SSCService02
                             period.LongPeriod_001 = Int64.Parse(strPeriod);
                             period.AwardNumber_002 = strAllValue;
                             period.DayInWeek_006 = Xingqi;
+                            period.CountBig_106 = countBig;
+                            period.CountSmall_107 = 5 - countBig;
+                            period.CountEven_108 = countEven;
+                            period.CountOdd_109 = 5 - countEven;
                             listPeriod.Add(period);
                         }
                     }

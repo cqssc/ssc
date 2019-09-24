@@ -20,32 +20,11 @@ namespace Modles
 
         public int PositionType_004 { get; set; }
 
-        public int Repick_005 { get; set; }
+        public int TrendType_005 { get; set; }
 
-        public int Swing_006 { get; set; }
+        public int ContinueValue_006 { get; set; }
 
-        public int AddOrSub_007 { get; set; }
-
-        public int Other_008 { get; set; }
-
-        public int ContinueValue_009 { get; set; }
-
-        public int SwingValue_010 { get; set; }
-
-        //public int TrendType_005 { get; set; }
-
-        //public int IsAppear_006 { get; set; }
-
-        //public int LostValue_007 { get; set; }
-
-        //public int ContinueValue_008 { get; set; }
-
-        //public int SwingValue_009 { get; set; }
-
-        //public decimal AvgContinue_010 { get; set; }
-
-        //public decimal LiSanContinue_011 { get; set; }
-
+        public int IsComplete_007 { get; set; }
 
     }
 }

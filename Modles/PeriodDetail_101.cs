@@ -41,5 +41,12 @@ namespace Modles
         public int Wei2_020 { get; set; }
 
         public int Wei1_010 { get; set; }
+
+
+        public int CountBig_106 { get; set; }
+        public int CountSmall_107 { get; set; }
+        public int CountEven_108 { get; set; }
+        public int CountOdd_109 { get; set; }
+
     }
 }

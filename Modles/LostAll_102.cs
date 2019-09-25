@@ -152,6 +152,12 @@ namespace Modles
         public int Lost_059 { set; get; }
 
 
+        public int IsThreeSame_060 { set; get; }
+        public int ThreeSameValue_061 { set; get; }
+        public int TS_Pre_Lost_062 { set; get; }
+        public int TS_Lost_063 { set; get; }
+
+
         //万....个各位出现时的遗失期
         public int PreLost_101 { set; get; }
         public int PreLost_102 { set; get; }

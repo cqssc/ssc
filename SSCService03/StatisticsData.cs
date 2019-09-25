@@ -10,6 +10,7 @@ using System.Data;
 using System.Data.Common;
 using System.Collections.Concurrent;
 using Modles;
+using Modles.Enums;
 using DBHelp;
 using System.Reflection;
 
@@ -53,8 +54,7 @@ namespace SSCService03
             ILostSpanSet = ConfigurationManager.AppSettings["LostSpanSet"] != null ? int.Parse(ConfigurationManager.AppSettings["LostSpanSet"].ToString()) : 3;
             ICurrentPeriod_101 = new PeriodDetail_101();
             ICurrentLostAll_102 = new LostAll_102();
-            IPreLostAll_102 = new LostAll_102();
-           
+            IPreLostAll_102 = new LostAll_102();       
 
             IListStringSQL.Clear();
         }        
@@ -82,9 +82,9 @@ namespace SSCService03
                          {
                              //置0
                             listPeriodTemp_101.Clear();
-                            listPeriodTemp_101 = GetListPeriodDetail_101(ConstDefine.Const_GetPreSpan, ICurrentPeriod_101.LongPeriod_001, 3);
+                            listPeriodTemp_101 = GetListPeriodDetail_101(ConstDefine.Const_GetPreSpan, ICurrentPeriod_101.LongPeriod_001, 3);//取小于等于当前长期数3期数据
                             DoLostAll_102(ConstDefine.Const_SetZero, listPeriodTemp_101, ref  ICurrentLostAll_102);
-                            DoLostTrend_103(ConstDefine.Const_SetZero, listPeriodTemp_101);
+                            DoLostTrend_103(ConstDefine.Const_SetZero, listPeriodTemp_101);//小于2个就返回了
                             DoContinueBigSmall_111(ConstDefine.Const_SetZero, listPeriodTemp_101);
                             DoLostCross_104(ConstDefine.Const_SetZero, listPeriodTemp_101);
                             DoLostSingleNumAll_105(listPeriodTemp_101);
@@ -117,8 +117,7 @@ namespace SSCService03
                              DoLostCross_104(ConstDefine.Const_SetNormal, listPeriodTemp_101);
                              DoLostSingleNumAll_105(listPeriodTemp_101);
                              DoHotSingleNum_107(ConstDefine.Const_SetNormal, listPeriodTemp_101);
-                             DoSingleAnalysis_106(ConstDefine.Const_SetNormal, listPeriodTemp_101);
-                           
+                             DoSingleAnalysis_106(ConstDefine.Const_SetNormal, listPeriodTemp_101);        
                              DoSpecialFuture_110(listPeriodTemp_101); 
 
                              //Task t1 = Task.Factory.StartNew(delegate { DoLostAll_102(ConstDefine.Const_SetNormal, listPeriodTemp_101, ref  ICurrentLostAll_102); });
@@ -137,7 +136,6 @@ namespace SSCService03
                              //t9.Wait();
 
                          }
-
                          string strSql = string.Format("update T_101_{0}  Set C099=1 where C001={1}", IStrYY, ICurrentPeriod_101.LongPeriod_001);
                          IListStringSQL.Add(strSql);
                          ExecuteListSQL(IListStringSQL);
@@ -146,7 +144,6 @@ namespace SSCService03
                          //更新的是已经统计的期号
                          AppConfigOperation.UpdateAppConfig("LastPeriodforService02", ICurrentPeriod_101.LongPeriod_001.ToString());
                          Thread.Sleep(100);
-
                      }
                      else
                      {
@@ -220,7 +217,6 @@ namespace SSCService03
         /// <returns></returns>
         public static bool DoLostAll_102(int AType, List<PeriodDetail_101> AListPeriod_101, ref LostAll_102 ALostAll_102)
         {
-
             bool flag = true;
             PeriodDetail_101 ACurrentPeriod_101 = AListPeriod_101[0];
             ALostAll_102 = new LostAll_102();
@@ -233,6 +229,11 @@ namespace SSCService03
             ALostAll_102.Remain20MLost_007 = 0;
             ALostAll_102.Remain20PositionValueNum_008 = 0;
             ALostAll_102.Remain20PositionNum_009 = 0;
+
+            ALostAll_102.IsThreeSame_060 = 0;
+            ALostAll_102.ThreeSameValue_061 = -1;
+            ALostAll_102.TS_Pre_Lost_062 = 0;
+            ALostAll_102.TS_Lost_063 = 1;
 
             ALostAll_102.PreLost_101 = -1;
             ALostAll_102.PreLost_102 = -1;
@@ -308,6 +309,30 @@ namespace SSCService03
                 ALostAll_102.PreLost_104 = 1;
                 ALostAll_102.PreLost_105 = 1;
 
+                //判断狗腿子
+                List<int> listWeiValue = new List<int>();
+                listWeiValue.Add(ICurrentPeriod_101.Wei1_010);
+                listWeiValue.Add(ICurrentPeriod_101.Wei2_020);
+                listWeiValue.Add(ICurrentPeriod_101.Wei3_030);
+                listWeiValue.Add(ICurrentPeriod_101.Wei4_040);
+                listWeiValue.Add(ICurrentPeriod_101.Wei5_050);
+               
+                for (int i = 0; i < 5;i++ ) 
+                {
+                    if (GetMatchCount(ICurrentPeriod_101.AwardNumber_002, listWeiValue[i].ToString()) >= 3)
+                    {
+                        ALostAll_102.IsThreeSame_060 = 1;
+                        ALostAll_102.ThreeSameValue_061 = listWeiValue[i];
+                        ALostAll_102.TS_Pre_Lost_062 = 1;
+                        ALostAll_102.TS_Lost_063 = 0;
+                        break;
+                    }
+                }
+
+                if(ALostAll_102.IsThreeSame_060 !=1)
+                {
+                    ALostAll_102.TS_Lost_063++;
+                }
                 #endregion
             }
             else
@@ -380,6 +405,31 @@ namespace SSCService03
 
 
                 #region  补全特殊统计数据
+
+                //判断狗腿子
+                List<int> listWeiValue = new List<int>();
+                listWeiValue.Add(ICurrentPeriod_101.Wei1_010);
+                listWeiValue.Add(ICurrentPeriod_101.Wei2_020);
+                listWeiValue.Add(ICurrentPeriod_101.Wei3_030);
+                listWeiValue.Add(ICurrentPeriod_101.Wei4_040);
+                listWeiValue.Add(ICurrentPeriod_101.Wei5_050);
+                for (int i = 0; i < 5; i++)
+                {
+                    if (GetMatchCount(ICurrentPeriod_101.AwardNumber_002, listWeiValue[i].ToString()) >= 3)
+                    {
+                        ALostAll_102.IsThreeSame_060 = 1;
+                        ALostAll_102.ThreeSameValue_061 = listWeiValue[i];
+                        ALostAll_102.TS_Pre_Lost_062 = IPreLostAll_102.TS_Lost_063;
+                        ALostAll_102.TS_Lost_063 = 0;
+                        break;
+                    }
+                }
+
+                if (ALostAll_102.IsThreeSame_060 != 1)
+                {
+                    ALostAll_102.TS_Lost_063++;
+                }
+
                 //剩下>20期遗失的数量-------最新期遗失 
                 //出现>20期遗失的数量-------前一期遗失
                 //剩下>20M1的数量 -------最新期遗失
@@ -467,14 +517,19 @@ namespace SSCService03
                 string strSQl = String.Empty;
                 if(ALostAll_102.Appear20Lost_004>=1)
                 {
+                    //是否出>20期老1 
                     strSQl = string.Format("update T_101_{0}  set  C102={1} where C001={2} ", IStrYY, ALostAll_102.Appear20Lost_004 ,ICurrentPeriod_101.LongPeriod_001);
                     IListStringSQL.Add(strSQl);
                 }
+                // 剩下20期遗失的数量
+                strSQl = string.Format("update T_101_{0}  set  C103={1} where C001={2} ", IStrYY, ALostAll_102.Remain20Lost_006, ICurrentPeriod_101.LongPeriod_001);
+                IListStringSQL.Add(strSQl);
                 if(ALostAll_102.Appear20MLost_005>=1)
                 {
-                    strSQl = string.Format("update T_101_{0}  set  C103={1} where C001={2} ", IStrYY, ALostAll_102.Appear20MLost_005, ICurrentPeriod_101.LongPeriod_001);
+                    //20期 数量
+                    strSQl = string.Format("update T_101_{0}  set  C104={1} where C001={2} ", IStrYY, ALostAll_102.Appear20MLost_005, ICurrentPeriod_101.LongPeriod_001);
                     IListStringSQL.Add(strSQl);
-                }
+                }              
 
                 #endregion
                 #endregion
@@ -576,7 +631,14 @@ namespace SSCService03
                     drCurrent["C016"] = AlostAllWei.Lost_016;
                     drCurrent["C017"] = AlostAllWei.Lost_017;
                     drCurrent["C018"] = AlostAllWei.Lost_018;
-                    drCurrent["C019"] = AlostAllWei.Lost_019;                 
+                    drCurrent["C019"] = AlostAllWei.Lost_019;
+
+                    drCurrent["C060"] = AlostAllWei.IsThreeSame_060;
+                    drCurrent["C061"] = AlostAllWei.ThreeSameValue_061;
+                    drCurrent["C062"] = AlostAllWei.TS_Pre_Lost_062;
+                    drCurrent["C063"] = AlostAllWei.TS_Lost_063;  
+
+
                     drCurrent["C101"] = AlostAllWei.PreLost_101;
                     drCurrent["C102"] = AlostAllWei.PreLost_102;
                     drCurrent["C103"] = AlostAllWei.PreLost_103;
@@ -648,6 +710,11 @@ namespace SSCService03
                     drNewRow["C017"] = AlostAllWei.Lost_017;
                     drNewRow["C018"] = AlostAllWei.Lost_018;
                     drNewRow["C019"] = AlostAllWei.Lost_019;
+
+                    drNewRow["C060"] = AlostAllWei.IsThreeSame_060;
+                    drNewRow["C061"] = AlostAllWei.ThreeSameValue_061;
+                    drNewRow["C062"] = AlostAllWei.TS_Pre_Lost_062;
+                    drNewRow["C063"] = AlostAllWei.TS_Lost_063;  
 
                     drNewRow["C101"] = AlostAllWei.PreLost_101;
                     drNewRow["C102"] = AlostAllWei.PreLost_102;
@@ -755,6 +822,11 @@ namespace SSCService03
                     lostall_102.Lost_018 = int.Parse(drNewRow["C018"].ToString());
                     lostall_102.Lost_019 = int.Parse(drNewRow["C019"].ToString());
 
+                    lostall_102.IsThreeSame_060 = int.Parse(drNewRow["C060"].ToString());
+                    lostall_102.ThreeSameValue_061 = int.Parse(drNewRow["C061"].ToString());
+                    lostall_102.TS_Pre_Lost_062 = int.Parse(drNewRow["C062"].ToString());
+                    lostall_102.TS_Lost_063 = int.Parse(drNewRow["C063"].ToString());
+
                     lostall_102.PreLost_101 = int.Parse(drNewRow["C101"].ToString());
                     lostall_102.PreLost_102 = int.Parse(drNewRow["C102"].ToString());
                     lostall_102.PreLost_103 = int.Parse(drNewRow["C103"].ToString());
@@ -772,21 +844,74 @@ namespace SSCService03
         public static bool DoLostTrend_103(int Atype, List<PeriodDetail_101> AListPeriod_101) 
         {
             bool flag = true;
+            
             List<ContinueTrend_103> listLostTrend_103Temp = new List<ContinueTrend_103>();
             List<ContinueTrend_103> listLostTrend_103Pre =null;
+            ContinueTrend_103 pre_ContinueTrend_103 = null;
             if (Atype == ConstDefine.Const_SetNormal) 
             {
-                listLostTrend_103Pre = GetDataLostTrend_103(1, AListPeriod_101[0].LongPeriod_001);
+                listLostTrend_103Pre = GetDataLostTrend_103(0, AListPeriod_101[0].LongPeriod_001);
             }
 
-            if(AListPeriod_101 !=null && AListPeriod_101.Count>0)
+            if(AListPeriod_101 !=null && AListPeriod_101.Count>=2)
             {
                 List<int> listSingleNumValue = new List<int>();
                 for (int i = 1; i <= 5; i++) //1位到5位
                 {
-                    //每一个类型都判断
+                    #region
+                    int periodCount = 0;
+                    listSingleNumValue.Clear();
+                    foreach (PeriodDetail_101 p in AListPeriod_101)
+                    {
+                        periodCount++;
+                        listSingleNumValue.Add(int.Parse(GetObjectPropertyValue(p, String.Format("Wei{0}_0{0}0", i))));
+                        if (periodCount >= 30)
+                        {
+                            break;
+                        }
+                    }
 
-                    //前一个用这期判断一下
+                    #endregion
+
+                    //每一个类型都判断
+                    //重复
+                    if (listSingleNumValue[0] == listSingleNumValue[1])
+                    {
+                        pre_ContinueTrend_103=listLostTrend_103Pre.Where(p=>p.PositionType_004==i && p.TrendType_005 ==1).Count()>0?listLostTrend_103Pre.Where(p=>p.PositionType_004==i && p.TrendType_005 ==1).First():null;
+                        if(pre_ContinueTrend_103 !=null)
+                        {
+                            pre_ContinueTrend_103.ContinueValue_006++;
+                        }
+                        else
+                        {
+                            ContinueTrend_103 lostTrend_103 = new ContinueTrend_103();
+                            InitLostTrend_103(i, 1, ICurrentPeriod_101, ref lostTrend_103);
+                            listLostTrend_103Temp.Add(lostTrend_103);
+                        }
+                    }                    
+                    else 
+                    {
+                        int aIntTemp = listSingleNumValue[0] - listSingleNumValue[1];
+                        int bIntTemp = (listSingleNumValue[0] - listSingleNumValue[1]) * (listSingleNumValue[1] - listSingleNumValue[2]);
+
+                        if (bIntTemp < 0) //振当
+                        {
+
+                        }
+                        else if (bIntTemp > 0)
+                        {
+
+                        }
+                        else 
+                        {
+                            //其它类型忽略
+
+                        }
+
+
+
+
+                    }                   
                  
                 }
 
@@ -803,6 +928,19 @@ namespace SSCService03
             }
             return flag;
         }
+
+        public static void InitLostTrend_103(int WeiType, int trendType, PeriodDetail_101 APeriod10, ref ContinueTrend_103 lostTrend_103) 
+        {
+            lostTrend_103.LongPeriod_001 = APeriod10.LongPeriod_001;
+            lostTrend_103.DateNumber_002 = APeriod10.DateNumber_004;
+            lostTrend_103.ShortPeriod_003 = APeriod10.ShortPeriod_005;
+            lostTrend_103.PositionType_004 = WeiType;
+            lostTrend_103.TrendType_005 = trendType;
+            lostTrend_103.ContinueValue_006 = 0;
+            lostTrend_103.IsComplete_007 = 0;
+
+        }
+
 
         public static bool UpdataOrAddLostTreand_103(List<ContinueTrend_103> AListLostTrend_103) 
         {
@@ -882,15 +1020,15 @@ namespace SSCService03
             String StrSQL = string.Empty;
             switch (AType)
             {
-                case 0:  //得到当前期
-                    StrSQL = string.Format("select top 5 * from T_103_{0} where C001={1} order by  C001 desc", IStrYY, LongPeriodNumber);
+                case 0:  //得到前些期未完成的
+                    StrSQL = string.Format("select *  from T_103_{0} where C001<{1}  AND C007=0 order by  C001 desc", IStrYY, LongPeriodNumber);
                     break;
-                case 1://得到前一期
-                    StrSQL = string.Format("select top 5 * from T_103_{0} where C001<{1} order by  C001 desc", IStrYY, LongPeriodNumber);
-                    break;
-                case 2://得到某期前多少期
-                    StrSQL = string.Format("select top {2} * from T_103_{0} where C001<={1} order by  C001 desc", IStrYY, LongPeriodNumber,DataCount*5);
-                    break;
+                //case 1://得到前一期
+                //    StrSQL = string.Format("select top 5 * from T_103_{0} where C001<{1} order by  C001 desc", IStrYY, LongPeriodNumber);
+                //    break;
+                //case 2://得到某期前多少期
+                //    StrSQL = string.Format("select top {2} * from T_103_{0} where C001<={1} order by  C001 desc", IStrYY, LongPeriodNumber,DataCount*5);
+                //    break;
                 default:
                     break;
             }
@@ -2228,9 +2366,7 @@ namespace SSCService03
                 return flag = false;
             }
             #endregion
-            return flag;
-        
-        
+            return flag;      
         }
 
         public static List<SingleAnalysis_106> GetDataSingleAnalysis_106(int ACount, long APeriod)
@@ -2461,31 +2597,31 @@ namespace SSCService03
         public static bool DoHotTrend_108()
         {
             bool flag = true;
-            List<HotTrend_108> listHotTrend108 = new List<HotTrend_108>();
-            List<ContinueTrend_103> listContinueTrend_103 = new List<ContinueTrend_103>();
-            listContinueTrend_103 = GetDataLostTrend_103(2, ICurrentPeriod_101.LongPeriod_001, 20);
-            List<ContinueTrend_103> listContinueTrend_103Temp = new List<ContinueTrend_103>();
+            //List<HotTrend_108> listHotTrend108 = new List<HotTrend_108>();
+            //List<ContinueTrend_103> listContinueTrend_103 = new List<ContinueTrend_103>();
+            //listContinueTrend_103 = GetDataLostTrend_103(2, ICurrentPeriod_101.LongPeriod_001, 20);
+            //List<ContinueTrend_103> listContinueTrend_103Temp = new List<ContinueTrend_103>();
 
-            if (listContinueTrend_103.Count >= 0)
-            {
-                listContinueTrend_103Temp = listContinueTrend_103.Take(5*5).ToList();
-                DoHotTrendStatistics(5, listContinueTrend_103Temp, ref listHotTrend108);
+            //if (listContinueTrend_103.Count >= 0)
+            //{
+            //    listContinueTrend_103Temp = listContinueTrend_103.Take(5*5).ToList();
+            //    DoHotTrendStatistics(5, listContinueTrend_103Temp, ref listHotTrend108);
 
-                listContinueTrend_103Temp = listContinueTrend_103.Take(10*5).ToList();
-                DoHotTrendStatistics(10, listContinueTrend_103Temp, ref listHotTrend108);
+            //    listContinueTrend_103Temp = listContinueTrend_103.Take(10*5).ToList();
+            //    DoHotTrendStatistics(10, listContinueTrend_103Temp, ref listHotTrend108);
 
-                listContinueTrend_103Temp = listContinueTrend_103.Take(15*5).ToList();
-                DoHotTrendStatistics(15, listContinueTrend_103Temp, ref listHotTrend108);
+            //    listContinueTrend_103Temp = listContinueTrend_103.Take(15*5).ToList();
+            //    DoHotTrendStatistics(15, listContinueTrend_103Temp, ref listHotTrend108);
 
-                listContinueTrend_103Temp = listContinueTrend_103.Take(20*5).ToList();
-                DoHotTrendStatistics(20, listContinueTrend_103Temp, ref listHotTrend108);
-            }
+            //    listContinueTrend_103Temp = listContinueTrend_103.Take(20*5).ToList();
+            //    DoHotTrendStatistics(20, listContinueTrend_103Temp, ref listHotTrend108);
+            //}
 
-            //写数据
-            if (listHotTrend108.Count > 0)
-            {
-                UpdateOrAddHotTrend_108(listHotTrend108);
-            }
+            ////写数据
+            //if (listHotTrend108.Count > 0)
+            //{
+            //    UpdateOrAddHotTrend_108(listHotTrend108);
+            //}
 
             return flag;
 

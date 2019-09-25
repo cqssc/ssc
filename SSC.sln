@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShiShiCai", "ShiShiCai\ShiS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlarmService", "AlarmService\AlarmService\AlarmService.csproj", "{6C1C172C-2B34-4F01-8CCF-EDE8DA67D687}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication1", "ConsoleApplication1\ConsoleApplication1.csproj", "{3349C0D7-4845-4630-8C18-C9651AB10554}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{6C1C172C-2B34-4F01-8CCF-EDE8DA67D687}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C1C172C-2B34-4F01-8CCF-EDE8DA67D687}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C1C172C-2B34-4F01-8CCF-EDE8DA67D687}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3349C0D7-4845-4630-8C18-C9651AB10554}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3349C0D7-4845-4630-8C18-C9651AB10554}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3349C0D7-4845-4630-8C18-C9651AB10554}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3349C0D7-4845-4630-8C18-C9651AB10554}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

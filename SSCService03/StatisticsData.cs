@@ -881,38 +881,132 @@ namespace SSCService03
                         if(pre_ContinueTrend_103 !=null)
                         {
                             pre_ContinueTrend_103.ContinueValue_006++;
+                            listLostTrend_103Temp.Add(pre_ContinueTrend_103);
                         }
                         else
                         {
                             ContinueTrend_103 lostTrend_103 = new ContinueTrend_103();
                             InitLostTrend_103(i, 1, ICurrentPeriod_101, ref lostTrend_103);
+                            lostTrend_103.ContinueValue_006 = 1;
                             listLostTrend_103Temp.Add(lostTrend_103);
                         }
+
+                        #region 如有其它全完成
+                        List<ContinueTrend_103> listContinueTrendTemp=listLostTrend_103Pre.Where(p=>p.PositionType_004==i && p.TrendType_005 !=1).Count()>0?listLostTrend_103Pre.Where(p=>p.PositionType_004==i && p.TrendType_005 !=1).ToList():null;
+                        if(listContinueTrendTemp !=null)
+                        {
+                            foreach(ContinueTrend_103  ct in listContinueTrendTemp)
+                            {
+                                ct.IsComplete_007 = 1;
+                                listLostTrend_103Temp.Add(ct );
+                            }
+                        }
+
+                        #endregion
                     }                    
-                    else 
+                    else
                     {
+                      
                         int aIntTemp = listSingleNumValue[0] - listSingleNumValue[1];
                         int bIntTemp = (listSingleNumValue[0] - listSingleNumValue[1]) * (listSingleNumValue[1] - listSingleNumValue[2]);
 
                         if (bIntTemp < 0) //振当
                         {
+                            pre_ContinueTrend_103 = listLostTrend_103Pre.Where(p => p.PositionType_004 == i && p.TrendType_005 == 4).Count() > 0 ? listLostTrend_103Pre.Where(p => p.PositionType_004 == i && p.TrendType_005 == 4).First() : null;
+                            if (pre_ContinueTrend_103 != null)
+                            {
+                                pre_ContinueTrend_103.ContinueValue_006++;
+                                listLostTrend_103Temp.Add(pre_ContinueTrend_103);
+                            }
+                            else
+                            {
+                                ContinueTrend_103 lostTrend_103 = new ContinueTrend_103();
+                                InitLostTrend_103(i, 4, ICurrentPeriod_101, ref lostTrend_103);
+                                lostTrend_103.ContinueValue_006 = 2;
+                                listLostTrend_103Temp.Add(lostTrend_103);
+                            }
+
+                            #region 如有其它全完成
+                            List<ContinueTrend_103> listContinueTrendTemp = listLostTrend_103Pre.Where(p => p.PositionType_004 == i && p.TrendType_005 != 4).Count() > 0 ? listLostTrend_103Pre.Where(p => p.PositionType_004 == i && p.TrendType_005 != 4).ToList() : null;
+                            if (listContinueTrendTemp != null)
+                            {
+                                foreach (ContinueTrend_103 ct in listContinueTrendTemp)
+                                {
+                                    ct.IsComplete_007 = 1;
+                                    listLostTrend_103Temp.Add(ct);
+                                }
+                            }
+
+                            #endregion
 
                         }
                         else if (bIntTemp > 0)
                         {
+                           
+                            if (aIntTemp > 0)
+                            {
+                                //递增
+                                pre_ContinueTrend_103 = listLostTrend_103Pre.Where(p => p.PositionType_004 == i && p.TrendType_005 == 2).Count() > 0 ? listLostTrend_103Pre.Where(p => p.PositionType_004 == i && p.TrendType_005 == 2).First() : null;
+                                if (pre_ContinueTrend_103 != null)
+                                {
+                                    pre_ContinueTrend_103.ContinueValue_006++;
+                                    listLostTrend_103Temp.Add(pre_ContinueTrend_103);
+                                }
+                                else
+                                {
+                                    ContinueTrend_103 lostTrend_103 = new ContinueTrend_103();
+                                    InitLostTrend_103(i, 2, ICurrentPeriod_101, ref lostTrend_103);
+                                    lostTrend_103.ContinueValue_006 = 3;
+                                    listLostTrend_103Temp.Add(lostTrend_103);
+                                }
+
+                                #region 如有其它全完成
+                                List<ContinueTrend_103> listContinueTrendTemp = listLostTrend_103Pre.Where(p => p.PositionType_004 == i && p.TrendType_005 != 2).Count() > 0 ? listLostTrend_103Pre.Where(p => p.PositionType_004 == i && p.TrendType_005 != 2).ToList() : null;
+                                if (listContinueTrendTemp != null)
+                                {
+                                    foreach (ContinueTrend_103 ct in listContinueTrendTemp)
+                                    {
+                                        ct.IsComplete_007 = 1;
+                                        listLostTrend_103Temp.Add(ct);
+                                    }
+                                }
+
+                                #endregion
+                            }
+                            else 
+                            {
+                                //或增减
+
+                                pre_ContinueTrend_103 = listLostTrend_103Pre.Where(p => p.PositionType_004 == i && p.TrendType_005 == 3).Count() > 0 ? listLostTrend_103Pre.Where(p => p.PositionType_004 == i && p.TrendType_005 ==3).First() : null;
+                                if (pre_ContinueTrend_103 != null)
+                                {
+                                    pre_ContinueTrend_103.ContinueValue_006++;
+                                }
+                                else
+                                {
+                                    ContinueTrend_103 lostTrend_103 = new ContinueTrend_103();
+                                    InitLostTrend_103(i, 3, ICurrentPeriod_101, ref lostTrend_103);
+                                    lostTrend_103.ContinueValue_006 = 3;
+                                    listLostTrend_103Temp.Add(lostTrend_103);
+                                }
+
+
+                                #region 如有其它全完成
+                                List<ContinueTrend_103> listContinueTrendTemp = listLostTrend_103Pre.Where(p => p.PositionType_004 == i && p.TrendType_005 != 3).Count() > 0 ? listLostTrend_103Pre.Where(p => p.PositionType_004 == i && p.TrendType_005 != 3).ToList() : null;
+                                if (listContinueTrendTemp != null)
+                                {
+                                    foreach (ContinueTrend_103 ct in listContinueTrendTemp)
+                                    {
+                                        ct.IsComplete_007 = 1;
+                                        listLostTrend_103Temp.Add(ct);
+                                    }
+                                }
+
+                                #endregion
+                            }
 
                         }
-                        else 
-                        {
-                            //其它类型忽略
-
-                        }
-
-
-
-
-                    }                   
-                 
+                    }  
                 }
 
                 if (UpdataOrAddLostTreand_103(listLostTrend_103Temp))
@@ -965,7 +1059,7 @@ namespace SSCService03
 
                 foreach (ContinueTrend_103 ss in AListLostTrend_103)
                 {
-                    DataRow drCurrent = objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C004={1} ", ss.LongPeriod_001, ss.PositionType_004)).Count() > 0 ? objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C004={1} ", ss.LongPeriod_001, ss.PositionType_004)).First() : null;
+                    DataRow drCurrent = objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C004={1}  AND C005={2} ", ss.LongPeriod_001, ss.PositionType_004,ss.TrendType_005)).Count() > 0 ? objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C004={1}  AND C005={2}  ", ss.LongPeriod_001, ss.PositionType_004,ss.TrendType_005)).First() : null;
 
                     if (drCurrent != null) //更新
                     {
@@ -1008,9 +1102,6 @@ namespace SSCService03
         }
 
 
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="AType">0:当前期  1：当前期的前一期</param>
         /// <param name="LongPeriodNumber"></param>
         /// <returns></returns>
@@ -1335,7 +1426,7 @@ namespace SSCService03
 
                 foreach (ContinueBigSmall_111 ss in AListLostTrend_103)
                 {
-                    DataRow drCurrent = objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C004={1} ", ss.LongPeriod_001, ss.PositionType_004)).Count() > 0 ? objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C004={1}  ", ss.LongPeriod_001, ss.PositionType_004)).First() : null;
+                    DataRow drCurrent = objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C004={1} AND C005={2} ", ss.LongPeriod_001, ss.PositionType_004,ss.BSOEType_005)).Count() > 0 ? objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C004={1}   AND C005={2} ", ss.LongPeriod_001, ss.PositionType_004,ss.BSOEType_005)).First() : null;
 
                     if (drCurrent != null) //更新
                     {
@@ -1424,16 +1515,72 @@ namespace SSCService03
             bool flag = true;
             List<LostCross_104> listLostCrossTemp = new List<LostCross_104>();
             List<LostCross_104> listLostCrossPre = null;
-            LostCross_104 lostCross_104Pre = null;
-            if(AType== ConstDefine.Const_SetNormal)
+
+            if (AType == ConstDefine.Const_SetNormal)
             {
                 listLostCrossPre = GetDataLostCross_104(1, ICurrentPeriod_101.LongPeriod_001);
             }
 
-            int allRepickNum = 0;
-            int allSpanOneNum = 0;
             for (int i = 1; i <= 6;i++ ) //位
             {
+                LostCross_104 lostCross_104 = null;
+                if (AType == ConstDefine.Const_SetNormal)
+                {
+                    #region
+
+                    //如果有前面有，且当前期出现了，则将期号修改掉
+                    //如果是新的则将期号变成999
+                    if (AListPeriodDetail_101.Count > 2)
+                    {
+                        PeriodDetail_101 p1 = AListPeriodDetail_101[0];
+                        PeriodDetail_101 p2 = AListPeriodDetail_101[1];
+                        PeriodDetail_101 p3 = AListPeriodDetail_101[2];
+                        if (int.Parse(GetObjectPropertyValue(p1, String.Format("Wei{0}_0{0}0", i))) == int.Parse(GetObjectPropertyValue(p2, String.Format("Wei{0}_0{0}0", i))))//重复
+                        {
+                            lostCross_104 = listLostCrossPre.Where(p => p.PositionType_004 == i && p.CrossType_005 == 1).First();
+                        }
+
+                        if (int.Parse(GetObjectPropertyValue(p1, String.Format("Wei{0}_0{0}0", i))) == int.Parse(GetObjectPropertyValue(p3, String.Format("Wei{0}_0{0}0", i))))//间隔
+                        {
+                        }
+
+                        if (int.Parse(GetObjectPropertyValue(p1, String.Format("Wei{0}_0{0}0", i))) == int.Parse(GetObjectPropertyValue(p3, String.Format("Wei{0}_0{0}0", i))) && int.Parse(GetObjectPropertyValue(p1, String.Format("Wei{0}_0{0}0", i))) != int.Parse(GetObjectPropertyValue(p2, String.Format("Wei{0}_0{0}0", i))))//绝对间隔
+                        {
+                        }
+
+
+                    }
+                    else
+                    {
+                        #region
+                        if(AListPeriodDetail_101.Count ==2)
+                        {
+                            PeriodDetail_101 p1 = AListPeriodDetail_101[0];
+                            PeriodDetail_101 p2 = AListPeriodDetail_101[1];
+
+                        }
+                        #endregion
+                    }      
+                    #endregion
+                }
+                else
+                {
+                    #region  //置0
+                    LostCross_104 lostCross_Repick = new LostCross_104();
+                    InitLostCross_104(i, ConstDefine.Const_Cross_Type_Repick, ref  lostCross_Repick);
+                    listLostCrossTemp.Add(lostCross_Repick);
+
+                    LostCross_104 lostCross_Span = new LostCross_104();
+                    InitLostCross_104(i,ConstDefine.Const_Cross_Type_Span, ref  lostCross_Span);
+                    listLostCrossTemp.Add(lostCross_Span);
+
+
+                    LostCross_104 lostCross_Abs_Span = new LostCross_104();
+                    InitLostCross_104(i,ConstDefine.Const_Cross_Type_AbsSpan, ref  lostCross_Abs_Span);
+                    listLostCrossTemp.Add(lostCross_Abs_Span);
+                    #endregion
+                }
+
                 LostCross_104 lostCross1 = new LostCross_104();
                 InitLostCross_104(i, 1, ref  lostCross1);
                 LostCross_104 lostCross2 = new LostCross_104();
@@ -1443,142 +1590,7 @@ namespace SSCService03
 
                 if (AType == ConstDefine.Const_SetNormal && AListPeriodDetail_101.Count>0)
                 {                    
-                        #region
-
-                        if (listLostCrossPre != null && listLostCrossPre.Count > 0)
-                        {
-                            PeriodDetail_101 p1 = AListPeriodDetail_101[0];
-                            PeriodDetail_101 p2 = AListPeriodDetail_101[1];
-                            if (AListPeriodDetail_101.Count <= 2) //只有重复可以判断
-                            {
-                                if (i != 6)
-                                {
-                                    #region
-                                    if (int.Parse(GetObjectPropertyValue(p1, String.Format("Wei{0}_0{0}0", i))) == int.Parse(GetObjectPropertyValue(p2, String.Format("Wei{0}_0{0}0", i))))
-                                    {
-                                        lostCross1.IsAppear_006 = 1;
-                                        lostCross1.LostValue_007 = 0;
-                                        lostCross1.PreLostValue_008 = 1;
-                                        lostCross1.AppearNumber_009 = 1;
-
-                                        allRepickNum++;
-                                    }
-                                    else
-                                    {
-                                        lostCross1.IsAppear_006 = 0;
-                                        lostCross1.LostValue_007 = 2;
-
-                                        lostCross2.IsAppear_006 = 0;
-                                        lostCross2.LostValue_007 = 2;
-                                    }
-                                    #endregion
-                                }
-                                else
-                                {
-                                    #region
-                                    if (allRepickNum > 0)
-                                    {
-                                        //更新原表
-                                        lostCross1.IsAppear_006 = 1;
-                                        lostCross1.LostValue_007 = 0;
-                                        lostCross1.PreLostValue_008 = 1;
-                                        lostCross1.AppearNumber_009 = allRepickNum;
-
-                                        string ss = string.Format("Update T_101_{0} set C100={1}  where  C001={2} ",IStrYY,allRepickNum,ICurrentLostAll_102.LongPeriod_001);
-                                        IListStringSQL.Add(ss);
-                                    }
-                                    else 
-                                    {
-                                        lostCross1.IsAppear_006 = 0;
-                                        lostCross1.LostValue_007 = 2;
-                                        lostCross2.IsAppear_006 = 0;
-                                        lostCross2.LostValue_007 = 2;
-                                    }
-
-                                    #endregion
-                                }   
-                            }
-                            else //重复和间隔都可以
-                            {
-                                PeriodDetail_101 p3 = AListPeriodDetail_101[2];
-                                if (listLostCrossPre != null && listLostCrossPre.Count > 0 && listLostCrossPre.Where(p => p.PositionType_004 == i).Count() > 0)
-                                {
-                                    if (i != 6)
-                                    {
-                                        #region
-                                        lostCross_104Pre = listLostCrossPre.Where(p => p.PositionType_004 == i && p.CrossType_005 == 1).First();
-                                        if (int.Parse(GetObjectPropertyValue(p1, String.Format("Wei{0}_0{0}0", i))) == int.Parse(GetObjectPropertyValue(p2, String.Format("Wei{0}_0{0}0", i)))) //重复
-                                        {
-                                            lostCross1.PreLostValue_008 = lostCross_104Pre.LostValue_007;
-                                            lostCross1.IsAppear_006 = 1;
-                                            lostCross1.LostValue_007 = 0;
-                                            lostCross1.AppearNumber_009 = 1;
-                                            allRepickNum++;
-                                        }
-                                        else
-                                        {
-                                            lostCross1.IsAppear_006 = 0;
-                                            lostCross1.LostValue_007 = lostCross_104Pre.LostValue_007 + 1;
-                                        }
-
-                                        lostCross_104Pre = listLostCrossPre.Where(p => p.PositionType_004 == i && p.CrossType_005 == 2).First();
-                                        if (int.Parse(GetObjectPropertyValue(p1, String.Format("Wei{0}_0{0}0", i))) == int.Parse(GetObjectPropertyValue(p3, String.Format("Wei{0}_0{0}0", i))))//间隔
-                                        {
-                                            lostCross2.PreLostValue_008 = lostCross_104Pre.LostValue_007;
-                                            lostCross2.IsAppear_006 = 1;
-                                            lostCross2.LostValue_007 = 0;
-                                            lostCross2.AppearNumber_009 = 1;
-                                            allSpanOneNum++;
-                                        }
-                                        else
-                                        {
-                                            lostCross2.IsAppear_006 = 0;
-                                            lostCross2.LostValue_007 = lostCross_104Pre.LostValue_007 + 1;
-                                        }
-                                        #endregion
-                                    }
-                                    else
-                                    {
-                                        #region
-                                        if (allRepickNum > 0 && listLostCrossPre.Where(p => p.PositionType_004 == i && p.CrossType_005 == 1).Count()>0)
-                                        {
-                                             lostCross_104Pre = listLostCrossPre.Where(p => p.PositionType_004 == i && p.CrossType_005 == 1).First();
-                                            //更新原表
-                                            lostCross1.PreLostValue_008 = lostCross_104Pre.LostValue_007;
-                                            lostCross1.IsAppear_006 = 1;
-                                            lostCross1.LostValue_007 = 0;
-                                            lostCross1.AppearNumber_009 = allRepickNum;
-                                            string ss = string.Format("Update T_101_{0} set C100={1}  where  C001={2} ", IStrYY, allRepickNum, ICurrentLostAll_102.LongPeriod_001);
-                                            IListStringSQL.Add(ss);
-                                        }
-                                        else
-                                        {
-                                            lostCross1.IsAppear_006 = 0;
-                                            lostCross1.LostValue_007 = lostCross_104Pre.LostValue_007+1;
-                                        }
-
-                                        if (allSpanOneNum > 0 && listLostCrossPre.Where(p => p.PositionType_004 == i && p.CrossType_005 == 2).Count()>0)
-                                        {
-                                            lostCross_104Pre = listLostCrossPre.Where(p => p.PositionType_004 == i && p.CrossType_005 == 2).First();
-                                            lostCross2.PreLostValue_008 = lostCross_104Pre.LostValue_007;
-                                            lostCross2.IsAppear_006 = 1;
-                                            lostCross2.LostValue_007 = 0;
-                                            lostCross2.AppearNumber_009 = allSpanOneNum;
-                                            string ss = string.Format("Update T_101_{0} set C101={1}  where  C001={2} ", IStrYY, allSpanOneNum, ICurrentLostAll_102.LongPeriod_001);
-                                            IListStringSQL.Add(ss);
-                                        }
-                                        else 
-                                        {
-                                            lostCross2.IsAppear_006 = 0;
-                                            lostCross2.LostValue_007 = lostCross_104Pre.LostValue_007 + 1;
-                                        }
-                                        #endregion
-                                    }       
-                                }
-                            }
-                        }
-
-                        #endregion
+    
                    
                 }
             }
@@ -1604,9 +1616,9 @@ namespace SSCService03
             ALostCross.PositionType_004 = PositionType_004;
             ALostCross.CrossType_005 = CrossType_005;
             ALostCross.IsAppear_006 = 0;
-            ALostCross.LostValue_007 = 1;
-            ALostCross.PreLostValue_008 = -1;
-            ALostCross.AppearNumber_009 = 0;
+            ALostCross.PreLostValue_007 = -1;
+            ALostCross.LostValue_008 = 1;
+            ALostCross.AppearCount_009 = 0;
         }
 
         public static List<LostCross_104> GetDataLostCross_104(int AType, long LongPeriodNumber) 
@@ -1618,8 +1630,8 @@ namespace SSCService03
                 case 0:  //得到当前期
                     StrSQL = string.Format("select top 12 * from T_104_{0} where C001={1} order by  C001 desc", IStrYY, LongPeriodNumber);
                     break;
-                case 1://得到前一期
-                    StrSQL = string.Format("select top 12 * from T_104_{0} where C001<{1} order by  C001 desc", IStrYY, LongPeriodNumber);
+                case 1://得到前面未完成的
+                    StrSQL = string.Format("select  * from T_104_{0} where C001<{1}  AND C005=0  order by  C001 desc", IStrYY, LongPeriodNumber);
                     break;
                 default:
                     break;
@@ -1637,9 +1649,10 @@ namespace SSCService03
                     lostTrend_103.PositionType_004 = int.Parse(drNewRow["C004"].ToString());
                     lostTrend_103.CrossType_005 = int.Parse(drNewRow["C005"].ToString());
                     lostTrend_103.IsAppear_006 = int.Parse(drNewRow["C006"].ToString());
-                    lostTrend_103.LostValue_007 = int.Parse(drNewRow["C007"].ToString());
-                    lostTrend_103.PreLostValue_008 = int.Parse(drNewRow["C008"].ToString());
-                    lostTrend_103.AppearNumber_009 = int.Parse(drNewRow["C009"].ToString());
+                   
+                    lostTrend_103.PreLostValue_007 = int.Parse(drNewRow["C007"].ToString());
+                    lostTrend_103.LostValue_008 = int.Parse(drNewRow["C008"].ToString());
+                    lostTrend_103.AppearCount_009 = int.Parse(drNewRow["C009"].ToString());
                     ListLostTrend_103.Add(lostTrend_103);
                 }
             }
@@ -1649,7 +1662,6 @@ namespace SSCService03
         public static bool UpdataOrAddLostCross_104(List<LostCross_104> AListLostTrend_103) 
         {
             bool flag = true;
-
             #region
             IDbConnection objConn;
             IDbDataAdapter objAdapter;
@@ -1681,9 +1693,9 @@ namespace SSCService03
                         drCurrent["C004"] = ss.PositionType_004;
                         drCurrent["C005"] = ss.CrossType_005;
                         drCurrent["C006"] = ss.IsAppear_006;
-                        drCurrent["C007"] = ss.LostValue_007;
-                        drCurrent["C008"] = ss.PreLostValue_008;
-                        drCurrent["C009"] = ss.AppearNumber_009;
+                        drCurrent["C007"] = ss.PreLostValue_007;
+                        drCurrent["C008"] = ss.LostValue_008;
+                        drCurrent["C009"] = ss.AppearCount_009;
                         drCurrent.EndEdit();
                     }
                     else //添加新行
@@ -1695,9 +1707,9 @@ namespace SSCService03
                         drNewRow["C004"] = ss.PositionType_004;
                         drNewRow["C005"] = ss.CrossType_005;
                         drNewRow["C006"] = ss.IsAppear_006;
-                        drNewRow["C007"] = ss.LostValue_007;
-                        drNewRow["C008"] = ss.PreLostValue_008;
-                        drNewRow["C009"] = ss.AppearNumber_009;
+                        drNewRow["C007"] = ss.PreLostValue_007;
+                        drNewRow["C008"] = ss.LostValue_008;
+                        drNewRow["C009"] = ss.AppearCount_009;
                         objDataSet.Tables[0].Rows.Add(drNewRow);
                     }
                 }
@@ -1726,8 +1738,7 @@ namespace SSCService03
 
             //小于3期就直接不处理
             if (AListPeriod_101.Count <3)  return true;            
-            listLostSingleNumAll_105Pre = GetDataLostSingleNumAll_105(0, ICurrentPeriod_101.LongPeriod_001);           
-
+            listLostSingleNumAll_105Pre = GetDataLostSingleNumAll_105(0, ICurrentPeriod_101.LongPeriod_001);   
             for (int i = 0; i <= 9;i++ )
             {
                 #region
@@ -1763,7 +1774,6 @@ namespace SSCService03
                         lostSingleNumPre.DateNumber_002 = ICurrentPeriod_101.DateNumber_004;
                         lostSingleNumPre.ShortPeriod_003 = ICurrentPeriod_101.ShortPeriod_005;
                         lostSingleNumPre.LostSpan_006 = countSpan;
-
                     }
                     else
                     {
@@ -1883,7 +1893,6 @@ namespace SSCService03
         public static bool UpdateOrAddLostSingleNumAll_105(List<LostSingleNumAll_105> listLostSingleNumAll_105)
         {
             bool flag = true;
-
             #region
             IDbConnection objConn;
             IDbDataAdapter objAdapter;
@@ -1964,8 +1973,7 @@ namespace SSCService03
                 return flag = false;
             }
             #endregion
-            return flag;
-        
+            return flag;        
         }
 
         /// <summary>
@@ -2055,8 +2063,7 @@ namespace SSCService03
                         listLostValueAllTemp.Add(int.Parse(GetObjectPropertyValue(IPreLostAll_102, String.Format("Lost_0{0}{1}", i, j))));
                     }
                 }
-            }
-            
+            }            
 
             for (int i = 1; i <= 5;i++ )
             {
@@ -2594,148 +2601,148 @@ namespace SSCService03
         #endregion
 
         #region  DoHotTrend_108
-        public static bool DoHotTrend_108()
-        {
-            bool flag = true;
-            //List<HotTrend_108> listHotTrend108 = new List<HotTrend_108>();
-            //List<ContinueTrend_103> listContinueTrend_103 = new List<ContinueTrend_103>();
-            //listContinueTrend_103 = GetDataLostTrend_103(2, ICurrentPeriod_101.LongPeriod_001, 20);
-            //List<ContinueTrend_103> listContinueTrend_103Temp = new List<ContinueTrend_103>();
+        //public static bool DoHotTrend_108()
+        //{
+        //    bool flag = true;
+        //    //List<HotTrend_108> listHotTrend108 = new List<HotTrend_108>();
+        //    //List<ContinueTrend_103> listContinueTrend_103 = new List<ContinueTrend_103>();
+        //    //listContinueTrend_103 = GetDataLostTrend_103(2, ICurrentPeriod_101.LongPeriod_001, 20);
+        //    //List<ContinueTrend_103> listContinueTrend_103Temp = new List<ContinueTrend_103>();
 
-            //if (listContinueTrend_103.Count >= 0)
-            //{
-            //    listContinueTrend_103Temp = listContinueTrend_103.Take(5*5).ToList();
-            //    DoHotTrendStatistics(5, listContinueTrend_103Temp, ref listHotTrend108);
+        //    //if (listContinueTrend_103.Count >= 0)
+        //    //{
+        //    //    listContinueTrend_103Temp = listContinueTrend_103.Take(5*5).ToList();
+        //    //    DoHotTrendStatistics(5, listContinueTrend_103Temp, ref listHotTrend108);
 
-            //    listContinueTrend_103Temp = listContinueTrend_103.Take(10*5).ToList();
-            //    DoHotTrendStatistics(10, listContinueTrend_103Temp, ref listHotTrend108);
+        //    //    listContinueTrend_103Temp = listContinueTrend_103.Take(10*5).ToList();
+        //    //    DoHotTrendStatistics(10, listContinueTrend_103Temp, ref listHotTrend108);
 
-            //    listContinueTrend_103Temp = listContinueTrend_103.Take(15*5).ToList();
-            //    DoHotTrendStatistics(15, listContinueTrend_103Temp, ref listHotTrend108);
+        //    //    listContinueTrend_103Temp = listContinueTrend_103.Take(15*5).ToList();
+        //    //    DoHotTrendStatistics(15, listContinueTrend_103Temp, ref listHotTrend108);
 
-            //    listContinueTrend_103Temp = listContinueTrend_103.Take(20*5).ToList();
-            //    DoHotTrendStatistics(20, listContinueTrend_103Temp, ref listHotTrend108);
-            //}
+        //    //    listContinueTrend_103Temp = listContinueTrend_103.Take(20*5).ToList();
+        //    //    DoHotTrendStatistics(20, listContinueTrend_103Temp, ref listHotTrend108);
+        //    //}
 
-            ////写数据
-            //if (listHotTrend108.Count > 0)
-            //{
-            //    UpdateOrAddHotTrend_108(listHotTrend108);
-            //}
+        //    ////写数据
+        //    //if (listHotTrend108.Count > 0)
+        //    //{
+        //    //    UpdateOrAddHotTrend_108(listHotTrend108);
+        //    //}
 
-            return flag;
+        //    return flag;
 
-        }
+        //}
 
-        public static void DoHotTrendStatistics(int ASpliteType, List<ContinueTrend_103> AlistContinueTrend103, ref  List<HotTrend_108> AlistHotStatistics_108) 
-        {
+        //public static void DoHotTrendStatistics(int ASpliteType, List<ContinueTrend_103> AlistContinueTrend103, ref  List<HotTrend_108> AlistHotStatistics_108) 
+        //{
             
-            //for (int i = 1; i <= 5;i++ )
-            //{
-            //    HotTrend_108 ht = new HotTrend_108();
-            //    ht.LongPeriod_001 = ICurrentPeriod_101.LongPeriod_001;
-            //    ht.DateNumber_002 = ICurrentPeriod_101.DateNumber_004;
-            //    ht.ShortPeriod_003 = ICurrentPeriod_101.ShortPeriod_005;
-            //    ht.PositionType_004 = i;
-            //    ht.SplitValueType_005 = ASpliteType;
-            //    ht.FenMu_006 = AlistContinueTrend103.Count/5;
-            //    ht.RepickNum_010 = AlistContinueTrend103.Where(p=>p.PositionType_004==i && p.Repick_005==1).Count();
-            //    ht.RepickRate_011 = Math.Round((decimal)ht.RepickNum_010 / ht.FenMu_006, 2);
+        //    //for (int i = 1; i <= 5;i++ )
+        //    //{
+        //    //    HotTrend_108 ht = new HotTrend_108();
+        //    //    ht.LongPeriod_001 = ICurrentPeriod_101.LongPeriod_001;
+        //    //    ht.DateNumber_002 = ICurrentPeriod_101.DateNumber_004;
+        //    //    ht.ShortPeriod_003 = ICurrentPeriod_101.ShortPeriod_005;
+        //    //    ht.PositionType_004 = i;
+        //    //    ht.SplitValueType_005 = ASpliteType;
+        //    //    ht.FenMu_006 = AlistContinueTrend103.Count/5;
+        //    //    ht.RepickNum_010 = AlistContinueTrend103.Where(p=>p.PositionType_004==i && p.Repick_005==1).Count();
+        //    //    ht.RepickRate_011 = Math.Round((decimal)ht.RepickNum_010 / ht.FenMu_006, 2);
 
-            //    ht.SwingNum_020 = AlistContinueTrend103.Where(p => p.PositionType_004 == i && p.Swing_006 == 1).Count();
-            //    ht.SwingRate_021 = Math.Round((decimal)ht.SwingNum_020 / ht.FenMu_006, 2);
-
-
-            //    ht.AddOrSubNum_030 = AlistContinueTrend103.Where(p => p.PositionType_004 == i && p.AddOrSub_007 == 1).Count();
-            //    ht.AddOrSubRate_031 = Math.Round((decimal)ht.AddOrSubNum_030 / ht.FenMu_006, 2);
+        //    //    ht.SwingNum_020 = AlistContinueTrend103.Where(p => p.PositionType_004 == i && p.Swing_006 == 1).Count();
+        //    //    ht.SwingRate_021 = Math.Round((decimal)ht.SwingNum_020 / ht.FenMu_006, 2);
 
 
-            //    ht.OtherNum_040 = AlistContinueTrend103.Where(p => p.PositionType_004 == i && p.Other_008 == 1).Count();
-            //    ht.OtherRate_041 = Math.Round((decimal)ht.OtherNum_040 / ht.FenMu_006, 2);
+        //    //    ht.AddOrSubNum_030 = AlistContinueTrend103.Where(p => p.PositionType_004 == i && p.AddOrSub_007 == 1).Count();
+        //    //    ht.AddOrSubRate_031 = Math.Round((decimal)ht.AddOrSubNum_030 / ht.FenMu_006, 2);
 
-            //    AlistHotStatistics_108.Add(ht);
 
-            //}
-        }
+        //    //    ht.OtherNum_040 = AlistContinueTrend103.Where(p => p.PositionType_004 == i && p.Other_008 == 1).Count();
+        //    //    ht.OtherRate_041 = Math.Round((decimal)ht.OtherNum_040 / ht.FenMu_006, 2);
+
+        //    //    AlistHotStatistics_108.Add(ht);
+
+        //    //}
+        //}
       
-        public static bool UpdateOrAddHotTrend_108(List<HotTrend_108> AlistHotStatistics_108)
-        {
-            bool flag = true;
-            #region
-            IDbConnection objConn;
-            IDbDataAdapter objAdapter;
-            DbCommandBuilder objCmdBuilder;
-            try
-            {
-                string strSql = string.Empty;
-                strSql = string.Format("Select * from T_108_{1} where C001={0}", ICurrentPeriod_101.LongPeriod_001, IStrYY);
+        //public static bool UpdateOrAddHotTrend_108(List<HotTrend_108> AlistHotStatistics_108)
+        //{
+        //    bool flag = true;
+        //    #region
+        //    IDbConnection objConn;
+        //    IDbDataAdapter objAdapter;
+        //    DbCommandBuilder objCmdBuilder;
+        //    try
+        //    {
+        //        string strSql = string.Empty;
+        //        strSql = string.Format("Select * from T_108_{1} where C001={0}", ICurrentPeriod_101.LongPeriod_001, IStrYY);
 
-                objConn = DbHelperSQL.GetConnection(ISqlConnect);
-                objAdapter = DbHelperSQL.GetDataAdapter(objConn, strSql);
-                objCmdBuilder = DbHelperSQL.GetCommandBuilder(objAdapter);
-                objCmdBuilder.ConflictOption = ConflictOption.OverwriteChanges;
-                objCmdBuilder.SetAllValues = false;
+        //        objConn = DbHelperSQL.GetConnection(ISqlConnect);
+        //        objAdapter = DbHelperSQL.GetDataAdapter(objConn, strSql);
+        //        objCmdBuilder = DbHelperSQL.GetCommandBuilder(objAdapter);
+        //        objCmdBuilder.ConflictOption = ConflictOption.OverwriteChanges;
+        //        objCmdBuilder.SetAllValues = false;
 
-                DataSet objDataSet = new DataSet();
-                objAdapter.Fill(objDataSet);
+        //        DataSet objDataSet = new DataSet();
+        //        objAdapter.Fill(objDataSet);
 
-                foreach (HotTrend_108 ss in AlistHotStatistics_108)
-                {
-                    DataRow drCurrent = objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C004={1}  AND C005={2} ", ss.LongPeriod_001, ss.PositionType_004, ss.SplitValueType_005)).Count() > 0 ? objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C004={1}  AND C005={2} ", ss.LongPeriod_001, ss.PositionType_004, ss.SplitValueType_005)).First() : null;
+        //        foreach (HotTrend_108 ss in AlistHotStatistics_108)
+        //        {
+        //            DataRow drCurrent = objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C004={1}  AND C005={2} ", ss.LongPeriod_001, ss.PositionType_004, ss.SplitValueType_005)).Count() > 0 ? objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C004={1}  AND C005={2} ", ss.LongPeriod_001, ss.PositionType_004, ss.SplitValueType_005)).First() : null;
 
-                    if (drCurrent != null) //更新
-                    {
-                        drCurrent.BeginEdit();
-                        drCurrent["C001"] = ss.LongPeriod_001.ToString();
-                        drCurrent["C002"] = ss.DateNumber_002.ToString();
-                        drCurrent["C003"] = ss.ShortPeriod_003;
-                        drCurrent["C004"] = ss.PositionType_004;
-                        drCurrent["C005"] = ss.SplitValueType_005;
-                        drCurrent["C006"] = ss.FenMu_006;
-                        drCurrent["C010"] = ss.RepickNum_010;
-                        drCurrent["C011"] = ss.RepickRate_011;
-                        drCurrent["C020"] = ss.SwingNum_020;
-                        drCurrent["C021"] = ss.SwingRate_021;
-                        drCurrent["C030"] = ss.AddOrSubNum_030;
-                        drCurrent["C031"] = ss.AddOrSubRate_031;
-                        drCurrent["C040"] = ss.OtherNum_040;
-                        drCurrent["C041"] = ss.OtherRate_041;
-                        drCurrent.EndEdit();
-                    }
-                    else //添加新行
-                    {
-                        DataRow drNewRow = objDataSet.Tables[0].NewRow();
-                        drNewRow["C001"] = ss.LongPeriod_001.ToString();
-                        drNewRow["C002"] = ss.DateNumber_002.ToString();
-                        drNewRow["C003"] = ss.ShortPeriod_003;
-                        drNewRow["C004"] = ss.PositionType_004;
-                        drNewRow["C005"] = ss.SplitValueType_005;
-                        drNewRow["C006"] = ss.FenMu_006;
-                        drNewRow["C010"] = ss.RepickNum_010;
-                        drNewRow["C011"] = ss.RepickRate_011;
-                        drNewRow["C020"] = ss.SwingNum_020;
-                        drNewRow["C021"] = ss.SwingRate_021;
-                        drNewRow["C030"] = ss.AddOrSubNum_030;
-                        drNewRow["C031"] = ss.AddOrSubRate_031;
-                        drNewRow["C040"] = ss.OtherNum_040;
-                        drNewRow["C041"] = ss.OtherRate_041;
-                        objDataSet.Tables[0].Rows.Add(drNewRow);
-                    }
-                }
-                objAdapter.Update(objDataSet);
-                objDataSet.AcceptChanges();
-                FileLog.WriteInfo("UpdateOrAddHotTrend_108() ", "Success :" + ICurrentPeriod_101.LongPeriod_001);
+        //            if (drCurrent != null) //更新
+        //            {
+        //                drCurrent.BeginEdit();
+        //                drCurrent["C001"] = ss.LongPeriod_001.ToString();
+        //                drCurrent["C002"] = ss.DateNumber_002.ToString();
+        //                drCurrent["C003"] = ss.ShortPeriod_003;
+        //                drCurrent["C004"] = ss.PositionType_004;
+        //                drCurrent["C005"] = ss.SplitValueType_005;
+        //                drCurrent["C006"] = ss.FenMu_006;
+        //                drCurrent["C010"] = ss.RepickNum_010;
+        //                drCurrent["C011"] = ss.RepickRate_011;
+        //                drCurrent["C020"] = ss.SwingNum_020;
+        //                drCurrent["C021"] = ss.SwingRate_021;
+        //                drCurrent["C030"] = ss.AddOrSubNum_030;
+        //                drCurrent["C031"] = ss.AddOrSubRate_031;
+        //                drCurrent["C040"] = ss.OtherNum_040;
+        //                drCurrent["C041"] = ss.OtherRate_041;
+        //                drCurrent.EndEdit();
+        //            }
+        //            else //添加新行
+        //            {
+        //                DataRow drNewRow = objDataSet.Tables[0].NewRow();
+        //                drNewRow["C001"] = ss.LongPeriod_001.ToString();
+        //                drNewRow["C002"] = ss.DateNumber_002.ToString();
+        //                drNewRow["C003"] = ss.ShortPeriod_003;
+        //                drNewRow["C004"] = ss.PositionType_004;
+        //                drNewRow["C005"] = ss.SplitValueType_005;
+        //                drNewRow["C006"] = ss.FenMu_006;
+        //                drNewRow["C010"] = ss.RepickNum_010;
+        //                drNewRow["C011"] = ss.RepickRate_011;
+        //                drNewRow["C020"] = ss.SwingNum_020;
+        //                drNewRow["C021"] = ss.SwingRate_021;
+        //                drNewRow["C030"] = ss.AddOrSubNum_030;
+        //                drNewRow["C031"] = ss.AddOrSubRate_031;
+        //                drNewRow["C040"] = ss.OtherNum_040;
+        //                drNewRow["C041"] = ss.OtherRate_041;
+        //                objDataSet.Tables[0].Rows.Add(drNewRow);
+        //            }
+        //        }
+        //        objAdapter.Update(objDataSet);
+        //        objDataSet.AcceptChanges();
+        //        FileLog.WriteInfo("UpdateOrAddHotTrend_108() ", "Success :" + ICurrentPeriod_101.LongPeriod_001);
 
-            }
-            catch (Exception e)
-            {
-                FileLog.WriteError("UpdateOrAddHotTrend_108() ", e.Message);
-                return flag = false;
-            }
-            #endregion
-            return flag;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        FileLog.WriteError("UpdateOrAddHotTrend_108() ", e.Message);
+        //        return flag = false;
+        //    }
+        //    #endregion
+        //    return flag;
         
-        }
+        //}
        
         #endregion
 

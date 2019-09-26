@@ -9,7 +9,8 @@ namespace Modles
     /// <summary>
     /// 作废--趋势热度
     /// </summary>
-    public class HotTrend_108
+    //public
+        class HotTrend_108
     {
         /// <summary>
         /// 期数

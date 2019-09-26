@@ -24,11 +24,13 @@ namespace Modles
 
         public int IsAppear_006 { get; set; }
 
-        public int LostValue_007 { get; set; }
+        public int LostValue_008 { get; set; }
 
-        public int PreLostValue_008 { get; set; }
+        public int PreLostValue_007 { get; set; }
 
-        public int AppearNumber_009 { get; set; }
+        public int AppearCount_009 { get; set; }
+
+        public long OrgPeriod_010 { get; set; }
 
     }
 }

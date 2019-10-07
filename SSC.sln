@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlarmService", "AlarmServic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication1", "ConsoleApplication1\ConsoleApplication1.csproj", "{3349C0D7-4845-4630-8C18-C9651AB10554}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication2", "ConsoleApplication2\ConsoleApplication2.csproj", "{36F9E091-4831-42E8-B68E-48969AEBE646}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{3349C0D7-4845-4630-8C18-C9651AB10554}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3349C0D7-4845-4630-8C18-C9651AB10554}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3349C0D7-4845-4630-8C18-C9651AB10554}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36F9E091-4831-42E8-B68E-48969AEBE646}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36F9E091-4831-42E8-B68E-48969AEBE646}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36F9E091-4831-42E8-B68E-48969AEBE646}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36F9E091-4831-42E8-B68E-48969AEBE646}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

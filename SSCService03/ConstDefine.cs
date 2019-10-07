@@ -34,6 +34,9 @@ namespace SSCService03
         /// </summary>
         public static int Const_GetData_CurrentAndPre = 2;
 
+        /// <summary>
+        /// 未完成的
+        /// </summary>
         public static int Const_GetData_NotComplete = 1;
 
 
@@ -78,6 +81,9 @@ namespace SSCService03
 
 
 
+        /// <summary>
+        /// 108表用的热类型
+        /// </summary>
          public static int Const_HotType_15MaxHot = 1;
          public static int Const_HotType_20MaxHot = 2;
          public static int Const_HotType_30MaxHot = 3;

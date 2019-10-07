@@ -1,0 +1,28 @@
+﻿ 
+求span------------
+listLostSingleNumAll_105Pre = listLostSingleNumAll_105Pre.OrderByDescending(p => p.LongPeriod_001).ToList();
+foreach (LostSingleNumAll_105 ls in listLostSingleNumAll_105Pre)
+{
+int span = AListPeriod_101.Where(p => p.LongPeriod_001 > ls.LongPeriod_001).Count();
+}
+
+
+常用sql -------------
+truncate table T_102_19;
+truncate table T_103_19;
+truncate table T_104_19;
+truncate table T_105_19;
+truncate table T_106_19;
+truncate table T_107_19;
+truncate table T_108_19;
+
+truncate table T_110_19;
+truncate table T_111_19;
+
+truncate table T_120_19;
+truncate table T_121_19;
+
+
+truncate table T_130_19;
+truncate table T_131_19;
+truncate table T_132_19;

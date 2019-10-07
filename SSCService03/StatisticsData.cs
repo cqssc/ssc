@@ -121,6 +121,8 @@ namespace SSCService03
                              DoSingleAnalysis_106(ConstDefine.Const_Set_Normal, listPeriodTemp_101);    //依赖于102表     
                              //DoSpecialFuture_110(listPeriodTemp_101);  //依赖于102表
 
+                             DoSingleMaxHot_108(); //依赖于106
+
                              //Task t1 = Task.Factory.StartNew(delegate { DoLostAll_102(ConstDefine.Const_Set_Normal, listPeriodTemp_101, ref  ICurrentLostAll_102); });
                              //Task t2 = Task.Factory.StartNew(delegate { DoLostTrend_103(ConstDefine.Const_Set_Normal, listPeriodTemp_101); });
                              //Task t3 = Task.Factory.StartNew(delegate { DoContinueBigSmall_111(ConstDefine.Const_Set_Normal, listPeriodTemp_101); });
@@ -859,6 +861,7 @@ namespace SSCService03
                     {
                         pp.IsComplete_007 = 1;
                     }
+                    listLostTrend_103Pre.OrderBy(p=>p.LongPeriod_001).ToList();
                     UpdataOrAddLostTreand_103(listLostTrend_103Pre);
                     return true;
 
@@ -1063,6 +1066,7 @@ namespace SSCService03
 
                 }
 
+                listLostTrend_103Temp = listLostTrend_103Temp.OrderBy(p=>p.LongPeriod_001).ToList();
                 if (UpdataOrAddLostTreand_103(listLostTrend_103Temp))
                 {
                     flag = true;
@@ -1093,6 +1097,7 @@ namespace SSCService03
         public static bool UpdataOrAddLostTreand_103(List<ContinueTrend_103> AListLostTrend_103) 
         {
             bool flag = true;
+            if (AListLostTrend_103.Count == 0) return flag;
             #region
             IDbConnection objConn;
             IDbDataAdapter objAdapter;
@@ -1100,8 +1105,8 @@ namespace SSCService03
             try
             {
                 string strSql = string.Empty;
-                strSql = string.Format("Select * from T_103_{0} where C007 = 0", IStrYY);
-
+                //strSql = string.Format("Select * from T_103_{0} where C007 = 0", IStrYY);
+                strSql = string.Format("Select * from T_103_{0} where C001<={1} AND C001>={2}", IStrYY,ICurrentPeriod_101.LongPeriod_001,AListLostTrend_103[0].LongPeriod_001);
                 objConn = DbHelperSQL.GetConnection(ISqlConnect);
                 objAdapter = DbHelperSQL.GetDataAdapter(objConn, strSql);
                 objCmdBuilder = DbHelperSQL.GetCommandBuilder(objAdapter);
@@ -3007,22 +3012,161 @@ namespace SSCService03
         #endregion
 
         #region DoSingMaxHot_108 单位最热号统计 ,不需要做置0处理
-
         public static bool DoSingleMaxHot_108() 
         {
             bool flag = true;
             //2个方向，I最近15期内最热号II最近20期内最热号 III最近30期内最热号  III 连出了4个小于10内的号
             //出了一个大于10期了算结束
             List<SingleAnalysis_106> listSinglenalysis = new List<SingleAnalysis_106>();
-            List<SingMaxHot_108> listSingMaxHot_NotComplete = new List<SingMaxHot_108>();
             listSinglenalysis = GetDataSingleAnalysis_106(5*80, ICurrentPeriod_101.LongPeriod_001);
-            if (listSinglenalysis.Count < 5 * 30) { return true; }          
+            if (listSinglenalysis.Count < 5 * 15) { return true; }
 
 
+            List<SingMaxHot_108> listSingMaxHot_New = new List<SingMaxHot_108>();
+            List<SingMaxHot_108> listSingMaxHot_NotComplete = new List<SingMaxHot_108>();
+            listSingMaxHot_NotComplete = GetDataSingleMaxHot_108(ConstDefine.Const_GetData_NotComplete,ICurrentPeriod_101.LongPeriod_001); 
+            List<HotOrder> listHotOrder = new List<HotOrder>();
+            List<SingleAnalysis_106> listSinglenalysisTemp = new List<SingleAnalysis_106>();
+
+            if(listSinglenalysis.Count>=5*15)
+            {
+                #region// I最近15期内最热号
+                listSinglenalysisTemp=(from a in listSinglenalysis orderby a.LongPeriod_001 descending select a).Take(15 * 5).ToList();
+                listHotOrder = DoHotOrder(listSinglenalysisTemp);
+                SingMaxHot_108 sm = null;
+                if(listHotOrder !=null && listHotOrder.Count>0)
+                {
+                    int count = listHotOrder[0].CountValue;
+                    if(count>=3)
+                    {                        
+                        listHotOrder = listHotOrder.Where(p => p.CountValue == count).ToList();
+                        foreach(HotOrder ho in  listHotOrder)
+                        {
+                            sm = listSingMaxHot_NotComplete.Where(p => p.PositionType_002 == ho.Position && p.PositionValue_003 == ho.PositionValue && p.HotType_006 == ConstDefine.Const_HotType_15MaxHot).Count() > 0 ? listSingMaxHot_NotComplete.Where(p => p.PositionType_002 == ho.Position && p.PositionValue_003 == ho.PositionValue && p.HotType_006 == ConstDefine.Const_HotType_15MaxHot).First() : null;
+                            if (sm == null)
+                            {
+                                sm = new SingMaxHot_108();
+                                InitSingleMaxHot(ho.Position, ho.PositionValue, ConstDefine.Const_HotType_15MaxHot, ho.StrPreSpan, ho.CountValue,ho.startPeriod, ref sm);
+                                listSingMaxHot_New.Add(sm);
+                            }
+                        }
+                    }
+                }   
+                #endregion
+            }
+            
+            if(listSinglenalysis.Count>=5*20)
+            {
+                #region //II最近20期内最热号
+                listSinglenalysisTemp = (from a in listSinglenalysis orderby a.LongPeriod_001 descending select a).Take(20 * 5).ToList();
+                listHotOrder = DoHotOrder(listSinglenalysisTemp);
+                SingMaxHot_108 sm = null;
+                if (listHotOrder != null && listHotOrder.Count > 0)
+                {
+                    int count = listHotOrder[0].CountValue;
+                    if (count >= 3)
+                    {
+                        listHotOrder = listHotOrder.Where(p => p.CountValue == count).ToList();
+                        foreach (HotOrder ho in listHotOrder)
+                        {
+                            sm = listSingMaxHot_NotComplete.Where(p => p.PositionType_002 == ho.Position && p.PositionValue_003 == ho.PositionValue && p.HotType_006 == ConstDefine.Const_HotType_20MaxHot).Count() > 0 ? listSingMaxHot_NotComplete.Where(p => p.PositionType_002 == ho.Position && p.PositionValue_003 == ho.PositionValue && p.HotType_006 == ConstDefine.Const_HotType_20MaxHot).First() : null;
+                            if (sm == null)
+                            {
+                                sm = new SingMaxHot_108();
+                                InitSingleMaxHot(ho.Position, ho.PositionValue, ConstDefine.Const_HotType_20MaxHot, ho.StrPreSpan, ho.CountValue, ho.startPeriod, ref sm);
+                                listSingMaxHot_New.Add(sm);
+                            }
+                        }
+                    }
+                }   
+                #endregion
+            }
+
+            if (listSinglenalysis.Count >= 5 * 30)
+            {
+                #region//III最近30期内最热号
+                listSinglenalysisTemp = (from a in listSinglenalysis orderby a.LongPeriod_001 descending select a).Take(30 * 5).ToList();
+                listHotOrder = DoHotOrder(listSinglenalysisTemp);
+                SingMaxHot_108 sm = null;
+                if (listHotOrder != null && listHotOrder.Count > 0)
+                {
+                    int count = listHotOrder[0].CountValue;
+                    if (count >= 3)
+                    {
+                        listHotOrder = listHotOrder.Where(p => p.CountValue == count).ToList();
+                        foreach (HotOrder ho in listHotOrder)
+                        {
+                            sm = listSingMaxHot_NotComplete.Where(p => p.PositionType_002 == ho.Position && p.PositionValue_003 == ho.PositionValue && p.HotType_006 == ConstDefine.Const_HotType_30MaxHot).Count() > 0 ? listSingMaxHot_NotComplete.Where(p => p.PositionType_002 == ho.Position && p.PositionValue_003 == ho.PositionValue && p.HotType_006 == ConstDefine.Const_HotType_30MaxHot).First() : null;
+                            if (sm == null)
+                            {
+                                sm = new SingMaxHot_108();
+                                InitSingleMaxHot(ho.Position, ho.PositionValue, ConstDefine.Const_HotType_30MaxHot, ho.StrPreSpan, ho.CountValue, ho.startPeriod, ref sm);
+                                listSingMaxHot_New.Add(sm);
+                            }
+                        }
+                    }
+                }   
+                #endregion
+            }
+
+            #region //最近4期未超过10期的
+
+            #endregion
+
+
+            #region //处理未完成的数据
+            //CompletePeriod_008，保存最后一次出现的期号
+            SingleAnalysis_106 saTemp = null;
+            foreach (SingMaxHot_108 sm in listSingMaxHot_NotComplete) 
+            {
+                saTemp = listSinglenalysis.Where(p=>p.LongPeriod_001>sm.LastPeriod_011 && p.PositionType_004== sm.PositionType_002 && p.PositionVale_005== sm.PositionValue_003).Count()>0?listSinglenalysis.Where(p=>p.LongPeriod_001>sm.LastPeriod_011 && p.PositionType_004== sm.PositionType_002 && p.PositionVale_005== sm.PositionValue_003).First():null;
+
+                if (saTemp == null)
+                {
+                    //判断sm与当前期的span
+                    long span = GetSpanOfTwoPeriod59(ICurrentPeriod_101.LongPeriod_001, sm.LastPeriod_011);
+                    if (span > 10)
+                    {
+                        sm.IsComplete_007 = 1;
+                        sm.CompletePeriod_008 = ICurrentPeriod_101.LongPeriod_001;
+                    }
+                    else 
+                    {
+                        sm.CompletePeriod_008 = ICurrentPeriod_101.LongPeriod_001;
+                    }
+                }
+                else 
+                {
+                    sm.CompletePeriod_008 = ICurrentPeriod_101.LongPeriod_001;
+                    if (sm.LaterCount_013 == 0)
+                    {
+                        sm.StrLaterAppearSpan_010 = saTemp.LostValue_008.ToString();
+                    }
+                    else 
+                    {
+                        sm.StrLaterAppearSpan_010 =sm.StrLaterAppearSpan_010 + "," + saTemp.LostValue_008;
+
+                    }                    
+                    sm.LastPeriod_011 = saTemp.LongPeriod_001;
+                    sm.LaterCount_013++;
+                }
+                listSingMaxHot_New.Add(sm);
+            }
+
+            #endregion
+            listSingMaxHot_New = listSingMaxHot_New.OrderBy(p=>p.LongPeriod_001).ToList();
+            if (UpdateOrAddSingleMaxHot_108(listSingMaxHot_New))
+            {
+                FileLog.WriteInfo("UpdateOrAddSingleMaxHot_108() ", "succ");
+            }
+            else 
+            {
+                FileLog.WriteInfo("UpdateOrAddSingleMaxHot_108()", "fail");
+            }
             return flag;
         }
 
-        public static void InitSingleMaxHot(int Position ,int PositionValue, int HotType,string StrPreAppear,int AppearCount, ref SingMaxHot_108  SingleMaxHot) 
+        public static void InitSingleMaxHot(int Position, int PositionValue, int HotType, string StrPreAppear, int AppearCount,long StartPeriod, ref SingMaxHot_108 SingleMaxHot)
         {
             SingleMaxHot.LongPeriod_001 = ICurrentPeriod_101.LongPeriod_001;
             SingleMaxHot.PositionType_002 = Position;
@@ -3034,29 +3178,190 @@ namespace SSCService03
             SingleMaxHot.CompletePeriod_008 = ICurrentPeriod_101.LongPeriod_001;
             SingleMaxHot.StrPreAppearSpan_009 = StrPreAppear;
             SingleMaxHot.StrLaterAppearSpan_010 = "";
-            SingleMaxHot.StrLaterAppearCount_011 = "";
-            SingleMaxHot.AppearCount_012 = AppearCount;
-            SingleMaxHot.OrderAll_15_013 = 0;
-            SingleMaxHot.OrderAll_30_014 = 0;
+            SingleMaxHot.LastPeriod_011 = ICurrentPeriod_101.LongPeriod_001;
+            SingleMaxHot.StartPeriod_012 = StartPeriod;
+            SingleMaxHot.LaterCount_013 = 0;
+            SingleMaxHot.PreCount_014 = AppearCount;
             SingleMaxHot.OrderAll_59_015 = 0;
             SingleMaxHot.OrderAll_80_016 = 0;
             SingleMaxHot.OrderSing_15_017 = 0;
             SingleMaxHot.OrderSing_30_018 = 0;
             SingleMaxHot.OrderSing_59_019 = 0;
             SingleMaxHot.OrderSing_80_020 = 0;
-
         }
 
-        public static List<SingMaxHot_108> GetDataSingleMaxHot_108() 
+        #region 排序
+        public static List<HotOrder> DoHotOrder(List<SingleAnalysis_106> listSinglenalysis) 
+        {
+            List<HotOrder> listHotOrder = new List<HotOrder>();
+            List<SingleAnalysis_106> listSASTemp = new List<SingleAnalysis_106>();
+            for (int i = 1; i <= 5;i++ )
+            {
+                for (int j = 0; j <= 9;j++ )
+                {
+                    HotOrder ho = new HotOrder();
+                    ho.Position = i;
+                    ho.PositionValue = j;
+                    listSASTemp = listSinglenalysis.Where(p => p.PositionType_004 == i && p.PositionVale_005 == j).OrderBy(p=>p.LongPeriod_001).ToList();
+                    StringBuilder sb = new StringBuilder();
+                    foreach(SingleAnalysis_106 ss in listSASTemp)
+                    {
+                        sb.Append(ss.LostValue_008).Append(",");
+                    }
+                    ho.StrPreSpan = sb.ToString();
+                    if(listSASTemp.Count>0)
+                    {
+                        ho.startPeriod = listSASTemp[0].LongPeriod_001;
+                    }
+                    ho.CountValue = listSASTemp.Count();
+                    listHotOrder.Add(ho);
+                }
+            }
+            listHotOrder = listHotOrder.OrderByDescending(p => p.CountValue).ToList();
+            return listHotOrder;
+        }
+
+        #endregion
+
+        public static List<SingMaxHot_108> GetDataSingleMaxHot_108(int Atype,long Period)    
         {
             List<SingMaxHot_108> listSingleMaxHot = new List<SingMaxHot_108>();
+            String StrSQL = string.Empty;
+            switch (Atype)
+            {
+                case 1: //未完成的
+                    {
+                        StrSQL = string.Format("select *  from T_108_{0} where  C001<{1} And C007=0 order by  C001 desc", IStrYY,Period);
+                    }
+                    break;
+                case 2:
+                    break;
+                default:
+                    break;
+            }
+            DataSet ds = DBHelp.DbHelperSQL.GetDataSet(ISqlConnect, StrSQL);
+            if (ds != null && ds.Tables[0] != null && ds.Tables[0].Rows.Count > 0)
+            {                
+                foreach (DataRow drNewRow in ds.Tables[0].Rows)
+                {
+                    SingMaxHot_108 lostTrend_103 = new SingMaxHot_108();
+                    lostTrend_103.LongPeriod_001 = long.Parse(drNewRow["C001"].ToString());
+                    lostTrend_103.PositionType_002 = int.Parse(drNewRow["C002"].ToString());
+                    lostTrend_103.PositionValue_003 = int.Parse(drNewRow["C003"].ToString());
+                    lostTrend_103.DateNumber_004 = long.Parse(drNewRow["C004"].ToString());
+                    lostTrend_103.ShortPeriod_005 = int.Parse(drNewRow["C005"].ToString());
+                    lostTrend_103.HotType_006 = int.Parse(drNewRow["C006"].ToString());
+                    lostTrend_103.IsComplete_007 = int.Parse(drNewRow["C007"].ToString());
+                    lostTrend_103.CompletePeriod_008 = long.Parse(drNewRow["C008"].ToString());
+                    lostTrend_103.StrPreAppearSpan_009 = drNewRow["C009"].ToString();
+                    lostTrend_103.StrLaterAppearSpan_010 = drNewRow["C010"].ToString();
+                    lostTrend_103.LastPeriod_011 = long.Parse(drNewRow["C011"].ToString());
+                    lostTrend_103.StartPeriod_012 = long.Parse(drNewRow["C012"].ToString());
+                    lostTrend_103.LaterCount_013 = int.Parse(drNewRow["C013"].ToString());
+                    lostTrend_103.PreCount_014 = int.Parse(drNewRow["C014"].ToString());
+                    lostTrend_103.OrderAll_59_015 = int.Parse(drNewRow["C015"].ToString());
+                    lostTrend_103.OrderAll_80_016 = int.Parse(drNewRow["C016"].ToString());
+                    lostTrend_103.OrderSing_15_017 = int.Parse(drNewRow["C017"].ToString());
+                    lostTrend_103.OrderSing_30_018 = int.Parse(drNewRow["C018"].ToString());
+                    lostTrend_103.OrderSing_59_019 = int.Parse(drNewRow["C019"].ToString());
+                    lostTrend_103.OrderSing_80_020 = int.Parse(drNewRow["C020"].ToString());
+
+                    listSingleMaxHot.Add(lostTrend_103);
+                }
+            }
+
             return listSingleMaxHot;
         }
 
         public static bool UpdateOrAddSingleMaxHot_108(List<SingMaxHot_108> listSingleMaxHot) 
         {
             bool flag = true;
+            if(listSingleMaxHot.Count==0){return true;}
+            #region
+            IDbConnection objConn;
+            IDbDataAdapter objAdapter;
+            DbCommandBuilder objCmdBuilder;
+            try
+            {
+                string strSql = string.Empty;
+                strSql = string.Format("Select * from T_108_{0} where C001<={1} AND C001>={2} ",IStrYY, ICurrentPeriod_101.LongPeriod_001 ,listSingleMaxHot[0].LongPeriod_001);
 
+                objConn = DbHelperSQL.GetConnection(ISqlConnect);
+                objAdapter = DbHelperSQL.GetDataAdapter(objConn, strSql);
+                objCmdBuilder = DbHelperSQL.GetCommandBuilder(objAdapter);
+                objCmdBuilder.ConflictOption = ConflictOption.OverwriteChanges;
+                objCmdBuilder.SetAllValues = false;
+
+                DataSet objDataSet = new DataSet();
+                objAdapter.Fill(objDataSet);
+
+                foreach (SingMaxHot_108 ss in listSingleMaxHot)
+                {
+                    DataRow drCurrent = objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C002={1} AND C003={2} AND C006={3}  ", ss.LongPeriod_001, ss.PositionType_002, ss.PositionValue_003, ss.HotType_006)).Count() > 0 ? objDataSet.Tables[0].Select(string.Format("C001={0}  AND  C002={1} AND C003={2} AND C006={3} ", ss.LongPeriod_001, ss.PositionType_002, ss.PositionValue_003, ss.HotType_006)).First() : null;
+
+                    if (drCurrent != null) //更新
+                    {
+                        drCurrent.BeginEdit();
+                        drCurrent["C001"] = ss.LongPeriod_001;
+                        drCurrent["C002"] = ss.PositionType_002;
+                        drCurrent["C003"] = ss.PositionValue_003;
+                        drCurrent["C004"] = ss.DateNumber_004;
+                        drCurrent["C005"] = ss.ShortPeriod_005;
+                        drCurrent["C006"] = ss.HotType_006;
+                        drCurrent["C007"] = ss.IsComplete_007;
+                        drCurrent["C008"] = ss.CompletePeriod_008;
+                        drCurrent["C009"] = ss.StrPreAppearSpan_009;
+                        drCurrent["C010"] = ss.StrLaterAppearSpan_010;
+                        drCurrent["C011"] = ss.LastPeriod_011;
+                        drCurrent["C012"] = ss.StartPeriod_012;
+                        drCurrent["C013"] = ss.LaterCount_013;
+                        drCurrent["C014"] = ss.PreCount_014;
+                        drCurrent["C015"] = ss.OrderAll_59_015;
+                        drCurrent["C016"] = ss.OrderAll_80_016;
+                        drCurrent["C017"] = ss.OrderSing_15_017;
+                        drCurrent["C018"] = ss.OrderSing_30_018;
+                        drCurrent["C019"] = ss.OrderSing_59_019;
+                        drCurrent["C020"] = ss.OrderSing_80_020;
+                        drCurrent.EndEdit();
+                    }
+                    else //添加新行
+                    {
+                        DataRow drNewRow = objDataSet.Tables[0].NewRow();
+                        drNewRow["C001"] = ss.LongPeriod_001;
+                        drNewRow["C002"] = ss.PositionType_002;
+                        drNewRow["C003"] = ss.PositionValue_003;
+                        drNewRow["C004"] = ss.DateNumber_004;
+                        drNewRow["C005"] = ss.ShortPeriod_005;
+                        drNewRow["C006"] = ss.HotType_006;
+                        drNewRow["C007"] = ss.IsComplete_007;
+                        drNewRow["C008"] = ss.CompletePeriod_008;
+                        drNewRow["C009"] = ss.StrPreAppearSpan_009;
+                        drNewRow["C010"] = ss.StrLaterAppearSpan_010;
+                        drNewRow["C011"] = ss.LastPeriod_011;
+                        drNewRow["C012"] = ss.StartPeriod_012;
+                        drNewRow["C013"] = ss.LaterCount_013;
+                        drNewRow["C014"] = ss.PreCount_014;
+                        drNewRow["C015"] = ss.OrderAll_59_015;
+                        drNewRow["C016"] = ss.OrderAll_80_016;
+                        drNewRow["C017"] = ss.OrderSing_15_017;
+                        drNewRow["C018"] = ss.OrderSing_30_018;
+                        drNewRow["C019"] = ss.OrderSing_59_019;
+                        drNewRow["C020"] = ss.OrderSing_80_020;
+                        objDataSet.Tables[0].Rows.Add(drNewRow);
+                    }
+                }
+                objAdapter.Update(objDataSet);
+                objDataSet.AcceptChanges();
+
+                FileLog.WriteInfo("UpdateOrAddSingleMaxHot_108() ", "Success :" + ICurrentPeriod_101.LongPeriod_001);
+
+            }
+            catch (Exception e)
+            {
+                FileLog.WriteError("UpdateOrAddSingleMaxHot_108()  Err ", e.Message + " 期数:" + ICurrentPeriod_101.LongPeriod_001);
+                return flag = false;
+            }
+            #endregion
             return flag;
         }
 
@@ -4173,17 +4478,17 @@ namespace SSCService03
             long Span = 0;
             string strCurr = CurrentValue.ToString().Substring(0, 8) + "000";
             string strOld = OldValue.ToString().Substring(0, 8) + "000";
-            string strOldStop = OldValue.ToString().Substring(0, 8) + "59";
+            string strOldStop = OldValue.ToString().Substring(0, 8) + "059";
             if (strCurr.Equals(strOld))
             {
-                Span = CurrentValue - OldValue;
+                Span = CurrentValue - OldValue ;
             }
             else
             {
                 DateTime start = StringToDateTime(strCurr);
                 DateTime stop = StringToDateTime(strOld);
                 TimeSpan sp = start.Subtract(stop);
-                Span = (sp.Days - 1) * 59 + (long.Parse(strOldStop) - OldValue) + (CurrentValue - long.Parse(strCurr));
+                Span = (sp.Days - 1) * 59 + (long.Parse(strOldStop) - OldValue) + (CurrentValue - long.Parse(strCurr)) ;
             }
             return Span;
         }

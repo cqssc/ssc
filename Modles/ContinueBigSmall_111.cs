@@ -26,5 +26,8 @@ namespace Modles
         public int IsComplete_007 { get; set; }
 
 
+        public long CompletePeriod_008 { get; set; }
+
+
     }
 }

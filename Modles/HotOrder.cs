@@ -12,6 +12,7 @@ namespace Modles
          public int PositionValue { set; get; }
          public int CountValue { set; get; }
          public string StrPreSpan { set; get; }
-         public long startPeriod { set; get; }
+         public long NewestPeriod { set; get; }
+         public long OldestPeriod { set; get; }
     }
 }

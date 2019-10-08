@@ -18,8 +18,8 @@ namespace Modles
       public long    CompletePeriod_008 {set;get;} //统计到那一期了
       public string   StrPreAppearSpan_009 {set;get;}
       public string   StrLaterAppearSpan_010 {set;get;}
-      public long    LastPeriod_011 {set;get;} //最后一次出现的期号
-      public long    StartPeriod_012 {set;get;} //最开始时出现的期号
+      public long    LastAppearPeriod_011 {set;get;} //最后一次出现的期号
+      public long    StartAppearPeriod_012 {set;get;} //最开始时出现的期号
       public int  LaterCount_013 {set;get;}
       public int   PreCount_014 {set;get;}
       public int   OrderAll_59_015 {set;get;}

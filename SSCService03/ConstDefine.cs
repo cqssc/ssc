@@ -87,7 +87,7 @@ namespace SSCService03
          public static int Const_HotType_15MaxHot = 1;
          public static int Const_HotType_20MaxHot = 2;
          public static int Const_HotType_30MaxHot = 3;
-         public static int Const_HotType_5S10 = 4;
+         public static int Const_HotType_4S10 = 4;
 
 
 

@@ -121,7 +121,7 @@ namespace SSCService03
                              DoSingleAnalysis_106(ConstDefine.Const_Set_Normal, listPeriodTemp_101);    //依赖于102表     
                              //DoSpecialFuture_110(listPeriodTemp_101);  //依赖于102表
 
-                             DoSingleMaxHot_108(); //依赖于106
+                             DoSingleMaxHot_108(listPeriodTemp_101); //依赖于106
 
                              //Task t1 = Task.Factory.StartNew(delegate { DoLostAll_102(ConstDefine.Const_Set_Normal, listPeriodTemp_101, ref  ICurrentLostAll_102); });
                              //Task t2 = Task.Factory.StartNew(delegate { DoLostTrend_103(ConstDefine.Const_Set_Normal, listPeriodTemp_101); });
@@ -3012,7 +3012,7 @@ namespace SSCService03
         #endregion
 
         #region DoSingMaxHot_108 单位最热号统计 ,不需要做置0处理
-        public static bool DoSingleMaxHot_108() 
+        public static bool DoSingleMaxHot_108(List<PeriodDetail_101> AListPeriod_101 ) 
         {
             bool flag = true;
             //2个方向，I最近15期内最热号II最近20期内最热号 III最近30期内最热号  III 连出了4个小于10内的号
@@ -3021,13 +3021,12 @@ namespace SSCService03
             listSinglenalysis = GetDataSingleAnalysis_106(5*80, ICurrentPeriod_101.LongPeriod_001);
             if (listSinglenalysis.Count < 5 * 15) { return true; }
 
-
             List<SingMaxHot_108> listSingMaxHot_New = new List<SingMaxHot_108>();
             List<SingMaxHot_108> listSingMaxHot_NotComplete = new List<SingMaxHot_108>();
             listSingMaxHot_NotComplete = GetDataSingleMaxHot_108(ConstDefine.Const_GetData_NotComplete,ICurrentPeriod_101.LongPeriod_001); 
             List<HotOrder> listHotOrder = new List<HotOrder>();
             List<SingleAnalysis_106> listSinglenalysisTemp = new List<SingleAnalysis_106>();
-
+            List<SingleAnalysis_106> listSinglenalysisTemp_Temp = new List<SingleAnalysis_106>();
             if(listSinglenalysis.Count>=5*15)
             {
                 #region// I最近15期内最热号
@@ -3040,14 +3039,24 @@ namespace SSCService03
                     if(count>=3)
                     {                        
                         listHotOrder = listHotOrder.Where(p => p.CountValue == count).ToList();
+                        listSinglenalysisTemp_Temp = new List<SingleAnalysis_106>();
                         foreach(HotOrder ho in  listHotOrder)
                         {
+                            //ho中，凡是有中间大于10期的间隔，全部要去掉
                             sm = listSingMaxHot_NotComplete.Where(p => p.PositionType_002 == ho.Position && p.PositionValue_003 == ho.PositionValue && p.HotType_006 == ConstDefine.Const_HotType_15MaxHot).Count() > 0 ? listSingMaxHot_NotComplete.Where(p => p.PositionType_002 == ho.Position && p.PositionValue_003 == ho.PositionValue && p.HotType_006 == ConstDefine.Const_HotType_15MaxHot).First() : null;
-                            if (sm == null)
+                            listSinglenalysisTemp_Temp = listSinglenalysisTemp.Where(p => p.PositionType_004 == ho.Position && p.PositionVale_005 == ho.PositionValue).OrderBy(p=>p.LongPeriod_001).ToList();
+                            if (listSinglenalysisTemp_Temp != null && listSinglenalysisTemp_Temp.Count()>0 &&listSinglenalysisTemp_Temp.Where(p => p.LongPeriod_001 > listSinglenalysisTemp_Temp[0].LongPeriod_001 && p.LostValue_008 >= 10).Count() == 0)
                             {
-                                sm = new SingMaxHot_108();
-                                InitSingleMaxHot(ho.Position, ho.PositionValue, ConstDefine.Const_HotType_15MaxHot, ho.StrPreSpan, ho.CountValue,ho.startPeriod, ref sm);
-                                listSingMaxHot_New.Add(sm);
+                                if (sm == null)
+                                {
+                                    int span = AListPeriod_101.Where(p => p.LongPeriod_001 > listSinglenalysisTemp_Temp[listSinglenalysisTemp_Temp.Count-1].LongPeriod_001).Count();
+                                    if (span < 10)
+                                    {
+                                        sm = new SingMaxHot_108();
+                                        InitSingleMaxHot(ho.Position, ho.PositionValue, ConstDefine.Const_HotType_15MaxHot, ho.StrPreSpan, ho.CountValue, ho.NewestPeriod,ho.OldestPeriod, ref sm);
+                                        listSingMaxHot_New.Add(sm);
+                                    }
+                                }
                             }
                         }
                     }
@@ -3067,14 +3076,23 @@ namespace SSCService03
                     if (count >= 3)
                     {
                         listHotOrder = listHotOrder.Where(p => p.CountValue == count).ToList();
+                        listSinglenalysisTemp_Temp = new List<SingleAnalysis_106>();
                         foreach (HotOrder ho in listHotOrder)
                         {
                             sm = listSingMaxHot_NotComplete.Where(p => p.PositionType_002 == ho.Position && p.PositionValue_003 == ho.PositionValue && p.HotType_006 == ConstDefine.Const_HotType_20MaxHot).Count() > 0 ? listSingMaxHot_NotComplete.Where(p => p.PositionType_002 == ho.Position && p.PositionValue_003 == ho.PositionValue && p.HotType_006 == ConstDefine.Const_HotType_20MaxHot).First() : null;
-                            if (sm == null)
+                            listSinglenalysisTemp_Temp = listSinglenalysisTemp.Where(p => p.PositionType_004 == ho.Position && p.PositionVale_005 == ho.PositionValue).OrderBy(p => p.LongPeriod_001).ToList();
+                            if (listSinglenalysisTemp_Temp != null && listSinglenalysisTemp_Temp.Count() > 0 && listSinglenalysisTemp_Temp.Where(p => p.LongPeriod_001 > listSinglenalysisTemp_Temp[0].LongPeriod_001 && p.LostValue_008 >= 10).Count() == 0)
                             {
-                                sm = new SingMaxHot_108();
-                                InitSingleMaxHot(ho.Position, ho.PositionValue, ConstDefine.Const_HotType_20MaxHot, ho.StrPreSpan, ho.CountValue, ho.startPeriod, ref sm);
-                                listSingMaxHot_New.Add(sm);
+                                if (sm == null)
+                                {
+                                    int span = AListPeriod_101.Where(p => p.LongPeriod_001 > listSinglenalysisTemp_Temp[listSinglenalysisTemp_Temp.Count - 1].LongPeriod_001).Count();
+                                    if (span < 10)
+                                    {
+                                        sm = new SingMaxHot_108();
+                                        InitSingleMaxHot(ho.Position, ho.PositionValue, ConstDefine.Const_HotType_20MaxHot, ho.StrPreSpan, ho.CountValue, ho.NewestPeriod, ho.OldestPeriod, ref sm);
+                                        listSingMaxHot_New.Add(sm);
+                                    }
+                                }
                             }
                         }
                     }
@@ -3094,14 +3112,23 @@ namespace SSCService03
                     if (count >= 3)
                     {
                         listHotOrder = listHotOrder.Where(p => p.CountValue == count).ToList();
+                        listSinglenalysisTemp_Temp = new List<SingleAnalysis_106>();
                         foreach (HotOrder ho in listHotOrder)
                         {
                             sm = listSingMaxHot_NotComplete.Where(p => p.PositionType_002 == ho.Position && p.PositionValue_003 == ho.PositionValue && p.HotType_006 == ConstDefine.Const_HotType_30MaxHot).Count() > 0 ? listSingMaxHot_NotComplete.Where(p => p.PositionType_002 == ho.Position && p.PositionValue_003 == ho.PositionValue && p.HotType_006 == ConstDefine.Const_HotType_30MaxHot).First() : null;
-                            if (sm == null)
+                            listSinglenalysisTemp_Temp = listSinglenalysisTemp.Where(p => p.PositionType_004 == ho.Position && p.PositionVale_005 == ho.PositionValue).OrderBy(p=>p.LongPeriod_001).ToList();
+                            if (listSinglenalysisTemp_Temp != null && listSinglenalysisTemp_Temp.Count() > 0 && listSinglenalysisTemp_Temp.Where(p => p.LongPeriod_001 > listSinglenalysisTemp_Temp[0].LongPeriod_001 && p.LostValue_008 >= 10).Count() == 0)
                             {
-                                sm = new SingMaxHot_108();
-                                InitSingleMaxHot(ho.Position, ho.PositionValue, ConstDefine.Const_HotType_30MaxHot, ho.StrPreSpan, ho.CountValue, ho.startPeriod, ref sm);
-                                listSingMaxHot_New.Add(sm);
+                                if (sm == null)
+                                {
+                                    int span = AListPeriod_101.Where(p => p.LongPeriod_001 > listSinglenalysisTemp_Temp[listSinglenalysisTemp_Temp.Count - 1].LongPeriod_001).Count();
+                                    if (span < 10)
+                                    {
+                                        sm = new SingMaxHot_108();
+                                        InitSingleMaxHot(ho.Position, ho.PositionValue, ConstDefine.Const_HotType_30MaxHot, ho.StrPreSpan, ho.CountValue, ho.NewestPeriod, ho.OldestPeriod, ref sm);
+                                        listSingMaxHot_New.Add(sm);
+                                    }
+                                }
                             }
                         }
                     }
@@ -3110,6 +3137,37 @@ namespace SSCService03
             }
 
             #region //最近4期未超过10期的
+            SingMaxHot_108 smh_108 = new SingMaxHot_108();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 1; i <= 5; i++)
+            {
+                for (int j = 0; j <= 9; j++)
+                {
+                    listSinglenalysisTemp_Temp = (from a in listSinglenalysis where (a.PositionType_004 == i && a.PositionVale_005 == j) orderby a.LongPeriod_001 descending select a).Take(4).ToList();
+                    if (listSinglenalysisTemp_Temp !=null && listSinglenalysisTemp_Temp.Count == 4) 
+                    {
+                        if (listSinglenalysisTemp_Temp[0].LostValue_008 < 10 && listSinglenalysisTemp_Temp[1].LostValue_008<10 && listSinglenalysisTemp_Temp[2].LostValue_008<10)
+                        {
+                            smh_108 = listSingMaxHot_NotComplete.Where(p => p.PositionType_002 == i && p.PositionValue_003 == j && p.HotType_006 == ConstDefine.Const_HotType_4S10).Count() > 0 ? listSingMaxHot_NotComplete.Where(p => p.PositionType_002 == i && p.PositionValue_003 == j && p.HotType_006 == ConstDefine.Const_HotType_4S10).First() : null;
+                            if (smh_108 ==null)
+                            {
+                                int span = AListPeriod_101.Where(p => p.LongPeriod_001 > listSinglenalysisTemp_Temp[0].LongPeriod_001).Count();
+                                sb = new StringBuilder();
+                                sb.Append(listSinglenalysisTemp_Temp[3].LostValue_008).Append(",").Append(listSinglenalysisTemp_Temp[2].LostValue_008).Append(",").Append(listSinglenalysisTemp_Temp[1].LostValue_008).Append(",").Append(listSinglenalysisTemp_Temp[2].LostValue_008);
+                                if (span < 10)
+                                {
+                                    smh_108 = new SingMaxHot_108();
+                                    InitSingleMaxHot(i, j, ConstDefine.Const_HotType_4S10, sb.ToString(), 4, listSinglenalysisTemp_Temp[0].LongPeriod_001, listSinglenalysisTemp_Temp[3].LongPeriod_001, ref smh_108);
+                                    listSingMaxHot_New.Add(smh_108);
+                                }
+                            }
+                        }
+                    }                    
+                }
+            }
+            #endregion
+
+            #region 两个最多都达到7个时，用离散来解决该追那个号
 
             #endregion
 
@@ -3119,13 +3177,18 @@ namespace SSCService03
             SingleAnalysis_106 saTemp = null;
             foreach (SingMaxHot_108 sm in listSingMaxHot_NotComplete) 
             {
-                saTemp = listSinglenalysis.Where(p=>p.LongPeriod_001>sm.LastPeriod_011 && p.PositionType_004== sm.PositionType_002 && p.PositionVale_005== sm.PositionValue_003).Count()>0?listSinglenalysis.Where(p=>p.LongPeriod_001>sm.LastPeriod_011 && p.PositionType_004== sm.PositionType_002 && p.PositionVale_005== sm.PositionValue_003).First():null;
+                saTemp = listSinglenalysis.Where(p => p.LongPeriod_001 > sm.LastAppearPeriod_011 && p.PositionType_004 == sm.PositionType_002 && p.PositionVale_005 == sm.PositionValue_003).Count() > 0 ? listSinglenalysis.Where(p => p.LongPeriod_001 > sm.LastAppearPeriod_011 && p.PositionType_004 == sm.PositionType_002 && p.PositionVale_005 == sm.PositionValue_003).First() : null;
 
                 if (saTemp == null)
                 {
+                    if(sm.PositionType_002==4 && sm.PositionValue_003==2 && sm.HotType_006==2)
+                    {
+                        FileLog.WriteInfo("","");
+                    }
+
                     //判断sm与当前期的span
-                    long span = GetSpanOfTwoPeriod59(ICurrentPeriod_101.LongPeriod_001, sm.LastPeriod_011);
-                    if (span > 10)
+                    long span = GetSpanOfTwoPeriod59(ICurrentPeriod_101.LongPeriod_001, sm.LastAppearPeriod_011);
+                    if (span >= 10)
                     {
                         sm.IsComplete_007 = 1;
                         sm.CompletePeriod_008 = ICurrentPeriod_101.LongPeriod_001;
@@ -3146,8 +3209,8 @@ namespace SSCService03
                     {
                         sm.StrLaterAppearSpan_010 =sm.StrLaterAppearSpan_010 + "," + saTemp.LostValue_008;
 
-                    }                    
-                    sm.LastPeriod_011 = saTemp.LongPeriod_001;
+                    }
+                    sm.LastAppearPeriod_011 = saTemp.LongPeriod_001;
                     sm.LaterCount_013++;
                 }
                 listSingMaxHot_New.Add(sm);
@@ -3166,7 +3229,7 @@ namespace SSCService03
             return flag;
         }
 
-        public static void InitSingleMaxHot(int Position, int PositionValue, int HotType, string StrPreAppear, int AppearCount,long StartPeriod, ref SingMaxHot_108 SingleMaxHot)
+        public static void InitSingleMaxHot(int Position, int PositionValue, int HotType, string StrPreAppear, int AppearCount,long LastAppearPeriod,long StartAppearPeriod, ref SingMaxHot_108 SingleMaxHot)
         {
             SingleMaxHot.LongPeriod_001 = ICurrentPeriod_101.LongPeriod_001;
             SingleMaxHot.PositionType_002 = Position;
@@ -3178,8 +3241,8 @@ namespace SSCService03
             SingleMaxHot.CompletePeriod_008 = ICurrentPeriod_101.LongPeriod_001;
             SingleMaxHot.StrPreAppearSpan_009 = StrPreAppear;
             SingleMaxHot.StrLaterAppearSpan_010 = "";
-            SingleMaxHot.LastPeriod_011 = ICurrentPeriod_101.LongPeriod_001;
-            SingleMaxHot.StartPeriod_012 = StartPeriod;
+            SingleMaxHot.LastAppearPeriod_011 = LastAppearPeriod;
+            SingleMaxHot.StartAppearPeriod_012 = StartAppearPeriod;
             SingleMaxHot.LaterCount_013 = 0;
             SingleMaxHot.PreCount_014 = AppearCount;
             SingleMaxHot.OrderAll_59_015 = 0;
@@ -3211,7 +3274,8 @@ namespace SSCService03
                     ho.StrPreSpan = sb.ToString();
                     if(listSASTemp.Count>0)
                     {
-                        ho.startPeriod = listSASTemp[0].LongPeriod_001;
+                        ho.NewestPeriod = listSASTemp[listSASTemp.Count - 1].LongPeriod_001;
+                        ho.OldestPeriod = listSASTemp[0].LongPeriod_001;
                     }
                     ho.CountValue = listSASTemp.Count();
                     listHotOrder.Add(ho);
@@ -3255,8 +3319,8 @@ namespace SSCService03
                     lostTrend_103.CompletePeriod_008 = long.Parse(drNewRow["C008"].ToString());
                     lostTrend_103.StrPreAppearSpan_009 = drNewRow["C009"].ToString();
                     lostTrend_103.StrLaterAppearSpan_010 = drNewRow["C010"].ToString();
-                    lostTrend_103.LastPeriod_011 = long.Parse(drNewRow["C011"].ToString());
-                    lostTrend_103.StartPeriod_012 = long.Parse(drNewRow["C012"].ToString());
+                    lostTrend_103.LastAppearPeriod_011 = long.Parse(drNewRow["C011"].ToString());
+                    lostTrend_103.StartAppearPeriod_012 = long.Parse(drNewRow["C012"].ToString());
                     lostTrend_103.LaterCount_013 = int.Parse(drNewRow["C013"].ToString());
                     lostTrend_103.PreCount_014 = int.Parse(drNewRow["C014"].ToString());
                     lostTrend_103.OrderAll_59_015 = int.Parse(drNewRow["C015"].ToString());
@@ -3312,8 +3376,8 @@ namespace SSCService03
                         drCurrent["C008"] = ss.CompletePeriod_008;
                         drCurrent["C009"] = ss.StrPreAppearSpan_009;
                         drCurrent["C010"] = ss.StrLaterAppearSpan_010;
-                        drCurrent["C011"] = ss.LastPeriod_011;
-                        drCurrent["C012"] = ss.StartPeriod_012;
+                        drCurrent["C011"] = ss.LastAppearPeriod_011;
+                        drCurrent["C012"] = ss.StartAppearPeriod_012;
                         drCurrent["C013"] = ss.LaterCount_013;
                         drCurrent["C014"] = ss.PreCount_014;
                         drCurrent["C015"] = ss.OrderAll_59_015;
@@ -3337,8 +3401,8 @@ namespace SSCService03
                         drNewRow["C008"] = ss.CompletePeriod_008;
                         drNewRow["C009"] = ss.StrPreAppearSpan_009;
                         drNewRow["C010"] = ss.StrLaterAppearSpan_010;
-                        drNewRow["C011"] = ss.LastPeriod_011;
-                        drNewRow["C012"] = ss.StartPeriod_012;
+                        drNewRow["C011"] = ss.LastAppearPeriod_011;
+                        drNewRow["C012"] = ss.StartAppearPeriod_012;
                         drNewRow["C013"] = ss.LaterCount_013;
                         drNewRow["C014"] = ss.PreCount_014;
                         drNewRow["C015"] = ss.OrderAll_59_015;

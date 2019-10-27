@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Modles
+namespace SSCService04
 {
-    public class AllAnalysisSplit_120
+     public static class   S04_ConstDefine
     {
+         public static int MT_Type_20LostSmall = 11;
     }
 }

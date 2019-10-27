@@ -42,14 +42,10 @@ namespace Modles
         public int Remain20MLost_007 { set; get; }
 
         //剩下>20集中的数字个数
-        public int Remain20PositionValueNum_008 { set; get; }
+        public int Remain20DistinctNumber_008 { set; get; }
 
         //>剩下20期遗失数字分布的个数数量
-        public int Remain20PositionNum_009 { set; get; }
-
-
-        
-
+        public int Remain20PositionNum_009 { set; get; }      
 
         public int Lost_010 { set; get; }
 
@@ -165,7 +161,8 @@ namespace Modles
         public int PreLost_104 { set; get; }
         public int PreLost_105 { set; get; }
 
-
+        public int Lost20_106 { set; get; }//如果出现20期遗失的则将该数置0 否则+1
+        public int Lost20M_107 { set; get; }//如果出现20M遗失，则将该数置0，否则+1;
 
     }
 }

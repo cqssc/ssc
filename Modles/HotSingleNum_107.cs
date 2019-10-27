@@ -34,9 +34,22 @@ namespace Modles
         public int AppearCount_018 { get; set; }
         public int AppearCount_019 { get; set; }
 
-        public decimal Appear789CountRate_020 { get; set; }
-        public decimal Appear012CountRate_021 { get; set; }
-        public decimal Appear3456CountRate_022 { get; set; }
+        public int PeriodCount_020 { get; set; }
+        public int PeriodCount_021 { get; set; }
+        public int PeriodCount_022 { get; set; }
+        public int PeriodCount_023 { get; set; }
+        public int PeriodCount_024 { get; set; }
+        public int PeriodCount_025 { get; set; }
+        public int PeriodCount_026 { get; set; }
+        public int PeriodCount_027 { get; set; }
+        public int PeriodCount_028 { get; set; }
+        public int PeriodCount_029 { get; set; }
+
+
+
+        //public decimal Appear789CountRate_020 { get; set; }
+        //public decimal Appear012CountRate_021 { get; set; }
+        //public decimal Appear3456CountRate_022 { get; set; }
 
 
         

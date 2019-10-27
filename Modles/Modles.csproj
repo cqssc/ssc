@@ -39,12 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AllAnalysisSplit_120.cs" />
+    <Compile Include="AllWeiStatistics_120.cs" />
     <Compile Include="ContinueBigSmall_111.cs" />
     <Compile Include="HotOrder.cs" />
     <Compile Include="LostCross_104.cs" />
     <Compile Include="HotSingleNum_107.cs" />
     <Compile Include="LostAll_102.cs" />
+    <Compile Include="MoTouServiceDouble_132.cs" />
+    <Compile Include="MoTouType_130.cs" />
+    <Compile Include="MoTouServiceSingle_131.cs" />
     <Compile Include="PeriodDetail_101.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SingleAnalysis_106.cs" />

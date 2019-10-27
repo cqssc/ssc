@@ -23,6 +23,6 @@ truncate table T_120_19;
 truncate table T_121_19;
 
 
-truncate table T_130_19;
+--truncate table T_130_19;
 truncate table T_131_19;
 truncate table T_132_19;

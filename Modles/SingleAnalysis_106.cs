@@ -30,38 +30,43 @@ namespace Modles
 
         public int LostEvenODDOrderNum_009 { get; set; }
 
-        public int LostAllOrderNum_010 { get; set; }
+        public int LostEO_AllOrderNum_010 { get; set; }     
 
-        public int OrderInTen_011 { get; set; }
 
-        public int OrderInTwenty_012 { get; set; }
+        public int LostBigOrSmallOrderNum_011 { get; set; } //本位大小遗失
 
-        public int OrderInFourty_013 { get; set; }
+        public int LostBSAllOrderNum_012 { get; set; } //本位大小全位遗失
 
-        public int OrderInOneDay_014 { get; set; }
+        public int EOInAgainNum_013 { get; set; } //本数字再出现时中间出现单双同类型的个数---当前还没有做出来
 
-        public int OrderInTwoDay_015 { get; set; }
+        public int BSInAgainNum_014 { get; set; }//本数字再出现时中间出现大小同类型的个数---当前还没有做出来
 
-        public int OrderInThreeDay_016 { get; set; }
+        //public int OrderInFourty_013 { get; set; }
 
-        public int OrderInFourDay_017 { get; set; }
+        //public int OrderInOneDay_014 { get; set; }
 
-        public int Remain20Num_018 { set; get; }
+        //public int OrderInTwoDay_015 { get; set; }
 
-        public int RemainEven20Num_019 { set; get; }
+        //public int OrderInThreeDay_016 { get; set; }
 
-        public int RemainOdd20Num_020 { set; get; }
+        //public int OrderInFourDay_017 { get; set; }
+
+        //public int Remain20Num_018 { set; get; }
+
+        //public int RemainEven20Num_019 { set; get; }
+
+        //public int RemainOdd20Num_020 { set; get; }
        
-        public int IsAppear20_021 { set; get; }
-        public int IsAppear20M_022 { set; get; }
-        public int IsThree20InSingle_023 { set; get; }
+        //public int IsAppear20_021 { set; get; }
+        //public int IsAppear20M_022 { set; get; }
+        //public int IsThree20InSingle_023 { set; get; }
 
-        public int IsInPair_024 { set; get; }
-        public int IsInThreeSame_025 { set; get; }
-        public int IsInFourSame_026 { set; get; }
-        public int IsInFiveSame_027 { set; get; }
+        //public int IsInPair_024 { set; get; }
+        //public int IsInThreeSame_025 { set; get; }
+        //public int IsInFourSame_026 { set; get; }
+        //public int IsInFiveSame_027 { set; get; }
 
-        public int IsFourPile_028 { set; get; }
-        public int IsFivePile_029 { set; get; }
+        //public int IsFourPile_028 { set; get; }
+        //public int IsFivePile_029 { set; get; }
     }
 }
